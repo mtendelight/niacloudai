@@ -1,0 +1,1364 @@
+<div class="detail-item">
+
+  <div class="label d-flex justify-content-between align-items-center mb-3">
+
+    <div>
+      <i class="bi bi-robot text-primary me-2"></i>
+      <strong>AI Conversation</strong>
+    </div>
+
+    <span class="badge bg-primary rounded-pill">
+      <%= jmlead.parsed_comments.count %>
+    </span>
+
+  </div>
+
+
+  <div class="conversation-box">
+
+
+
+<%
+messages = jmlead.parsed_comments
+
+human_messages = messages.select do |message|
+  message[:speaker].to_sym == :human
+end
+
+conversation_messages = messages.reject do |message|
+  message[:speaker].to_sym == :human
+end
+%>
+
+<div class="conversation-panel">
+
+  <!-- =====================================================
+       CONVERSATION SUMMARY
+       ===================================================== -->
+
+  <div class="conversation-overview">
+
+    <div class="overview-icon">
+      <i class="bi bi-stars"></i>
+    </div>
+
+    <div class="overview-content">
+
+      <div class="overview-title">
+        AI Conversation
+      </div>
+
+      <div class="overview-subtitle">
+        Customer communication & support history
+      </div>
+
+    </div>
+
+    <div class="overview-count">
+
+      <i class="bi bi-chat-square-text"></i>
+
+      <%= jmlead.parsed_comments.count %>
+
+    </div>
+
+  </div>
+
+
+  <!-- =====================================================
+       PREVIOUS HUMAN REPLIES
+       ===================================================== -->
+
+  <% previous_humans = human_messages.drop(1).reverse %>
+
+  <% if previous_humans.any? %>
+
+    <section class="conversation-section previous-human-section">
+
+      <div class="conversation-section-title">
+
+        <div class="section-title-icon human-icon">
+          <i class="bi bi-person-check-fill"></i>
+        </div>
+
+        <div class="section-heading">
+
+          <div class="section-title">
+            Previous Human Replies
+          </div>
+
+          <div class="section-subtitle">
+            Earlier responses from your support team
+          </div>
+
+        </div>
+
+        <span class="section-count human-count">
+
+          <i class="bi bi-chat-left-text"></i>
+
+          <%= previous_humans.count %>
+
+        </span>
+
+      </div>
+
+
+      <div class="conversation-thread">
+
+        <% previous_humans.each do |message| %>
+
+          <div class="chat-row human">
+
+            <div class="chat-avatar human-avatar">
+
+              <i class="bi bi-person-check-fill"></i>
+
+            </div>
+
+
+            <div class="chat-bubble human-bubble">
+
+              <div class="chat-bubble-header">
+
+                <div class="speaker-wrapper">
+
+                  <strong class="chat-speaker">
+                    Human Agent
+                  </strong>
+
+                  <span class="agent-badge">
+                    <i class="bi bi-headset"></i>
+                    Support
+                  </span>
+
+                </div>
+
+                <% if message[:created_at].present? %>
+
+                  <small class="chat-time">
+
+                    <i class="bi bi-clock"></i>
+
+                    <%= message[:created_at]
+                          .to_time
+                          .strftime("%d %b %Y • %H:%M") %>
+
+                  </small>
+
+                <% end %>
+
+              </div>
+
+
+              <div class="chat-message">
+
+                <%= simple_format(
+                      message[:body]
+                        .to_s
+                        .gsub("[NOTIFY_CUSTOMER_CARE]", "")
+                        .strip
+                    ) %>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        <% end %>
+
+      </div>
+
+    </section>
+
+  <% end %>
+
+
+  <!-- =====================================================
+       CUSTOMER + AI CONVERSATION
+       ===================================================== -->
+
+  <% if conversation_messages.any? %>
+
+    <section class="conversation-section main-conversation-section">
+
+      <div class="conversation-section-title">
+
+        <div class="section-title-icon conversation-icon">
+
+          <i class="bi bi-stars"></i>
+
+        </div>
+
+        <div class="section-heading">
+
+          <div class="section-title">
+            Conversation
+          </div>
+
+          <div class="section-subtitle">
+            Customer and AI Assistant messages
+          </div>
+
+        </div>
+
+        <div class="ai-live-badge">
+
+          <span class="live-dot"></span>
+
+          AI
+
+        </div>
+
+      </div>
+
+
+      <div class="conversation-thread">
+
+        <% conversation_messages.each do |message| %>
+
+          <%
+            speaker = message[:speaker].to_sym
+
+            speaker_name =
+              speaker == :customer ? "Customer" : "AI Assistant"
+
+            speaker_icon =
+              speaker == :customer ?
+                "bi-person-fill" :
+                "bi-robot"
+
+            bubble_class =
+              speaker == :customer ?
+                "customer-bubble" :
+                "ai-bubble"
+
+            message_time =
+              message[:created_at].presence || jmlead.updated_at
+          %>
+
+
+          <div class="chat-row <%= speaker %>">
+
+            <div class="chat-avatar">
+
+              <i class="bi <%= speaker_icon %>"></i>
+
+            </div>
+
+
+            <div class="chat-bubble <%= bubble_class %>">
+
+              <div class="chat-bubble-header">
+
+                <div class="speaker-wrapper">
+
+                  <strong class="chat-speaker">
+                    <%= speaker_name %>
+                  </strong>
+
+                  <% if speaker == :ai %>
+
+                    <span class="ai-badge">
+
+                      <i class="bi bi-stars"></i>
+
+                      AI Assistant
+
+                    </span>
+
+                  <% end %>
+
+                </div>
+
+
+                <small class="chat-time">
+
+                  <i class="bi bi-clock"></i>
+
+                  <%= message_time
+                        .to_time
+                        .strftime("%d %b %Y • %H:%M") %>
+
+                </small>
+
+              </div>
+
+
+              <div class="chat-message">
+
+                <%= simple_format(
+                      message[:body]
+                        .to_s
+                        .gsub("[NOTIFY_CUSTOMER_CARE]", "")
+                        .strip
+                    ) %>
+
+              </div>
+
+
+              <% if speaker == :ai %>
+
+                <div class="ai-message-footer">
+
+                  <span>
+
+                    <i class="bi bi-cpu"></i>
+
+                    AI generated
+
+                  </span>
+
+                  <span>
+
+                    <i class="bi bi-check2-circle"></i>
+
+                  </span>
+
+                </div>
+
+              <% end %>
+
+            </div>
+
+          </div>
+
+        <% end %>
+
+      </div>
+
+    </section>
+
+  <% end %>
+
+
+  <!-- =====================================================
+       LATEST HUMAN REPLY
+       ===================================================== -->
+
+  <% latest_human = human_messages.first %>
+
+  <% if latest_human.present? %>
+
+    <section class="conversation-section latest-human-section">
+
+      <div class="conversation-section-title">
+
+        <div class="section-title-icon human-icon">
+
+          <i class="bi bi-person-check-fill"></i>
+
+        </div>
+
+        <div class="section-heading">
+
+          <div class="section-title">
+            Latest Human Reply
+          </div>
+
+          <div class="section-subtitle">
+            Most recent response from your support team
+          </div>
+
+        </div>
+
+        <span class="latest-badge">
+
+          <i class="bi bi-check-circle-fill"></i>
+
+          Latest
+
+        </span>
+
+      </div>
+
+
+      <div class="conversation-thread">
+
+        <div class="chat-row human">
+
+          <div class="chat-avatar human-avatar">
+
+            <i class="bi bi-person-check-fill"></i>
+
+          </div>
+
+
+          <div class="chat-bubble human-bubble">
+
+            <div class="chat-bubble-header">
+
+              <div class="speaker-wrapper">
+
+                <strong class="chat-speaker">
+                  Human Agent
+                </strong>
+
+                <span class="agent-badge">
+
+                  <i class="bi bi-headset"></i>
+
+                  Support
+
+                </span>
+
+              </div>
+
+
+              <% if latest_human[:created_at].present? %>
+
+                <small class="chat-time">
+
+                  <i class="bi bi-clock"></i>
+
+                  <%= latest_human[:created_at]
+                        .to_time
+                        .strftime("%d %b %Y • %H:%M") %>
+
+                </small>
+
+              <% end %>
+
+            </div>
+
+
+            <div class="chat-message">
+
+              <%= simple_format(
+                    latest_human[:body]
+                      .to_s
+                      .gsub("[NOTIFY_CUSTOMER_CARE]", "")
+                      .strip
+                  ) %>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  <% end %>
+
+</div>
+
+<style>
+
+/* =========================================================
+   PREMIUM AI / WHATSAPP CONVERSATION
+   ========================================================= */
+
+.conversation-panel {
+    width: 100%;
+    color: #20262b;
+}
+
+
+/* =========================================================
+   OVERVIEW
+   ========================================================= */
+
+.conversation-overview {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+
+    gap: 13px;
+
+    padding: 14px 16px;
+
+    margin-bottom: 18px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #ffffff 0%,
+            #f8fbff 100%
+        );
+
+    border: 1px solid #e4e9ee;
+
+    border-radius: 17px;
+
+    box-shadow:
+        0 3px 8px rgba(15,23,42,.035),
+        0 12px 30px rgba(15,23,42,.045);
+}
+
+
+.overview-icon {
+    width: 44px;
+    height: 44px;
+
+    flex: 0 0 44px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 13px;
+
+    color: #5965d8;
+
+    background:
+        linear-gradient(
+            145deg,
+            #f1f2ff,
+            #e6e8ff
+        );
+
+    border: 1px solid #dfe2ff;
+
+    font-size: 18px;
+
+    box-shadow:
+        0 4px 12px rgba(89,101,216,.12);
+}
+
+
+.overview-content {
+    min-width: 0;
+}
+
+
+.overview-title {
+    color: #151b20;
+
+    font-size: 14px;
+
+    font-weight: 850;
+
+    letter-spacing: -.2px;
+}
+
+
+.overview-subtitle {
+    margin-top: 3px;
+
+    color: #89939a;
+
+    font-size: 9.5px;
+}
+
+
+.overview-count {
+    margin-left: auto;
+
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+
+    padding: 7px 10px;
+
+    color: #5965d8;
+
+    background: #f0f1ff;
+
+    border: 1px solid #dfe2ff;
+
+    border-radius: 20px;
+
+    font-size: 8.5px;
+
+    font-weight: 800;
+
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   SECTIONS
+   ========================================================= */
+
+.conversation-section {
+    margin-bottom: 24px;
+}
+
+.conversation-section:last-child {
+    margin-bottom: 4px;
+}
+
+
+/* =========================================================
+   SECTION HEADER
+   ========================================================= */
+
+.conversation-section-title {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+
+    gap: 11px;
+
+    min-height: 56px;
+
+    padding: 9px 12px;
+
+    margin-bottom: 11px;
+
+    background: #fff;
+
+    border: 1px solid #e6eaed;
+
+    border-radius: 14px;
+
+    box-shadow:
+        0 2px 6px rgba(15,23,42,.025),
+        0 8px 20px rgba(15,23,42,.025);
+
+    overflow: hidden;
+}
+
+
+.conversation-section-title::before {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    top: 10px;
+    bottom: 10px;
+
+    width: 3px;
+
+    border-radius: 0 4px 4px 0;
+
+    background: #128c7e;
+}
+
+
+/* =========================================================
+   SECTION ICON
+   ========================================================= */
+
+.section-title-icon {
+    width: 36px;
+    height: 36px;
+
+    flex: 0 0 36px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+
+    font-size: 15px;
+}
+
+
+.human-icon {
+    color: #087f6f;
+
+    background:
+        linear-gradient(
+            145deg,
+            #eafaf5,
+            #d9f4eb
+        );
+
+    border: 1px solid #ccecdf;
+}
+
+
+.conversation-icon {
+    color: #5965d8;
+
+    background:
+        linear-gradient(
+            145deg,
+            #f2f3ff,
+            #e7e9ff
+        );
+
+    border: 1px solid #dfe2ff;
+}
+
+
+.section-heading {
+    min-width: 0;
+}
+
+
+.section-title {
+    color: #1b2328;
+
+    font-size: 11.5px;
+
+    font-weight: 850;
+
+    line-height: 1.2;
+}
+
+
+.section-subtitle {
+    margin-top: 3px;
+
+    color: #929ba1;
+
+    font-size: 8.5px;
+
+    line-height: 1.3;
+}
+
+
+/* =========================================================
+   BADGES
+   ========================================================= */
+
+.section-count {
+    margin-left: auto;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 4px;
+
+    min-width: 26px;
+
+    min-height: 24px;
+
+    padding: 0 8px;
+
+    border-radius: 20px;
+
+    font-size: 8px;
+
+    font-weight: 800;
+}
+
+
+.human-count {
+    color: #087f6f;
+
+    background: #e9f8f3;
+
+    border: 1px solid #cfece2;
+}
+
+
+.latest-badge {
+    margin-left: auto;
+
+    display: inline-flex;
+    align-items: center;
+
+    gap: 4px;
+
+    padding: 6px 9px;
+
+    color: #087f6f;
+
+    background: #e7f8f1;
+
+    border: 1px solid #ccecdf;
+
+    border-radius: 20px;
+
+    font-size: 7.5px;
+
+    font-weight: 850;
+}
+
+
+.ai-live-badge {
+    margin-left: auto;
+
+    display: inline-flex;
+    align-items: center;
+
+    gap: 5px;
+
+    padding: 5px 8px;
+
+    color: #5965d8;
+
+    background: #f0f1ff;
+
+    border: 1px solid #dfe2ff;
+
+    border-radius: 20px;
+
+    font-size: 7.5px;
+
+    font-weight: 850;
+}
+
+
+.live-dot {
+    width: 6px;
+    height: 6px;
+
+    border-radius: 50%;
+
+    background: #20b486;
+
+    box-shadow:
+        0 0 0 3px rgba(32,180,134,.12);
+}
+
+
+/* =========================================================
+   THREAD
+   ========================================================= */
+
+.conversation-thread {
+    display: flex;
+    flex-direction: column;
+
+    gap: 9px;
+
+    padding: 0 3px;
+}
+
+
+/* =========================================================
+   CHAT ROW
+   ========================================================= */
+
+.chat-row {
+    display: flex;
+    align-items: flex-end;
+
+    gap: 8px;
+
+    width: 100%;
+}
+
+
+/* =========================================================
+   AVATAR
+   ========================================================= */
+
+.chat-avatar {
+    width: 33px;
+    height: 33px;
+
+    min-width: 33px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    font-size: 13px;
+
+    box-shadow:
+        0 2px 7px rgba(15,23,42,.07);
+
+    transition:
+        transform .15s ease;
+}
+
+
+.chat-row:hover .chat-avatar {
+    transform: scale(1.05);
+}
+
+
+/* Customer */
+
+.chat-row.customer .chat-avatar {
+    color: #65727a;
+
+    background:
+        linear-gradient(
+            145deg,
+            #ffffff,
+            #eef1f3
+        );
+
+    border: 1px solid #dfe4e7;
+}
+
+
+/* AI */
+
+.chat-row.ai .chat-avatar {
+    color: #5965d8;
+
+    background:
+        linear-gradient(
+            145deg,
+            #f3f4ff,
+            #e7e9ff
+        );
+
+    border: 1px solid #dfe2ff;
+
+    box-shadow:
+        0 3px 10px rgba(89,101,216,.12);
+}
+
+
+/* Human */
+
+.chat-row.human .chat-avatar {
+    color: #087f6f;
+
+    background:
+        linear-gradient(
+            145deg,
+            #eafaf5,
+            #d9f4eb
+        );
+
+    border: 1px solid #c9eadf;
+}
+
+
+/* =========================================================
+   BUBBLE
+   ========================================================= */
+
+.chat-bubble {
+    position: relative;
+
+    max-width: min(78%, 720px);
+
+    padding: 10px 12px;
+
+    border-radius: 13px;
+
+    font-size: 12px;
+
+    line-height: 1.55;
+
+    word-break: break-word;
+
+    box-shadow:
+        0 1px 3px rgba(15,23,42,.035);
+
+    transition:
+        transform .15s ease,
+        box-shadow .15s ease;
+}
+
+
+.chat-bubble:hover {
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 5px 16px rgba(15,23,42,.07);
+}
+
+
+/* Customer */
+
+.customer-bubble {
+    color: #252c31;
+
+    background: #fff;
+
+    border: 1px solid #e1e6e9;
+
+    border-bottom-left-radius: 4px;
+}
+
+
+/* AI */
+
+.ai-bubble {
+    color: #2d3761;
+
+    background:
+        linear-gradient(
+            145deg,
+            #f5f6ff,
+            #eceeff
+        );
+
+    border: 1px solid #dfe3ff;
+
+    border-bottom-left-radius: 4px;
+}
+
+
+/* Human */
+
+.human-bubble {
+    color: #183b2e;
+
+    background:
+        linear-gradient(
+            145deg,
+            #e5facf,
+            #d9f5c2
+        );
+
+    border: 1px solid #c8e8b3;
+
+    border-bottom-left-radius: 4px;
+
+    box-shadow:
+        0 2px 9px rgba(18,140,126,.06);
+}
+
+
+/* =========================================================
+   BUBBLE HEADER
+   ========================================================= */
+
+.chat-bubble-header {
+    display: flex;
+    align-items: center;
+
+    gap: 7px;
+
+    min-height: 17px;
+
+    margin-bottom: 4px;
+}
+
+
+.speaker-wrapper {
+    display: flex;
+    align-items: center;
+
+    gap: 5px;
+
+    min-width: 0;
+}
+
+
+.chat-speaker {
+    font-size: 9px;
+
+    font-weight: 850;
+
+    white-space: nowrap;
+}
+
+
+.chat-row.customer .chat-speaker {
+    color: #4f5b62;
+}
+
+.chat-row.ai .chat-speaker {
+    color: #5965d8;
+}
+
+.chat-row.human .chat-speaker {
+    color: #087f6f;
+}
+
+
+/* =========================================================
+   TIME
+   ========================================================= */
+
+.chat-time {
+    margin-left: auto;
+
+    display: inline-flex;
+    align-items: center;
+
+    gap: 3px;
+
+    color: #8d989f !important;
+
+    font-size: 7px;
+
+    font-weight: 500;
+
+    white-space: nowrap;
+}
+
+.chat-time i {
+    font-size: 7px;
+
+    opacity: .65;
+}
+
+
+/* =========================================================
+   AI / AGENT BADGES
+   ========================================================= */
+
+.ai-badge,
+.agent-badge {
+    display: inline-flex;
+    align-items: center;
+
+    gap: 3px;
+
+    padding: 2px 5px;
+
+    border-radius: 5px;
+
+    font-size: 5.8px;
+
+    font-weight: 850;
+
+    white-space: nowrap;
+}
+
+
+.ai-badge {
+    color: #5965d8;
+
+    background: #e5e8ff;
+
+    border: 1px solid #d9ddff;
+}
+
+
+.agent-badge {
+    color: #087f6f;
+
+    background: rgba(255,255,255,.55);
+
+    border: 1px solid rgba(8,127,111,.12);
+}
+
+
+/* =========================================================
+   MESSAGE BODY
+   ========================================================= */
+
+.chat-message {
+    color: inherit;
+
+    overflow-wrap: anywhere;
+}
+
+
+.chat-message p {
+    margin: 0 0 4px;
+}
+
+
+.chat-message p:last-child {
+    margin-bottom: 0;
+}
+
+
+/* =========================================================
+   AI FOOTER
+   ========================================================= */
+
+.ai-message-footer {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    margin-top: 7px;
+
+    padding-top: 5px;
+
+    border-top: 1px solid rgba(89,101,216,.10);
+
+    color: #8c94c1;
+
+    font-size: 6.5px;
+
+    font-weight: 650;
+}
+
+
+.ai-message-footer span {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 3px;
+}
+
+
+/* =========================================================
+   SECTION BACKGROUNDS
+   ========================================================= */
+
+.previous-human-section
+.conversation-section-title {
+
+    background:
+        linear-gradient(
+            100deg,
+            #f7fcfa,
+            #ffffff
+        );
+}
+
+
+.main-conversation-section
+.conversation-section-title {
+
+    background:
+        linear-gradient(
+            100deg,
+            #f7f8ff,
+            #ffffff
+        );
+}
+
+
+.latest-human-section
+.conversation-section-title {
+
+    background:
+        linear-gradient(
+            100deg,
+            #eefaf5,
+            #ffffff
+        );
+
+    border-color: #cce9dc;
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 576px) {
+
+    .conversation-overview {
+        padding: 11px;
+
+        border-radius: 14px;
+    }
+
+    .overview-icon {
+        width: 37px;
+        height: 37px;
+
+        flex-basis: 37px;
+
+        font-size: 15px;
+    }
+
+    .overview-title {
+        font-size: 12px;
+    }
+
+    .overview-subtitle {
+        font-size: 8px;
+    }
+
+    .conversation-section-title {
+        min-height: 51px;
+
+        padding: 8px 10px;
+
+        border-radius: 12px;
+    }
+
+    .section-title-icon {
+        width: 31px;
+        height: 31px;
+
+        flex-basis: 31px;
+
+        font-size: 13px;
+    }
+
+    .section-title {
+        font-size: 10.5px;
+    }
+
+    .section-subtitle {
+        font-size: 7.5px;
+    }
+
+    .conversation-thread {
+        gap: 7px;
+    }
+
+    .chat-row {
+        gap: 6px;
+    }
+
+    .chat-avatar {
+        width: 28px;
+        height: 28px;
+
+        min-width: 28px;
+
+        font-size: 11px;
+    }
+
+    .chat-bubble {
+        max-width: calc(100% - 34px);
+
+        padding: 8px 10px;
+
+        border-radius: 11px;
+
+        font-size: 11px;
+    }
+
+    .chat-speaker {
+        font-size: 8px;
+    }
+
+    .chat-time {
+        font-size: 6px;
+    }
+
+    .ai-badge,
+    .agent-badge {
+        display: none;
+    }
+
+}
+
+
+@media (max-width: 380px) {
+
+    .overview-subtitle,
+    .section-subtitle {
+        display: none;
+    }
+
+    .overview-count {
+        padding: 6px 8px;
+    }
+
+    .chat-avatar {
+        width: 26px;
+        height: 26px;
+
+        min-width: 26px;
+
+        font-size: 10px;
+    }
+
+    .chat-bubble {
+        max-width: calc(100% - 32px);
+
+        padding: 7px 9px;
+
+        font-size: 10.5px;
+    }
+
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .chat-bubble,
+    .chat-avatar {
+        transition: none;
+    }
+
+}
+
+</style>
+

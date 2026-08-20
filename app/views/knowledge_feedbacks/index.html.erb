@@ -1,0 +1,653 @@
+<%= render "layouts/header" %>
+
+<div class="container">
+
+<div class="container-fluid py-4">
+
+  <div class="feedback-header mb-4">
+    <div>
+      <h2 class="fw-bold mb-1">
+        <i class="bi bi-robot"></i>
+        AI Knowledge Feedback
+      </h2>
+      <small class="text-muted">
+        Missing FAQs, products and knowledge improvements suggested by AI.
+      </small>
+    </div>
+
+    <div class="feedback-count">
+      <%= @knowledge_feedbacks.count %>
+      <small>Suggestions</small>
+    </div>
+
+     <!-- Back Button -->
+        <%= link_to ailogs_path,
+            class: "btn btn-light rounded-circle shadow-sm me-3",
+            style: "width:45px;height:45px;" do %>
+
+          <i class="bi bi-arrow-left fs-4"></i>
+
+        <% end %>
+  </div>
+
+  <div class="premium-card mb-4">
+    <div class="card-body">
+<div class="login">
+      <%= form_with url: knowledge_feedbacks_path,
+                    method: :get,
+                    local: true do |f| %>
+
+      <div class="row g-3">
+
+        <div class="col-lg-4">
+          <%= f.search_field :q,
+              value: params[:q],
+              class: "form-control premium-input",
+              placeholder: "🔍 Search anything..." %>
+        </div>
+
+        <div class="col-lg-2">
+          <%= f.select :feedback_type,
+            options_for_select(
+              [["All Types",""],
+              ["Missing FAQ","missing_faq"],
+              ["Missing Product","missing_product"],
+              ["Missing Price","missing_price"],
+              ["Missing Description","missing_description"],
+              ["Missing Policy","missing_policy"],
+              ["Missing Delivery","missing_delivery"],
+              ["Missing Branch","missing_branch_information"],
+              ["Business Guidance","missing_business_guidance"]],
+              params[:feedback_type]
+            ),
+            {},
+            class:"form-select premium-input" %>
+        </div>
+
+        <div class="col-lg-2">
+          <%= f.select :priority,
+            options_for_select(
+              [["Priority",""],
+              ["High","high"],
+              ["Medium","medium"],
+              ["Low","low"]],
+              params[:priority]
+            ),
+            {},
+            class:"form-select premium-input" %>
+        </div>
+
+        <div class="col-lg-2">
+          <%= f.select :status,
+            options_for_select(
+              [["Status",""],
+              ["Pending","pending"],
+              ["Completed","completed"]],
+              params[:status]
+            ),
+            {},
+            class:"form-select premium-input" %>
+        </div>
+
+        <div class="col-lg-2">
+          <%= f.submit "Search",
+                class:"btn btn-dark w-100 premium-btn" %>
+        </div>
+
+      </div>
+
+      <% end %>
+</div>
+    </div>
+  </div>
+
+  <div class="premium-card">
+
+    <div class="table-responsive">
+
+      <table class="table align-middle premium-table mb-0">
+
+        <thead>
+
+          <tr>
+            <th>Action</th>
+
+            <th>Type</th>
+            <th>Title</th>
+            <th>Priority</th>
+            <th>Asked</th>
+            <th>Status</th>
+            <th>Created</th>
+         
+
+          </tr>
+
+        </thead>
+
+        <tbody>
+
+        <% @knowledge_feedbacks.each do |feedback| %>
+
+          <tr>
+<td>
+  <%= link_to knowledge_feedback_path(feedback),
+      class: "btn btn-sm btn-outline-dark rounded-pill" do %>
+    <i class="bi bi-eye"></i>
+  <% end %>
+</td>
+
+            <td>
+              <span class="badge bg-primary-subtle text-primary">
+                <%= feedback.feedback_type.to_s.humanize %>
+              </span>
+            </td>
+
+            <td>
+
+              <strong>
+                <%= feedback.title %>
+              </strong>
+
+              <br>
+
+              <small class="text-muted">
+                <%= truncate(feedback.question, length:80) %>
+              </small>
+
+            </td>
+
+            <td>
+
+              <%=
+              case feedback.priority
+
+              when "high"
+
+                '<span class="badge bg-danger">High</span>'.html_safe
+
+              when "medium"
+
+                '<span class="badge bg-warning text-dark">Medium</span>'.html_safe
+
+              else
+
+                '<span class="badge bg-success">Low</span>'.html_safe
+
+              end
+
+              %>
+
+            </td>
+
+            <td>
+
+              <span class="count-pill">
+                <%= feedback.occurrences %>
+              </span>
+
+            </td>
+
+            <td>
+
+              <% if feedback.status=="completed" %>
+
+                <span class="badge bg-success">
+                  Completed
+                </span>
+
+              <% else %>
+
+                <span class="badge bg-secondary">
+                  Pending
+                </span>
+
+              <% end %>
+
+            </td>
+
+            <td>
+
+              <%= time_ago_in_words(feedback.created_at) %> ago
+
+            </td>
+
+          
+
+          </tr>
+
+        <% end %>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+
+<!-- Pagination -->
+<div class="digg_pagination">
+
+  <div class="d-flex justify-content-center mb-3">
+    <%= paginate  @knowledge_feedbacks%>
+  </div>
+
+  <div class="d-flex justify-content-center align-items-center gap-2 mb-3">
+
+    <%= form_with url: request.path,
+          method: :get,
+          local: true,
+          id: "rows-per-page-form",
+          class: "d-flex align-items-center gap-2" do |f| %>
+
+      <%= f.label :per_page, "Rows per page", class: "mb-0 fw-semibold" %>
+
+      <%= f.select :per_page,
+          options_for_select([10, 25, 50, 100, 250, 500, 1000], params[:per_page] || 10),
+          {},
+          class: "form-select form-select-sm",
+          style: "width:100px;",
+          id: "rows-per-page" %>
+
+    <% end %>
+
+  </div>
+
+  <div class="text-center text-muted small">
+    <%= page_entries_info  @knowledge_feedbacks %>
+  </div>
+
+</div>
+
+
+
+<script>
+
+  document.addEventListener("DOMContentLoaded", () => {
+  const select = document.getElementById("rows-per-page");
+  if (select) {
+    select.addEventListener("change", () => {
+      document.getElementById("rows-per-page-form").submit();
+    });
+  }
+});
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+
+
+
+
+
+<style type="text/css">
+
+
+  .customer-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;          /* Space between button and search form */
+  margin: 1rem 0;
+  justify-content: flex-start; /* Align left */
+}
+
+.admin-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 1rem;
+  font-size: 0.95rem;
+  background-color: #007bff;
+  color: #fff;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: all 0.25s ease;
+  font-weight: 500;
+}
+
+.admin-btn:hover {
+  background-color: #0056b3;
+}
+
+.admin-btn.active {
+  background-color: #0056b3;
+  font-weight: 600;
+}
+
+.myform {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.search-input {
+  padding: 0.45rem 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 0.95rem;
+}
+
+.search-btn {
+  padding: 0.45rem 0.85rem;
+  border: none;
+  border-radius: 6px;
+  background-color: #28a745;
+  color: #fff;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: all 0.25s ease;
+}
+
+.search-btn:hover {
+  background-color: #1e7e34;
+}
+
+  .admin-message {
+  text-align: center;       /* Center the text */
+  color: #dc3545;           /* Bootstrap danger/red color */
+  font-weight: 600;         /* Bold text */
+  font-size: 16px;          /* Slightly larger text */
+  margin: 20px 0;           /* Space around the message */
+  background-color: #f8d7da; /* Light red background */
+  padding: 12px 20px;       /* Padding inside the box */
+  border-radius: 8px;       /* Rounded corners */
+  border: 1px solid #f5c2c7; /* Subtle border */
+}
+
+
+  fieldset {
+    border: 0px solid #4CAF50; /* Green border */
+    border-radius: 40px; /* Rounded corners */
+    padding: 2rem; /* Padding inside the fieldset */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    background-color: #f9f9f9; /* Light background color */
+    margin-bottom: 20px; /* Space between fieldsets */
+    transition: all 0.3s ease-in-out; /* Smooth transitions */
+    width: auto; /* Use full width for smaller devices */
+    justify-content: center;
+
+}
+
+
+@media (max-width: 600px) {
+       fieldset {
+    border: 0px solid #4CAF50; /* Green border */
+    border-radius: 40px; /* Rounded corners */
+    
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    background-color: #f9f9f9; /* Light background color */
+    margin-bottom: 20px; /* Space between fieldsets */
+    transition: all 0.3s ease-in-out; /* Smooth transitions */
+    width: 100%; /* Use full width for smaller devices */
+    justify-content: center;
+
+}
+      
+      .form-row {
+          flex-direction: column; /* Stack fields vertically on small screens */
+      }
+
+      .field, .action {
+          width: 100%; /* Make fields full-width on small screens */
+          margin-bottom: 10px; /* Add some spacing between stacked fields */
+      }
+  }
+
+
+
+
+    .custom-fieldset {
+      padding: 2rem; /* Reduced padding for the span */
+      margin: 0.5rem; /* Reduced margin for the span */
+      display: block; /* Ensure it behaves like a block element */
+      border: 1px solid #dee2e6; /* Optional: style the border */
+      border-radius: 0.5rem; /* Optional: round the corners */
+      justify-content: center;
+      margin-left: 25px;
+      width: 90%;
+  }
+
+.card-text {
+    display: block; /* Make each span behave like a block for easier spacing */
+    margin: -3px 0; /* Add margin for vertical spacing */
+    font-size: 16px; /* Set font size for readability */
+    color: #333; /* Dark gray text color for contrast */
+}
+
+.card-text strong {
+    color: #007bff; /* Blue color for strong text to differentiate labels */
+}
+
+.card-title {
+    font-weight: bold; /* Make card title bold */
+    font-size: 1.5rem; /* Increase font size for better visibility */
+}
+
+.animal-image img {
+    border-radius: 10px; /* Add rounded corners to images */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+.card {
+    border: 1px solid #dee2e6; /* Light border for cards */
+    border-radius: 0.5rem; /* Rounded corners for cards */
+    transition: transform 0.2s; /* Smooth transition effect on hover */
+}
+
+.card:hover {
+    transform: scale(1.05); /* Scale up the card slightly on hover */
+}
+
+.btn {
+    min-width: 80px; /* Set a minimum width for buttons */
+    margin: 0 5px; /* Add margin between buttons */
+}
+
+
+.img-responsive {
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 5px;
+}
+
+button {
+  background-color: #25D366;
+  border: none;
+  color: white;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+  .form-select {
+  display: inline-block;
+  width: auto;
+  margin-left: 10px;
+}
+
+.btn-primary {
+  margin-left: 10px;
+}
+
+
+.clickable-image {
+  cursor: pointer;
+}
+
+.digg_pagination {
+  text-align: center;
+  width: 100%;
+  margin-top: 10px; /* Reduced margin to compact layout */
+}
+
+.pagination {
+  display: inline-flex;
+  justify-content: center;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.pagination li {
+  margin: 0;
+}
+
+.pagination a,
+.pagination .current {
+  display: block;
+  padding: 3px 8px; /* Reduced padding for compactness */
+  margin: 2px; /* Reduced margin */
+  background-color: #007bff;
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+}
+
+.pagination a:hover {
+  background-color: #0056b3;
+}
+
+.pagination .current {
+  background-color: #0056b3;
+}
+
+.pagination .disabled {
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+.pagination .dots {
+  padding: 3px 8px;
+  margin: 2px;
+}
+
+.pagination .previous_page,
+.pagination .next_page {
+  font-weight: bold;
+}
+
+.table-success {
+  background-color: #d4edda;
+}
+
+.text-center {
+  text-align: center;
+}
+
+
+
+
+</style>
+
+</div>
+
+
+<style>
+	.feedback-header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:20px;
+}
+
+.feedback-count{
+background:linear-gradient(135deg,#0d6efd,#6610f2);
+color:#fff;
+padding:18px 30px;
+border-radius:18px;
+font-size:34px;
+font-weight:700;
+text-align:center;
+box-shadow:0 15px 35px rgba(0,0,0,.12);
+}
+
+.feedback-count small{
+display:block;
+font-size:13px;
+font-weight:500;
+opacity:.85;
+}
+
+.premium-card{
+background:#fff;
+border-radius:18px;
+border:none;
+overflow:hidden;
+box-shadow:0 10px 30px rgba(0,0,0,.08);
+}
+
+.premium-input{
+border-radius:12px;
+height:48px;
+border:1px solid #e5e7eb;
+}
+
+.premium-input:focus{
+box-shadow:0 0 0 .2rem rgba(13,110,253,.15);
+}
+
+.premium-btn{
+height:48px;
+border-radius:12px;
+font-weight:600;
+}
+
+.premium-table thead{
+background:#f8fafc;
+}
+
+.premium-table thead th{
+font-size:13px;
+text-transform:uppercase;
+letter-spacing:.05em;
+border:none;
+padding:18px;
+}
+
+.premium-table td{
+padding:18px;
+vertical-align:middle;
+border-color:#f1f5f9;
+}
+
+.premium-table tbody tr{
+transition:.25s;
+}
+
+.premium-table tbody tr:hover{
+background:#f8fbff;
+transform:scale(1.003);
+}
+
+.count-pill{
+display:inline-flex;
+align-items:center;
+justify-content:center;
+width:42px;
+height:42px;
+background:#eef4ff;
+color:#0d6efd;
+border-radius:50%;
+font-weight:700;
+}
+
+.badge{
+padding:.55rem .8rem;
+font-size:.75rem;
+border-radius:20px;
+}
+</style>

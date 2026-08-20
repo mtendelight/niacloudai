@@ -1,0 +1,2 @@
+class KnowledgeFeedback < ApplicationRecord
+end

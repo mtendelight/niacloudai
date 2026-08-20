@@ -1,0 +1,2 @@
+class Aipage < ApplicationRecord
+end

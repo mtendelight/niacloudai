@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  jmcustomer: one
+  date: 2026-03-28
+  transaction_ref: MyString
+  name: MyString
+  mpesa_code: MyString
+  mpesa_number: MyString
+  amount: 9.99
+
+two:
+  jmcustomer: two
+  date: 2026-03-28
+  transaction_ref: MyString
+  name: MyString
+  mpesa_code: MyString
+  mpesa_number: MyString
+  amount: 9.99

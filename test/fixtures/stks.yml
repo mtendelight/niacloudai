@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  phone_number: MyString
+  amount: 1
+  modified_at: 2024-11-09 10:01:03
+
+two:
+  phone_number: MyString
+  amount: 1
+  modified_at: 2024-11-09 10:01:03

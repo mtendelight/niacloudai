@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+</head>
+
+<body style="margin:0;padding:0;background:#f5f7fb;font-family:Arial,Helvetica,sans-serif;">
+
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#f5f7fb;padding:40px 20px;">
+<tr>
+<td align="center">
+
+<table width="700" cellpadding="0" cellspacing="0"
+style="background:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 8px 24px rgba(0,0,0,.08);">
+
+<!-- Header -->
+<tr>
+<td style="background:#dc3545;color:#ffffff;padding:30px;text-align:center;">
+
+<h1 style="margin:0;font-size:30px;">
+⚠️ Momak ERP
+</h1>
+
+<p style="margin-top:10px;font-size:18px;">
+Low Account Balance Alert
+</p>
+
+</td>
+</tr>
+
+<!-- Body -->
+<tr>
+<td style="padding:35px;">
+
+<p style="font-size:17px;">
+Hello,
+</p>
+
+<p style="font-size:16px;color:#555;line-height:1.8;">
+This is an automated notification from
+<strong>Momak ERP</strong>.
+
+The account below has fallen below the configured minimum balance threshold and requires immediate attention.
+</p>
+
+<table width="100%" cellpadding="12" cellspacing="0"
+style="border-collapse:collapse;border:1px solid #e5e5e5;margin-top:25px;">
+
+<tr style="background:#f8f9fa;">
+<td width="220"><strong>Account Name</strong></td>
+<td><%= @account.name %></td>
+</tr>
+
+<tr>
+<td><strong>Current Balance</strong></td>
+<td style="color:#dc3545;font-size:20px;font-weight:bold;">
+KES <%= number_with_delimiter(@account.balance) %>
+</td>
+</tr>
+
+<tr style="background:#f8f9fa;">
+<td><strong>Minimum Balance</strong></td>
+<td>KES 7,500</td>
+</tr>
+
+<tr>
+<td><strong>Status</strong></td>
+<td>
+<span style="background:#dc3545;color:white;padding:6px 12px;border-radius:20px;">
+Low Balance
+</span>
+</td>
+</tr>
+
+</table>
+
+<div style="margin-top:30px;padding:20px;background:#fff4e5;border-left:5px solid #ffc107;border-radius:6px;">
+
+<strong>Recommended Action</strong>
+
+<ul style="margin-top:12px;color:#555;line-height:1.8;">
+<li>Review recent transactions.</li>
+<li>Top up the account immediately.</li>
+<li>Monitor the account to prevent service interruptions.</li>
+</ul>
+
+</div>
+
+<div style="text-align:center;margin-top:35px;">
+
+<a href="https://flow.momak.co.ke/m_accounts"
+style="
+display:inline-block;
+background:#198754;
+color:#ffffff;
+padding:15px 35px;
+font-size:17px;
+font-weight:bold;
+text-decoration:none;
+border-radius:8px;">
+Open Momak ERP
+</a>
+
+</div>
+
+<p style="margin-top:40px;color:#666;line-height:1.8;">
+This notification was automatically generated because the account balance has dropped below the configured threshold of
+<strong>KES 7,500</strong>.
+</p>
+
+</td>
+</tr>
+
+<!-- Footer -->
+<tr>
+<td style="background:#f8f9fa;padding:25px;text-align:center;color:#777;font-size:13px;">
+
+<strong>Momak ERP</strong><br>
+
+Business Management System
+
+<br><br>
+
+🌐 https://flow.momak.co.ke/m_accounts
+
+</td>
+</tr>
+
+</table>
+
+</td>
+</tr>
+</table>
+
+</body>
+</html>

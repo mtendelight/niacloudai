@@ -1,0 +1,21 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  movement_type: MyString
+  source_type: MyString
+  supplier_name: MyString
+  from_branch: MyString
+  to_branch: MyString
+  movement_date: 2026-06-04
+  status: MyString
+  note: MyText
+
+two:
+  movement_type: MyString
+  source_type: MyString
+  supplier_name: MyString
+  from_branch: MyString
+  to_branch: MyString
+  movement_date: 2026-06-04
+  status: MyString
+  note: MyText

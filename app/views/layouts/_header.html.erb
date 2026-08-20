@@ -1,0 +1,3858 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+  <title>NiaCloud | <%= controller_name.to_s.humanize %></title>
+
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+
+  <!-- =========================================================
+       FONTS
+  ========================================================== -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+  <!-- =========================================================
+       BOOTSTRAP
+  ========================================================== -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  >
+
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+    rel="stylesheet"
+  >
+
+  <!-- =========================================================
+       CHOSEN
+  ========================================================== -->
+  <link
+    href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.min.css"
+    rel="stylesheet"
+  >
+
+  <!-- =========================================================
+       SELECT2
+  ========================================================== -->
+  <link
+    href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css"
+    rel="stylesheet"
+  >
+
+  <!-- =========================================================
+       APPLICATION
+  ========================================================== -->
+  <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+
+  <!-- =========================================================
+       JAVASCRIPT
+  ========================================================== -->
+  <%= javascript_importmap_tags %>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.jquery.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+  <script src="https://unpkg.com/quagga@0.12.1/dist/quagga.min.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0/dist/chartjs-plugin-datalabels.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.1/moment.min.js"></script>
+
+
+<style>
+
+/* ============================================================
+   NiaCloud COMMAND CENTRE
+   PREMIUM APPLICATION SHELL
+============================================================ */
+
+:root{
+
+  --nc-ink:#061116;
+  --nc-ink2:#081a20;
+  --nc-panel:#0b2027;
+  --nc-panel2:#102c34;
+
+  --nc-white:#ffffff;
+  --nc-text:#dce8e8;
+  --nc-muted:#81999e;
+  --nc-muted2:#60777c;
+
+  --nc-mint:#19c39c;
+  --nc-mint-dark:#0d8d76;
+
+  --nc-gold:#f4b94f;
+
+  --nc-line:rgba(255,255,255,.09);
+  --nc-line2:rgba(255,255,255,.06);
+
+  --nc-sidebar:250px;
+
+  --nc-shadow:
+    0 25px 70px rgba(0,0,0,.32);
+
+  --nc-radius:18px;
+}
+
+
+/* ============================================================
+   GLOBAL
+============================================================ */
+
+*{
+  box-sizing:border-box;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+
+  margin:0 !important;
+  padding:0 !important;
+
+  min-height:100vh;
+
+  font-family:"DM Sans",sans-serif;
+
+  color:var(--nc-text);
+
+  background:
+    radial-gradient(
+      circle at 10% 0%,
+      rgba(25,195,156,.08),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 90% 10%,
+      rgba(244,185,79,.06),
+      transparent 25%
+    ),
+    var(--nc-ink) !important;
+
+  overflow-x:hidden;
+}
+
+
+/* ============================================================
+   APPLICATION SHELL
+============================================================ */
+
+.nc-shell{
+  min-height:100vh;
+}
+
+
+/* ============================================================
+   SIDEBAR
+============================================================ */
+
+.sidebar{
+
+  position:fixed !important;
+
+  left:0 !important;
+  top:0 !important;
+  bottom:0 !important;
+
+width: calc(100% - var(--nc-sidebar)) !important;
+  height:100vh !important;
+
+  background:
+    linear-gradient(
+      180deg,
+      #071920 0%,
+      #061116 100%
+    ) !important;
+
+  border-right:1px solid var(--nc-line);
+
+  overflow-y:auto;
+  overflow-x:hidden;
+
+  z-index:2147483646 !important;
+
+  padding:0 !important;
+
+  transform:translateX(0);
+
+  transition:
+    transform .3s ease,
+    width .3s ease;
+
+  scrollbar-width:thin;
+  scrollbar-color:#29464d transparent;
+}
+
+:root {
+  --nc-sidebar: 250px;
+}
+
+.sidebar {
+  position: fixed !important;
+  left: 0 !important;
+  top: 0 !important;
+  bottom: 0 !important;
+
+  width: var(--nc-sidebar) !important;
+  height: 100vh !important;
+
+  margin: 0 !important;
+  padding: 0 !important;
+
+  box-sizing: border-box !important;
+
+  z-index: 2147483646 !important;
+}
+
+
+:root {
+  --nc-sidebar: 250px;
+}
+
+/* SIDEBAR */
+.sidebar {
+  position: fixed !important;
+
+  left: 0 !important;
+  top: 0 !important;
+  bottom: 0 !important;
+
+  width: var(--nc-sidebar) !important;
+  height: 100vh !important;
+
+  margin: 0 !important;
+  box-sizing: border-box !important;
+
+  z-index: 99999 !important;
+}
+
+/* ============================================================
+   REMOVE LEFT GAP — CONTENT TOUCHES SIDEBAR
+============================================================ */
+
+.main {
+  margin-left: var(--nc-sidebar) !important;
+  margin-right: 0 !important;
+
+  width: calc(100% - var(--nc-sidebar)) !important;
+  max-width: calc(100% - var(--nc-sidebar)) !important;
+
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+
+  overflow-x: hidden !important;
+}
+
+
+/* Remove Bootstrap/container left spacing */
+.main > .container,
+.main > .container-fluid,
+.main .container,
+.main .container-fluid {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+
+  width: 100% !important;
+  max-width: none !important;
+}
+
+
+/* Remove row spacing */
+.main .row {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+
+  --bs-gutter-x: 0 !important;
+}
+
+
+/* Remove first-level content left spacing */
+.main > * {
+  margin-left: 0 !important;
+}
+
+
+/* Prevent Bootstrap columns from creating side gaps */
+.main .row > [class*="col-"] {
+  padding-left: 0 !important;
+}
+
+
+/* ============================================================
+   IF YOUR PAGE CONTENT HAS A WRAPPER
+============================================================ */
+
+.main .content,
+.main .page-content,
+.main .content-wrapper,
+.main .page-wrapper,
+.main .dashboard-content {
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+}
+
+
+/* sidebar scrollbar */
+
+.sidebar::-webkit-scrollbar{
+  width:5px;
+}
+
+.sidebar::-webkit-scrollbar-track{
+  background:transparent;
+}
+
+.sidebar::-webkit-scrollbar-thumb{
+  background:#29464d;
+  border-radius:10px;
+}
+
+
+/* ============================================================
+   SIDEBAR BRAND
+============================================================ */
+
+.nc-brand{
+
+  height:76px;
+
+  padding:0 20px;
+
+  display:flex;
+  align-items:center;
+  gap:11px;
+
+  border-bottom:1px solid var(--nc-line);
+
+  position:sticky;
+  top:0;
+
+  background:rgba(6,17,22,.94);
+
+  backdrop-filter:blur(20px);
+
+  z-index:10;
+}
+
+
+.nc-brand-mark{
+
+  width:34px;
+  height:34px;
+
+  border-radius:11px;
+
+  display:grid;
+  place-items:center;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--nc-gold),
+      #e69e26
+    );
+
+  color:var(--nc-ink);
+
+  box-shadow:
+    0 0 0 5px rgba(244,185,79,.08),
+    0 8px 25px rgba(244,185,79,.15);
+}
+
+
+.nc-brand-text{
+
+  line-height:1.05;
+}
+
+
+.nc-brand-name{
+
+  font-family:"Manrope",sans-serif;
+
+  font-weight:800;
+
+  font-size:16px;
+
+  color:#fff;
+
+  letter-spacing:-.03em;
+}
+
+
+.nc-brand-sub{
+
+  display:block;
+
+  margin-top:4px;
+
+  color:#6f898e;
+
+  font-family:"Space Mono",monospace;
+
+  font-size:7px;
+
+  letter-spacing:.12em;
+
+  text-transform:uppercase;
+}
+
+
+/* ============================================================
+   STATUS
+============================================================ */
+
+.nc-status{
+
+  margin:17px 15px 10px;
+
+  padding:10px 12px;
+
+  border-radius:12px;
+
+  background:rgba(25,195,156,.055);
+
+  border:1px solid rgba(25,195,156,.12);
+
+  display:flex;
+
+  align-items:center;
+
+  gap:9px;
+}
+
+
+.nc-status-dot{
+
+  width:7px;
+  height:7px;
+
+  border-radius:50%;
+
+  background:var(--nc-mint);
+
+  box-shadow:
+    0 0 0 4px rgba(25,195,156,.08),
+    0 0 14px rgba(25,195,156,.45);
+}
+
+
+.nc-status strong{
+
+  font-size:10px;
+
+  color:#dceceb;
+}
+
+
+.nc-status span{
+
+  display:block;
+
+  color:#668086;
+
+  font-family:"Space Mono",monospace;
+
+  font-size:7px;
+
+  margin-top:2px;
+}
+
+
+/* ============================================================
+   NAV SECTION
+============================================================ */
+
+.nc-section-label{
+
+  padding:16px 18px 7px;
+
+  color:#4f696f;
+
+  font-family:"Space Mono",monospace;
+
+  font-size:8px;
+
+  letter-spacing:.16em;
+
+  text-transform:uppercase;
+}
+
+
+/* ============================================================
+   NAV LINKS
+============================================================ */
+
+.sidebar .menu-button,
+.sidebar .nav-link{
+
+  width:calc(100% - 20px);
+
+  min-height:46px;
+
+  margin:3px 10px !important;
+
+  padding:10px 12px !important;
+
+  border:1px solid transparent !important;
+
+  border-radius:12px !important;
+
+  background:transparent !important;
+
+  color:#91a7ab !important;
+
+  text-decoration:none !important;
+
+  display:flex !important;
+
+  align-items:center !important;
+
+  gap:11px;
+
+  justify-content:flex-start !important;
+
+  box-shadow:none !important;
+
+  transition:
+    background .2s ease,
+    color .2s ease,
+    border-color .2s ease,
+    transform .2s ease;
+}
+
+
+.sidebar .menu-button:hover,
+.sidebar .nav-link:hover{
+
+  color:#fff !important;
+
+  background:
+    rgba(255,255,255,.045) !important;
+
+  border-color:
+    rgba(255,255,255,.06) !important;
+
+  transform:translateX(2px);
+}
+
+
+/* ============================================================
+   ICONS
+============================================================ */
+
+.sidebar .menu-button i,
+.sidebar .nav-link i{
+
+  width:32px;
+  height:32px;
+
+  min-width:32px;
+
+  display:grid;
+  place-items:center;
+
+  border-radius:9px;
+
+  background:#0d2830;
+
+  color:#789399;
+
+  font-size:15px;
+
+  transition:.2s ease;
+}
+
+
+.sidebar .menu-button:hover i,
+.sidebar .nav-link:hover i{
+
+  color:var(--nc-mint);
+
+  background:
+    rgba(25,195,156,.10);
+}
+
+
+/* ============================================================
+   TEXT
+============================================================ */
+
+.sidebar .menu-button strong,
+.sidebar .nav-link strong{
+
+  color:inherit !important;
+
+  font-size:12px !important;
+
+  font-weight:600 !important;
+
+  letter-spacing:-.01em;
+}
+
+
+/* ============================================================
+   ACTIVE STYLE
+   Rails can add .active to current link
+============================================================ */
+
+.sidebar .menu-button.active,
+.sidebar .nav-link.active{
+
+  color:#fff !important;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(25,195,156,.14),
+      rgba(25,195,156,.035)
+    ) !important;
+
+  border-color:
+    rgba(25,195,156,.16) !important;
+
+  position:relative;
+}
+
+
+.sidebar .menu-button.active:before,
+.sidebar .nav-link.active:before{
+
+  content:"";
+
+  position:absolute;
+
+  left:-1px;
+  top:9px;
+  bottom:9px;
+
+  width:3px;
+
+  border-radius:0 4px 4px 0;
+
+  background:var(--nc-mint);
+
+  box-shadow:
+    0 0 12px rgba(25,195,156,.5);
+}
+
+
+.sidebar .menu-button.active i,
+.sidebar .nav-link.active i{
+
+  color:var(--nc-mint);
+
+  background:
+    rgba(25,195,156,.12);
+}
+
+
+/* ============================================================
+   SPECIAL WHATSAPP
+============================================================ */
+
+.sidebar #whatsapp_ai_leads i.bi-whatsapp,
+.sidebar #whatsapp i.bi-whatsapp{
+
+  color:#20d98b;
+}
+
+
+/* ============================================================
+   BADGE
+============================================================ */
+
+.nc-nav-badge{
+
+  margin-left:auto;
+
+  min-width:20px;
+  height:20px;
+
+  padding:0 6px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  border-radius:999px;
+
+  background:rgba(244,185,79,.12);
+
+  border:1px solid rgba(244,185,79,.18);
+
+  color:var(--nc-gold);
+
+  font-family:"Space Mono",monospace;
+
+  font-size:7px;
+}
+
+
+/* ============================================================
+   DIVIDER
+============================================================ */
+
+.nc-divider{
+
+  height:1px;
+
+  margin:15px 18px;
+
+  background:var(--nc-line);
+}
+
+
+/* ============================================================
+   BOTTOM NIA CLOUD LINK
+============================================================ */
+
+.nc-external{
+
+  margin:15px 10px 20px !important;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(25,195,156,.10),
+      rgba(244,185,79,.05)
+    ) !important;
+
+  border:
+    1px solid rgba(25,195,156,.13) !important;
+}
+
+
+.nc-external i{
+
+  color:var(--nc-gold) !important;
+
+  background:
+    rgba(244,185,79,.10) !important;
+}
+
+
+/* ============================================================
+   MAIN
+============================================================ */
+
+
+
+
+/* ============================================================
+   TOP APPLICATION BAR
+============================================================ */
+
+.nc-topbar{
+
+  position:sticky;
+
+  top:0;
+
+  z-index:1000;
+
+  height:72px;
+
+  display:flex;
+
+  align-items:center;
+
+  gap:15px;
+
+  padding:0 25px;
+
+  background:
+    rgba(6,17,22,.84);
+
+  border-bottom:
+    1px solid var(--nc-line);
+
+  backdrop-filter:blur(20px);
+}
+
+
+/* ============================================================
+   MOBILE MENU
+============================================================ */
+
+.toggle-btn{
+
+  position:fixed !important;
+
+  left:15px !important;
+  top:15px !important;
+
+  width:43px !important;
+  height:43px !important;
+
+  padding:0 !important;
+
+  display:none;
+
+  align-items:center;
+  justify-content:center;
+
+  border:
+    1px solid rgba(255,255,255,.12) !important;
+
+  border-radius:12px !important;
+
+  background:
+    rgba(8,26,32,.95) !important;
+
+  color:#fff !important;
+
+  z-index:2147483647 !important;
+
+  box-shadow:
+    0 12px 30px rgba(0,0,0,.30);
+}
+
+
+/* ============================================================
+   TOPBAR MOBILE BRAND
+============================================================ */
+
+.nc-mobile-title{
+
+  display:none;
+
+  align-items:center;
+
+  gap:9px;
+
+  color:#fff;
+
+  font-family:"Manrope",sans-serif;
+
+  font-weight:800;
+
+  font-size:15px;
+}
+
+
+.nc-mobile-title .dot{
+
+  width:10px;
+  height:10px;
+
+  border-radius:50%;
+
+  background:var(--nc-gold);
+
+  box-shadow:
+    0 0 0 5px rgba(244,185,79,.08);
+}
+
+
+/* ============================================================
+   COMMAND SEARCH
+============================================================ */
+
+.nc-command{
+
+  height:42px;
+
+  min-width:240px;
+
+  max-width:430px;
+
+  flex:1;
+
+  display:flex;
+
+  align-items:center;
+
+  gap:10px;
+
+  padding:0 13px;
+
+  border:
+    1px solid var(--nc-line);
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,.035);
+
+  color:#667f84;
+}
+
+
+.nc-command i{
+
+  color:var(--nc-mint);
+
+  font-size:14px;
+}
+
+
+.nc-command span{
+
+  font-size:10px;
+
+  color:#71898e;
+}
+
+
+.nc-command kbd{
+
+  margin-left:auto;
+
+  padding:4px 7px;
+
+  border-radius:6px;
+
+  background:#102a31;
+
+  border:1px solid var(--nc-line);
+
+  color:#71898e;
+
+  font-family:"Space Mono",monospace;
+
+  font-size:7px;
+}
+
+
+/* ============================================================
+   TOPBAR ACTIONS
+============================================================ */
+
+.nc-top-actions{
+
+  margin-left:auto;
+
+  display:flex;
+
+  align-items:center;
+
+  gap:8px;
+}
+
+
+.nc-top-action{
+
+  width:40px;
+  height:40px;
+
+  border:
+    1px solid var(--nc-line);
+
+  border-radius:11px;
+
+  display:grid;
+  place-items:center;
+
+  color:#8ba1a5;
+
+  background:
+    rgba(255,255,255,.025);
+
+  transition:.2s ease;
+}
+
+
+.nc-top-action:hover{
+
+  color:#fff;
+
+  border-color:
+    rgba(25,195,156,.25);
+
+  background:
+    rgba(25,195,156,.07);
+}
+
+
+.nc-top-action.whatsapp{
+
+  color:#20d98b;
+}
+
+
+/* ============================================================
+   USER AREA
+============================================================ */
+
+.nc-user{
+
+  display:flex;
+
+  align-items:center;
+
+  gap:9px;
+
+  padding-left:9px;
+
+  border-left:1px solid var(--nc-line);
+}
+
+
+.nc-avatar{
+
+  width:34px;
+  height:34px;
+
+  display:grid;
+  place-items:center;
+
+  border-radius:10px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #0d6b5b,
+      #123e46
+    );
+
+  color:#fff;
+
+  font-size:13px;
+}
+
+
+.nc-user-info strong{
+
+  display:block;
+
+  color:#fff;
+
+  font-size:10px;
+}
+
+
+.nc-user-info span{
+
+  display:block;
+
+  color:#637b80;
+
+  font-family:"Space Mono",monospace;
+
+  font-size:7px;
+
+  margin-top:2px;
+}
+
+
+/* ============================================================
+   MOBILE DRAWER OVERLAY
+============================================================ */
+
+.nc-overlay{
+
+  position:fixed;
+
+  inset:0;
+
+  background:
+    rgba(0,0,0,.60);
+
+  backdrop-filter:blur(3px);
+
+  z-index:2147483645;
+
+  display:none;
+}
+
+
+.nc-overlay.show{
+  display:block;
+}
+
+
+/* ============================================================
+   DROPDOWNS
+============================================================ */
+
+.dropdown-menu{
+
+  background:#0b2027 !important;
+
+  border:
+    1px solid var(--nc-line) !important;
+
+  border-radius:13px !important;
+
+  box-shadow:
+    0 20px 50px rgba(0,0,0,.40) !important;
+
+  padding:7px !important;
+
+  max-height:300px;
+
+  overflow-y:auto;
+
+  text-align:left;
+}
+
+
+.dropdown-item{
+
+  width:auto !important;
+
+  color:#9db1b5 !important;
+
+  border-radius:8px;
+
+  padding:9px 12px !important;
+
+  font-size:12px;
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:flex-start;
+
+  gap:8px;
+}
+
+
+.dropdown-item:hover{
+
+  color:#fff !important;
+
+  background:
+    rgba(25,195,156,.09) !important;
+}
+
+
+/* ============================================================
+   CONTENT COMPATIBILITY
+============================================================ */
+
+
+/* ============================================================
+   OLD MENU BUTTON COMPATIBILITY
+============================================================ */
+
+.menu-button{
+
+  font-family:"DM Sans",sans-serif !important;
+
+  font-size:12px !important;
+
+  border-radius:12px !important;
+}
+
+
+/* ============================================================
+   PROCESSING STATE
+============================================================ */
+
+.menu-button.disabled{
+
+  pointer-events:none;
+
+  opacity:.55;
+
+  transform:none !important;
+}
+
+
+.menu-spinner{
+
+  display:inline-block;
+
+  width:14px;
+  height:14px;
+
+  margin-left:auto;
+
+  border:
+    2px solid rgba(255,255,255,.20);
+
+  border-top-color:
+    var(--nc-mint);
+
+  border-radius:50%;
+
+  animation:
+    nc-spin .7s linear infinite;
+}
+
+
+@keyframes nc-spin{
+
+  from{
+    transform:rotate(0deg);
+  }
+
+  to{
+    transform:rotate(360deg);
+  }
+
+}
+
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+
+@media(max-width:991px){
+
+  .sidebar{
+
+    width:260px !important;
+
+    transform:translateX(-100%);
+
+    box-shadow:
+      25px 0 70px rgba(0,0,0,.40);
+  }
+
+
+  .sidebar.mobile-open{
+
+    transform:translateX(0);
+  }
+
+
+
+
+  .toggle-btn{
+
+    display:flex !important;
+  }
+
+
+  .nc-topbar{
+
+    padding-left:75px;
+
+    height:68px;
+  }
+
+
+  .nc-mobile-title{
+
+    display:flex;
+  }
+
+
+  .nc-command{
+
+    display:none;
+  }
+
+
+  .nc-user-info{
+
+    display:none;
+  }
+
+
+  .nc-user{
+
+    border-left:0;
+
+    padding-left:0;
+  }
+
+}
+
+
+@media(max-width:576px){
+
+  .nc-topbar{
+
+    padding-right:12px;
+    padding-left:70px;
+
+    gap:8px;
+  }
+
+
+  .nc-mobile-title{
+
+    font-size:14px;
+
+    margin-right:auto;
+  }
+
+
+  .nc-top-action{
+
+    width:37px;
+    height:37px;
+  }
+
+
+  .nc-top-action.hide-mobile{
+
+    display:none;
+  }
+
+
+  .nc-user{
+
+    display:none;
+  }
+
+
+  .sidebar{
+
+    width:285px !important;
+  }
+
+}
+
+
+
+
+
+/* ============================================================
+   ACCESSIBILITY
+============================================================ */
+
+button,
+a{
+
+  -webkit-tap-highlight-color:transparent;
+}
+
+
+button:focus-visible,
+a:focus-visible{
+
+  outline:
+    2px solid var(--nc-mint);
+
+  outline-offset:3px;
+}
+
+
+/* ============================================================
+   CHAT COMPATIBILITY
+============================================================ */
+
+.fixed-chat-header{
+
+  z-index:99999 !important;
+}
+
+
+.chat-input{
+
+  z-index:99998 !important;
+}
+
+
+.chat-area{
+
+  position:relative;
+
+  z-index:1 !important;
+}
+
+
+
+</style>
+
+</head>
+
+
+<body>
+
+<div class="nc-shell">
+
+
+  <!-- ========================================================
+       MOBILE OVERLAY
+  ========================================================= -->
+
+  <div class="nc-overlay" id="ncOverlay"></div>
+
+
+  <!-- ========================================================
+       MOBILE MENU BUTTON
+  ========================================================= -->
+
+  <button
+    class="toggle-btn"
+    id="ncToggle"
+    type="button"
+    aria-label="Open navigation"
+    aria-expanded="false"
+  >
+    <i class="bi bi-list"></i>
+  </button>
+
+
+  <!-- ========================================================
+       SIDEBAR
+  ========================================================= -->
+
+  <aside class="sidebar" id="ncSidebar">
+
+
+    <!-- BRAND -->
+
+  <%= link_to "/",
+    class: "nc-brand text-decoration-none",
+    aria: { label: "NiaCloud Home" } do %>
+
+  <div class="nc-brand-mark">
+    <i class="bi bi-cloud-fill"></i>
+  </div>
+
+  <div class="nc-brand-text">
+
+    <div class="nc-brand-name">
+      NiaCloud
+    </div>
+
+    <span class="nc-brand-sub">
+      Technologies
+    </span>
+
+  </div>
+
+<% end %>
+
+<style>
+  .nc-brand {
+  color: inherit !important;
+  text-decoration: none !important;
+  cursor: pointer;
+
+  transition:
+    background .2s ease,
+    opacity .2s ease;
+}
+
+.nc-brand:hover {
+  color: inherit !important;
+  text-decoration: none !important;
+  background: rgba(255,255,255,.02);
+}
+
+.nc-brand:active {
+  opacity: .85;
+}
+</style>
+
+
+    <!-- SYSTEM STATUS -->
+
+    <div class="nc-status">
+
+      <span class="nc-status-dot"></span>
+
+      <div>
+        <strong>Command Centre</strong>
+        <span>ALL SYSTEMS OPERATIONAL</span>
+      </div>
+
+    </div>
+
+
+    <!-- ======================================================
+         MAIN
+    ======================================================= -->
+
+
+
+
+    <!-- HOME -->
+
+    <%= link_to "/",
+        class: "nav-link menu-button",
+        data: {
+          nc_nav: true
+        } do %>
+
+      <i class="bi bi-grid-fill"></i>
+
+      <strong>Overview</strong>
+
+    <% end %>
+
+
+    <% if user_signed_in? %>
+
+
+      <!-- ==================================================
+           CUSTOMER ENGAGEMENT
+      ================================================= -->
+
+
+
+
+      <!-- SMS -->
+
+      <%= link_to "/jmai/index",
+          class: "menu-button button-menu",
+          id: "sms",
+          data: { nc_nav: true } do %>
+
+        <i class="bi bi-chat-square-text-fill"></i>
+
+        <strong>Bulk SMS</strong>
+
+      <% end %>
+
+
+      <!-- WHATSAPP LEADS -->
+
+      <%= link_to "/jmleads",
+          class: "menu-button button-menu",
+          id: "whatsapp_ai_leads",
+          rel: "noopener",
+          data: { nc_nav: true } do %>
+
+        <i class="bi bi-whatsapp"></i>
+
+        <strong>WhatsApp Leads</strong>
+
+        <span class="nc-nav-badge">
+          AI
+        </span>
+
+      <% end %>
+
+
+      <!-- WHATSAPP -->
+
+      <%= link_to "/ailogs",
+          class: "menu-button button-menu",
+          id: "whatsapp",
+          data: { nc_nav: true } do %>
+
+        <i class="bi bi-whatsapp"></i>
+
+        <strong>WhatsApp</strong>
+
+      <% end %>
+
+
+      <!-- CUSTOMERS -->
+
+      <%= link_to "/jmcustomers",
+          class: "menu-button btn-suggestions",
+          data: { nc_nav: true } do %>
+
+        <i class="bi bi-people-fill"></i>
+
+        <strong>Customers</strong>
+
+      <% end %>
+
+
+      <!-- ==================================================
+           VOICE
+      ================================================= -->
+
+
+
+
+      <!-- CALL CENTRE -->
+
+      <%= link_to "/janomaxleads/dashboard",
+          class: "menu-button button-menu",
+          id: "callcenters",
+          data: { nc_nav: true } do %>
+
+        <i class="bi bi-headset"></i>
+
+        <strong>Call Centre</strong>
+
+      <% end %>
+
+
+      <!-- ==================================================
+           BUSINESS
+      ================================================= -->
+
+      <!-- SAMPLES -->
+
+      <%= link_to "/jsamples",
+          class: "menu-button button-menu",
+          id: "niapos8",
+          data: { nc_nav: true } do %>
+
+        <i class="bi bi-box-seam"></i>
+
+        <strong>Samples</strong>
+
+      <% end %>
+
+
+      <!-- PRODUCTS -->
+
+      <%= link_to "/aiproducts",
+          class: "menu-button button-menu",
+          id: "products",
+          data: { nc_nav: true } do %>
+
+        <i class="bi bi-grid"></i>
+
+        <strong>Products</strong>
+
+      <% end %>
+
+
+      <!-- FAQ -->
+
+      <%= link_to jfaqs_path,
+          class: "menu-button button-menu",
+          id: "jfaqs",
+          data: { nc_nav: true } do %>
+
+        <i class="bi bi-question-circle-fill"></i>
+
+        <strong>FAQs</strong>
+
+      <% end %>
+
+
+      <!-- ==================================================
+           INTELLIGENCE
+      ================================================= -->
+
+
+      <!-- BI -->
+
+      <%= link_to "/jbi/index",
+          class: "menu-button button-menu",
+          id: "bi_dashboard",
+          rel: "noopener",
+          data: { nc_nav: true } do %>
+
+        <i class="bi bi-bar-chart-line-fill"></i>
+
+        <strong>Business Intelligence</strong>
+
+      <% end %>
+
+
+    <% end %>
+
+
+   <!-- ======================================================
+     DIVIDER
+======================================================= -->
+
+<div class="nc-divider"></div>
+
+
+<!-- ======================================================
+     NIACLOUD WEBSITE
+======================================================= -->
+
+<%= link_to "https://niacloud.co.ke",
+    target: "_blank",
+    rel: "noopener noreferrer",
+    class: "menu-button nc-external",
+    id: "requirements" do %>
+
+  <i class="bi bi-cloud-check"></i>
+
+  <strong>NiaCloud Website</strong>
+
+  <i
+    class="bi bi-box-arrow-up-right"
+    style="
+      width:auto;
+      height:auto;
+      background:none;
+      margin-left:auto;
+      font-size:11px;
+    "
+  ></i>
+
+<% end %>
+
+
+<% if user_signed_in? %>
+
+  <!-- ======================================================
+       LOGOUT
+  ======================================================= -->
+
+  <%= button_to destroy_user_session_path,
+      method: :delete,
+      class: "menu-button nc-logout",
+      title: "Logout",
+      data: { turbo: false } do %>
+
+    <i class="bi bi-box-arrow-right"></i>
+
+    <strong>Logout</strong>
+
+  <% end %>
+
+<% end %>
+
+
+  </aside>
+
+
+  <!-- ========================================================
+       MAIN APPLICATION
+  ========================================================= -->
+
+  <main class="main">
+
+
+
+
+    <!-- ======================================================
+         PAGE CONTENT STARTS HERE
+    ======================================================= -->
+
+
+    <script>
+document.addEventListener("DOMContentLoaded", function () {
+
+  const sidebar = document.getElementById("ncSidebar");
+  const toggle = document.getElementById("ncToggle");
+  if (toggle && toggle.parentElement !== document.body) {
+  document.body.appendChild(toggle);
+}
+  const overlay = document.getElementById("ncOverlay");
+
+  if (!sidebar || !toggle) return;
+
+
+  /* ========================================================
+     MOBILE SIDEBAR
+  ======================================================== */
+
+  function openSidebar() {
+
+    sidebar.classList.add("mobile-open");
+
+    if (overlay) {
+      overlay.classList.add("show");
+    }
+
+    toggle.setAttribute("aria-expanded", "true");
+
+    toggle.innerHTML =
+      '<i class="bi bi-x-lg"></i>';
+  }
+
+
+  function closeSidebar() {
+
+    sidebar.classList.remove("mobile-open");
+
+    if (overlay) {
+      overlay.classList.remove("show");
+    }
+
+    toggle.setAttribute("aria-expanded", "false");
+
+    toggle.innerHTML =
+      '<i class="bi bi-list"></i>';
+  }
+
+
+  toggle.addEventListener("click", function () {
+
+    if (sidebar.classList.contains("mobile-open")) {
+      closeSidebar();
+    } else {
+      openSidebar();
+    }
+
+  });
+
+
+  if (overlay) {
+
+    overlay.addEventListener("click", function () {
+      closeSidebar();
+    });
+
+  }
+
+
+  /* ========================================================
+     CLOSE MOBILE MENU AFTER NAVIGATION
+  ======================================================== */
+
+  document.querySelectorAll(
+    ".sidebar a[data-nc-nav]"
+  ).forEach(function (link) {
+
+    link.addEventListener("click", function () {
+
+      if (window.innerWidth <= 991) {
+        closeSidebar();
+      }
+
+    });
+
+  });
+
+
+  /* ========================================================
+     ESCAPE
+  ======================================================== */
+
+  document.addEventListener("keydown", function (event) {
+
+    if (event.key === "Escape") {
+
+      if (
+        window.innerWidth <= 991 &&
+        sidebar.classList.contains("mobile-open")
+      ) {
+        closeSidebar();
+      }
+
+    }
+
+  });
+
+
+  /* ========================================================
+     ACTIVE NAVIGATION
+  ======================================================== */
+
+  const currentPath =
+    window.location.pathname.replace(/\/$/, "") || "/";
+
+  document.querySelectorAll(
+    ".sidebar a[data-nc-nav]"
+  ).forEach(function (link) {
+
+    try {
+
+      const url =
+        new URL(link.href, window.location.origin);
+
+      const linkPath =
+        url.pathname.replace(/\/$/, "") || "/";
+
+      if (
+        linkPath === currentPath &&
+        linkPath !== "/"
+      ) {
+
+        link.classList.add("active");
+
+      }
+
+      if (
+        currentPath === "/" &&
+        linkPath === "/"
+      ) {
+
+        link.classList.add("active");
+
+      }
+
+    } catch (error) {}
+
+  });
+
+
+  /* ========================================================
+     COMMAND SEARCH VISUAL
+  ======================================================== */
+
+  const command = document.querySelector(".nc-command");
+
+  document.addEventListener("keydown", function (event) {
+
+    if (
+      event.key === "/" &&
+      !["INPUT", "TEXTAREA"].includes(
+        document.activeElement.tagName
+      )
+    ) {
+
+      event.preventDefault();
+
+      if (command) {
+
+        command.style.borderColor =
+          "rgba(25,195,156,.45)";
+
+        command.style.boxShadow =
+          "0 0 0 4px rgba(25,195,156,.06)";
+
+        setTimeout(function () {
+
+          command.style.borderColor = "";
+
+          command.style.boxShadow = "";
+
+        }, 1000);
+
+      }
+
+    }
+
+  });
+
+
+  /* ========================================================
+     MENU BUTTON PROCESSING STATE
+  ======================================================== */
+
+  document.querySelectorAll(
+    ".menu-button"
+  ).forEach(function (button) {
+
+    button.addEventListener("click", function (event) {
+
+      if (button.classList.contains("disabled")) {
+
+        event.preventDefault();
+
+        return;
+
+      }
+
+
+      /*
+       * Preserve existing confirmation behaviour.
+       */
+
+      if (button.dataset.confirm) {
+        return;
+      }
+
+
+      /*
+       * External links don't need the loading state.
+       */
+
+      if (
+        button.target === "_blank" ||
+        button.href.startsWith("https://")
+      ) {
+
+        return;
+
+      }
+
+
+      button.classList.add("disabled");
+
+
+      const originalHTML =
+        button.innerHTML;
+
+
+      button.innerHTML = `
+
+        <span style="
+          display:flex;
+          align-items:center;
+          gap:8px;
+          width:100%;
+        ">
+
+          <span style="
+            color:#9db1b5;
+            font-size:11px;
+          ">
+            Loading...
+          </span>
+
+          <span class="menu-spinner"></span>
+
+        </span>
+
+      `;
+
+
+      /*
+       * Restore if navigation doesn't happen.
+       */
+
+      setTimeout(function () {
+
+        button.classList.remove("disabled");
+
+        button.innerHTML =
+          originalHTML;
+
+      }, 5000);
+
+    });
+
+  });
+
+
+  /* ========================================================
+     WINDOW RESIZE
+  ======================================================== */
+
+  window.addEventListener("resize", function () {
+
+    if (window.innerWidth > 991) {
+      closeSidebar();
+    }
+
+  });
+
+});
+</script>
+
+<style>
+  /* ============================================================
+   NiaCloud — MOBILE / SMALL DEVICE RESPONSIVE SYSTEM
+   Place this AFTER all existing CSS
+============================================================ */
+
+/* ------------------------------------------------------------
+   TABLET
+------------------------------------------------------------ */
+
+@media (max-width: 991.98px) {
+
+  :root {
+    --nc-sidebar: 260px;
+  }
+
+  /* =========================
+     SIDEBAR
+  ========================= */
+
+  .sidebar {
+    width: min(285px, 88vw) !important;
+    max-width: 88vw !important;
+
+    left: 0 !important;
+    right: auto !important;
+
+    transform: translate3d(-105%, 0, 0) !important;
+
+    transition:
+      transform .28s cubic-bezier(.4,0,.2,1),
+      box-shadow .28s ease !important;
+
+    box-shadow: none !important;
+
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+
+    overscroll-behavior: contain;
+
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .sidebar.mobile-open {
+    transform: translate3d(0, 0, 0) !important;
+
+    box-shadow:
+      20px 0 60px rgba(0,0,0,.45) !important;
+  }
+
+
+  /* =========================
+     MAIN
+  ========================= */
+
+  .main {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+
+    width: 100% !important;
+    max-width: 100% !important;
+
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+
+    overflow-x: hidden !important;
+  }
+
+  .main > .container,
+  .main > .container-fluid,
+  .main .container,
+  .main .container-fluid {
+
+    width: 100% !important;
+    max-width: 100% !important;
+
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+
+  /* =========================
+     ROWS
+  ========================= */
+
+  .main .row {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+
+    --bs-gutter-x: 0 !important;
+  }
+
+  .main .row > [class*="col-"] {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+
+  /* =========================
+     MOBILE TOPBAR
+  ========================= */
+
+  .nc-topbar {
+
+    height: 64px !important;
+
+    padding:
+      0 12px 0 68px !important;
+
+    gap: 8px !important;
+
+    position: sticky;
+    top: 0;
+
+    z-index: 1000;
+  }
+
+
+
+/* ============================================================
+   LOGOUT
+============================================================ */
+
+.nc-logout {
+  width: calc(100% - 20px) !important;
+  margin: 3px 10px !important;
+
+  border: 1px solid transparent !important;
+
+  color: #ff8f8f !important;
+
+  background: transparent !important;
+
+  cursor: pointer;
+
+  text-align: left;
+
+  font-family: "DM Sans", sans-serif !important;
+}
+
+.nc-logout > i {
+  color: #ff7070 !important;
+
+  background: rgba(255,80,80,.08) !important;
+}
+
+.nc-logout:hover {
+  color: #fff !important;
+
+  background: rgba(255,70,70,.07) !important;
+
+  border-color: rgba(255,90,90,.15) !important;
+}
+
+.nc-logout:hover > i {
+  color: #ff8585 !important;
+
+  background: rgba(255,80,80,.13) !important;
+}
+
+.nc-logout:active {
+  transform: scale(.985);
+}
+
+  /* =========================
+     MENU BUTTON
+  ========================= */
+
+  .toggle-btn {
+
+    display: flex !important;
+
+    position: fixed !important;
+
+    left: 12px !important;
+    top: 10px !important;
+
+    width: 44px !important;
+    height: 44px !important;
+
+    min-width: 44px !important;
+
+    padding: 0 !important;
+
+    border-radius: 13px !important;
+
+    align-items: center !important;
+    justify-content: center !important;
+
+    font-size: 18px;
+
+    z-index: 2147483647 !important;
+
+    touch-action: manipulation;
+  }
+
+
+  /* =========================
+     MOBILE TITLE
+  ========================= */
+
+  .nc-mobile-title {
+
+    display: flex !important;
+
+    min-width: 0;
+
+    flex: 1;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    font-size: 14px !important;
+  }
+
+
+  .nc-mobile-title .dot {
+    flex: 0 0 auto;
+  }
+
+
+  /* =========================
+     COMMAND SEARCH
+  ========================= */
+
+  .nc-command {
+    display: none !important;
+  }
+
+
+  /* =========================
+     TOP ACTIONS
+  ========================= */
+
+  .nc-top-actions {
+
+    margin-left: auto !important;
+
+    display: flex;
+
+    gap: 6px;
+
+    flex: 0 0 auto;
+  }
+
+
+  .nc-top-action {
+
+    width: 38px !important;
+    height: 38px !important;
+
+    min-width: 38px !important;
+
+    border-radius: 11px !important;
+  }
+
+
+  /* =========================
+     USER
+  ========================= */
+
+  .nc-user-info {
+    display: none !important;
+  }
+
+  .nc-user {
+
+    padding-left: 0 !important;
+
+    border-left: 0 !important;
+
+    flex: 0 0 auto;
+  }
+
+
+  .nc-avatar {
+
+    width: 36px !important;
+    height: 36px !important;
+
+    border-radius: 10px !important;
+  }
+
+
+  /* =========================
+     OVERLAY
+  ========================= */
+
+  .nc-overlay {
+
+    display: none;
+
+    position: fixed !important;
+
+    inset: 0 !important;
+
+    z-index: 2147483645 !important;
+
+    background:
+      rgba(0,0,0,.62) !important;
+
+    backdrop-filter: blur(3px);
+
+    -webkit-backdrop-filter: blur(3px);
+
+    touch-action: none;
+  }
+
+
+  .nc-overlay.show {
+    display: block !important;
+  }
+
+
+  /* =========================
+     SIDEBAR BRAND
+  ========================= */
+
+  .nc-brand {
+
+    height: 70px !important;
+
+    padding: 0 17px !important;
+
+    position: sticky;
+
+    top: 0;
+
+    z-index: 20;
+  }
+
+
+  .nc-brand-mark {
+
+    width: 35px !important;
+    height: 35px !important;
+
+    min-width: 35px !important;
+  }
+
+
+  .nc-brand-name {
+    font-size: 15px !important;
+  }
+
+
+  /* =========================
+     SIDEBAR STATUS
+  ========================= */
+
+  .nc-status {
+
+    margin:
+      14px 12px 9px !important;
+
+    padding:
+      10px 11px !important;
+  }
+
+
+  /* =========================
+     NAVIGATION
+  ========================= */
+
+  .sidebar .menu-button,
+  .sidebar .nav-link {
+
+    width:
+      calc(100% - 18px) !important;
+
+    min-height: 48px !important;
+
+    margin:
+      3px 9px !important;
+
+    padding:
+      8px 10px !important;
+
+    gap: 10px !important;
+
+    border-radius: 12px !important;
+
+    touch-action: manipulation;
+  }
+
+
+  .sidebar .menu-button i,
+  .sidebar .nav-link i {
+
+    width: 34px !important;
+    height: 34px !important;
+
+    min-width: 34px !important;
+
+    border-radius: 9px !important;
+
+    font-size: 15px !important;
+  }
+
+
+  .sidebar .menu-button strong,
+  .sidebar .nav-link strong {
+
+    font-size: 12px !important;
+
+    white-space: nowrap;
+  }
+
+
+  .nc-nav-badge {
+
+    margin-left: auto !important;
+
+    flex: 0 0 auto;
+  }
+
+
+  /* =========================
+     EXTERNAL LINK
+  ========================= */
+
+  .nc-external {
+
+    margin:
+      14px 9px 24px !important;
+  }
+
+
+  /* =========================
+     DROPDOWNS
+  ========================= */
+
+  .dropdown-menu {
+
+    max-width:
+      calc(100vw - 24px) !important;
+
+    max-height:
+      min(300px, 60vh) !important;
+
+    overflow-y: auto !important;
+  }
+
+
+  /* =========================
+     IMAGES
+  ========================= */
+
+  .main img {
+
+    max-width: 100%;
+
+    height: auto;
+  }
+
+
+  /* =========================
+     TABLES
+  ========================= */
+
+  .main table {
+
+    max-width: 100%;
+  }
+
+
+  .main .table-responsive {
+
+    width: 100% !important;
+
+    max-width: 100% !important;
+
+    overflow-x: auto !important;
+
+    -webkit-overflow-scrolling: touch;
+  }
+
+
+  /* =========================
+     FORMS
+  ========================= */
+
+  .main input,
+  .main select,
+  .main textarea {
+
+    max-width: 100%;
+  }
+
+
+  /* Prevent iOS zoom on form inputs */
+
+  .main input,
+  .main select,
+  .main textarea {
+
+    font-size: 16px;
+  }
+}
+
+
+/* ============================================================
+   SMALL PHONES
+============================================================ */
+
+@media (max-width: 576px) {
+
+  /* =========================
+     BODY
+  ========================= */
+
+  html,
+  body {
+
+    width: 100% !important;
+    max-width: 100% !important;
+
+    overflow-x: hidden !important;
+  }
+
+
+  /* =========================
+     MAIN
+  ========================= */
+
+  .main {
+
+    width: 100% !important;
+    max-width: 100% !important;
+
+    margin: 0 !important;
+
+    padding: 0 !important;
+  }
+
+
+  /* =========================
+     TOPBAR
+  ========================= */
+
+  .nc-topbar {
+
+    height: 60px !important;
+
+    padding:
+      0 8px 0 64px !important;
+
+    gap: 6px !important;
+  }
+
+
+  /* =========================
+     MENU
+  ========================= */
+
+  .toggle-btn {
+
+    left: 9px !important;
+    top: 8px !important;
+
+    width: 43px !important;
+    height: 43px !important;
+
+    min-width: 43px !important;
+
+    border-radius: 12px !important;
+  }
+
+
+  /* =========================
+     MOBILE TITLE
+  ========================= */
+
+  .nc-mobile-title {
+
+    font-size: 13px !important;
+
+    gap: 7px !important;
+
+    min-width: 0;
+  }
+
+
+  .nc-mobile-title .dot {
+
+    width: 8px;
+    height: 8px;
+
+    box-shadow:
+      0 0 0 4px rgba(244,185,79,.08);
+  }
+
+
+  /* =========================
+     TOP ACTIONS
+  ========================= */
+
+  .nc-top-actions {
+
+    gap: 4px !important;
+  }
+
+
+  .nc-top-action {
+
+    width: 35px !important;
+    height: 35px !important;
+
+    min-width: 35px !important;
+
+    border-radius: 10px !important;
+
+    font-size: 14px;
+  }
+
+
+  /* Hide optional actions */
+
+  .nc-top-action.hide-mobile {
+
+    display: none !important;
+  }
+
+
+  /* =========================
+     USER
+  ========================= */
+
+  .nc-user {
+
+    display: none !important;
+  }
+
+
+  /* =========================
+     SIDEBAR
+  ========================= */
+
+  .sidebar {
+
+    width:
+      min(285px, 86vw) !important;
+
+    max-width:
+      86vw !important;
+  }
+
+
+  .nc-brand {
+
+    height: 66px !important;
+
+    padding:
+      0 14px !important;
+  }
+
+
+  .nc-brand-mark {
+
+    width: 33px !important;
+    height: 33px !important;
+
+    min-width: 33px !important;
+
+    border-radius: 10px !important;
+  }
+
+
+  .nc-brand-name {
+
+    font-size: 14px !important;
+  }
+
+
+  .nc-brand-sub {
+
+    font-size: 6.5px !important;
+  }
+
+
+  /* =========================
+     STATUS
+  ========================= */
+
+  .nc-status {
+
+    margin:
+      12px 10px 8px !important;
+
+    padding:
+      9px 10px !important;
+  }
+
+
+  .nc-status strong {
+
+    font-size: 10px !important;
+  }
+
+
+  .nc-status span {
+
+    font-size: 6.5px !important;
+  }
+
+
+  /* =========================
+     SECTION LABEL
+  ========================= */
+
+  .nc-section-label {
+
+    padding:
+      13px 14px 6px !important;
+
+    font-size: 7px !important;
+  }
+
+
+  /* =========================
+     NAV
+  ========================= */
+
+  .sidebar .menu-button,
+  .sidebar .nav-link {
+
+    min-height: 47px !important;
+
+    width:
+      calc(100% - 16px) !important;
+
+    margin:
+      3px 8px !important;
+
+    padding:
+      7px 9px !important;
+
+    gap: 9px !important;
+  }
+
+
+  .sidebar .menu-button i,
+  .sidebar .nav-link i {
+
+    width: 33px !important;
+    height: 33px !important;
+
+    min-width: 33px !important;
+
+    font-size: 14px !important;
+  }
+
+
+  .sidebar .menu-button strong,
+  .sidebar .nav-link strong {
+
+    font-size: 11.5px !important;
+  }
+
+
+  .nc-nav-badge {
+
+    min-width: 19px !important;
+
+    height: 19px !important;
+
+    font-size: 6.5px !important;
+  }
+
+
+  /* =========================
+     DIVIDER
+  ========================= */
+
+  .nc-divider {
+
+    margin:
+      12px 14px !important;
+  }
+
+
+  /* =========================
+     EXTERNAL
+  ========================= */
+
+  .nc-external {
+
+    margin:
+      12px 8px 20px !important;
+  }
+
+
+  /* =========================
+     BOOTSTRAP CONTAINERS
+  ========================= */
+
+  .main .container,
+  .main .container-fluid {
+
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+  }
+
+
+  /* =========================
+     BOOTSTRAP ROW
+  ========================= */
+
+  .main .row {
+
+    --bs-gutter-x: 0 !important;
+
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+
+  /* =========================
+     CARDS
+  ========================= */
+
+  .main .card {
+
+    max-width: 100% !important;
+
+    border-radius: 14px !important;
+  }
+
+
+  /* =========================
+     MODALS
+  ========================= */
+
+  .modal-dialog {
+
+    width:
+      calc(100% - 16px) !important;
+
+    max-width:
+      calc(100% - 16px) !important;
+
+    margin:
+      8px auto !important;
+  }
+
+
+  .modal-content {
+
+    max-width: 100% !important;
+
+    border-radius: 15px !important;
+  }
+
+
+  /* =========================
+     BUTTONS
+  ========================= */
+
+  .main .btn {
+
+    min-height: 40px;
+  }
+
+
+  /* =========================
+     TABLES
+  ========================= */
+
+  .main .table-responsive {
+
+    margin-left: -10px;
+
+    margin-right: -10px;
+
+    width:
+      calc(100% + 20px) !important;
+  }
+
+
+  /* =========================
+     LONG TEXT
+  ========================= */
+
+  .main h1,
+  .main h2,
+  .main h3,
+  .main h4,
+  .main h5,
+  .main h6 {
+
+    overflow-wrap: anywhere;
+  }
+
+
+  /* =========================
+     CHAT
+  ========================= */
+
+  .fixed-chat-header {
+
+    max-width: 100vw !important;
+  }
+
+
+  .chat-area {
+
+    max-width: 100% !important;
+
+    overflow-x: hidden !important;
+  }
+
+
+  .chat-input {
+
+    max-width: 100vw !important;
+  }
+}
+
+
+/* ============================================================
+   EXTRA SMALL PHONES
+   320px — 375px
+============================================================ */
+
+@media (max-width: 375px) {
+
+  .nc-topbar {
+
+    padding-left: 60px !important;
+
+    padding-right: 6px !important;
+  }
+
+
+  .toggle-btn {
+
+    left: 7px !important;
+
+    width: 41px !important;
+    height: 41px !important;
+  }
+
+
+  .nc-mobile-title {
+
+    font-size: 12px !important;
+  }
+
+
+  .nc-top-action {
+
+    width: 33px !important;
+    height: 33px !important;
+
+    min-width: 33px !important;
+  }
+
+
+  .sidebar {
+
+    width: 88vw !important;
+
+    max-width: 88vw !important;
+  }
+
+
+  .main .container,
+  .main .container-fluid {
+
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+  }
+}
+
+
+/* ============================================================
+   LANDSCAPE PHONES
+============================================================ */
+
+@media (max-width: 991.98px) and (orientation: landscape) {
+
+  .sidebar {
+
+    width: 270px !important;
+  }
+
+
+  .nc-brand {
+
+    height: 60px !important;
+  }
+
+
+  .nc-status {
+
+    margin-top: 8px !important;
+    margin-bottom: 5px !important;
+  }
+
+
+  .sidebar .menu-button,
+  .sidebar .nav-link {
+
+    min-height: 42px !important;
+
+    margin-top: 2px !important;
+    margin-bottom: 2px !important;
+  }
+}
+
+
+/* ============================================================
+   TOUCH DEVICES
+============================================================ */
+
+@media (hover: none) and (pointer: coarse) {
+
+  .sidebar .menu-button:hover,
+  .sidebar .nav-link:hover {
+
+    transform: none !important;
+  }
+
+
+  .sidebar .menu-button:active,
+  .sidebar .nav-link:active {
+
+    transform: scale(.985) !important;
+
+    background:
+      rgba(25,195,156,.08) !important;
+  }
+
+
+  .nc-top-action:active {
+
+    transform: scale(.94);
+  }
+
+
+  .toggle-btn:active {
+
+    transform: scale(.94);
+  }
+}
+
+
+/* ============================================================
+   SAFE AREA — MODERN PHONES
+============================================================ */
+
+@supports (padding: env(safe-area-inset-top)) {
+
+  .nc-topbar {
+
+    padding-top:
+      env(safe-area-inset-top) !important;
+  }
+
+
+  .toggle-btn {
+
+    top:
+      calc(8px + env(safe-area-inset-top)) !important;
+  }
+
+
+  .sidebar {
+
+    padding-top:
+      env(safe-area-inset-top) !important;
+  }
+}
+
+
+/* ============================================================
+   PREVENT HORIZONTAL OVERFLOW FROM COMMON ELEMENTS
+============================================================ */
+
+.main pre,
+.main code,
+.main iframe,
+.main video,
+.main canvas,
+.main svg {
+
+  max-width: 100%;
+}
+
+
+.main pre {
+
+  overflow-x: auto;
+
+  -webkit-overflow-scrolling: touch;
+}
+
+
+.main iframe,
+.main video {
+
+  display: block;
+
+  width: 100%;
+}
+
+
+/* ============================================================
+   MOBILE SCROLL BEHAVIOUR
+============================================================ */
+
+@media (max-width: 991.98px) {
+
+  body.nc-menu-open {
+    overflow: hidden !important;
+  }
+
+  .sidebar,
+  .nc-overlay {
+
+    overscroll-behavior: contain;
+  }
+}
+
+
+/* ============================================================
+   MOBILE NAVBAR — CLEAN & CLEAR
+============================================================ */
+
+@media (max-width: 576px) {
+
+  .nc-topbar {
+    height: 62px !important;
+
+    display: flex !important;
+    align-items: center !important;
+
+    padding: 0 10px 0 62px !important;
+
+    gap: 8px !important;
+
+    background:
+      rgba(6,17,22,.97) !important;
+
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+
+    border-bottom:
+      1px solid rgba(255,255,255,.08) !important;
+  }
+
+
+  /* ==========================================================
+     MENU BUTTON
+  ========================================================== */
+
+  .toggle-btn {
+    display: flex !important;
+
+    position: fixed !important;
+
+    left: 10px !important;
+    top: 9px !important;
+
+    width: 44px !important;
+    height: 44px !important;
+
+    min-width: 44px !important;
+
+    align-items: center !important;
+    justify-content: center !important;
+
+    padding: 0 !important;
+
+    border-radius: 12px !important;
+
+    background:
+      #0d2830 !important;
+
+    border:
+      1px solid rgba(25,195,156,.20) !important;
+
+    color: #ffffff !important;
+
+    font-size: 20px !important;
+
+    box-shadow:
+      0 8px 25px rgba(0,0,0,.30) !important;
+
+    z-index: 2147483647 !important;
+  }
+
+
+  .toggle-btn i {
+    font-size: 20px !important;
+
+    line-height: 1 !important;
+  }
+
+
+  /* ==========================================================
+     MOBILE TITLE
+  ========================================================== */
+
+  .nc-mobile-title {
+    display: flex !important;
+
+    align-items: center !important;
+
+    gap: 8px !important;
+
+    flex: 1 1 auto !important;
+
+    min-width: 0 !important;
+
+    margin: 0 !important;
+
+    color: #ffffff !important;
+
+    font-family: "Manrope", sans-serif !important;
+
+    font-size: 14px !important;
+
+    font-weight: 800 !important;
+
+    line-height: 1 !important;
+
+    white-space: nowrap !important;
+  }
+
+
+  .nc-mobile-title .dot {
+    width: 8px !important;
+    height: 8px !important;
+
+    min-width: 8px !important;
+
+    background: var(--nc-mint) !important;
+
+    box-shadow:
+      0 0 0 4px rgba(25,195,156,.10) !important;
+  }
+
+
+  /* ==========================================================
+     TOP ACTIONS
+  ========================================================== */
+
+  .nc-top-actions {
+    display: flex !important;
+
+    align-items: center !important;
+
+    gap: 5px !important;
+
+    margin-left: auto !important;
+
+    flex: 0 0 auto !important;
+  }
+
+
+  .nc-top-action {
+    width: 36px !important;
+    height: 36px !important;
+
+    min-width: 36px !important;
+
+    padding: 0 !important;
+
+    display: grid !important;
+
+    place-items: center !important;
+
+    border-radius: 10px !important;
+
+    font-size: 14px !important;
+  }
+
+
+  /* Hide non-essential controls */
+
+  .nc-top-action.hide-mobile {
+    display: none !important;
+  }
+
+
+  /* User information should not compete for space */
+
+  .nc-user {
+    display: none !important;
+  }
+
+
+  /* Search should not appear on phones */
+
+  .nc-command {
+    display: none !important;
+  }
+}
+
+
+/* ============================================================
+   VERY SMALL PHONES
+   320px — 390px
+============================================================ */
+
+@media (max-width: 390px) {
+
+  .nc-topbar {
+    padding-left: 60px !important;
+    padding-right: 7px !important;
+
+    height: 58px !important;
+  }
+
+
+  .toggle-btn {
+    left: 8px !important;
+    top: 7px !important;
+
+    width: 42px !important;
+    height: 42px !important;
+
+    min-width: 42px !important;
+
+    border-radius: 11px !important;
+  }
+
+
+  .toggle-btn i {
+    font-size: 19px !important;
+  }
+
+
+  .nc-mobile-title {
+    font-size: 13px !important;
+  }
+
+
+  .nc-top-actions {
+    gap: 3px !important;
+  }
+
+
+  .nc-top-action {
+    width: 34px !important;
+    height: 34px !important;
+
+    min-width: 34px !important;
+
+    border-radius: 9px !important;
+  }
+}
+
+
+/* ============================================================
+   EXTRA SMALL — 320px
+============================================================ */
+
+@media (max-width: 340px) {
+
+  .nc-topbar {
+    padding-left: 57px !important;
+  }
+
+
+  .toggle-btn {
+    left: 7px !important;
+
+    width: 40px !important;
+    height: 40px !important;
+
+    min-width: 40px !important;
+  }
+
+
+  .nc-mobile-title {
+    font-size: 12px !important;
+  }
+
+
+  .nc-top-action {
+    width: 32px !important;
+    height: 32px !important;
+
+    min-width: 32px !important;
+  }
+}
+
+/* ============================================================
+   MOBILE NAVBAR — CLEAN & CLEAR
+============================================================ */
+
+@media (max-width: 576px) {
+
+  .nc-topbar {
+    height: 62px !important;
+
+    display: flex !important;
+    align-items: center !important;
+
+    padding: 0 10px 0 62px !important;
+
+    gap: 8px !important;
+
+    background:
+      rgba(6,17,22,.97) !important;
+
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+
+    border-bottom:
+      1px solid rgba(255,255,255,.08) !important;
+  }
+
+
+  /* ==========================================================
+     MENU BUTTON
+  ========================================================== */
+
+  .toggle-btn {
+    display: flex !important;
+
+    position: fixed !important;
+
+    left: 10px !important;
+    top: 9px !important;
+
+    width: 44px !important;
+    height: 44px !important;
+
+    min-width: 44px !important;
+
+    align-items: center !important;
+    justify-content: center !important;
+
+    padding: 0 !important;
+
+    border-radius: 12px !important;
+
+    background:
+      #0d2830 !important;
+
+    border:
+      1px solid rgba(25,195,156,.20) !important;
+
+    color: #ffffff !important;
+
+    font-size: 20px !important;
+
+    box-shadow:
+      0 8px 25px rgba(0,0,0,.30) !important;
+
+    z-index: 2147483647 !important;
+  }
+
+
+  .toggle-btn i {
+    font-size: 20px !important;
+
+    line-height: 1 !important;
+  }
+
+
+  /* ==========================================================
+     MOBILE TITLE
+  ========================================================== */
+
+  .nc-mobile-title {
+    display: flex !important;
+
+    align-items: center !important;
+
+    gap: 8px !important;
+
+    flex: 1 1 auto !important;
+
+    min-width: 0 !important;
+
+    margin: 0 !important;
+
+    color: #ffffff !important;
+
+    font-family: "Manrope", sans-serif !important;
+
+    font-size: 14px !important;
+
+    font-weight: 800 !important;
+
+    line-height: 1 !important;
+
+    white-space: nowrap !important;
+  }
+
+
+  .nc-mobile-title .dot {
+    width: 8px !important;
+    height: 8px !important;
+
+    min-width: 8px !important;
+
+    background: var(--nc-mint) !important;
+
+    box-shadow:
+      0 0 0 4px rgba(25,195,156,.10) !important;
+  }
+
+
+  /* ==========================================================
+     TOP ACTIONS
+  ========================================================== */
+
+  .nc-top-actions {
+    display: flex !important;
+
+    align-items: center !important;
+
+    gap: 5px !important;
+
+    margin-left: auto !important;
+
+    flex: 0 0 auto !important;
+  }
+
+
+  .nc-top-action {
+    width: 36px !important;
+    height: 36px !important;
+
+    min-width: 36px !important;
+
+    padding: 0 !important;
+
+    display: grid !important;
+
+    place-items: center !important;
+
+    border-radius: 10px !important;
+
+    font-size: 14px !important;
+  }
+
+
+  /* Hide non-essential controls */
+
+  .nc-top-action.hide-mobile {
+    display: none !important;
+  }
+
+
+  /* User information should not compete for space */
+
+  .nc-user {
+    display: none !important;
+  }
+
+
+  /* Search should not appear on phones */
+
+  .nc-command {
+    display: none !important;
+  }
+}
+
+
+/* ============================================================
+   VERY SMALL PHONES
+   320px — 390px
+============================================================ */
+
+@media (max-width: 390px) {
+
+  .nc-topbar {
+    padding-left: 60px !important;
+    padding-right: 7px !important;
+
+    height: 58px !important;
+  }
+
+
+  .toggle-btn {
+    left: 8px !important;
+    top: 7px !important;
+
+    width: 42px !important;
+    height: 42px !important;
+
+    min-width: 42px !important;
+
+    border-radius: 11px !important;
+  }
+
+
+  .toggle-btn i {
+    font-size: 19px !important;
+  }
+
+
+  .nc-mobile-title {
+    font-size: 13px !important;
+  }
+
+
+  .nc-top-actions {
+    gap: 3px !important;
+  }
+
+
+  .nc-top-action {
+    width: 34px !important;
+    height: 34px !important;
+
+    min-width: 34px !important;
+
+    border-radius: 9px !important;
+  }
+}
+
+
+/* ============================================================
+   EXTRA SMALL — 320px
+============================================================ */
+
+@media (max-width: 340px) {
+
+  .nc-topbar {
+    padding-left: 57px !important;
+  }
+
+
+  .toggle-btn {
+    left: 7px !important;
+
+    width: 40px !important;
+    height: 40px !important;
+
+    min-width: 40px !important;
+  }
+
+
+  .nc-mobile-title {
+    font-size: 12px !important;
+  }
+
+
+  .nc-top-action {
+    width: 32px !important;
+    height: 32px !important;
+
+    min-width: 32px !important;
+  }
+}
+
+/* ============================================================
+   NiaCloud MOBILE MENU BUTTON
+   FORCE ABOVE EVERYTHING + CLICKABLE
+============================================================ */
+
+#ncToggle {
+  position: fixed !important;
+
+  top: 10px !important;
+  left: 10px !important;
+
+  width: 46px !important;
+  height: 46px !important;
+
+  min-width: 46px !important;
+  min-height: 46px !important;
+
+  padding: 0 !important;
+  margin: 0 !important;
+
+  display: flex !important;
+
+  align-items: center !important;
+  justify-content: center !important;
+
+  background: #0b2027 !important;
+
+  color: #ffffff !important;
+
+  border: 1px solid rgba(25,195,156,.45) !important;
+
+  border-radius: 13px !important;
+
+  box-shadow:
+    0 10px 30px rgba(0,0,0,.55),
+    0 0 0 1px rgba(255,255,255,.05) !important;
+
+  z-index: 2147483647 !important;
+
+  pointer-events: auto !important;
+
+  cursor: pointer !important;
+
+  opacity: 1 !important;
+
+  visibility: visible !important;
+
+  transform: none !important;
+
+  touch-action: manipulation !important;
+
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+
+/* MENU ICON */
+
+#ncToggle i {
+  display: block !important;
+
+  position: relative !important;
+
+  color: #ffffff !important;
+
+  font-size: 21px !important;
+
+  line-height: 1 !important;
+
+  pointer-events: none !important;
+
+  visibility: visible !important;
+
+  opacity: 1 !important;
+}
+
+
+/* ============================================================
+   MOBILE ONLY
+============================================================ */
+
+@media (max-width: 991.98px) {
+
+  #ncToggle {
+    display: flex !important;
+
+    position: fixed !important;
+
+    z-index: 2147483647 !important;
+  }
+
+}
+
+
+/* ============================================================
+   DESKTOP
+============================================================ */
+
+@media (min-width: 992px) {
+
+  #ncToggle {
+    display: none !important;
+  }
+
+}
+
+
+/* ============================================================
+   SMALL PHONES
+============================================================ */
+
+@media (max-width: 576px) {
+
+  #ncToggle {
+
+    top: 9px !important;
+    left: 9px !important;
+
+    width: 44px !important;
+    height: 44px !important;
+
+    min-width: 44px !important;
+    min-height: 44px !important;
+
+    border-radius: 12px !important;
+  }
+
+}
+
+
+/* ============================================================
+   EXTRA SMALL PHONES
+============================================================ */
+
+@media (max-width: 375px) {
+
+  #ncToggle {
+
+    top: 8px !important;
+    left: 8px !important;
+
+    width: 43px !important;
+    height: 43px !important;
+
+    min-width: 43px !important;
+    min-height: 43px !important;
+  }
+
+}
+
+
+/* ============================================================
+   OVERLAY
+============================================================ */
+
+#ncOverlay {
+  position: fixed !important;
+
+  inset: 0 !important;
+
+  z-index: 2147483645 !important;
+
+  pointer-events: none !important;
+}
+
+
+#ncOverlay.show {
+  display: block !important;
+
+  pointer-events: auto !important;
+}
+
+
+/* Sidebar above overlay */
+
+#ncSidebar {
+  z-index: 2147483646 !important;
+}
+
+
+/* Menu above EVERYTHING */
+
+#ncToggle {
+  z-index: 2147483647 !important;
+}
+</style>

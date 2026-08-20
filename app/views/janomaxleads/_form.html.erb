@@ -1,0 +1,57 @@
+<%= form_with(model: janomaxlead) do |form| %>
+  <% if janomaxlead.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(janomaxlead.errors.count, "error") %> prohibited this janomaxlead from being saved:</h2>
+
+      <ul>
+        <% janomaxlead.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :phone, style: "display: block" %>
+    <%= form.text_field :phone %>
+  </div>
+
+  <div>
+    <%= form.label :last_status, style: "display: block" %>
+    <%= form.text_field :last_status %>
+  </div>
+
+  <div>
+    <%= form.label :calls_count, style: "display: block" %>
+    <%= form.number_field :calls_count %>
+  </div>
+
+  <div>
+    <%= form.label :lead_status, style: "display: block" %>
+    <%= form.text_field :lead_status %>
+  </div>
+
+  <div>
+    <%= form.label :comments, style: "display: block" %>
+    <%= form.textarea :comments %>
+  </div>
+
+  <div>
+    <%= form.label :customer_exists, style: "display: block" %>
+    <%= form.checkbox :customer_exists %>
+  </div>
+
+  <div>
+    <%= form.label :last_called_at, style: "display: block" %>
+    <%= form.datetime_field :last_called_at %>
+  </div>
+
+  <div>
+    <%= form.label :jmcustomer_id, style: "display: block" %>
+    <%= form.text_field :jmcustomer_id %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>

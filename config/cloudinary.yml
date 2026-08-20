@@ -1,0 +1,13 @@
+development:
+  cloud_name: fireside
+  api_key: '145121971854663'
+  api_secret: pp55Rnafp7H7_JcZsXMZqi2vaQ8
+  enhance_image_tag: true
+  static_file_support: false
+  
+production:
+  cloud_name: fireside
+  api_key: '145121971854663'
+  api_secret: pp55Rnafp7H7_JcZsXMZqi2vaQ8
+  enhance_image_tag: true
+  static_file_support: true

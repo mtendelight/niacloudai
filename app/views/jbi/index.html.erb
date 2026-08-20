@@ -1,0 +1,5510 @@
+<%= render "layouts/header" %>
+
+<div class="container">
+
+<div class="bi-fullscreen-dashboard">
+<div class="container py-4">
+
+
+	
+
+
+<style>
+
+/* ==========================================
+   JANOMAX PREMIUM BI HEADER
+========================================== */
+
+.bi-header .card {
+
+border-radius:28px;
+
+background:white;
+
+overflow:hidden;
+
+}
+
+
+
+.bi-gradient {
+
+background:
+linear-gradient(
+135deg,
+#020617 0%,
+#0f172a 35%,
+#1d4ed8 75%,
+#2563eb 100%
+);
+
+position:relative;
+
+}
+
+
+
+.bi-gradient::after{
+
+content:"";
+
+position:absolute;
+
+width:400px;
+height:400px;
+
+right:-120px;
+top:-120px;
+
+background:
+rgba(255,255,255,.08);
+
+border-radius:50%;
+
+}
+
+
+
+/* TITLE ICON */
+
+.bi-icon {
+
+width:82px;
+height:82px;
+
+border-radius:24px;
+
+background:
+linear-gradient(
+135deg,
+rgba(255,255,255,.25),
+rgba(255,255,255,.08)
+);
+
+backdrop-filter:blur(10px);
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+font-size:38px;
+
+color:white;
+
+box-shadow:
+0 15px 35px rgba(0,0,0,.25);
+
+}
+
+
+
+.bi-header h2{
+
+letter-spacing:-.5px;
+
+font-size:2rem;
+
+}
+
+
+
+/* STATUS PILLS */
+
+.bi-pill {
+
+display:flex;
+
+align-items:center;
+
+gap:6px;
+
+background:
+rgba(255,255,255,.12);
+
+border:
+
+1px solid rgba(255,255,255,.2);
+
+padding:
+
+.65rem 1.1rem;
+
+border-radius:50px;
+
+color:white;
+
+font-size:.85rem;
+
+font-weight:600;
+
+backdrop-filter:blur(8px);
+
+}
+
+
+
+.bi-pill i{
+
+font-size:1rem;
+
+}
+
+
+
+/* KPI CARDS */
+
+.mini-kpi {
+
+
+background:
+
+linear-gradient(
+145deg,
+#ffffff,
+#f8fafc
+);
+
+
+border-radius:22px;
+
+padding:16px;
+
+
+display:flex;
+
+align-items:center;
+
+gap:14px;
+
+
+border:
+
+1px solid #e2e8f0;
+
+
+transition:.35s;
+
+
+}
+
+
+
+.mini-kpi:hover{
+
+
+transform:
+translateY(-6px);
+
+
+box-shadow:
+
+0 18px 35px rgba(15,23,42,.15);
+
+
+}
+
+
+
+.mini-kpi small{
+
+font-size:.75rem;
+
+text-transform:uppercase;
+
+letter-spacing:.8px;
+
+color:#64748b;
+
+font-weight:700;
+
+}
+
+
+
+.mini-kpi h4{
+
+font-size:1.45rem;
+
+color:#0f172a;
+
+margin-top:3px;
+
+}
+
+
+
+/* KPI ICONS */
+
+.mini-icon {
+
+
+width:52px;
+
+height:52px;
+
+
+border-radius:18px;
+
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+
+font-size:23px;
+
+
+box-shadow:
+
+0 8px 20px rgba(0,0,0,.15);
+
+
+}
+
+
+
+/* Better gradients */
+
+.bg-success{
+
+background:
+linear-gradient(135deg,#22c55e,#15803d)!important;
+
+}
+
+
+.bg-primary{
+
+background:
+linear-gradient(135deg,#3b82f6,#1d4ed8)!important;
+
+}
+
+
+.bg-warning{
+
+background:
+linear-gradient(135deg,#facc15,#d97706)!important;
+
+}
+
+
+.bg-danger{
+
+background:
+linear-gradient(135deg,#ef4444,#991b1b)!important;
+
+}
+
+
+
+/* MODULE NAVIGATION */
+
+
+.bg-white{
+
+background:#ffffff!important;
+
+}
+
+
+
+.module-chip {
+
+
+display:flex;
+
+align-items:center;
+
+gap:8px;
+
+
+background:
+
+#f8fafc;
+
+
+border:
+
+1px solid #e2e8f0;
+
+
+padding:
+
+.7rem 1.15rem;
+
+
+border-radius:18px;
+
+
+font-size:.88rem;
+
+font-weight:700;
+
+
+color:#334155;
+
+
+transition:.3s;
+
+
+}
+
+
+
+.module-chip i{
+
+font-size:1.1rem;
+
+color:#2563eb;
+
+}
+
+
+
+.module-chip:hover {
+
+
+background:
+
+linear-gradient(
+135deg,
+#2563eb,
+#1d4ed8
+);
+
+
+color:white;
+
+
+border-color:#2563eb;
+
+
+transform:
+
+translateY(-4px);
+
+
+box-shadow:
+
+0 12px 25px rgba(37,99,235,.25);
+
+
+}
+
+
+
+.module-chip:hover i{
+
+color:white;
+
+}
+
+
+
+/* LIVE ANALYTICS DOT */
+
+.bi-pill:nth-child(2)::before{
+
+
+content:"";
+
+
+width:8px;
+
+height:8px;
+
+background:#22c55e;
+
+border-radius:50%;
+
+
+box-shadow:
+
+0 0 10px #22c55e;
+
+
+}
+
+
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+
+.bi-gradient{
+
+padding:1.5rem!important;
+
+}
+
+
+.bi-icon{
+
+width:65px;
+
+height:65px;
+
+font-size:30px;
+
+}
+
+
+.bi-header h2{
+
+font-size:1.45rem;
+
+}
+
+
+.mini-kpi{
+
+
+border-radius:18px;
+
+
+}
+
+
+.module-chip{
+
+width:100%;
+
+justify-content:center;
+
+}
+
+
+}
+
+
+
+</style>
+
+
+<style>
+	/*====================================================
+ HERO
+====================================================*/
+
+
+.metric-value{
+    font-size:clamp(1.6rem,3vw,2.8rem);
+    font-weight:800;
+    line-height:1.1;
+    color:#0f172a;
+    margin-bottom:10px;
+    white-space:nowrap;
+    overflow:visible;
+    text-overflow:unset;
+    word-break:keep-all;
+}
+
+.metric-title{
+    font-size:.82rem;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:1px;
+    color:#94a3b8;
+    margin-bottom:8px;
+}
+
+.metric-subtitle{
+    font-size:.85rem;
+    color:#64748b;
+    white-space:nowrap;
+}
+
+.metric-card{
+    min-height:165px;
+    padding:24px;
+}
+
+.bi-hero{
+
+background:linear-gradient(135deg,#0f172a,#2563eb);
+
+border-radius:24px;
+
+padding:45px;
+
+color:#fff;
+
+box-shadow:0 25px 60px rgba(37,99,235,.18);
+
+}
+
+.bi-badge{
+
+display:inline-flex;
+
+align-items:center;
+
+gap:8px;
+
+background:rgba(255,255,255,.15);
+
+padding:8px 18px;
+
+border-radius:30px;
+
+font-size:.75rem;
+
+font-weight:700;
+
+letter-spacing:1px;
+
+}
+
+.hero-icon{
+
+font-size:6rem;
+
+opacity:.18;
+
+}
+
+/*====================================================
+ KPI
+====================================================*/
+
+.metric-card{
+
+background:#fff;
+
+border-radius:22px;
+
+padding:28px;
+
+border:1px solid #edf2f7;
+
+position:relative;
+
+overflow:hidden;
+
+transition:.35s;
+
+height:100%;
+
+box-shadow:
+
+0 4px 15px rgba(15,23,42,.05),
+
+0 18px 45px rgba(15,23,42,.05);
+
+}
+
+.metric-card:hover{
+
+transform:translateY(-8px);
+
+box-shadow:
+
+0 15px 30px rgba(15,23,42,.10),
+
+0 30px 70px rgba(37,99,235,.15);
+
+}
+
+.metric-card::before{
+
+content:"";
+
+position:absolute;
+
+top:0;
+
+left:0;
+
+width:100%;
+
+height:5px;
+
+background:var(--accent);
+
+}
+
+.metric-title{
+
+font-size:.78rem;
+
+font-weight:700;
+
+letter-spacing:1.2px;
+
+text-transform:uppercase;
+
+color:#94a3b8;
+
+margin-bottom:12px;
+
+}
+
+.metric-value{
+
+font-size:2.6rem;
+
+font-weight:800;
+
+line-height:1;
+
+color:#0f172a;
+
+margin-bottom:15px;
+
+}
+
+.metric-subtitle{
+
+font-size:.9rem;
+
+color:#64748b;
+
+}
+
+.metric-icon{
+
+width:74px;
+
+height:74px;
+
+border-radius:20px;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+font-size:2rem;
+
+background:rgba(37,99,235,.08);
+
+color:var(--accent);
+
+transition:.35s;
+
+}
+
+.metric-card:hover .metric-icon{
+
+transform:rotate(-10deg) scale(1.08);
+
+}
+
+/*====================================================
+ COLORS
+====================================================*/
+
+.metric-primary{--accent:#2563eb;}
+.metric-warning{--accent:#f59e0b;}
+.metric-info{--accent:#06b6d4;}
+.metric-success{--accent:#22c55e;}
+.metric-danger{--accent:#ef4444;}
+.metric-purple{--accent:#7c3aed;}
+.metric-dark{--accent:#111827;}
+
+.metric-primary .metric-icon{background:#eff6ff;}
+.metric-warning .metric-icon{background:#fff7ed;}
+.metric-info .metric-icon{background:#ecfeff;}
+.metric-success .metric-icon{background:#f0fdf4;}
+.metric-danger .metric-icon{background:#fef2f2;}
+.metric-purple .metric-icon{background:#faf5ff;}
+.metric-dark .metric-icon{background:#f3f4f6;}
+
+/*====================================================
+ RESPONSIVE
+====================================================*/
+
+@media(max-width:992px){
+
+.bi-hero{
+
+padding:30px;
+
+}
+
+.hero-icon{
+
+display:none;
+
+}
+
+.metric-value{
+
+font-size:2rem;
+
+}
+
+}
+</style>
+
+
+<style>
+	
+	/*==================================================
+  PERFORMANCE PANEL
+==================================================*/
+
+.performance-card{
+
+    border:none;
+
+    border-radius:28px;
+
+    overflow:hidden;
+
+    background:#fff;
+
+    box-shadow:
+        0 8px 30px rgba(15,23,42,.06),
+        0 20px 60px rgba(15,23,42,.05);
+
+}
+
+/*==================================================
+HEADER
+==================================================*/
+
+.performance-header{
+
+    padding:22px 30px;
+
+    background:
+        linear-gradient(135deg,#0f172a,#1e3a8a);
+
+    color:#fff;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+}
+
+.performance-title{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+}
+
+.performance-title i{
+
+    font-size:1.4rem;
+
+    color:#38bdf8;
+
+}
+
+.performance-title h5{
+
+    margin:0;
+
+    font-weight:800;
+
+    font-size:1.2rem;
+
+}
+
+.performance-title p{
+
+    margin:2px 0 0;
+
+    color:rgba(255,255,255,.70);
+
+    font-size:.88rem;
+
+}
+
+.live-badge{
+
+    background:rgba(255,255,255,.12);
+
+    border:1px solid rgba(255,255,255,.15);
+
+    color:#fff;
+
+    padding:8px 18px;
+
+    border-radius:30px;
+
+    font-size:.78rem;
+
+    font-weight:700;
+
+}
+
+/*==================================================
+TABLE
+==================================================*/
+
+.performance-table{
+
+    margin:0;
+
+}
+
+.performance-table thead th{
+
+    background:#f8fafc;
+
+    color:#64748b;
+
+    border:none;
+
+    padding:18px;
+
+    text-transform:uppercase;
+
+    font-size:.75rem;
+
+    letter-spacing:1px;
+
+    font-weight:800;
+
+}
+
+.performance-table tbody td{
+
+    padding:18px;
+
+    border-top:1px solid #eef2f7;
+
+    vertical-align:middle;
+
+}
+
+.performance-table tbody tr{
+
+    transition:.25s;
+
+}
+
+.performance-table tbody tr:hover{
+
+    background:#f8fbff;
+
+    transform:scale(1.003);
+
+}
+
+/*==================================================
+USER
+==================================================*/
+
+.team-user{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:14px;
+
+}
+
+.team-avatar{
+
+    width:52px;
+
+    height:52px;
+
+    border-radius:18px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    background:
+        linear-gradient(135deg,#2563eb,#60a5fa);
+
+    color:#fff;
+
+    font-size:1.25rem;
+
+    box-shadow:
+        0 10px 20px rgba(37,99,235,.18);
+
+}
+
+.team-name{
+
+    font-size:1rem;
+
+    font-weight:800;
+
+    color:#0f172a;
+
+}
+
+.team-role{
+
+    color:#64748b;
+
+    font-size:.82rem;
+
+}
+
+/*==================================================
+METRIC BADGES
+==================================================*/
+
+.metric-pill{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    min-width:70px;
+
+    padding:10px 18px;
+
+    border-radius:999px;
+
+    font-weight:800;
+
+    font-size:.92rem;
+
+    color:#fff;
+
+}
+
+.metric-dispatched{
+
+    background:
+        linear-gradient(135deg,#0284c7,#38bdf8);
+
+}
+
+.metric-delivered{
+
+    background:
+        linear-gradient(135deg,#16a34a,#22c55e);
+
+}
+
+.metric-refunded{
+
+    background:
+        linear-gradient(135deg,#dc2626,#ef4444);
+
+}
+
+.metric-total{
+
+    background:
+        linear-gradient(135deg,#0f172a,#334155);
+
+}
+
+/*==================================================
+ROW RANK
+==================================================*/
+
+.rank-chip{
+
+    width:34px;
+
+    height:34px;
+
+    border-radius:12px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    background:#eff6ff;
+
+    color:#2563eb;
+
+    font-weight:800;
+
+    margin-right:14px;
+
+}
+
+/*==================================================
+SUMMARY BAR
+==================================================*/
+
+.performance-footer{
+
+    background:#f8fafc;
+
+    padding:22px 30px;
+
+    border-top:1px solid #edf2f7;
+
+}
+
+.summary-item{
+
+    text-align:center;
+
+}
+
+.summary-value{
+
+    font-size:1.8rem;
+
+    font-weight:800;
+
+    color:#0f172a;
+
+}
+
+.summary-label{
+
+    color:#64748b;
+
+    font-size:.82rem;
+
+    text-transform:uppercase;
+
+    letter-spacing:.5px;
+
+}
+
+/*==================================================
+RESPONSIVE
+==================================================*/
+
+@media(max-width:992px){
+
+.performance-header{
+
+    flex-direction:column;
+
+    align-items:flex-start;
+
+    gap:18px;
+
+}
+
+.performance-table{
+
+    min-width:760px;
+
+}
+
+}
+
+@media(max-width:768px){
+
+.performance-card{
+
+    border-radius:20px;
+
+}
+
+.performance-header{
+
+    padding:20px;
+
+}
+
+.performance-footer{
+
+    padding:20px;
+
+}
+
+.team-avatar{
+
+    width:44px;
+
+    height:44px;
+
+}
+
+.metric-pill{
+
+    min-width:56px;
+
+    padding:8px 12px;
+
+    font-size:.82rem;
+
+}
+
+}
+
+
+
+
+.bi-fullscreen-dashboard {
+
+    width:100%;
+
+    min-height:100vh;
+
+    padding:15px;
+
+}
+
+
+
+/* Remove bootstrap container restrictions */
+
+.container,
+.container-fluid {
+
+    max-width:none !important;
+
+    width:100% !important;
+
+}
+
+
+
+/* Larger dashboard cards */
+
+.card {
+
+    border-radius:22px !important;
+
+    box-shadow:
+    0 10px 35px rgba(15,23,42,.08);
+
+}
+
+
+
+/* Bigger BI tables */
+
+.table {
+
+    font-size:1rem;
+
+}
+
+
+.table th {
+
+    font-size:.85rem;
+
+    letter-spacing:.05em;
+
+}
+
+
+
+/* Dashboard cards spacing */
+
+.row {
+
+    --bs-gutter-x:1.5rem;
+
+}
+
+
+
+/* Sticky tables for TV display */
+
+.table-responsive {
+
+    max-height:none;
+
+}
+
+
+
+/* Hide scroll bars for clean TV look */
+
+::-webkit-scrollbar {
+
+    width:0;
+
+    height:0;
+
+}
+
+
+
+/* Make charts larger */
+
+canvas {
+
+    max-height:420px !important;
+
+}
+
+
+
+/* Mobile */
+
+@media(max-width:768px){
+
+    .bi-fullscreen-dashboard{
+
+        padding:8px;
+
+    }
+
+
+    .card{
+
+        border-radius:15px !important;
+
+    }
+
+}
+
+
+</style>
+
+
+
+
+
+
+<style>
+  
+  /*==================================================
+  PERFORMANCE PANEL
+==================================================*/
+
+.performance-card{
+
+    border:none;
+
+    border-radius:28px;
+
+    overflow:hidden;
+
+    background:#fff;
+
+    box-shadow:
+        0 8px 30px rgba(15,23,42,.06),
+        0 20px 60px rgba(15,23,42,.05);
+
+}
+
+/*==================================================
+HEADER
+==================================================*/
+
+.performance-header{
+
+    padding:22px 30px;
+
+    background:
+        linear-gradient(135deg,#0f172a,#1e3a8a);
+
+    color:#fff;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+}
+
+.performance-title{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+}
+
+.performance-title i{
+
+    font-size:1.4rem;
+
+    color:#38bdf8;
+
+}
+
+.performance-title h5{
+
+    margin:0;
+
+    font-weight:800;
+
+    font-size:1.2rem;
+
+}
+
+.performance-title p{
+
+    margin:2px 0 0;
+
+    color:rgba(255,255,255,.70);
+
+    font-size:.88rem;
+
+}
+
+.live-badge{
+
+    background:rgba(255,255,255,.12);
+
+    border:1px solid rgba(255,255,255,.15);
+
+    color:#fff;
+
+    padding:8px 18px;
+
+    border-radius:30px;
+
+    font-size:.78rem;
+
+    font-weight:700;
+
+}
+
+/*==================================================
+TABLE
+==================================================*/
+
+.performance-table{
+
+    margin:0;
+
+}
+
+.performance-table thead th{
+
+    background:#f8fafc;
+
+    color:#64748b;
+
+    border:none;
+
+    padding:18px;
+
+    text-transform:uppercase;
+
+    font-size:.75rem;
+
+    letter-spacing:1px;
+
+    font-weight:800;
+
+}
+
+.performance-table tbody td{
+
+    padding:18px;
+
+    border-top:1px solid #eef2f7;
+
+    vertical-align:middle;
+
+}
+
+.performance-table tbody tr{
+
+    transition:.25s;
+
+}
+
+.performance-table tbody tr:hover{
+
+    background:#f8fbff;
+
+    transform:scale(1.003);
+
+}
+
+/*==================================================
+USER
+==================================================*/
+
+.team-user{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:14px;
+
+}
+
+.team-avatar{
+
+    width:52px;
+
+    height:52px;
+
+    border-radius:18px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    background:
+        linear-gradient(135deg,#2563eb,#60a5fa);
+
+    color:#fff;
+
+    font-size:1.25rem;
+
+    box-shadow:
+        0 10px 20px rgba(37,99,235,.18);
+
+}
+
+.team-name{
+
+    font-size:1rem;
+
+    font-weight:800;
+
+    color:#0f172a;
+
+}
+
+.team-role{
+
+    color:#64748b;
+
+    font-size:.82rem;
+
+}
+
+/*==================================================
+METRIC BADGES
+==================================================*/
+
+.metric-pill{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    min-width:70px;
+
+    padding:10px 18px;
+
+    border-radius:999px;
+
+    font-weight:800;
+
+    font-size:.92rem;
+
+    color:#fff;
+
+}
+
+.metric-dispatched{
+
+    background:
+        linear-gradient(135deg,#0284c7,#38bdf8);
+
+}
+
+.metric-delivered{
+
+    background:
+        linear-gradient(135deg,#16a34a,#22c55e);
+
+}
+
+.metric-refunded{
+
+    background:
+        linear-gradient(135deg,#dc2626,#ef4444);
+
+}
+
+.metric-total{
+
+    background:
+        linear-gradient(135deg,#0f172a,#334155);
+
+}
+
+/*==================================================
+ROW RANK
+==================================================*/
+
+.rank-chip{
+
+    width:34px;
+
+    height:34px;
+
+    border-radius:12px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    background:#eff6ff;
+
+    color:#2563eb;
+
+    font-weight:800;
+
+    margin-right:14px;
+
+}
+
+/*==================================================
+SUMMARY BAR
+==================================================*/
+
+.performance-footer{
+
+    background:#f8fafc;
+
+    padding:22px 30px;
+
+    border-top:1px solid #edf2f7;
+
+}
+
+.summary-item{
+
+    text-align:center;
+
+}
+
+.summary-value{
+
+    font-size:1.8rem;
+
+    font-weight:800;
+
+    color:#0f172a;
+
+}
+
+.summary-label{
+
+    color:#64748b;
+
+    font-size:.82rem;
+
+    text-transform:uppercase;
+
+    letter-spacing:.5px;
+
+}
+
+/*==================================================
+RESPONSIVE
+==================================================*/
+
+@media(max-width:992px){
+
+.performance-header{
+
+    flex-direction:column;
+
+    align-items:flex-start;
+
+    gap:18px;
+
+}
+
+.performance-table{
+
+    min-width:760px;
+
+}
+
+}
+
+@media(max-width:768px){
+
+.performance-card{
+
+    border-radius:20px;
+
+}
+
+.performance-header{
+
+    padding:20px;
+
+}
+
+.performance-footer{
+
+    padding:20px;
+
+}
+
+.team-avatar{
+
+    width:44px;
+
+    height:44px;
+
+}
+
+.metric-pill{
+
+    min-width:56px;
+
+    padding:8px 12px;
+
+    font-size:.82rem;
+
+}
+
+}
+
+
+
+
+.bi-fullscreen-dashboard {
+
+    width:100%;
+
+    min-height:100vh;
+
+    padding:15px;
+
+}
+
+
+
+/* Remove bootstrap container restrictions */
+
+.container,
+.container-fluid {
+
+    max-width:none !important;
+
+    width:100% !important;
+
+}
+
+
+
+/* Larger dashboard cards */
+
+.card {
+
+    border-radius:22px !important;
+
+    box-shadow:
+    0 10px 35px rgba(15,23,42,.08);
+
+}
+
+
+
+/* Bigger BI tables */
+
+.table {
+
+    font-size:1rem;
+
+}
+
+
+.table th {
+
+    font-size:.85rem;
+
+    letter-spacing:.05em;
+
+}
+
+
+
+/* Dashboard cards spacing */
+
+.row {
+
+    --bs-gutter-x:1.5rem;
+
+}
+
+
+
+/* Sticky tables for TV display */
+
+.table-responsive {
+
+    max-height:none;
+
+}
+
+
+
+/* Hide scroll bars for clean TV look */
+
+::-webkit-scrollbar {
+
+    width:0;
+
+    height:0;
+
+}
+
+
+
+/* Make charts larger */
+
+canvas {
+
+    max-height:420px !important;
+
+}
+
+
+
+/* Mobile */
+
+@media(max-width:768px){
+
+    .bi-fullscreen-dashboard{
+
+        padding:8px;
+
+    }
+
+
+    .card{
+
+        border-radius:15px !important;
+
+    }
+
+}
+
+
+</style>
+
+
+
+
+
+
+
+
+
+<style>
+
+.bi-dashboard {
+
+    background:
+    linear-gradient(135deg,#f8fafc,#eef2ff);
+
+    min-height:100vh;
+
+}
+
+
+/* HERO */
+
+.bi-hero {
+
+    background:
+    linear-gradient(135deg,#0f172a,#2563eb);
+
+    color:white;
+
+    border-radius:28px;
+
+    overflow:hidden;
+
+    position:relative;
+
+}
+
+
+.bi-hero:after {
+
+    content:"";
+
+    position:absolute;
+
+    width:300px;
+
+    height:300px;
+
+    background:rgba(255,255,255,.08);
+
+    border-radius:50%;
+
+    right:-80px;
+
+    top:-80px;
+
+}
+
+
+.bi-badge {
+
+    background:rgba(255,255,255,.15);
+
+    backdrop-filter:blur(10px);
+
+    border-radius:50px;
+
+    padding:10px 18px;
+
+    display:inline-flex;
+
+    align-items:center;
+
+    gap:8px;
+
+}
+
+
+
+/* KPI CARDS */
+
+
+.bi-card {
+
+    border:0;
+
+    border-radius:24px;
+
+    background:white;
+
+    box-shadow:
+    0 15px 40px rgba(15,23,42,.08);
+
+    transition:.3s;
+
+}
+
+
+.bi-card:hover {
+
+    transform:translateY(-6px);
+
+    box-shadow:
+    0 25px 50px rgba(15,23,42,.15);
+
+}
+
+
+
+.icon-box {
+
+    width:70px;
+
+    height:70px;
+
+    border-radius:22px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:32px;
+
+}
+
+
+
+.kpi-number {
+
+    font-size:2.2rem;
+
+    font-weight:800;
+
+}
+
+
+
+.summary-card {
+
+    border-radius:24px;
+
+    background:white;
+
+    box-shadow:
+    0 10px 30px rgba(0,0,0,.08);
+
+}
+
+
+
+.summary-item {
+
+    padding:15px;
+
+    border-radius:18px;
+
+    background:#f8fafc;
+
+}
+
+
+
+.summary-item h3 {
+
+    font-weight:800;
+
+}
+
+
+
+.action-btn {
+
+    border-radius:15px;
+
+    padding:12px 22px;
+
+    font-weight:600;
+
+}
+
+
+</style>
+
+
+
+<div class="container-fluid py-4">
+
+  <!-- ================================================= -->
+  <!-- HERO -->
+  <!-- ================================================= -->
+
+  <div class="bi-hero mb-5">
+
+    <div class="row align-items-center">
+
+      <div class="col-lg-8">
+
+        <span class="bi-badge">
+          <i class="bi bi-whatsapp"></i>
+          LIVE WHATSAPP ANALYTICS
+        </span>
+
+        <h2 class="mt-3 fw-bold mb-2">
+          📱 WhatsApp Leads Analysis
+        </h2>
+
+        <p class="mb-0">
+          Monitor lead volume, conversion, response performance
+          and customer engagement.
+        </p>
+
+      </div>
+
+      <div class="col-lg-4 text-end">
+
+        <div class="hero-icon">
+          <i class="bi bi-whatsapp"></i>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ================================================= -->
+  <!-- PERIOD FILTER -->
+  <!-- ================================================= -->
+
+  <div class="analytics-toolbar mb-4">
+
+    <div class="d-flex flex-wrap gap-2">
+
+      <%= link_to jmleads_path(period: "all"),
+          class: "period-btn #{'active' if @period == 'all'}" do %>
+
+        <i class="bi bi-grid-3x3-gap me-1"></i>
+        All
+
+      <% end %>
+
+
+    </div>
+
+  </div>
+
+
+  <!-- ================================================= -->
+  <!-- KPI CARDS -->
+  <!-- ================================================= -->
+
+  <div class="row g-4 mb-5">
+
+
+    <%= render "metric_card",
+      title: "All Leads",
+      value: @total_leads,
+      subtitle: "Total WhatsApp Leads",
+      icon: "people-fill",
+      color: "primary" %>
+
+
+    <%= render "metric_card",
+      title: "Open",
+      value: @open_count,
+      subtitle: "Leads Still Open",
+      icon: "chat-left-text-fill",
+      color: "warning" %>
+
+
+    <%= render "metric_card",
+      title: "Converted",
+      value: @converted_count,
+      subtitle: "Successful Conversions",
+      icon: "check-circle-fill",
+      color: "success" %>
+
+
+    <%= render "metric_card",
+      title: "Uncontacted",
+      value: @uncontacted_count,
+      subtitle: "Waiting for Response",
+      icon: "person-exclamation",
+      color: "danger" %>
+
+
+    <%= render "metric_card",
+      title: "Conversion",
+      value: "#{@conversion_rate}%",
+      subtitle: "Overall Conversion Rate",
+      icon: "graph-up-arrow",
+      color: "purple" %>
+
+
+    <%= render "metric_card",
+      title: "Contacted",
+      value: "#{@contacted_rate}%",
+      subtitle: "Leads Successfully Contacted",
+      icon: "telephone-outbound-fill",
+      color: "info" %>
+
+
+    <%= render "metric_card",
+      title: "Today",
+      value: @today_count,
+      subtitle: "New Leads Today",
+      icon: "calendar-check-fill",
+      color: "dark" %>
+
+  </div>
+
+
+
+  <!-- ================================================= -->
+  <!-- MAIN ANALYTICS -->
+  <!-- ================================================= -->
+
+  <div class="row g-4 mb-5">
+
+
+    <!-- DAILY LEADS -->
+
+    <div class="col-lg-8">
+
+      <div class="analytics-card h-100">
+
+        <div class="analytics-card-header">
+
+          <div>
+
+            <span class="analytics-label">
+              LEAD ACTIVITY
+            </span>
+
+            <h5 class="fw-bold mb-0 mt-1">
+              WhatsApp Lead Trend
+            </h5>
+
+          </div>
+
+          <div class="analytics-icon primary">
+            <i class="bi bi-graph-up"></i>
+          </div>
+
+        </div>
+
+
+        <div class="chart-area">
+
+          <canvas id="dailyLeadsChart"></canvas>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- STATUS -->
+
+    <div class="col-lg-4">
+
+      <div class="analytics-card h-100">
+
+        <div class="analytics-card-header">
+
+          <div>
+
+            <span class="analytics-label">
+              LEAD STATUS
+            </span>
+
+            <h5 class="fw-bold mb-0 mt-1">
+              Status Breakdown
+            </h5>
+
+          </div>
+
+          <div class="analytics-icon success">
+            <i class="bi bi-pie-chart-fill"></i>
+          </div>
+
+        </div>
+
+
+        <div class="chart-area status-chart">
+
+          <canvas id="statusChart"></canvas>
+
+        </div>
+
+
+        <div class="status-list mt-3">
+
+          <% @status_breakdown.each do |status, count| %>
+
+            <div class="status-row">
+
+              <div class="d-flex align-items-center gap-2">
+
+                <span class="status-dot"></span>
+
+                <span>
+                  <%= status.to_s.humanize %>
+                </span>
+
+              </div>
+
+              <strong>
+                <%= count %>
+              </strong>
+
+            </div>
+
+          <% end %>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+
+<div class="d-flex justify-content-between align-items-center mb-2">
+
+  <div>
+    <h6 class="fw-bold mb-0">
+      <i class="bi bi-person-x-fill text-danger me-1"></i>
+      Uncontacted Leads
+    </h6>
+    <small class="text-muted">Last 6 Days</small>
+  </div>
+
+  <span class="badge rounded-pill bg-danger-subtle text-danger">
+    <i class="bi bi-chat-dots-fill me-1"></i>
+    <%= @uncontacted_count %>
+  </span>
+
+</div>
+
+
+<div class="uncontacted-grid">
+
+  <% @uncontacted_days.each do |day| %>
+
+  <%= link_to jmleads_path(
+        filter: "uncontacted",
+        uncontacted_date: day[:date]
+      ),
+      class: "uncontacted-card #{day[:count].zero? ? 'card-clear' : 'card-pending'} #{'active' if params[:uncontacted_date] == day[:date].to_s}" do %>
+
+    <div class="uc-top">
+
+      <span class="uc-icon">
+        <% if day[:count].zero? %>
+          <i class="bi bi-check-circle-fill"></i>
+        <% else %>
+          <i class="bi bi-person-x-fill"></i>
+        <% end %>
+      </span>
+
+      <i class="bi bi-arrow-up-right uc-arrow"></i>
+
+    </div>
+
+    <strong class="uc-count">
+      <%= day[:count] %>
+    </strong>
+
+    <span class="uc-date">
+      <i class="bi bi-calendar3"></i>
+      <%= day[:date].strftime("%d %b") %>
+    </span>
+
+    <span class="uc-status">
+
+      <% if day[:count].zero? %>
+
+        <i class="bi bi-check-circle-fill"></i>
+        Clear
+
+      <% else %>
+
+        <i class="bi bi-exclamation-circle-fill"></i>
+        Pending
+
+      <% end %>
+
+    </span>
+
+  <% end %>
+
+<% end %>
+
+</div>
+
+<style>
+
+/* =====================================================
+   UNCONTACTED LEADS
+===================================================== */
+
+.uncontacted-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+}
+
+
+/* =====================================================
+   BASE CARD
+===================================================== */
+
+.uncontacted-card {
+  display: block;
+  min-height: 145px;
+  padding: 18px;
+  border-radius: 16px;
+  text-decoration: none;
+  color: #343a40;
+  line-height: 1.2;
+  border: 1px solid #e5e7eb;
+  background: #fff;
+
+  transition:
+    transform .2s ease,
+    box-shadow .2s ease,
+    border-color .2s ease;
+}
+
+
+/* =====================================================
+   CLEAR — 0 LEADS
+===================================================== */
+
+.card-clear {
+  background: #f0fff4;
+  border: 1px solid #86efac;
+}
+
+.card-clear .uc-icon {
+  background: #dcfce7;
+  color: #16a34a;
+}
+
+.card-clear .uc-count,
+.card-clear .uc-status {
+  color: #15803d;
+}
+
+
+/* =====================================================
+   PENDING — HAS LEADS
+===================================================== */
+
+.card-pending {
+  background: #fff5f5;
+  border: 1px solid #fca5a5;
+}
+
+.card-pending .uc-icon {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.card-pending .uc-count,
+.card-pending .uc-status {
+  color: #b91c1c;
+}
+
+
+/* =====================================================
+   TOP ROW
+===================================================== */
+
+.uc-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+
+/* =====================================================
+   ICON
+===================================================== */
+
+.uc-icon {
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 12px;
+
+  font-size: 18px;
+
+  flex-shrink: 0;
+}
+
+
+/* =====================================================
+   ARROW
+===================================================== */
+
+.uc-arrow {
+  font-size: 15px;
+  color: #adb5bd;
+
+  transition:
+    transform .2s ease,
+    color .2s ease;
+}
+
+.uncontacted-card:hover .uc-arrow {
+  color: #dc3545;
+  transform: translateX(3px);
+}
+
+
+/* =====================================================
+   COUNT
+===================================================== */
+
+.uc-count {
+  display: block;
+
+  font-size: 2.4rem;
+  font-weight: 900;
+
+  line-height: 1;
+
+  margin-bottom: 12px;
+
+  letter-spacing: -1px;
+}
+
+
+/* =====================================================
+   DATE
+===================================================== */
+
+.uc-date {
+  display: flex;
+  align-items: center;
+
+  gap: 6px;
+
+  font-size: .9rem;
+
+  font-weight: 700;
+
+  color: #64748b;
+
+  margin-bottom: 8px;
+}
+
+.uc-date i {
+  font-size: 14px;
+}
+
+
+/* =====================================================
+   STATUS
+===================================================== */
+
+.uc-status {
+  display: flex;
+  align-items: center;
+
+  gap: 6px;
+
+  font-size: .75rem;
+
+  font-weight: 800;
+
+  text-transform: uppercase;
+
+  letter-spacing: .5px;
+}
+
+.uc-status i {
+  font-size: 10px;
+}
+
+
+/* =====================================================
+   HOVER
+===================================================== */
+
+.uncontacted-card:hover,
+.uncontacted-card.active {
+
+  text-decoration: none;
+
+  transform: translateY(-5px);
+
+  box-shadow:
+    0 10px 25px rgba(15, 23, 42, .10),
+    0 20px 40px rgba(15, 23, 42, .06);
+}
+
+.card-clear:hover,
+.card-clear.active {
+  border-color: #22c55e;
+}
+
+.card-pending:hover,
+.card-pending.active {
+  border-color: #ef4444;
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 768px) {
+
+  .uncontacted-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .uncontacted-card {
+    min-height: 125px;
+    padding: 14px;
+    border-radius: 14px;
+  }
+
+  .uc-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    font-size: 16px;
+  }
+
+  .uc-count {
+    font-size: 2rem;
+  }
+
+  .uc-date {
+    font-size: .78rem;
+  }
+
+  .uc-status {
+    font-size: .65rem;
+  }
+
+}
+
+
+/* =====================================================
+   SMALL MOBILE
+===================================================== */
+
+@media (max-width: 480px) {
+
+  .uncontacted-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .uncontacted-card {
+    min-height: 120px;
+    padding: 13px;
+    border-radius: 13px;
+  }
+
+  .uc-top {
+    margin-bottom: 9px;
+  }
+
+  .uc-icon {
+    width: 34px;
+    height: 34px;
+    font-size: 15px;
+  }
+
+  .uc-arrow {
+    font-size: 13px;
+  }
+
+  .uc-count {
+    font-size: 1.85rem;
+    margin-bottom: 9px;
+  }
+
+  .uc-date {
+    font-size: .72rem;
+    margin-bottom: 6px;
+  }
+
+  .uc-status {
+    font-size: .6rem;
+  }
+
+}
+
+</style>
+
+<div class="card shadow-sm border-0 rounded-4 mt-5 overflow-hidden">
+
+  <!-- HEADER -->
+
+  <div class="card-header bg-white border-0 py-4">
+
+    <div class="d-flex justify-content-between align-items-center">
+
+      <div>
+
+        <h5 class="fw-bold mb-1">
+
+          <i class="bi bi-whatsapp text-success me-2"></i>
+
+          WhatsApp Manager Performance
+
+        </h5>
+
+        <small class="text-muted">
+
+          <i class="bi bi-clock-history me-1"></i>
+
+          Based on actual lead activity recorded by Audited
+
+        </small>
+
+      </div>
+
+
+      <span class="badge rounded-pill bg-success px-3 py-2">
+
+        <i class="bi bi-activity me-1"></i>
+
+        Live
+
+      </span>
+
+    </div>
+
+  </div>
+
+
+
+  <!-- TABLE -->
+
+  <div class="table-container shadow-sm rounded-4">
+
+    <div class="table-responsive premium-table-scroll">
+
+      <table class="table bi-table align-middle mb-0">
+
+        <thead class="table-light">
+
+          <tr>
+
+            <th class="text-center">
+
+              <i class="bi bi-trophy me-1"></i>
+
+              Rank
+
+            </th>
+
+
+            <th>
+
+              <i class="bi bi-person-circle me-1"></i>
+
+              Manager
+
+            </th>
+
+
+            <th class="text-center">
+
+              <i class="bi bi-lightning-charge-fill me-1"></i>
+
+              Activity
+
+            </th>
+
+
+          
+
+
+            <th class="text-center">
+
+              <i class="bi bi-chat-dots-fill me-1"></i>
+
+              Conversations
+
+            </th>
+
+
+            <th class="text-center">
+
+              <i class="bi bi-arrow-repeat me-1"></i>
+
+              Updates
+
+            </th>
+
+
+            <th class="text-center">
+
+              <i class="bi bi-check-circle-fill me-1"></i>
+
+              Converted
+
+            </th>
+
+
+          </tr>
+
+        </thead>
+
+
+        <tbody>
+
+
+          <% (@manager_performance || [])
+              .each_with_index do |row, index| %>
+
+
+            <tr>
+
+
+              <!-- RANK -->
+
+              <td class="fw-bold text-center">
+
+                <% if index == 0 %>
+
+                  🥇
+
+                <% elsif index == 1 %>
+
+                  🥈
+
+                <% elsif index == 2 %>
+
+                  🥉
+
+                <% else %>
+
+                  <%= index + 1 %>
+
+                <% end %>
+
+              </td>
+
+
+
+              <!-- MANAGER -->
+
+              <td>
+
+                <div class="d-flex align-items-center">
+
+                  <div
+                    class="rounded-circle
+                           bg-success
+                           text-white
+                           d-flex
+                           align-items-center
+                           justify-content-center
+                           me-3"
+                    style="width:45px;height:45px;">
+
+                    <i class="bi bi-person-fill"></i>
+
+                  </div>
+
+
+                  <div>
+
+                    <div class="fw-bold">
+
+                      <%= row[:user].respond_to?(:username) &&
+                          row[:user].username.present? ?
+                          row[:user].username :
+                          row[:user].email %>
+
+                    </div>
+
+
+                    <small class="text-muted">
+
+                      <i class="bi bi-whatsapp me-1"></i>
+
+                      WhatsApp Manager
+
+                    </small>
+
+                  </div>
+
+                </div>
+
+              </td>
+
+
+
+              <!-- ACTIVITY -->
+
+              <td class="text-center">
+
+                <span class="badge rounded-pill bg-dark fs-6 px-3">
+
+                  <%= row[:total] %>
+
+                </span>
+
+              </td>
+
+
+
+     
+
+
+
+              <!-- CONVERSATIONS -->
+
+              <td class="text-center">
+
+                <span class="badge rounded-pill bg-info fs-6 px-3">
+
+                  <%= row[:comments] %>
+
+                </span>
+
+              </td>
+
+
+
+              <!-- UPDATES -->
+
+              <td class="text-center">
+
+                <span class="badge rounded-pill bg-warning text-dark fs-6 px-3">
+
+                  <%= row[:updates] %>
+
+                </span>
+
+              </td>
+
+
+
+              <!-- CONVERTED -->
+
+              <td class="text-center">
+
+                <span class="badge rounded-pill bg-success fs-6 px-3">
+
+                  <%= row[:converted] %>
+
+                </span>
+
+              </td>
+
+
+            </tr>
+
+
+          <% end %>
+
+
+
+          <% if @manager_performance.blank? %>
+
+            <tr>
+
+              <td colspan="7" class="text-center py-5">
+
+                <i class="bi bi-inbox fs-1 text-muted"></i>
+
+                <h6 class="text-muted mt-3">
+
+                  No WhatsApp manager activity found
+
+                </h6>
+
+              </td>
+
+            </tr>
+
+          <% end %>
+
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+
+  <!-- ================================================= -->
+  <!-- UNCONTACTED + TOP ITEMS -->
+  <!-- ================================================= -->
+
+  <div class="row g-4 mb-5">
+
+
+    <!-- UNCONTACTED AGING -->
+
+    <div class="col-lg-6">
+
+      <div class="analytics-card h-100">
+
+        <div class="analytics-card-header">
+
+          <div>
+
+            <span class="analytics-label">
+              CUSTOMER CARE
+            </span>
+
+            <h5 class="fw-bold mb-0 mt-1">
+              Uncontacted Lead Aging
+            </h5>
+
+          </div>
+
+          <div class="analytics-icon danger">
+            <i class="bi bi-hourglass-split"></i>
+          </div>
+
+        </div>
+
+
+        <div class="aging-list">
+
+
+          <% [
+            ["Today", @uncontacted_aging[:today], "success"],
+            ["Yesterday", @uncontacted_aging[:yesterday], "warning"],
+            ["2–3 Days", @uncontacted_aging[:"2_3_days"], "warning"],
+            ["4–7 Days", @uncontacted_aging[:"4_7_days"], "danger"],
+            ["8+ Days", @uncontacted_aging[:"8_plus_days"], "danger"]
+          ].each do |label, count, color| %>
+
+
+            <div class="aging-row">
+
+              <div>
+
+                <div class="aging-title">
+                  <%= label %>
+                </div>
+
+                <div class="aging-subtitle">
+                  Uncontacted leads
+                </div>
+
+              </div>
+
+
+              <span class="aging-badge <%= color %>">
+                <%= count %>
+              </span>
+
+            </div>
+
+
+          <% end %>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- TOP ITEMS -->
+
+    <div class="col-lg-6">
+
+      <div class="analytics-card h-100">
+
+        <div class="analytics-card-header">
+
+          <div>
+
+            <span class="analytics-label">
+              CUSTOMER DEMAND
+            </span>
+
+            <h5 class="fw-bold mb-0 mt-1">
+              Top Requested Items
+            </h5>
+
+          </div>
+
+          <div class="analytics-icon info">
+            <i class="bi bi-box-seam-fill"></i>
+          </div>
+
+        </div>
+
+
+        <div class="items-list">
+
+          <% @top_items.each_with_index do |(item, count), index| %>
+
+            <div class="item-row">
+
+              <div class="item-rank">
+                <%= index + 1 %>
+              </div>
+
+              <div class="item-name">
+                <%= item %>
+              </div>
+
+              <div class="item-count">
+                <%= count %>
+              </div>
+
+            </div>
+
+          <% end %>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+
+  <!-- ================================================= -->
+  <!-- RECENT LEADS -->
+  <!-- ================================================= -->
+
+  <div class="analytics-card">
+
+    <div class="analytics-card-header">
+
+      <div>
+
+        <span class="analytics-label">
+          RECENT ACTIVITY
+        </span>
+
+        <h5 class="fw-bold mb-0 mt-1">
+          Latest WhatsApp Leads
+        </h5>
+
+      </div>
+
+      <div class="analytics-icon primary">
+        <i class="bi bi-clock-history"></i>
+      </div>
+
+    </div>
+
+
+    <div class="table-responsive">
+
+      <table class="table analytics-table align-middle mb-0">
+
+        <thead>
+
+          <tr>
+
+            <th>Customer</th>
+            <th>Phone</th>
+            <th>Item Required</th>
+            <th>Assigned To</th>
+            <th>Status</th>
+            <th>Date</th>
+
+          </tr>
+
+        </thead>
+
+
+        <tbody>
+
+          <% @recent_leads.each do |lead| %>
+
+            <tr>
+
+              <td>
+
+                <div class="customer-name">
+
+                  <div class="customer-avatar">
+                    <i class="bi bi-person-fill"></i>
+                  </div>
+
+                  <strong>
+                    <%= lead.name.presence || "Unknown" %>
+                  </strong>
+
+                </div>
+
+              </td>
+
+
+              <td>
+                <%= lead.phone %>
+              </td>
+
+
+              <td>
+
+                <% if lead.items_required.present? %>
+
+                  <span class="item-pill">
+                    <%= lead.items_required %>
+                  </span>
+
+                <% else %>
+
+                  <span class="text-muted">
+                    —
+                  </span>
+
+                <% end %>
+
+              </td>
+
+
+              <td>
+
+                <%= lead.jstaff&.name || "Unassigned" %>
+
+              </td>
+
+
+              <td>
+
+                <% status_class =
+                  case lead.status.to_s.downcase
+                  when "converted"
+                    "success"
+                  when "open"
+                    "warning"
+                  else
+                    "secondary"
+                  end
+                %>
+
+
+                <span class="status-badge <%= status_class %>">
+
+                  <%= lead.status.to_s.humanize %>
+
+                </span>
+
+              </td>
+
+
+              <td>
+
+                <small class="text-muted">
+
+                  <%= lead.created_at.strftime("%d %b %Y %I:%M %p") %>
+
+                </small>
+
+              </td>
+
+            </tr>
+
+          <% end %>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+
+<!-- ================================================= -->
+<!-- CHART.JS -->
+<!-- ================================================= -->
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+
+  /* =================================================
+     DAILY LEADS
+  ================================================= */
+
+  const dailyCanvas =
+    document.getElementById("dailyLeadsChart");
+
+
+  if (dailyCanvas) {
+
+    const dailyData =
+      <%= raw @daily_leads.to_json %>;
+
+
+    new Chart(dailyCanvas, {
+
+      type: "line",
+
+      data: {
+
+        labels: dailyData.map(
+          item => item.date
+        ),
+
+        datasets: [
+
+          {
+            label: "Total Leads",
+
+            data: dailyData.map(
+              item => item.total
+            ),
+
+            tension: 0.4,
+
+            fill: true,
+
+            borderWidth: 3,
+
+            pointRadius: 3
+
+          },
+
+          {
+            label: "Converted",
+
+            data: dailyData.map(
+              item => item.converted
+            ),
+
+            tension: 0.4,
+
+            borderWidth: 3,
+
+            pointRadius: 3
+
+          }
+
+        ]
+
+      },
+
+      options: {
+
+        responsive: true,
+
+        maintainAspectRatio: false,
+
+        plugins: {
+
+          legend: {
+
+            position: "top"
+
+          }
+
+        },
+
+        scales: {
+
+          y: {
+
+            beginAtZero: true,
+
+            ticks: {
+
+              precision: 0
+
+            }
+
+          }
+
+        }
+
+      }
+
+    });
+
+  }
+
+
+
+  /* =================================================
+     STATUS CHART
+  ================================================= */
+
+  const statusCanvas =
+    document.getElementById("statusChart");
+
+
+  if (statusCanvas) {
+
+    const statusData =
+      <%= raw @status_breakdown.to_h.to_json %>;
+
+
+    new Chart(statusCanvas, {
+
+      type: "doughnut",
+
+      data: {
+
+        labels: Object.keys(statusData),
+
+        datasets: [{
+
+          data: Object.values(statusData),
+
+          borderWidth: 0
+
+        }]
+
+      },
+
+      options: {
+
+        responsive: true,
+
+        maintainAspectRatio: false,
+
+        cutout: "68%",
+
+        plugins: {
+
+          legend: {
+
+            display: false
+
+          }
+
+        }
+
+      }
+
+    });
+
+  }
+
+});
+
+</script>
+
+
+
+<style>
+
+/* =====================================================
+   HERO
+===================================================== */
+
+.bi-hero {
+
+  background:
+    linear-gradient(
+      135deg,
+      #0f172a,
+      #2563eb
+    );
+
+  border-radius:24px;
+
+  padding:45px;
+
+  color:#fff;
+
+  box-shadow:
+    0 25px 60px
+    rgba(37,99,235,.18);
+
+}
+
+.bi-badge {
+
+  display:inline-flex;
+
+  align-items:center;
+
+  gap:8px;
+
+  background:
+    rgba(255,255,255,.15);
+
+  padding:8px 18px;
+
+  border-radius:30px;
+
+  font-size:.75rem;
+
+  font-weight:700;
+
+  letter-spacing:1px;
+
+}
+
+.hero-icon {
+
+  font-size:6rem;
+
+  opacity:.18;
+
+}
+
+
+
+/* =====================================================
+   TOOLBAR
+===================================================== */
+
+.analytics-toolbar {
+
+  background:#fff;
+
+  border:1px solid #edf2f7;
+
+  padding:10px;
+
+  border-radius:16px;
+
+  box-shadow:
+    0 5px 20px rgba(15,23,42,.04);
+
+}
+
+.period-btn {
+
+  display:inline-flex;
+
+  align-items:center;
+
+  padding:9px 18px;
+
+  border-radius:11px;
+
+  text-decoration:none;
+
+  color:#64748b;
+
+  font-size:.85rem;
+
+  font-weight:700;
+
+  transition:.25s;
+
+}
+
+.period-btn:hover {
+
+  background:#f1f5f9;
+
+  color:#2563eb;
+
+}
+
+.period-btn.active {
+
+  background:#2563eb;
+
+  color:#fff;
+
+}
+
+
+
+/* =====================================================
+   ANALYTICS CARD
+===================================================== */
+
+.analytics-card {
+
+  background:#fff;
+
+  border:1px solid #edf2f7;
+
+  border-radius:22px;
+
+  padding:25px;
+
+  box-shadow:
+    0 5px 20px rgba(15,23,42,.04),
+    0 20px 50px rgba(15,23,42,.04);
+
+}
+
+.analytics-card-header {
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:space-between;
+
+  margin-bottom:25px;
+
+}
+
+.analytics-label {
+
+  font-size:.7rem;
+
+  font-weight:800;
+
+  letter-spacing:1.3px;
+
+  color:#94a3b8;
+
+}
+
+.analytics-icon {
+
+  width:50px;
+
+  height:50px;
+
+  border-radius:15px;
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  font-size:1.3rem;
+
+}
+
+.analytics-icon.primary {
+
+  background:#eff6ff;
+  color:#2563eb;
+
+}
+
+.analytics-icon.success {
+
+  background:#f0fdf4;
+  color:#16a34a;
+
+}
+
+.analytics-icon.warning {
+
+  background:#fff7ed;
+  color:#f59e0b;
+
+}
+
+.analytics-icon.danger {
+
+  background:#fef2f2;
+  color:#ef4444;
+
+}
+
+.analytics-icon.info {
+
+  background:#ecfeff;
+  color:#0891b2;
+
+}
+
+.analytics-icon.purple {
+
+  background:#faf5ff;
+  color:#7c3aed;
+
+}
+
+
+
+/* =====================================================
+   CHART
+===================================================== */
+
+.chart-area {
+
+  height:320px;
+
+  position:relative;
+
+}
+
+.status-chart {
+
+  height:220px;
+
+}
+
+
+
+/* =====================================================
+   STATUS
+===================================================== */
+
+.status-list {
+
+  display:flex;
+
+  flex-direction:column;
+
+  gap:12px;
+
+}
+
+.status-row {
+
+  display:flex;
+
+  justify-content:space-between;
+
+  align-items:center;
+
+  font-size:.9rem;
+
+  color:#475569;
+
+}
+
+.status-dot {
+
+  width:9px;
+
+  height:9px;
+
+  border-radius:50%;
+
+  background:#2563eb;
+
+}
+
+
+
+/* =====================================================
+   STAFF
+===================================================== */
+
+.analytics-table {
+
+  border-collapse:separate;
+
+  border-spacing:0 8px;
+
+}
+
+.analytics-table thead th {
+
+  border:0;
+
+  color:#94a3b8;
+
+  font-size:.72rem;
+
+  text-transform:uppercase;
+
+  letter-spacing:.8px;
+
+  font-weight:800;
+
+  padding:12px;
+
+}
+
+.analytics-table tbody tr {
+
+  background:#f8fafc;
+
+}
+
+.analytics-table tbody td {
+
+  border:0;
+
+  padding:15px 12px;
+
+}
+
+.analytics-table tbody tr td:first-child {
+
+  border-radius:12px 0 0 12px;
+
+}
+
+.analytics-table tbody tr td:last-child {
+
+  border-radius:0 12px 12px 0;
+
+}
+
+.staff-cell {
+
+  display:flex;
+
+  align-items:center;
+
+  gap:12px;
+
+}
+
+.staff-avatar {
+
+  width:42px;
+
+  height:42px;
+
+  border-radius:13px;
+
+  background:#eff6ff;
+
+  color:#2563eb;
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  font-weight:800;
+
+}
+
+.staff-cell small {
+
+  display:block;
+
+  color:#94a3b8;
+
+  font-size:.72rem;
+
+}
+
+.badge-soft {
+
+  padding:6px 11px;
+
+  border-radius:20px;
+
+  font-size:.75rem;
+
+  font-weight:700;
+
+}
+
+.badge-soft.warning {
+
+  background:#fff7ed;
+
+  color:#c2410c;
+
+}
+
+.badge-soft.success {
+
+  background:#f0fdf4;
+
+  color:#15803d;
+
+}
+
+
+
+/* =====================================================
+   PROGRESS
+===================================================== */
+
+.analytics-progress {
+
+  height:8px;
+
+  background:#e2e8f0;
+
+  border-radius:20px;
+
+}
+
+.analytics-progress .progress-bar {
+
+  border-radius:20px;
+
+  background:#2563eb;
+
+}
+
+
+
+/* =====================================================
+   AGING
+===================================================== */
+
+.aging-list {
+
+  display:flex;
+
+  flex-direction:column;
+
+  gap:10px;
+
+}
+
+.aging-row {
+
+  display:flex;
+
+  justify-content:space-between;
+
+  align-items:center;
+
+  padding:14px;
+
+  background:#f8fafc;
+
+  border-radius:14px;
+
+}
+
+.aging-title {
+
+  font-weight:700;
+
+  font-size:.9rem;
+
+  color:#334155;
+
+}
+
+.aging-subtitle {
+
+  font-size:.72rem;
+
+  color:#94a3b8;
+
+  margin-top:3px;
+
+}
+
+.aging-badge {
+
+  min-width:42px;
+
+  text-align:center;
+
+  padding:7px 10px;
+
+  border-radius:10px;
+
+  font-weight:800;
+
+  font-size:.8rem;
+
+}
+
+.aging-badge.success {
+
+  background:#f0fdf4;
+  color:#15803d;
+
+}
+
+.aging-badge.warning {
+
+  background:#fff7ed;
+  color:#c2410c;
+
+}
+
+.aging-badge.danger {
+
+  background:#fef2f2;
+  color:#dc2626;
+
+}
+
+
+
+/* =====================================================
+   ITEMS
+===================================================== */
+
+.items-list {
+
+  display:flex;
+
+  flex-direction:column;
+
+  gap:10px;
+
+}
+
+.item-row {
+
+  display:flex;
+
+  align-items:center;
+
+  gap:14px;
+
+  padding:12px;
+
+  background:#f8fafc;
+
+  border-radius:13px;
+
+}
+
+.item-rank {
+
+  width:32px;
+
+  height:32px;
+
+  border-radius:10px;
+
+  background:#eff6ff;
+
+  color:#2563eb;
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  font-weight:800;
+
+  font-size:.8rem;
+
+}
+
+.item-name {
+
+  flex:1;
+
+  font-size:.88rem;
+
+  font-weight:600;
+
+  color:#334155;
+
+}
+
+.item-count {
+
+  font-weight:800;
+
+  color:#0f172a;
+
+}
+
+
+
+/* =====================================================
+   CUSTOMER
+===================================================== */
+
+.customer-name {
+
+  display:flex;
+
+  align-items:center;
+
+  gap:10px;
+
+}
+
+.customer-avatar {
+
+  width:36px;
+
+  height:36px;
+
+  border-radius:11px;
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  background:#eff6ff;
+
+  color:#2563eb;
+
+}
+
+.item-pill {
+
+  display:inline-block;
+
+  padding:6px 10px;
+
+  background:#f1f5f9;
+
+  border-radius:9px;
+
+  font-size:.75rem;
+
+  font-weight:600;
+
+}
+
+.status-badge {
+
+  display:inline-flex;
+
+  padding:6px 11px;
+
+  border-radius:20px;
+
+  font-size:.72rem;
+
+  font-weight:800;
+
+}
+
+.status-badge.success {
+
+  background:#f0fdf4;
+
+  color:#15803d;
+
+}
+
+.status-badge.warning {
+
+  background:#fff7ed;
+
+  color:#c2410c;
+
+}
+
+.status-badge.secondary {
+
+  background:#f1f5f9;
+
+  color:#64748b;
+
+}
+
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media(max-width:992px) {
+
+  .bi-hero {
+
+    padding:30px;
+
+  }
+
+  .hero-icon {
+
+    display:none;
+
+  }
+
+}
+
+@media(max-width:576px) {
+
+  .analytics-card {
+
+    padding:18px;
+
+    border-radius:18px;
+
+  }
+
+  .analytics-table {
+
+    min-width:850px;
+
+  }
+
+  .chart-area {
+
+    height:260px;
+
+  }
+
+}
+
+</style>
+
+
+
+<div class="container-fluid py-4 bi-dashboard">
+
+
+
+<!-- =========================
+ HERO HEADER
+========================== -->
+
+
+<div class="bi-hero shadow-lg mb-5">
+
+<div class="card-body p-5 position-relative">
+
+
+<div class="row align-items-center">
+
+
+<div class="col-lg-8">
+
+
+<div class="bi-badge mb-3">
+
+<i class="bi bi-cpu-fill"></i>
+
+JANOMAX BUSINESS INTELLIGENCE
+
+</div>
+
+
+
+<h1 class="display-5 fw-bold">
+
+Call Centre Executive Dashboard
+
+</h1>
+
+
+<p class="lead opacity-75">
+
+Real-time intelligence monitoring leads,
+calls, customer engagement, conversion,
+and team productivity.
+
+</p>
+
+
+<div class="d-flex gap-3 flex-wrap mt-4">
+
+
+<%= link_to janomaxleads_path,
+class:"btn btn-light action-btn" do %>
+
+<i class="bi bi-people-fill me-2"></i>
+Manage Leads
+
+<% end %>
+
+
+<%= link_to dashboard_janomaxleads_path,
+class:"btn btn-outline-light action-btn" do %>
+
+<i class="bi bi-arrow-repeat me-2"></i>
+Refresh
+
+<% end %>
+
+
+</div>
+
+
+</div>
+
+
+
+<div class="col-lg-4 text-center">
+
+
+<i class="bi bi-bar-chart-line-fill"
+style="
+font-size:180px;
+opacity:.15;">
+</i>
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+</div>
+
+
+
+
+<!-- =========================
+ EXECUTIVE SUMMARY
+========================== -->
+
+
+<div class="summary-card p-4 mb-5">
+
+
+<h4 class="fw-bold mb-4">
+
+<i class="bi bi-lightbulb-fill text-warning me-2"></i>
+
+Executive Summary
+
+</h4>
+
+
+
+<div class="row g-4">
+
+
+<div class="col-md-3">
+
+<div class="summary-item text-center">
+
+<i class="bi bi-telephone-fill fs-2 text-primary"></i>
+
+<h3 class="text-primary mt-2">
+
+<%= @today_calls %>
+
+</h3>
+
+<span class="text-muted">
+Calls Today
+</span>
+
+</div>
+
+</div>
+
+
+
+
+<div class="col-md-3">
+
+<div class="summary-item text-center">
+
+<i class="bi bi-person-plus-fill fs-2 text-success"></i>
+
+
+<h3 class="text-success mt-2">
+
+<%= @today_leads %>
+
+</h3>
+
+
+<span class="text-muted">
+New Leads
+</span>
+
+
+</div>
+
+</div>
+
+
+
+
+
+<div class="col-md-3">
+
+<div class="summary-item text-center">
+
+<i class="bi bi-trophy-fill fs-2 text-danger"></i>
+
+
+<h3 class="text-danger mt-2">
+
+<%= @today_converted %>
+
+</h3>
+
+
+<span class="text-muted">
+Converted Today
+</span>
+
+
+</div>
+
+</div>
+
+
+
+
+
+<div class="col-md-3">
+
+<div class="summary-item text-center">
+
+<i class="bi bi-percent fs-2 text-dark"></i>
+
+
+<h3 class="mt-2">
+
+<%= @conversion_rate %>%
+
+</h3>
+
+
+<span class="text-muted">
+Conversion Rate
+</span>
+
+
+</div>
+
+</div>
+
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+
+<!-- =========================
+ MAIN KPI CARDS
+========================== -->
+
+
+<div class="row g-4 mb-5">
+
+
+
+<%
+kpis = [
+
+["TOTAL CALLS",
+@total_calls,
+"bi-telephone-fill",
+"primary",
+"#{@calls_growth}% vs Yesterday"],
+
+
+["UNIQUE LEADS",
+@unique_leads,
+"bi-people-fill",
+"dark",
+"#{@lead_growth}% Growth"],
+
+
+["CONVERTED",
+@converted,
+"bi-check-circle-fill",
+"success",
+"#{@conversion_rate}% Conversion"],
+
+
+["FOLLOW UP RATE",
+"#{@follow_up_rate}%",
+"bi-person-check-fill",
+"warning",
+"#{@followed_up} Followed"]
+
+]
+%>
+
+
+
+<% kpis.each do |title,value,icon,color,text| %>
+
+
+<div class="col-xl-3 col-md-6">
+
+
+<div class="bi-card h-100">
+
+
+<div class="card-body p-4">
+
+
+<div class="d-flex justify-content-between">
+
+
+<div>
+
+
+<small class="text-muted fw-bold">
+
+<%= title %>
+
+</small>
+
+
+<div class="kpi-number mt-2">
+
+<%= number_with_delimiter(value) %>
+
+</div>
+
+
+</div>
+
+
+
+<div class="icon-box bg-<%= color %>-subtle text-<%= color %>">
+
+<i class="bi <%= icon %>"></i>
+
+</div>
+
+
+
+</div>
+
+
+<hr>
+
+
+<span class="text-muted">
+
+<i class="bi bi-graph-up-arrow me-1"></i>
+
+<%= text %>
+
+</span>
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+<% end %>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+<!-- =========================
+ SECONDARY KPI
+========================== -->
+
+
+<div class="row g-4">
+
+
+<%
+secondary = [
+
+["OPEN LEADS",
+@open_leads,
+"bi-hourglass-split",
+"warning"],
+
+["EXISTING CUSTOMERS",
+@existing_customers,
+"bi-person-check",
+"info"],
+
+["NEW LEADS",
+@new_leads,
+"bi-person-plus",
+"danger"],
+
+["AVG CALLS / LEAD",
+@avg_calls_per_lead,
+"bi-speedometer2",
+"success"]
+
+]
+%>
+
+
+<% secondary.each do |title,value,icon,color| %>
+
+
+<div class="col-xl-3 col-md-6">
+
+
+<div class="card border-0 shadow-sm rounded-4 h-100">
+
+
+<div class="card-body p-4">
+
+
+<div class="d-flex align-items-center gap-3">
+
+
+<div class="icon-box bg-<%= color %>-subtle text-<%= color %>">
+
+<i class="bi <%= icon %>"></i>
+
+</div>
+
+
+<div>
+
+<small class="text-muted fw-bold">
+
+<%= title %>
+
+</small>
+
+
+<h2 class="fw-bold mb-0">
+
+<%= value %>
+
+</h2>
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+<% end %>
+
+
+</div>
+
+
+</div>
+
+
+<style>
+
+.analytics-card {
+  background: #fff;
+  border: 1px solid #edf2f7;
+  border-radius: 22px;
+  padding: 24px;
+
+  box-shadow:
+    0 5px 20px rgba(15, 23, 42, .05);
+}
+
+.analytics-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.analytics-label {
+  display: block;
+  font-size: .7rem;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+  color: #94a3b8;
+}
+
+.analytics-icon {
+  width: 48px;
+  height: 48px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 14px;
+
+  font-size: 1.3rem;
+}
+
+.analytics-icon.primary {
+  background: #eff6ff;
+  color: #2563eb;
+}
+
+.analytics-icon.success {
+  background: #f0fdf4;
+  color: #16a34a;
+}
+
+.analytics-icon.info {
+  background: #ecfeff;
+  color: #0891b2;
+}
+
+.chart-area {
+  position: relative;
+  height: 350px;
+  width: 100%;
+}
+
+.status-chart {
+  height: 280px;
+}
+
+.status-list {
+  border-top: 1px solid #f1f5f9;
+  padding-top: 12px;
+}
+
+.status-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 8px 0;
+
+  font-size: .9rem;
+}
+
+.status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+@media (max-width: 768px) {
+
+  .chart-area {
+    height: 280px;
+  }
+
+  .status-chart {
+    height: 250px;
+  }
+
+}
+
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+  /* =====================================================
+     JANOMAX LEAD ACTIVITY
+  ===================================================== */
+
+  const leadCanvas = document.getElementById("janomaxLeadActivityChart");
+
+  if (leadCanvas) {
+
+    const dailyLeads = <%= raw(@daily_leads.to_json) %>;
+    const dailyConversions = <%= raw(@daily_conversions.to_json) %>;
+
+    const labels = Object.keys(dailyLeads);
+
+    new Chart(leadCanvas, {
+      type: "line",
+
+      data: {
+        labels: labels,
+
+        datasets: [
+          {
+            label: "Leads",
+            data: labels.map(date => dailyLeads[date] || 0),
+            tension: 0.4,
+            fill: true,
+            borderWidth: 3,
+            pointRadius: 3
+          },
+
+          {
+            label: "Converted",
+            data: labels.map(date => dailyConversions[date] || 0),
+            tension: 0.4,
+            fill: false,
+            borderWidth: 3,
+            pointRadius: 3
+          }
+        ]
+      },
+
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+
+        plugins: {
+          legend: {
+            position: "top"
+          }
+        },
+
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: {
+              precision: 0
+            }
+          }
+        }
+      }
+    });
+  }
+
+
+  /* =====================================================
+     LEAD STATUS
+  ===================================================== */
+
+  const statusCanvas =
+    document.getElementById("janomaxLeadStatusChart");
+
+  if (statusCanvas) {
+
+    new Chart(statusCanvas, {
+
+      type: "doughnut",
+
+      data: {
+        labels: [
+          "Open",
+          "Converted"
+        ],
+
+        datasets: [{
+          data: [
+            <%= @open_leads.to_i %>,
+            <%= @converted.to_i %>
+          ],
+
+          borderWidth: 0
+        }]
+      },
+
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        cutout: "65%",
+
+        plugins: {
+          legend: {
+            position: "bottom"
+          }
+        }
+      }
+    });
+  }
+
+
+  /* =====================================================
+     CALL ACTIVITY
+  ===================================================== */
+
+  const callsCanvas =
+    document.getElementById("janomaxCallsChart");
+
+  if (callsCanvas) {
+
+    const dailyCalls =
+      <%= raw(@daily_calls.to_json) %>;
+
+    new Chart(callsCanvas, {
+
+      type: "bar",
+
+      data: {
+
+        labels: Object.keys(dailyCalls),
+
+        datasets: [{
+          label: "Calls",
+
+          data: Object.values(dailyCalls),
+
+          borderRadius: 8,
+
+          borderSkipped: false
+        }]
+      },
+
+      options: {
+
+        responsive: true,
+
+        maintainAspectRatio: false,
+
+        plugins: {
+          legend: {
+            display: false
+          }
+        },
+
+        scales: {
+
+          y: {
+            beginAtZero: true,
+
+            ticks: {
+              precision: 0
+            }
+          }
+
+        }
+      }
+    });
+  }
+
+
+  /* =====================================================
+     CALL STATUS
+  ===================================================== */
+
+  const callStatusCanvas =
+    document.getElementById("janomaxCallStatusChart");
+
+  if (callStatusCanvas) {
+
+    const callStatus =
+      <%= raw(@call_status.to_json) %>;
+
+    new Chart(callStatusCanvas, {
+
+      type: "doughnut",
+
+      data: {
+
+        labels: Object.keys(callStatus),
+
+        datasets: [{
+          data: Object.values(callStatus),
+
+          borderWidth: 0
+        }]
+      },
+
+      options: {
+
+        responsive: true,
+
+        maintainAspectRatio: false,
+
+        cutout: "65%",
+
+        plugins: {
+
+          legend: {
+
+            position: "bottom",
+
+            labels: {
+              usePointStyle: true,
+              padding: 15
+            }
+          }
+        }
+      }
+    });
+  }
+
+});
+</script>
+
+
+<div class="row g-4 mb-5">
+
+
+
+  
+  <!-- CALL STATUS -->
+
+  <div class="col-lg-6">
+
+    <div class="analytics-card h-100">
+
+      <div class="analytics-card-header">
+
+        <div>
+
+          <span class="analytics-label">
+            CALL OUTCOMES
+          </span>
+
+          <h5 class="fw-bold mb-0 mt-1">
+            Call Status
+          </h5>
+
+        </div>
+
+        <div class="analytics-icon primary">
+          <i class="bi bi-telephone-outbound-fill"></i>
+        </div>
+
+      </div>
+
+
+      <div class="chart-area status-chart">
+
+        <canvas id="janomaxCallStatusChart"></canvas>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+
+
+
+  <!-- STATUS -->
+
+  <div class="col-lg-6">
+
+    <div class="analytics-card h-100">
+
+      <div class="analytics-card-header">
+
+        <div>
+
+          <span class="analytics-label">
+            JANOMAX LEADS
+          </span>
+
+          <h5 class="fw-bold mb-0 mt-1">
+            Lead Status
+          </h5>
+
+        </div>
+
+        <div class="analytics-icon success">
+          <i class="bi bi-pie-chart-fill"></i>
+        </div>
+
+      </div>
+
+
+      <div class="chart-area status-chart">
+
+        <canvas id="janomaxLeadStatusChart"></canvas>
+
+      </div>
+
+
+      <div class="status-list mt-3">
+
+        <div class="status-row">
+
+          <div class="d-flex align-items-center gap-2">
+
+            <span class="status-dot bg-warning"></span>
+
+            <span>Open</span>
+
+          </div>
+
+          <strong>
+            <%= @open_leads %>
+          </strong>
+
+        </div>
+
+
+        <div class="status-row">
+
+          <div class="d-flex align-items-center gap-2">
+
+            <span class="status-dot bg-success"></span>
+
+            <span>Converted</span>
+
+          </div>
+
+          <strong>
+            <%= @converted %>
+          </strong>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+
+
+
+<div class="d-flex justify-content-between align-items-center mb-2">
+
+  <div>
+    <h6 class="fw-bold mb-0">
+      <i class="bi bi-telephone-x-fill text-danger me-1"></i>
+      Follow-up Queue
+    </h6>
+
+    <small class="text-muted">
+      Outstanding calls · Last 6 Days
+    </small>
+  </div>
+
+  <span class="badge rounded-pill bg-danger-subtle text-danger">
+    <i class="bi bi-clock-history me-1"></i>
+    <%= @followup_days.sum { |d| d[:count].to_i } %>
+  </span>
+
+</div>
+
+
+<div class="followup-grid">
+
+  <% @followup_days.each do |day| %>
+
+    <%= link_to janomaxleads_path(followup_date: day[:date]),
+        class: "followup-card #{'active' if params[:followup_date] == day[:date].to_s}" do %>
+
+      <div class="followup-top">
+
+        <span class="followup-icon">
+          <i class="bi bi-telephone-x-fill"></i>
+        </span>
+
+        <i class="bi bi-arrow-up-right followup-arrow"></i>
+
+      </div>
+
+      <strong class="followup-number">
+        <%= day[:count].to_i %>
+      </strong>
+
+      <span class="followup-date">
+        <i class="bi bi-calendar3"></i>
+        <%= day[:date].day.ordinalize %>
+      </span>
+
+      <span class="followup-status">
+
+        <% if day[:count].to_i.zero? %>
+
+          <i class="bi bi-check-circle-fill text-success"></i>
+          Complete
+
+        <% else %>
+
+          <i class="bi bi-clock-fill text-danger"></i>
+          Remaining
+
+        <% end %>
+
+      </span>
+
+    <% end %>
+
+  <% end %>
+
+</div>
+<style>
+.followup-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+  gap: 6px;
+}
+
+.followup-card {
+  display: block;
+  padding: 7px;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  background: #fff;
+  color: #343a40;
+  text-decoration: none;
+  line-height: 1;
+  transition: .2s ease;
+}
+
+.followup-card:hover,
+.followup-card.active {
+  border-color: #dc3545;
+  color: #343a40;
+  text-decoration: none;
+  transform: translateY(-1px);
+}
+
+.followup-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.followup-icon {
+  width: 25px;
+  height: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 7px;
+  background: #fff0f1;
+  color: #dc3545;
+  font-size: 11px;
+}
+
+.followup-arrow {
+  font-size: 10px;
+  color: #adb5bd;
+}
+
+.followup-number {
+  display: block;
+  font-size: 1.05rem;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.followup-date {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  font-size: .65rem;
+  color: #6c757d;
+  margin-bottom: 4px;
+}
+
+.followup-date i {
+  font-size: 9px;
+}
+
+.followup-status {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  font-size: .58rem;
+  font-weight: 600;
+}
+
+.followup-status i {
+  font-size: 8px;
+}
+
+
+/* Mobile */
+
+@media (max-width: 480px) {
+
+  .followup-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 4px;
+  }
+
+  .followup-card {
+    padding: 6px;
+    border-radius: 7px;
+  }
+
+  .followup-icon {
+    width: 22px;
+    height: 22px;
+    font-size: 10px;
+  }
+
+  .followup-number {
+    font-size: .95rem;
+  }
+
+  .followup-date {
+    font-size: .58rem;
+  }
+
+  .followup-status {
+    font-size: .52rem;
+  }
+
+}
+
+
+
+
+  .followup-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(120px, 1fr));
+  gap: 1rem;
+}
+
+@media (max-width: 1200px) {
+  .followup-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .followup-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 576px) {
+  .followup-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.followup-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
+    gap:12px;
+}
+
+.followup-card{
+    display:block;
+    text-decoration:none;
+    background:#fff;
+    border:1px solid #e9ecef;
+    border-radius:16px;
+    padding:14px;
+    transition:.25s;
+    color:#212529;
+    box-shadow:0 3px 10px rgba(15,23,42,.04);
+}
+
+.followup-card:hover{
+    transform:translateY(-3px);
+    border-color:#0d6efd;
+    box-shadow:0 10px 24px rgba(13,110,253,.10);
+}
+
+.followup-card.active{
+    background:linear-gradient(135deg,#0d6efd,#3b82f6);
+    border-color:#0d6efd;
+    color:#fff;
+}
+
+.followup-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:12px;
+}
+
+.followup-icon{
+    width:36px;
+    height:36px;
+    border-radius:12px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#eef4ff;
+    color:#0d6efd;
+    font-size:15px;
+}
+
+.followup-card.active .followup-icon{
+    background:rgba(255,255,255,.18);
+    color:#fff;
+}
+
+.followup-arrow{
+    color:#adb5bd;
+    font-size:16px;
+}
+
+.followup-card.active .followup-arrow{
+    color:#fff;
+}
+
+.followup-number{
+    font-size:1.8rem;
+    font-weight:800;
+    line-height:1;
+}
+
+.followup-date{
+    margin-top:6px;
+    font-size:.80rem;
+    font-weight:700;
+    color:#6b7280;
+    text-transform:uppercase;
+}
+
+.followup-status{
+    margin-top:2px;
+    font-size:.68rem;
+    color:#94a3b8;
+    font-weight:600;
+}
+
+.followup-card.active .followup-date,
+.followup-card.active .followup-status{
+    color:rgba(255,255,255,.88);
+}
+
+@media(max-width:768px){
+    .followup-grid{
+        grid-template-columns:repeat(4,1fr);
+    }
+}
+
+@media(max-width:576px){
+    .followup-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+}
+</style>
+
+
+<div class="card border-0 shadow-lg rounded-4 mb-4">
+
+  <div class="card-header bg-primary text-white py-3">
+
+    <div class="d-flex justify-content-between align-items-center">
+
+      <div>
+
+        <h4 class="mb-1">
+          <i class="bi bi-bar-chart-fill"></i>
+          Manager Performance Dashboard
+        </h4>
+
+        <small>
+          <%= Date.current.strftime("%B %Y") %>
+        </small>
+
+      </div>
+
+      <span class="badge bg-light text-dark px-3 py-2">
+
+    <%= (@comment_summary || {}).size %>
+
+        Managers
+
+      </span>
+
+    </div>
+
+  </div>
+
+<div class="table-container shadow-sm rounded-4">
+
+  <div class="table-responsive premium-table-scroll">
+
+    <table class="table bi-table align-middle mb-0">
+
+      <thead class="table-light">
+
+
+
+
+        <tr>
+
+          <th width="70">
+
+            Rank
+
+          </th>
+
+          <th>
+
+            Team Member
+
+          </th>
+
+          <th class="text-center">
+
+            Comments
+
+          </th>
+
+          <th width="35%">
+
+            Productivity
+
+          </th>
+
+        </tr>
+
+      </thead>
+
+      <tbody>
+
+     <% (@comment_summary || {})
+    .values
+    .sort_by { |x| -x[:comments_done] }
+    .each_with_index do |row, index| %>
+
+        <% percent =
+          @highest_comments.zero? ?
+          0 :
+          ((row[:comments_done].to_f/@highest_comments)*100).round %>
+
+        <tr>
+<%
+rank =
+  case index
+  when 0 then "🥇"
+  when 1 then "🥈"
+  when 2 then "🥉"
+  else "##{index + 1}"
+  end
+%>
+
+<td>
+  <%= rank %>
+</td>
+
+          <td>
+
+            <div class="d-flex align-items-center">
+
+              <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center"
+
+                   style="width:46px;height:46px;">
+
+                <i class="bi bi-person-fill"></i>
+
+              </div>
+
+              <div class="ms-3">
+
+                <div class="fw-bold">
+
+                  <%= row[:user].username.presence || row[:user].email %>
+
+                </div>
+
+                <small class="text-muted">
+
+                  Lead Manager
+
+                </small>
+
+              </div>
+
+            </div>
+
+          </td>
+
+          <td class="text-center">
+
+            <span class="badge bg-success fs-6">
+
+              <%= row[:comments_done] %>
+
+            </span>
+
+          </td>
+
+          <td>
+
+            <div class="progress" style="height:12px;">
+
+              <div class="progress-bar bg-success"
+
+                   style="width:<%= percent %>%">
+
+              </div>
+
+            </div>
+
+            <small class="text-muted">
+
+              <%= percent %>% of Top Performer
+
+            </small>
+
+          </td>
+
+        </tr>
+
+      <% end %>
+
+      </tbody>
+
+    </table>
+
+  </div>
+
+</div>
+
+ 
+
+

@@ -1,0 +1,2 @@
+class PaymentDuration < ApplicationRecord
+end

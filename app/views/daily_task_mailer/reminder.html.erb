@@ -1,0 +1,39 @@
+<h2>Hello <%= @username %>,</h2>
+
+<p><%= @reminder %></p>
+
+<table cellpadding="8">
+<tr>
+<td><strong>Task</strong></td>
+<td><%= @task.title %></td>
+</tr>
+
+<tr>
+<td><strong>Due Date</strong></td>
+<td><%= @task.due_date.strftime("%A, %d %B %Y") %></td>
+</tr>
+
+<tr>
+<td><strong>Status</strong></td>
+<td><%= @task.status.humanize %></td>
+</tr>
+
+<% if @task.notes.present? %>
+<tr>
+<td><strong>Notes</strong></td>
+<td><%= @task.notes %></td>
+</tr>
+<% end %>
+
+</table>
+
+<br>
+
+<a href="https://flow.momak.co.ke/conversations">
+Open Flow
+</a>
+
+<p>
+Regards,<br>
+Flow Task Manager
+</p>

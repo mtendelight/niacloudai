@@ -1,0 +1,2163 @@
+<%= render "layouts/header" %>
+
+<div class="container my-3">
+  <div class="lead-show-card shadow-sm rounded-3 p-3 bg-white">
+    <h3 class="mb-3 text-primary text-center">
+      <i class="bi bi-person-badge me-2"></i> Lead Details
+    </h3>
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+  <div class="d-flex gap-2">
+
+  
+
+    <%= link_to ailogs_path,
+        class: "btn btn-light rounded-pill shadow-sm" do %>
+      <i class="bi bi-whatsapp me-2"></i>
+      Back to WhatsApp
+    <% end %>
+
+    <%= link_to jmleads_path(filter: "uncontacted"),
+      class: "btn btn-light border rounded-pill shadow-sm" do %>
+  <i class="bi bi-arrow-left-circle-fill me-2"></i>
+  Back to Leads
+<% end %>
+
+  </div>
+
+</div>
+
+    <div class="lead-details">
+
+      <!-- Unique ID -->
+      <div class="detail-item">
+        <span class="label">Unique ID:</span>
+        <span class="value text-muted"><%= @jmlead.sglid || "—" %></span>
+      </div>
+
+      <!-- Status -->
+      <div class="detail-item">
+        <span class="label">Status:</span>
+        <span class="value">
+          <span class="badge <%= @jmlead.status == "converted" ? "bg-success" : "bg-warning text-dark" %>">
+            <%= @jmlead.status.titleize %>
+          </span>
+        </span>
+      </div>
+
+     <% if @jmlead.converted? %>
+  <div class="alert alert-success d-flex justify-content-center align-items-center gap-2 py-1 mt-2">
+    <i class="bi bi-check-circle-fill"></i>
+    <span>This lead has been converted</span>
+  </div>
+<% end %>
+
+<!-- Latest Conversation -->
+<div class="detail-item align-items-start">
+  <span class="label pt-2">
+    <i class="bi bi-chat-left-text-fill text-primary me-1"></i>
+    Latest Conversation
+  </span>
+
+  <div class="value">
+
+    <% updates = @jmlead.conversation.to_s.split(/\n{2,}/).reject(&:blank?) %>
+
+    <% if updates.any? %>
+
+      <% update = updates.last %>
+
+      <% body = update.gsub(/\ACustomer:\s*/m, "").strip %>
+      <% lines = body.lines.map(&:strip).reject(&:blank?) %>
+
+      <% timestamp = nil %>
+      <% if lines.first&.match?(/^\[.*\]$/) %>
+        <% timestamp = lines.shift.delete("[]") %>
+      <% end %>
+
+      <div class="latest-conversation-card">
+
+        <div class="latest-conversation-header">
+
+          <span class="badge bg-primary rounded-pill px-3">
+            Latest
+          </span>
+
+          <% if timestamp.present? %>
+            <small class="text-muted">
+              <i class="bi bi-clock me-1"></i>
+              <%= timestamp %>
+            </small>
+          <% end %>
+
+        </div>
+
+        <div class="latest-conversation-text">
+          <%= truncate(lines.join(" "), length: 180) %>
+        </div>
+
+      </div>
+
+    <% else %>
+
+      <div class="text-muted small py-2">
+        <i class="bi bi-chat-square-text me-1"></i>
+        No conversations yet.
+      </div>
+
+    <% end %>
+
+  </div>
+</div>
+
+
+<style>
+ .latest-conversation-card{
+    background:linear-gradient(180deg,#ffffff,#f8fbff);
+    border:1px solid #e7edf6;
+    border-left:5px solid #0d6efd;
+    border-radius:16px;
+    padding:14px 16px;
+    box-shadow:0 4px 12px rgba(15,23,42,.06);
+}
+
+.latest-conversation-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:10px;
+}
+
+.latest-conversation-text{
+    color:#334155;
+    font-size:.92rem;
+    line-height:1.65;
+    word-break:break-word;
+}
+
+.latest-conversation-card:hover{
+    box-shadow:0 8px 24px rgba(15,23,42,.10);
+    transform:translateY(-2px);
+    transition:all .25s ease;
+}
+
+@media (max-width:768px){
+    .latest-conversation-card{
+        padding:12px;
+    }
+
+    .latest-conversation-text{
+        font-size:.87rem;
+    }
+}
+</style>
+
+
+    </div>
+
+
+      <!-- Action Buttons -->
+    <div class="mt-3 d-flex flex-wrap justify-content-center gap-2">
+      <%= link_to edit_jmlead_path(@jmlead), class: "btn btn-warning btn-sm" do %>
+        <i class="bi bi-pencil-fill me-1"></i> Edit
+      <% end %>
+     <%= link_to jmleads_path(filter: "uncontacted"),
+      class: "btn btn-outline-secondary btn-sm" do %>
+  <i class="bi bi-arrow-left me-1"></i> Back to Leads
+<% end %>
+    </div>
+    <hr/>
+
+<div class="quick-share mb-3">
+
+  <div class="d-flex justify-content-between align-items-center mb-2">
+    <div class="fw-semibold">
+      <i class="bi bi-share-fill text-primary me-1"></i>
+      Quick Share
+    </div>
+
+
+  <button id="copyLeadBtn"
+          class="btn btn-primary btn-sm rounded-pill px-3"
+          onclick="copyLeadInfo()">
+    <i class="bi bi-copy me-1"></i>Copy
+  </button>
+
+
+  </div>
+
+
+
+  <% messages = @jmlead.parsed_comments
+                       .select { |m| m[:speaker] == :customer }
+                       .last(3) %>
+
+  <div class="small text-muted mb-1">
+    <strong><%= @jmlead.jmcustomer&.name.presence || @jmlead.name.presence || "Lead Customer" %></strong>
+    • <%= @jmlead.phone %>
+  </div>
+
+  <% messages.each do |m| %>
+    <div class="share-msg">
+      <i class="bi bi-chat-left-text text-primary"></i>
+      <%= truncate(m[:body].to_s.strip, length: 80) %>
+    </div>
+  <% end %>
+
+  <textarea id="lead-copy-text" class="d-none">
+Name: <%= @jmlead.jmcustomer&.name.presence || @jmlead.name.presence || "Lead Customer" %>
+Phone: <%= @jmlead.phone %>
+
+Last Messages:
+<% messages.each do |m| %>
+• <%= m[:body].to_s.strip %>
+<% end %>
+
+Link:
+<%= jmlead_url(@jmlead) %>
+  </textarea>
+
+
+
+<%= link_to conversation_jmlead_path(@jmlead),
+    class: "btn btn-success w-100 py-3 px-4 shadow-sm open-chat-link d-flex align-items-center justify-content-between",
+    style: "border-radius:16px;",
+    data: { lead_id: @jmlead.id } do %>
+
+  <div class="rounded-circle bg-white text-success d-flex align-items-center justify-content-center me-3"
+       style="width:56px;height:56px;">
+
+    <i class="bi bi-whatsapp fs-2"></i>
+
+  </div>
+
+  <div class="text-start text-white">
+
+    <div class="fw-bold fs-5">
+      Open WhatsApp Conversation
+    </div>
+
+    <small class="opacity-75">
+      View customer and AI chat history
+    </small>
+
+  </div>
+
+  <i class="bi bi-chevron-right fs-4"></i>
+
+<% end %>
+
+
+</div>
+
+</div>
+<hr/>
+
+
+
+
+
+<!-- ==========================================
+     SEND WHATSAPP MESSAGE
+     ========================================== -->
+
+<div class="card shadow-sm border-0 mt-3">
+
+  <div class="card-header bg-white border-0 py-3">
+
+    <div class="d-flex align-items-center">
+
+      <div class="me-2 text-success">
+        <i class="bi bi-whatsapp fs-4"></i>
+      </div>
+
+      <div>
+        <h6 class="mb-0 fw-bold">
+          Send WhatsApp Message
+        </h6>
+
+        <small class="text-muted">
+          Send an additional message directly to the customer
+        </small>
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div class="card-body">
+    <div class="login">
+
+    <%= form_with url: send_whatsapp_jmlead_path(@jmlead),
+                  method: :post,
+                  local: true do |form| %>
+
+      <div class="mb-3">
+
+        <%= form.text_area :message,
+              class: "form-control",
+              rows: 4,
+              placeholder: "Type a message to the customer...",
+              required: true %>
+
+      </div>
+
+
+      <div class="d-flex justify-content-end">
+
+        <button type="submit"
+                class="btn btn-success">
+
+          <i class="bi bi-whatsapp me-1"></i>
+          Send to Customer
+
+        </button>
+
+      </div>
+
+    <% end %></div>
+
+  </div>
+
+</div>
+
+
+
+
+<hr/>
+
+
+
+<div class="card shadow-sm border-0 mt-3">
+
+  <div class="card-header bg-white border-0 py-3">
+
+    <div class="d-flex align-items-center">
+
+    <div class="me-2 text-primary"> <i class="bi bi-chat-dots-fill fs-4"></i> </div>
+
+      <div>
+        <h6 class="mb-0 fw-bold">
+          Save Conversation 
+        </h6>
+
+        <small class="text-muted">
+          Update comments/feedback after calling customer to update followups
+        </small>
+      </div>
+
+    </div>
+
+  </div>
+
+ <div class="login mt-2">
+  <%= form_with(model: @jmlead,
+                url: add_comment_jmlead_path(@jmlead),
+                method: :patch,
+                local: true) do |f| %>
+
+<div class="mb-3">
+  <%= f.text_area :conversation,
+      value: "",
+      class: "form-control conversation-input",
+      rows: 3,
+      placeholder: "📝 Add customer conversation, feedback, or follow-up notes...",
+      autocomplete: "off" %>
+</div>
+
+<div class="d-grid">
+ <button type="submit" class="btn btn-success flex-shrink-0"> <i class="bi bi-send-fill me-1"></i> Send </button>
+</div>
+
+<% end %>
+</div>
+
+<style>
+
+
+
+    /* Premium Textarea */
+.conversation-input{
+  border: 1px solid #dee2e6;
+  border-radius: 16px;
+  padding: 14px 16px;
+  font-size: 0.95rem;
+  resize: vertical;
+  min-height: 110px;
+  transition: all .25s ease;
+  box-shadow: 0 2px 10px rgba(0,0,0,.04);
+}
+
+.conversation-input:focus{
+  border-color: #0d6efd;
+  box-shadow: 0 0 0 .2rem rgba(13,110,253,.15);
+}
+
+/* Premium Button */
+.conversation-btn{
+  border-radius: 16px;
+  font-weight: 600;
+  padding: 12px 18px;
+  transition: all .25s ease;
+  box-shadow: 0 4px 14px rgba(13,110,253,.25);
+}
+
+.conversation-btn:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(13,110,253,.35);
+}
+
+.conversation-btn:active{
+  transform: translateY(0);
+}
+  .quick-share{
+    background:#fff;
+    border:1px solid #e9ecef;
+    border-radius:14px;
+    padding:14px;
+    box-shadow:0 2px 10px rgba(0,0,0,.05);
+}
+
+.share-msg{
+    display:flex;
+    align-items:flex-start;
+    gap:8px;
+    padding:7px 10px;
+    margin-top:6px;
+    background:#f8fafc;
+    border-radius:10px;
+    font-size:.84rem;
+    color:#495057;
+    line-height:1.45;
+}
+
+.share-msg i{
+    margin-top:2px;
+    flex-shrink:0;
+}
+
+.quick-share .btn{
+    font-size:.8rem;
+}
+</style>
+<script>
+  function copyLeadInfo() {
+  const text = document.getElementById("lead-copy-text").value;
+  const btn = document.getElementById("copyLeadBtn");
+
+  navigator.clipboard.writeText(text).then(() => {
+    btn.innerHTML = '<i class="bi bi-check2 me-1"></i>Copied';
+    btn.classList.replace("btn-primary","btn-success");
+
+    setTimeout(() => {
+      btn.innerHTML = '<i class="bi bi-copy me-1"></i>Copy';
+      btn.classList.replace("btn-success","btn-primary");
+    }, 1800);
+  });
+}
+  
+</script>
+
+
+<style>
+  .conversation-box{
+    max-height:650px;
+    overflow-y:auto;
+    padding:15px;
+    background:#fafafa;
+    border:1px solid #eee;
+    border-radius:12px;
+}
+
+.chat-row{
+    display:flex;
+    align-items:flex-start;
+    margin-bottom:16px;
+}
+
+.chat-avatar{
+    width:40px;
+    height:40px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:20px;
+    background:#f1f5f9;
+    margin-right:10px;
+    flex-shrink:0;
+}
+
+.chat-bubble{
+    max-width:85%;
+    padding:14px 16px;
+    border-radius:16px;
+    box-shadow:0 2px 8px rgba(0,0,0,.08);
+}
+
+.customer-bubble{
+    background:#dcfce7;
+    border-left:5px solid #16a34a;
+}
+
+.ai-bubble{
+    background:#e0ecff;
+    border-left:5px solid #2563eb;
+}
+
+.customer strong{
+    color:#166534;
+}
+
+.ai strong{
+    color:#1d4ed8;
+}
+
+.chat-bubble p:last-child{
+    margin-bottom:0;
+}
+</style>
+
+
+ <hr/>
+
+<!-- Customer Care Updates -->
+<div class="detail-item mt-4">
+
+  <div class="d-flex justify-content-between align-items-center mb-3">
+
+    <div class="label mb-0">
+      <i class="bi bi-headset text-success me-2"></i>
+      <strong>Customer Care Updates</strong>
+    </div>
+
+    <% updates = @jmlead.conversation.to_s.split(/\n{2,}/).reject(&:blank?) %>
+
+    <span class="badge bg-success rounded-pill">
+      <%= updates.count %>
+    </span>
+
+  </div>
+
+<div class="care-updates-box scrollable-care">
+
+   <% if updates.any? %>
+
+  <% updates.reverse.each do |update| %>
+
+    <% body = update.gsub(/\ACustomer:\s*/m, "").strip %>
+
+    <% lines = body.lines.map(&:rstrip).reject(&:blank?) %>
+
+    <% timestamp = nil %>
+
+    <% if lines.first&.match?(/^\[.*\]$/) %>
+      <% timestamp = lines.shift.delete("[]") %>
+    <% end %>
+
+    <div class="care-row">
+
+      <div class="care-avatar">
+        <i class="bi bi-headset"></i>
+      </div>
+
+      <div class="care-bubble">
+
+        <div class="care-bubble-header">
+
+    
+
+          <% if timestamp.present? %>
+            <small class="care-time">
+              <i class="bi bi-clock"></i>
+              <%= timestamp %>
+            </small>
+          <% end %>
+
+        </div>
+
+        <div class="care-text">
+          <%= simple_format(lines.join("\n")) %>
+        </div>
+        <br/>
+
+        <small class="care-time">
+  <i class="bi bi-clock-history"></i>
+  <%= @jmlead.updated_at.in_time_zone("Africa/Nairobi")
+        .strftime("%d %b %Y %I:%M %p") %>
+</small>
+
+      </div>
+
+    </div>
+
+  <% end %>
+
+<% else %>
+
+  <div class="empty-care">
+    <i class="bi bi-journal-text fs-1 d-block mb-2"></i>
+    No customer care updates yet.
+  </div>
+
+<% end %>
+
+  </div>
+
+</div>
+
+
+
+<style>
+
+  /* ===========================================
+   Customer Care Updates
+=========================================== */
+
+.scrollable-care{
+    max-height: 650px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 8px;
+    scroll-behavior: smooth;
+}
+
+/* Nice scrollbar */
+
+.scrollable-care::-webkit-scrollbar{
+    width:8px;
+}
+
+.scrollable-care::-webkit-scrollbar-track{
+    background:#f3f4f6;
+    border-radius:10px;
+}
+
+.scrollable-care::-webkit-scrollbar-thumb{
+    background:#cbd5e1;
+    border-radius:10px;
+}
+
+.scrollable-care::-webkit-scrollbar-thumb:hover{
+    background:#94a3b8;
+}
+
+/* Space between updates */
+
+.care-row{
+    margin-bottom:18px;
+}
+
+.care-row:last-child{
+    margin-bottom:0;
+}
+
+  /* ===========================
+   Customer Care Updates
+=========================== */
+
+.care-updates-box{
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+}
+
+.care-row{
+    display:flex;
+    align-items:flex-start;
+    gap:14px;
+}
+
+.care-avatar{
+    width:42px;
+    height:42px;
+    min-width:42px;
+    border-radius:50%;
+    background:#16a34a;
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:18px;
+    box-shadow:0 2px 8px rgba(0,0,0,.12);
+}
+
+.care-bubble{
+    flex:1;
+    background:#f0fdf4;
+    border:1px solid #bbf7d0;
+    border-left:5px solid #16a34a;
+    border-radius:18px;
+    padding:16px 18px;
+    box-shadow:0 2px 10px rgba(0,0,0,.05);
+    transition:.2s;
+}
+
+.care-bubble:hover{
+    transform:translateY(-2px);
+    box-shadow:0 6px 16px rgba(0,0,0,.08);
+}
+
+.care-bubble-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    margin-bottom:12px;
+    padding-bottom:10px;
+    border-bottom:1px solid #dcfce7;
+}
+
+.care-name{
+    font-weight:700;
+    color:#166534;
+    font-size:15px;
+}
+
+.care-time{
+    color:#6b7280;
+    font-size:12px;
+    white-space:nowrap;
+}
+
+.care-text{
+    font-size:15px;
+    line-height:1.7;
+    color:#374151;
+}
+
+.care-text p:last-child{
+    margin-bottom:0;
+}
+
+.empty-care{
+    text-align:center;
+    padding:50px;
+    color:#9ca3af;
+}
+
+@media(max-width:768px){
+
+    .care-bubble-header{
+        flex-direction:column;
+        gap:6px;
+    }
+
+    .care-avatar{
+        width:36px;
+        height:36px;
+        min-width:36px;
+        font-size:16px;
+    }
+
+}
+
+  /* ===========================================
+   CUSTOMER CARE UPDATES
+=========================================== */
+
+.care-updates-box{
+    background:#f8fafc;
+    border:1px solid #e5e7eb;
+    border-radius:18px;
+    padding:20px;
+}
+
+.care-update-card{
+    display:flex;
+    gap:18px;
+    margin-bottom:18px;
+    padding:18px;
+    background:#ffffff;
+    border-radius:16px;
+    border-left:5px solid #16a34a;
+    box-shadow:0 2px 12px rgba(0,0,0,.05);
+    transition:.2s;
+}
+
+.care-update-card:last-child{
+    margin-bottom:0;
+}
+
+.care-update-card:hover{
+    transform:translateY(-2px);
+    box-shadow:0 6px 20px rgba(0,0,0,.08);
+}
+
+.care-icon{
+    width:48px;
+    height:48px;
+    min-width:48px;
+    border-radius:50%;
+    background:#dcfce7;
+    color:#15803d;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:22px;
+}
+
+.care-content{
+    flex:1;
+}
+
+.care-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    margin-bottom:12px;
+}
+
+.care-title{
+    font-size:15px;
+    font-weight:700;
+    color:#166534;
+}
+
+.care-subtitle{
+    font-size:12px;
+    color:#6b7280;
+    margin-top:2px;
+}
+
+.care-time{
+    font-size:12px;
+    color:#6b7280;
+    white-space:nowrap;
+}
+
+.care-message{
+    background:#f0fdf4;
+    border:1px solid #dcfce7;
+    border-radius:12px;
+    padding:15px 18px;
+    font-size:15px;
+    line-height:1.7;
+    color:#374151;
+}
+
+.care-message p:last-child{
+    margin-bottom:0;
+}
+
+.empty-care{
+    text-align:center;
+    padding:60px 20px;
+    color:#9ca3af;
+}
+
+.empty-care i{
+    font-size:48px;
+    color:#d1d5db;
+}
+
+.label{
+    font-size:17px;
+    font-weight:700;
+}
+
+@media(max-width:768px){
+
+    .care-update-card{
+        gap:12px;
+        padding:15px;
+    }
+
+    .care-icon{
+        width:40px;
+        height:40px;
+        min-width:40px;
+        font-size:18px;
+    }
+
+    .care-header{
+        display:block;
+    }
+
+    .care-time{
+        margin-top:6px;
+    }
+
+}
+  .conversation-box{
+    background:#fafafa;
+    border:1px solid #e9ecef;
+    border-radius:14px;
+    padding:15px;
+    max-height:420px;
+    overflow-y:auto;
+}
+
+.conversation-row{
+    display:flex;
+    gap:12px;
+    margin-bottom:15px;
+    align-items:flex-start;
+}
+
+.conversation-avatar{
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    background:#0d6efd;
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-shrink:0;
+    font-size:18px;
+}
+
+.conversation-message{
+    flex:1;
+}
+
+.conversation-header{
+    font-size:.8rem;
+    color:#6c757d;
+    margin-bottom:4px;
+}
+
+.conversation-text{
+    background:#fff;
+    border:1px solid #dee2e6;
+    border-radius:12px;
+    padding:12px 15px;
+    line-height:1.6;
+    box-shadow:0 2px 6px rgba(0,0,0,.05);
+}
+
+.conversation-text p:last-child{
+    margin-bottom:0;
+}
+</style>
+
+
+<style>
+
+.comments-box{
+    max-height:420px;
+    overflow-y:auto;
+    background:#f8fafc;
+    border:1px solid #e9ecef;
+    border-radius:18px;
+    padding:18px;
+}
+
+.comment-bubble{
+    max-width:85%;
+    padding:14px 18px;
+    border-radius:18px;
+    margin-bottom:14px;
+    line-height:1.7;
+    box-shadow:0 5px 15px rgba(0,0,0,.05);
+    word-break:break-word;
+}
+
+.customer-comment{
+    background:#0d6efd;
+    color:#fff;
+    margin-right:auto;
+    border-bottom-left-radius:6px;
+}
+
+.ai-comment{
+    background:#fff;
+    border:1px solid #dee2e6;
+    margin-left:auto;
+    border-bottom-right-radius:6px;
+}
+
+.comment-bubble p:last-child{
+    margin-bottom:0;
+}
+
+.comments-box::-webkit-scrollbar{
+    width:8px;
+}
+
+.comments-box::-webkit-scrollbar-thumb{
+    background:#ced4da;
+    border-radius:10px;
+}
+
+</style>
+
+
+
+  
+
+    <% if @jmlead.jmcustomer.present? %>
+  <div class="mt-4">
+    <h5 class="text-success mb-2 text-center">
+      <i class="bi bi-person-check-fill me-1"></i> Converted Customer Details
+    </h5>
+
+    <div class="table-responsive">
+      <table class="table table-sm table-bordered align-middle">
+        <thead class="table-success text-center">
+          <tr>
+            <th>Name</th>
+            <th>Phone</th>
+            <th>Location</th>
+            <th>Points</th>
+            <th>Returning</th>
+            <th>Created</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td class="fw-bold"><%= @jmlead.jmcustomer.name %></td>
+
+            <td>
+              <i class="bi bi-telephone-fill text-success me-1"></i>
+              <%= @jmlead.jmcustomer.phone %>
+            </td>
+
+            <td>
+              <span class="badge bg-light text-dark">
+                <i class="bi bi-geo-alt-fill text-danger me-1"></i>
+                <%= @jmlead.jmcustomer.location %>
+              </span>
+            </td>
+
+            <td>
+              <span class="badge bg-warning text-dark">
+                <i class="bi bi-star-fill me-1"></i>
+                <%= @jmlead.jmcustomer.points || 0 %>
+              </span>
+            </td>
+
+            <td class="text-center">
+              <% if @jmlead.jmcustomer.returning? %>
+                <span class="badge bg-success">
+                  <i class="bi bi-check-circle"></i> Yes
+                </span>
+              <% else %>
+                <span class="badge bg-danger">
+                  <i class="bi bi-x-circle"></i> No
+                </span>
+              <% end %>
+            </td>
+
+            <td class="text-center">
+              <small>
+                <%= @jmlead.jmcustomer.created_at.strftime("%d %b %Y") %><br>
+                <%= @jmlead.jmcustomer.created_at.strftime("%I:%M %p") %>
+              </small>
+            </td>
+
+            <td class="text-center">
+              <%= link_to jmcustomer_path(@jmlead.jmcustomer),
+                    class: "btn btn-sm btn-outline-success" do %>
+                <i class="bi bi-eye"></i>
+              <% end %>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+<% else %>
+  <!-- Show convert button if no customer -->
+  <div class="text-center mt-3">
+    <span class="text-muted">No customer linked</span><br>
+
+    <% if @jmlead.open? %>
+      <%= link_to new_jmcustomer_path(
+            name: @jmlead.name,
+            phone: @jmlead.phone
+          ),
+          class: "btn btn-success btn-sm mt-2" do %>
+        <i class="bi bi-person-plus-fill"></i> Convert to Customer
+      <% end %>
+    <% end %>
+  </div>
+<% end %>
+
+
+<% (@audits || []).each do |audit| %>
+
+  <% hidden_fields = %w[
+    comments
+    conversation
+    created_at
+    updated_at
+  ] %>
+
+  <% visible_changes = audit.audited_changes.to_h.reject do |attr, _|
+       hidden_fields.include?(attr)
+     end %>
+
+  <% next if audit.action != "create" && visible_changes.blank? %>
+
+  <li class="audit-log-item mb-2 p-2 shadow-sm rounded bg-light">
+
+    <div class="audit-header mb-1 small">
+      <span>
+        👤 <strong>User:</strong>
+        <%= audit.user&.username || "Unknown" %>
+      </span>
+      |
+      <span>
+        ⏰ <%= audit.created_at.strftime("%d %b %Y, %I:%M %p") %>
+      </span>
+      |
+      <span>
+        📄 <%= audit.action.titleize %>
+      </span>
+    </div>
+
+    <% if visible_changes.present? %>
+
+      <div class="audit-changes ps-2 small">
+
+        <% visible_changes.each do |attr, values| %>
+
+          <% old_val, new_val = values.is_a?(Array) ? values : [nil, values] %>
+
+          <% if attr == "jstaff_id" %>
+            <% old_val = Jstaff.find_by(id: old_val)&.name || "Unassigned" %>
+            <% new_val = Jstaff.find_by(id: new_val)&.name || "Unassigned" %>
+            <% attr = "Assigned To" %>
+          <% end %>
+
+          <div class="change mb-1">
+            🔹 <strong><%= attr.titleize %></strong>
+
+            <span class="text-muted"><%= old_val.presence || "—" %></span>
+            →
+
+            <span class="text-success"><%= new_val.presence || "—" %></span>
+          </div>
+
+        <% end %>
+
+      </div>
+
+    <% elsif audit.action == "create" %>
+
+      <div class="audit-changes ps-2 small">
+        <em>Lead created.</em>
+      </div>
+
+    <% end %>
+
+  </li>
+
+<% end %>
+
+<style>
+
+  .table-success th {
+  background: #198754 !important;
+  color: white;
+}
+
+.table td, .table th {
+  vertical-align: middle;
+}
+.lead-show-card {
+  max-width: 550px;
+  margin: auto;
+  padding: 15px;
+}
+
+.lead-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.detail-item {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #eee;
+  padding: 2px 0;
+}
+
+.detail-item .label {
+  font-weight: 600;
+  color: #444;
+  flex: 1 1 40%;
+  font-size: 0.9rem;
+}
+
+.detail-item .value {
+  flex: 1 1 60%;
+  text-align: right;
+  font-size: 0.88rem;
+  word-break: break-word;
+}
+
+.btn-sm {
+  font-size: 0.8rem;
+  padding: 3px 8px;
+}
+
+textarea.form-control-sm {
+  font-size: 0.85rem;
+  padding: 4px 8px;
+}
+
+.audit-log-item {
+  border-left: 3px solid #0d6efd;
+  padding: 6px 8px;
+}
+
+.audit-header {
+  color: #555;
+  margin-bottom: 3px;
+}
+
+.audit-changes .change {
+  font-size: 0.83rem;
+  line-height: 1.3;
+}
+
+.audit-changes .text-muted {
+  color: #888;
+}
+
+.audit-changes .text-success {
+  color: #198754;
+}
+
+.audit-changes .change[data-attr="general_comments"],
+.audit-changes .change[data-attr="comments"] {
+  background-color: #e6f7ff;
+  padding: 3px 5px;
+  border-radius: 3px;
+}
+</style>
+
+
+
+<style>
+
+  /* ================================
+   WhatsApp Conversation Modal
+   ================================ */
+
+.conversation-modal {
+  height: 90vh;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Fixed header */
+.conversation-header {
+  flex-shrink: 0;
+}
+
+/* Scrollable conversation area */
+.conversation-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  /* Makes the latest message easier to see */
+  scroll-behavior: smooth;
+
+  /* Better scrolling on phones */
+  -webkit-overflow-scrolling: touch;
+
+  /* Prevents the page behind the modal from taking the scroll */
+  overscroll-behavior: contain;
+}
+
+/* Fixed footer */
+.conversation-footer {
+  flex-shrink: 0;
+}
+
+/* Optional: premium scrollbar */
+.conversation-body::-webkit-scrollbar {
+  width: 7px;
+}
+
+.conversation-body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.conversation-body::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.18);
+  border-radius: 20px;
+}
+
+.conversation-body::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+  .audit-changes .change strong {
+  color: #0d6efd; /* blue field name */
+}
+
+.audit-changes .change[data-attr="general_comments"] {
+  background-color: #e6f7ff; /* light blue for comments */
+  padding: 5px 8px;
+  border-radius: 4px;
+}
+
+
+  .lead-audit-log h4 {
+  font-size: 1.25rem;
+}
+
+.audit-log-item {
+  border-left: 4px solid #0d6efd;
+}
+
+.audit-header span {
+  font-size: 0.875rem;
+  color: #555;
+  margin-right: 0.5rem;
+}
+
+.audit-changes .change {
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+
+.audit-changes .text-muted {
+  color: #888;
+}
+
+.audit-changes .text-success {
+  color: #198754;
+}
+
+
+</style>
+
+</div>
+
+
+
+<style>
+/* =========================================
+   WHATSAPP CONVERSATION MODAL
+========================================= */
+
+.conversation-modal {
+  overflow: hidden;
+  border-radius: 18px !important;
+  background: #fff;
+}
+
+
+/* =========================================
+   HEADER
+========================================= */
+
+.conversation-header {
+  padding: 15px 18px;
+
+  background: #128c7e;
+
+  border: 0 !important;
+
+  color: #fff;
+}
+
+
+/* =========================================
+   WHATSAPP LOGO
+========================================= */
+
+.chat-logo {
+  width: 43px;
+  height: 43px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: rgba(255,255,255,.16);
+
+  color: #fff;
+
+  font-size: 22px;
+
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,.12);
+}
+
+
+/* =========================================
+   TITLE
+========================================= */
+
+.conversation-header .modal-title {
+  font-size: 16px;
+  letter-spacing: .1px;
+}
+
+.conversation-header small {
+  font-size: 11px;
+}
+
+
+/* =========================================
+   CLOSE BUTTON
+========================================= */
+
+.conversation-close {
+  width: 38px;
+  height: 38px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-left: auto;
+
+  border: 0;
+  border-radius: 50%;
+
+  background: rgba(255,255,255,.12);
+
+  color: #fff;
+
+  font-size: 15px;
+
+  cursor: pointer;
+
+  transition:
+    background .2s ease,
+    transform .2s ease;
+}
+
+.conversation-close:hover {
+  background: rgba(255,255,255,.24);
+
+  transform: rotate(90deg);
+}
+
+.conversation-close:active {
+  transform: scale(.92);
+}
+
+
+/* =========================================
+   BODY
+========================================= */
+
+.conversation-body {
+  min-height: 380px;
+  max-height: 65vh;
+
+  overflow-y: auto;
+
+  padding: 20px;
+
+  background: #f8f9fa;
+}
+
+
+/* =========================================
+   SCROLLBAR
+========================================= */
+
+.conversation-body::-webkit-scrollbar {
+  width: 6px;
+}
+
+.conversation-body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.conversation-body::-webkit-scrollbar-thumb {
+  background: #ced4da;
+  border-radius: 20px;
+}
+
+.conversation-body::-webkit-scrollbar-thumb:hover {
+  background: #adb5bd;
+}
+
+
+/* =========================================
+   LOADING
+========================================= */
+
+.conversation-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 300px;
+}
+
+.conversation-loading .spinner-border {
+  width: 2rem;
+  height: 2rem;
+
+  border-width: 3px;
+}
+
+
+/* =========================================
+   FOOTER
+========================================= */
+
+.conversation-footer {
+  min-height: 45px;
+
+  padding: 9px 16px;
+
+  background: #fff;
+
+  border-top: 1px solid #edf0f2 !important;
+}
+
+.conversation-footer small {
+  font-size: 10.5px;
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 576px) {
+
+  .conversation-modal {
+    border-radius: 14px !important;
+  }
+
+  .conversation-header {
+    padding: 12px 14px;
+  }
+
+  .chat-logo {
+    width: 38px;
+    height: 38px;
+
+    font-size: 19px;
+
+    margin-right: 10px !important;
+  }
+
+  .conversation-header .modal-title {
+    font-size: 14px;
+  }
+
+  .conversation-header small {
+    font-size: 10px;
+  }
+
+  .conversation-close {
+    width: 34px;
+    height: 34px;
+  }
+
+  .conversation-body {
+    min-height: 320px;
+    max-height: 72vh;
+
+    padding: 14px;
+  }
+
+}
+
+
+/* ==========================================
+   WHATSAPP CONVERSATION MODAL
+========================================== */
+
+.conversation-modal {
+  border-radius: 18px !important;
+  overflow: hidden;
+}
+
+
+/* ==========================================
+   CONVERSATION BODY
+========================================== */
+
+.conversation-body {
+  height: 65vh;
+  max-height: 65vh;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  padding: 20px;
+
+  background: #f8f9fa;
+
+  /*
+   * Important for the existing JavaScript
+   * scrollTop / scrollHeight calculation.
+   */
+  box-sizing: border-box;
+
+  /*
+   * Keep normal message order.
+   * JavaScript will move the scrollbar
+   * to scrollHeight when loading.
+   */
+  display: block;
+
+  /*
+   * Prevent browser scroll anchoring from
+   * jumping back toward the top.
+   */
+  overflow-anchor: none;
+
+  /*
+   * Smooth movement when JavaScript
+   * scrolls to the latest message.
+   */
+  scroll-behavior: auto;
+}
+
+
+/* ==========================================
+   SCROLLBAR
+========================================== */
+
+.conversation-body::-webkit-scrollbar {
+  width: 7px;
+}
+
+.conversation-body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.conversation-body::-webkit-scrollbar-thumb {
+  background: #cfd4da;
+  border-radius: 20px;
+}
+
+.conversation-body::-webkit-scrollbar-thumb:hover {
+  background: #adb5bd;
+}
+
+
+/* ==========================================
+   FOOTER
+========================================== */
+
+.conversation-footer {
+  min-height: 45px;
+
+  padding: 9px 16px;
+
+  background: #fff;
+
+  border-top: 1px solid #edf0f2 !important;
+}
+
+
+</style>
+
+
+
+
+
+
+
+
+
+
+<!-- =========================================================
+     WHATSAPP CONVERSATION MODAL
+     ========================================================= -->
+
+<div class="modal fade"
+     id="conversationModal"
+     tabindex="-1"
+     aria-hidden="true">
+
+    <div class="modal-dialog modal-xl">
+
+      <div class="modal-content conversation-modal shadow-lg border-0">
+
+  <div class="modal-header conversation-header">
+
+    <div class="d-flex align-items-center">
+
+      <div class="chat-logo me-3">
+        <i class="bi bi-whatsapp"></i>
+      </div>
+
+      <div>
+        <h5 class="modal-title mb-0 fw-bold">
+          WhatsApp Conversation
+        </h5>
+
+        <small>
+          AI Assistant & Customer Chat
+        </small>
+      </div>
+
+    </div>
+
+    <button type="button"
+            class="conversation-close"
+            data-bs-dismiss="modal"
+            aria-label="Close">
+
+      <i class="bi bi-x-lg"></i>
+
+    </button>
+
+  </div>
+
+
+  <!-- CONVERSATION -->
+  <div class="modal-body conversation-body"
+       id="conversationContent">
+
+    <div class="conversation-loading text-muted">
+
+      <div class="spinner-border text-success"></div>
+
+      <div class="mt-3">
+        Loading conversation...
+      </div>
+
+    </div>
+
+  </div>
+
+
+
+
+  <!-- FOOTER -->
+  <div class="modal-footer conversation-footer">
+
+    <small class="text-muted">
+      <i class="bi bi-shield-check me-1"></i>
+      Secured customer communication
+    </small>
+
+  </div>
+
+</div>
+
+    </div>
+
+</div>
+
+<style>
+
+
+  /* ============================================================
+   WHATSAPP CONVERSATION MODAL
+   DESKTOP — CENTER IN AVAILABLE CONTENT AREA
+============================================================ */
+
+@media (min-width: 992px) {
+
+  #conversationModal {
+    left: var(--nc-sidebar) !important;
+
+    width: calc(100% - var(--nc-sidebar)) !important;
+
+    margin: 0 !important;
+
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+
+  #conversationModal .modal-dialog {
+
+    width: min(
+      1200px,
+      calc(100% - 40px)
+    ) !important;
+
+    max-width: none !important;
+
+    margin-left: auto !important;
+    margin-right: auto !important;
+
+    margin-top: 1.75rem !important;
+    margin-bottom: 1.75rem !important;
+  }
+
+
+  #conversationModal .modal-content {
+
+    width: 100% !important;
+
+    max-width: 1200px !important;
+
+    margin: 0 auto !important;
+  }
+
+}
+
+
+/* ============================================================
+   LARGE DESKTOP
+============================================================ */
+
+@media (min-width: 1400px) {
+
+  #conversationModal .modal-dialog {
+
+    width: min(
+      1250px,
+      calc(100% - 60px)
+    ) !important;
+  }
+
+}
+
+
+/* ============================================================
+   TABLET / MOBILE
+   USE NORMAL BOOTSTRAP CENTERING
+============================================================ */
+
+@media (max-width: 991.98px) {
+
+  #conversationModal {
+
+    left: 0 !important;
+
+    width: 100% !important;
+
+    margin: 0 !important;
+
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+
+  #conversationModal .modal-dialog {
+
+    width: calc(100% - 20px) !important;
+
+    max-width: none !important;
+
+    margin:
+      10px auto !important;
+  }
+
+
+  #conversationModal .modal-content {
+
+    width: 100% !important;
+
+    max-width: 100% !important;
+  }
+
+}
+
+
+/* ============================================================
+   SMALL PHONES
+============================================================ */
+
+@media (max-width: 576px) {
+
+  #conversationModal .modal-dialog {
+
+    width: calc(100% - 12px) !important;
+
+    margin:
+      6px auto !important;
+  }
+
+
+  #conversationModal .conversation-modal {
+
+    border-radius: 14px !important;
+  }
+
+
+  #conversationModal .conversation-header {
+
+    padding: 12px !important;
+  }
+
+
+  #conversationModal .conversation-body {
+
+    padding: 10px !important;
+  }
+
+
+  #conversationModal .conversation-footer {
+
+    padding: 8px 12px !important;
+  }
+
+}
+  /* =========================================================
+   MODAL MUST HAVE A FIXED HEIGHT
+   ========================================================= */
+
+#conversationModal .modal-dialog {
+    height: 90vh;
+    max-height: 90vh;
+}
+
+#conversationModal .conversation-modal {
+    height: 90vh;
+    max-height: 90vh;
+
+    display: flex;
+    flex-direction: column;
+
+    overflow: hidden !important;
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+#conversationModal .modal-header {
+    flex: 0 0 auto;
+}
+
+
+```css
+/* =========================================================
+   ACTUAL CONVERSATION SCROLLING AREA
+   ========================================================= */
+
+#conversationModal .conversation-body {
+    flex: 1 1 auto !important;
+
+    height: auto !important;
+
+    max-height: none !important;
+
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+
+    -webkit-overflow-scrolling: touch;
+
+    scrollbar-width: thin;
+
+    position: relative;
+}
+
+
+/* Chrome / Edge scrollbar */
+
+#conversationModal .conversation-body::-webkit-scrollbar {
+    width: 8px;
+}
+
+#conversationModal .conversation-body::-webkit-scrollbar-thumb {
+    background: #999;
+    border-radius: 10px;
+}
+
+#conversationModal .conversation-body::-webkit-scrollbar-track {
+    background: transparent;
+}
+```
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+#conversationModal .modal-footer {
+    flex: 0 0 auto;
+}
+
+
+/* =========================================================
+   SCROLL BUTTONS
+   ========================================================= */
+
+#conversationModal .conversation-scroll-btn {
+    position: relative;
+
+    z-index: 99999;
+
+    width: 44px;
+    height: 44px;
+
+    padding: 0;
+
+    border: none !important;
+    border-radius: 50% !important;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #128c7e !important;
+    color: #fff !important;
+
+    cursor: pointer !important;
+
+    box-shadow: 0 4px 15px rgba(0,0,0,.25);
+}
+
+
+/* =========================================================
+   IF BUTTONS ARE NOT ALREADY POSITIONED
+   ========================================================= */
+
+#conversationModal .conversation-scroll-controls {
+    position: absolute;
+
+    right: 20px;
+    bottom: 65px;
+
+    z-index: 99999;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 8px;
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 576px) {
+
+    #conversationModal .modal-dialog,
+    #conversationModal .conversation-modal {
+        height: 94vh;
+        max-height: 94vh;
+    }
+
+}
+</style>
+
+<script>
+let conversationModal = null;
+
+document.addEventListener("click", function (e) {
+
+  // OPEN
+  const link = e.target.closest(".open-chat-link");
+  if (link) {
+
+    e.preventDefault();
+
+    const modalElement = document.getElementById("conversationModal");
+    const content = document.getElementById("conversationContent");
+
+    conversationModal =
+      bootstrap.Modal.getOrCreateInstance(modalElement);
+
+    content.innerHTML = `
+      <div class="text-center py-5 text-muted">
+        <div class="spinner-border text-success"></div>
+        <div class="mt-3">Loading conversation...</div>
+      </div>
+    `;
+
+    conversationModal.show();
+
+    fetch(link.href, {
+      headers: { Accept: "text/html" }
+    })
+      .then(r => r.text())
+      .then(html => {
+        content.innerHTML = html;
+        content.scrollTop = content.scrollHeight;
+      })
+      .catch(() => {
+        content.innerHTML = `
+          <div class="alert alert-danger m-3">
+            Unable to load conversation.
+          </div>
+        `;
+      });
+
+    return;
+  }
+
+  // FORCE CLOSE
+  const closeBtn = e.target.closest("[data-bs-dismiss='modal']");
+  if (closeBtn) {
+
+    const modalElement = document.getElementById("conversationModal");
+
+    if (conversationModal) {
+      conversationModal.hide();
+    }
+
+    // Force cleanup in case Bootstrap gets stuck
+    setTimeout(() => {
+      modalElement.classList.remove("show");
+      modalElement.style.display = "none";
+      modalElement.setAttribute("aria-hidden", "true");
+
+      document.body.classList.remove("modal-open");
+      document.body.style.removeProperty("overflow");
+      document.body.style.removeProperty("padding-right");
+
+      document.querySelectorAll(".modal-backdrop").forEach(b => b.remove());
+    }, 100);
+  }
+
+});
+</script>
+
+
+<script>
+    document.addEventListener("click", function (e) {
+  const link = e.target.closest(".open-chat-link");
+  if (!link) return;
+
+  e.preventDefault();
+
+  const modal = new bootstrap.Modal(
+    document.getElementById("conversationModal")
+  );
+
+  const content = document.getElementById("conversationContent");
+
+  content.innerHTML = `
+    <div class="text-center py-5 text-muted">
+      <div class="spinner-border text-success"></div>
+      <div class="mt-3">Loading conversation...</div>
+    </div>
+  `;
+
+  modal.show();
+
+  fetch(link.href, {
+    headers: {
+      Accept: "text/html"
+    }
+  })
+    .then(response => response.text())
+    .then(html => {
+      content.innerHTML = html;
+    })
+    .catch(() => {
+      content.innerHTML = `
+        <div class="alert alert-danger m-3">
+          Unable to load conversation.
+        </div>
+      `;
+    });
+});
+</script>
+
+
+
+
+
+
+
+

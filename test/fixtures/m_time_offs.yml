@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  m_employee: one
+  leave_type: MyString
+  start_date: 2026-03-25
+  end_date: 2026-03-25
+  reason: MyText
+  status: MyString
+
+two:
+  m_employee: two
+  leave_type: MyString
+  start_date: 2026-03-25
+  end_date: 2026-03-25
+  reason: MyText
+  status: MyString

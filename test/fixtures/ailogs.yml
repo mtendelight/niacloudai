@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  aicustomer: one
+  phone: MyString
+  customer_name: MyString
+  message: MyText
+  received_at: 2026-07-29 13:32:25
+
+two:
+  aicustomer: two
+  phone: MyString
+  customer_name: MyString
+  message: MyText
+  received_at: 2026-07-29 13:32:25

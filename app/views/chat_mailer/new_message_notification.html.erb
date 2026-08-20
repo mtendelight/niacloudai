@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+</head>
+
+<body style="margin:0;padding:0;background:#f4f6f9;font-family:Arial,Helvetica,sans-serif;">
+
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#f4f6f9;padding:30px 15px;">
+<tr>
+<td align="center">
+
+<table width="650" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:12px;overflow:hidden;border:1px solid #e5e7eb;">
+
+  <!-- Header -->
+  <tr>
+    <td style="background:#0d6efd;padding:25px;text-align:center;">
+      <h1 style="margin:0;color:#fff;font-size:28px;">
+        📩 New Chat Message
+      </h1>
+
+      <p style="margin-top:8px;color:#dbeafe;font-size:15px;">
+        Momak ERP Notification
+      </p>
+    </td>
+  </tr>
+
+  <!-- Greeting -->
+  <tr>
+    <td style="padding:30px;">
+
+      <h2 style="margin-top:0;color:#1f2937;">
+        Hello <%= @staff_name %>,
+      </h2>
+
+      <p style="font-size:16px;color:#4b5563;line-height:1.8;">
+        A new chat message has been sent to you through
+        <strong>Momak ERP</strong>.
+      </p>
+
+      <table width="100%" cellpadding="10" cellspacing="0"
+             style="margin-top:25px;border:1px solid #e5e7eb;border-radius:8px;background:#fafafa;">
+
+        <tr>
+          <td width="140"><strong>From</strong></td>
+          <td><%= @sender_name %></td>
+        </tr>
+
+        <tr>
+          <td><strong>Date</strong></td>
+          <td><%= Time.current.strftime("%d %B %Y %I:%M %p") %></td>
+        </tr>
+
+      </table>
+
+      <div style="margin-top:25px;padding:20px;background:#eef6ff;border-left:5px solid #0d6efd;border-radius:8px;">
+
+        <h3 style="margin-top:0;color:#0d6efd;">
+          Message
+        </h3>
+
+        <p style="white-space:pre-wrap;font-size:16px;color:#374151;line-height:1.8;margin:0;">
+          <%= @message %>
+        </p>
+
+      </div>
+
+      <div style="text-align:center;margin-top:35px;">
+
+        <a href="https://flow.momak.co.ke/conversations"
+           style="background:#198754;
+                  color:#fff;
+                  text-decoration:none;
+                  padding:15px 35px;
+                  border-radius:8px;
+                  display:inline-block;
+                  font-size:16px;
+                  font-weight:bold;">
+          Open Momak ERP
+        </a>
+
+      </div>
+
+      <p style="margin-top:35px;font-size:14px;color:#6b7280;">
+        This notification was automatically generated because a new message
+        requires your attention.
+      </p>
+
+    </td>
+  </tr>
+
+  <!-- Footer -->
+  <tr>
+    <td style="background:#f8fafc;padding:20px;text-align:center;border-top:1px solid #e5e7eb;">
+
+      <strong style="color:#0d6efd;font-size:18px;">
+        Momak Group ERP
+      </strong>
+
+      <br><br>
+
+      <span style="color:#6b7280;font-size:13px;">
+        © <%= Time.current.year %> Momak Group. All rights reserved.
+      </span>
+
+    </td>
+  </tr>
+
+</table>
+
+</td>
+</tr>
+</table>
+
+</body>
+</html>

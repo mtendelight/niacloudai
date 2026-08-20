@@ -1,0 +1,23 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  username: mtende
+  password: 41810025
+  host: localhost
+  pool: 5
+
+development:
+  <<: *default
+  database: carlink
+
+test:
+  <<: *default
+  database: carlink
+
+production:
+  <<: *default
+  database: niacloud_production
+  username: niacloud_prod
+  password: 41810025
+  host: 127.0.0.1
+  port: 5432

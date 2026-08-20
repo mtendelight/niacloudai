@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  logo: MyString
+  college_name: MyString
+  full_name: MyString
+  course: MyString
+  issue_date: 2024-07-03
+  certificate_no: MyString
+
+two:
+  logo: MyString
+  college_name: MyString
+  full_name: MyString
+  course: MyString
+  issue_date: 2024-07-03
+  certificate_no: MyString

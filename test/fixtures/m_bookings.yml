@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  m_adventure: one
+  name: MyString
+  id_number: MyString
+  phone: MyString
+  amount: 9.99
+  payment_status: MyString
+  comments: MyText
+
+two:
+  m_adventure: two
+  name: MyString
+  id_number: MyString
+  phone: MyString
+  amount: 9.99
+  payment_status: MyString
+  comments: MyText

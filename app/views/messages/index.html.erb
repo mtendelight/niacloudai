@@ -1,0 +1,1417 @@
+<%= render "layouts/header" %>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<% other_user = @conversation.sender == current_user ? @conversation.recipient : @conversation.sender %>
+
+<div class="container my-4">
+
+  <div class="sticky-header">
+
+  <!-- HEADER CARD -->
+  <div class="card border-0 shadow-lg rounded-4 mb-3 header-glass animate-fade">
+    <div class="card-body d-flex justify-content-between align-items-center py-3">
+
+      <!-- LEFT: USER -->
+      <div class="d-flex align-items-center gap-3">
+
+        <!-- Avatar -->
+        <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center fw-bold shadow avatar-lg">
+          <%= (other_user&.username || "U")[0].upcase %>
+        </div>
+
+        <!-- Info -->
+        <div>
+          <div class="fw-bold fs-5 text-dark">
+            <i class="bi bi-person-vcard-fill text-primary me-1"></i>
+            <%= other_user&.username || "User" %>
+          </div>
+
+          <small class="text-muted">
+            <i class="bi bi-circle-fill text-success me-1" style="font-size: 8px;"></i> Active now
+          </small>
+        </div>
+
+      </div>
+
+      <!-- ACTION BUTTONS -->
+      <div class="d-flex gap-2">
+
+        <!-- Refresh -->
+        <%= link_to conversation_messages_path(@conversation),
+            class: "btn btn-light btn-sm rounded-circle shadow refresh-btn",
+            title: "Refresh messages",
+            data: { turbo_frame: "messages_frame" } do %>
+          <i class="bi bi-arrow-repeat"></i>
+        <% end %>
+
+        <!-- Back -->
+        <%= link_to conversations_path,
+            class: "btn btn-outline-secondary btn-sm rounded-pill px-3" do %>
+          <i class="bi bi-arrow-left me-1"></i> Back
+        <% end %>
+
+      </div>
+
+    </div>
+  </div>
+
+
+
+
+
+  <!-- CHAT CARD -->
+  <div class="card border-0 shadow-lg rounded-4 overflow-hidden chat-glass animate-slide">
+
+    <!-- CHAT AREA -->
+    <div id="chat-box" class="p-4 chat-area">
+
+      <% @messages.each do |msg| %>
+        <% is_me = msg.user == current_user %>
+
+        <div class="d-flex mb-4 <%= is_me ? 'justify-content-end' : 'justify-content-start' %> animate-pop">
+
+          <div class="d-flex align-items-end gap-2" style="max-width: 80%;">
+
+            <!-- Other avatar -->
+            <% unless is_me %>
+              <div class="avatar-sm bg-secondary text-white rounded-circle shadow-sm">
+                <%= msg.user.username[0].upcase %>
+              </div>
+            <% end %>
+
+<!-- MESSAGE BUBBLE -->
+<div>
+
+  <% if msg.reply_to.present? %>
+    <div class="chat-reply-small">
+      <i class="bi bi-corner-up-left-fill me-1"></i>
+      <%= msg.reply_to.content.truncate(60) %>
+    </div>
+  <% end %>
+
+
+  
+
+  <div class="chat-bubble <%= is_me ? 'sent' : 'received' %>">
+
+    <%= simple_format(msg.content) if msg.content.present? %>
+
+
+   <% if msg.attachment.present? %>
+
+      <hr>
+
+
+
+      <%
+filename = msg[:attachment_filename].presence || "Attachment"
+extension = File.extname(filename.downcase)
+%>
+
+
+      <div class="attachment-preview p-2 rounded border bg-light">
+
+
+        <% if [".jpg", ".jpeg", ".png", ".gif", ".webp"].include?(extension) %>
+
+
+        
+<!-- IMAGE PREVIEW -->
+<!-- IMAGE PREVIEW -->
+<img src="<%= msg.attachment.url %>"
+     class="img-fluid rounded shadow attachment-image"
+     style="max-width:300px;">
+
+<div class="mt-2">
+
+  <div class="small mb-2">
+    <i class="bi bi-image text-primary"></i>
+    <%= filename %>
+  </div>
+
+  <a href="<%= msg.attachment.url %>"
+     target="_blank"
+     rel="noopener"
+     class="btn btn-sm btn-outline-primary">
+
+    <i class="bi bi-arrows-fullscreen"></i>
+    View Full Image
+
+  </a>
+
+</div>
+
+
+
+
+   <% elsif extension == ".pdf" %>
+
+
+          <!-- PDF -->
+          <%= link_to msg.attachment.url,
+              target: "_blank",
+              class: "d-flex align-items-center text-decoration-none" do %>
+
+            <i class="bi bi-file-earmark-pdf-fill text-danger fs-1 me-3"></i>
+
+            <div>
+              <strong><%= filename %></strong>
+              <br>
+              <small class="text-muted">
+                PDF Document
+              </small>
+            </div>
+
+          <% end %>
+
+
+<% elsif [".xls",".xlsx",".csv"].include?(extension) %>
+
+
+          <!-- EXCEL -->
+          <%= link_to msg.attachment.url,
+              target: "_blank",
+              class: "d-flex align-items-center text-decoration-none" do %>
+
+            <i class="bi bi-file-earmark-excel-fill text-success fs-1 me-3"></i>
+
+            <div>
+              <strong><%= filename %></strong>
+              <br>
+              <small class="text-muted">
+                Excel Spreadsheet
+              </small>
+            </div>
+
+          <% end %>
+
+
+
+        <% elsif [".doc",".docx"].include?(extension) %>
+
+
+          <!-- WORD -->
+          <%= link_to msg.attachment.url,
+              target: "_blank",
+              class: "d-flex align-items-center text-decoration-none" do %>
+
+            <i class="bi bi-file-earmark-word-fill text-primary fs-1 me-3"></i>
+
+            <div>
+              <strong><%= filename %></strong>
+              <br>
+              <small class="text-muted">
+                Word Document
+              </small>
+            </div>
+
+          <% end %>
+
+
+
+    <% else %>
+
+      <!-- OTHER FILES -->
+      <%= link_to msg.attachment.url,
+          target: "_blank",
+          class: "d-flex align-items-center text-decoration-none" do %>
+
+        <i class="bi bi-paperclip fs-1 me-3"></i>
+
+        <div>
+          <strong><%= filename %></strong>
+          <br>
+          <small class="text-muted">
+            Attachment
+          </small>
+        </div>
+
+      <% end %>
+
+    <% end %>
+
+  </div>
+
+<% end %>
+
+</div> <!-- closes main wrapper -->
+
+<style>
+  .attachment-preview {
+  max-width: 350px;
+}
+
+.attachment-preview i {
+  min-width: 45px;
+}
+
+.attachment-preview strong {
+  font-size: 14px;
+  word-break: break-word;
+}
+</style>
+              <!-- TIMESTAMP + REPLY BUTTON -->
+              <div class="timestamp <%= is_me ? 'text-end' : '' %>">
+                <i class="bi bi-clock me-1"></i>
+                <%= msg.created_at.strftime("%H:%M") %>
+
+                <button
+                  class="btn btn-link btn-sm p-0 ms-2 text-primary reply-btn"
+                  data-message-id="<%= msg.id %>"
+                  data-message-text="<%= msg.content %>">
+                  <i class="bi bi-chat-left-quote-fill"></i> Reply
+                </button>
+              </div>
+
+            </div>
+
+            <!-- My avatar -->
+            <% if is_me %>
+              <div class="avatar-sm bg-primary text-white rounded-circle shadow-sm">
+                <%= current_user.username[0].upcase %>
+              </div>
+            <% end %>
+
+          </div>
+
+        </div>
+      <% end %>
+
+    </div>
+
+
+
+
+
+
+    <!-- REPLY PREVIEW -->
+    <div id="reply-preview" class="reply-preview d-none">
+      <small>Replying to:</small>
+      <div id="reply-text" class="reply-body"></div>
+
+      <button id="cancel-reply" class="btn btn-link text-danger p-0 small">
+        Cancel
+      </button>
+    </div>
+
+
+
+
+
+    <!-- INPUT BAR -->
+    <div class="chat-input">
+        <div class="login">
+ 
+
+
+          <%= form_with model: [@conversation, Message.new],
+      html: { multipart: true },
+      id: "new_message" do |f| %>
+
+        <div class="input-group align-items-center">
+
+          <!-- Emoji -->
+         <button type="button" id="emoji-btn" class="input-group-text emoji-icon">
+  😀
+</button>
+
+          <%= f.hidden_field :reply_to_id, id: "reply_to_id" %>
+
+          <!-- Textbox -->
+          <%= f.text_area :content,
+              rows: 1,
+              class: "form-control chat-textarea",
+              placeholder: "Write a message...",
+              autocomplete: "off" %>
+
+          <!-- Send -->
+
+          <div class="mt-2">
+
+ <label class="btn btn-light rounded-pill shadow-sm">
+
+  <i class="bi bi-paperclip"></i>
+  Attach
+
+  <%= f.file_field :attachment,
+      class:"d-none",
+      id:"message_attachment",
+      onchange:"showAttachmentName(this)" %>
+
+</label>
+
+
+<span id="attachment-name"
+      class="small text-muted ms-2">
+</span>
+
+</div>
+
+  <button type="submit"
+        class="btn btn-primary rounded-pill send-btn px-4"
+        data-disable-with="">
+  <i class="bi bi-send-check-fill"></i>
+</button>
+
+<script>
+
+function showAttachmentName(input){
+
+  let box = document.getElementById("attachment-name");
+
+  if(input.files.length > 0){
+
+    box.innerHTML =
+      '<i class="bi bi-paperclip"></i> ' +
+      input.files[0].name;
+
+  }
+
+}
+
+</script>
+
+<div id="emoji-picker" class="emoji-picker d-none">
+
+  <!-- Smileys -->
+  <span class="emoji">😀</span>
+  <span class="emoji">😃</span>
+  <span class="emoji">😄</span>
+  <span class="emoji">😁</span>
+  <span class="emoji">😆</span>
+  <span class="emoji">🤣</span>
+  <span class="emoji">😂</span>
+  <span class="emoji">😊</span>
+  <span class="emoji">🙂</span>
+  <span class="emoji">😉</span>
+  <span class="emoji">😍</span>
+  <span class="emoji">🥰</span>
+  <span class="emoji">😘</span>
+  <span class="emoji">😎</span>
+  <span class="emoji">🤩</span>
+  <span class="emoji">🥳</span>
+
+  <!-- Reactions -->
+  <span class="emoji">👍</span>
+  <span class="emoji">👎</span>
+  <span class="emoji">👌</span>
+  <span class="emoji">✌️</span>
+  <span class="emoji">🤝</span>
+  <span class="emoji">👏</span>
+  <span class="emoji">🙌</span>
+  <span class="emoji">💪</span>
+  <span class="emoji">🙏</span>
+
+  <!-- Hearts -->
+  <span class="emoji">❤️</span>
+  <span class="emoji">🧡</span>
+  <span class="emoji">💛</span>
+  <span class="emoji">💚</span>
+  <span class="emoji">💙</span>
+  <span class="emoji">💜</span>
+  <span class="emoji">🖤</span>
+  <span class="emoji">🤍</span>
+  <span class="emoji">💕</span>
+  <span class="emoji">💖</span>
+
+  <!-- Fun -->
+  <span class="emoji">🎉</span>
+  <span class="emoji">🎊</span>
+  <span class="emoji">🎂</span>
+  <span class="emoji">🍾</span>
+  <span class="emoji">🥂</span>
+  <span class="emoji">🎁</span>
+  <span class="emoji">🏆</span>
+  <span class="emoji">🥇</span>
+
+  <!-- Business -->
+  <span class="emoji">📈</span>
+  <span class="emoji">📉</span>
+  <span class="emoji">💰</span>
+  <span class="emoji">💵</span>
+  <span class="emoji">💳</span>
+  <span class="emoji">🏦</span>
+  <span class="emoji">📊</span>
+  <span class="emoji">📝</span>
+
+  <!-- Chat -->
+  <span class="emoji">💬</span>
+  <span class="emoji">📩</span>
+  <span class="emoji">📨</span>
+  <span class="emoji">📞</span>
+  <span class="emoji">📱</span>
+
+  <!-- Status -->
+  <span class="emoji">✅</span>
+  <span class="emoji">❌</span>
+  <span class="emoji">⚠️</span>
+  <span class="emoji">⏳</span>
+  <span class="emoji">🚀</span>
+  <span class="emoji">🔥</span>
+  <span class="emoji">⭐</span>
+  <span class="emoji">🌟</span>
+
+</div>
+        
+       
+
+        </div>
+
+        </div>
+      <% end %>
+    </div>
+
+  </div>
+
+
+<hr/>
+
+  <div class="sticky-header">
+
+  <!-- HEADER CARD -->
+  <div class="card border-0 shadow-lg rounded-4 mb-3 header-glass animate-fade">
+    <div class="card-body d-flex justify-content-between align-items-center py-3">
+
+      <!-- LEFT: USER -->
+      <div class="d-flex align-items-center gap-3">
+
+        <!-- Avatar -->
+        <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center fw-bold shadow avatar-lg">
+          <%= (other_user&.username || "U")[0].upcase %>
+        </div>
+
+        <!-- Info -->
+        <div>
+          <div class="fw-bold fs-5 text-dark">
+            <i class="bi bi-person-vcard-fill text-primary me-1"></i>
+            <%= other_user&.username || "User" %>
+          </div>
+
+          <small class="text-muted">
+            <i class="bi bi-circle-fill text-success me-1" style="font-size: 8px;"></i> Active now
+          </small>
+        </div>
+
+      </div>
+
+      <!-- ACTION BUTTONS -->
+      <div class="d-flex gap-2">
+
+        <!-- Refresh -->
+        <%= link_to conversation_messages_path(@conversation),
+            class: "btn btn-light btn-sm rounded-circle shadow refresh-btn",
+            title: "Refresh messages",
+            data: { turbo_frame: "messages_frame" } do %>
+          <i class="bi bi-arrow-repeat"></i>
+        <% end %>
+
+        <!-- Back -->
+        <%= link_to conversations_path,
+            class: "btn btn-outline-secondary btn-sm rounded-pill px-3" do %>
+          <i class="bi bi-arrow-left me-1"></i> Back
+        <% end %>
+
+      </div>
+
+    </div>
+  </div>
+
+</div></div>
+
+<script>
+(() => {
+
+  let submitting = false;
+
+  function scrollChatToBottom() {
+    const box = document.getElementById("chat-box");
+    if (box) box.scrollTop = box.scrollHeight;
+  }
+
+  function initializeChat() {
+
+    scrollChatToBottom();
+
+    const form = document.getElementById("new_message");
+    if (!form) return;
+
+    const textarea = form.querySelector("textarea[name='message[content]']");
+    const submitBtn = form.querySelector(".send-btn");
+
+    const replyPreview = document.getElementById("reply-preview");
+    const replyText = document.getElementById("reply-text");
+    const replyInput = document.getElementById("reply_to_id");
+    const cancelReply = document.getElementById("cancel-reply");
+
+    const emojiBtn = document.getElementById("emoji-btn");
+    const emojiPicker = document.getElementById("emoji-picker");
+
+    //-----------------------------------
+    // Auto resize textarea
+    //-----------------------------------
+
+    if (textarea) {
+
+      textarea.style.height = "auto";
+      textarea.style.height = textarea.scrollHeight + "px";
+
+      textarea.addEventListener("input", function () {
+        this.style.height = "auto";
+        this.style.height = this.scrollHeight + "px";
+      });
+
+      //-----------------------------------
+      // ENTER SEND
+      //-----------------------------------
+
+      textarea.addEventListener("keydown", function (e) {
+
+        if (e.key === "Enter" && !e.shiftKey) {
+
+          e.preventDefault();
+
+          if (submitting) return;
+
+          if (
+            textarea.value.trim() === "" &&
+            document.getElementById("message_attachment").files.length === 0
+          ) {
+            return;
+          }
+
+          form.requestSubmit();
+
+        }
+
+      });
+
+    }
+
+    //-----------------------------------
+    // Prevent double submit
+    //-----------------------------------
+
+    form.addEventListener("submit", function(e){
+
+      if(submitting){
+
+        e.preventDefault();
+        return false;
+
+      }
+
+      submitting = true;
+
+      if(submitBtn){
+
+        submitBtn.disabled = true;
+
+        submitBtn.innerHTML =
+          '<span class="spinner-border spinner-border-sm"></span>';
+
+      }
+
+    });
+
+    //-----------------------------------
+    // Reply cancel
+    //-----------------------------------
+
+    if(cancelReply){
+
+      cancelReply.onclick = function(){
+
+        replyInput.value = "";
+
+        replyPreview.classList.add("d-none");
+
+      }
+
+    }
+
+    //-----------------------------------
+    // Emoji picker
+    //-----------------------------------
+
+    if(emojiBtn && emojiPicker && textarea){
+
+      emojiBtn.onclick = function(e){
+
+        e.preventDefault();
+
+        emojiPicker.classList.toggle("d-none");
+
+      };
+
+      emojiPicker.querySelectorAll(".emoji").forEach(function(emoji){
+
+        emoji.onclick = function(){
+
+          const start = textarea.selectionStart;
+          const end = textarea.selectionEnd;
+
+          textarea.value =
+            textarea.value.substring(0,start) +
+            this.textContent +
+            textarea.value.substring(end);
+
+          textarea.focus();
+
+        };
+
+      });
+
+    }
+
+  }
+
+  //-----------------------------------
+  // Reply button
+  //-----------------------------------
+
+  document.addEventListener("click", function(e){
+
+    const btn = e.target.closest(".reply-btn");
+
+    if(!btn) return;
+
+    document.getElementById("reply_to_id").value =
+      btn.dataset.messageId;
+
+    document.getElementById("reply-text").innerText =
+      btn.dataset.messageText;
+
+    document
+      .getElementById("reply-preview")
+      .classList.remove("d-none");
+
+    document
+      .querySelector("textarea[name='message[content]']")
+      .focus();
+
+  });
+
+  //-----------------------------------
+  // Turbo success
+  //-----------------------------------
+
+  document.addEventListener("turbo:submit-end", function(e){
+
+    if(e.target.id !== "new_message") return;
+
+    submitting = false;
+
+    const form = e.target;
+
+    const btn = form.querySelector(".send-btn");
+
+    if(btn){
+
+      btn.disabled = false;
+
+      btn.innerHTML =
+        '<i class="bi bi-send-check-fill"></i>';
+
+    }
+
+    if(e.detail.success){
+
+      form.reset();
+
+      const textarea =
+        form.querySelector("textarea");
+
+      if(textarea){
+
+        textarea.style.height = "auto";
+
+      }
+
+      document
+        .getElementById("reply-preview")
+        .classList.add("d-none");
+
+      document
+        .getElementById("reply_to_id")
+        .value = "";
+
+      document
+        .getElementById("attachment-name")
+        .innerHTML = "";
+
+      setTimeout(scrollChatToBottom,100);
+
+    }
+
+  });
+
+  document.addEventListener("turbo:before-stream-render",function(){
+
+      setTimeout(scrollChatToBottom,50);
+
+  });
+
+  document.addEventListener("DOMContentLoaded",initializeChat);
+  document.addEventListener("turbo:load",initializeChat);
+
+})();
+</script>
+
+
+
+
+
+
+<style>
+
+
+.emoji-picker {
+  background: #fff;
+  border-top: 1px solid #e5e7eb;
+  padding: 10px;
+  max-height: 140px;
+  overflow-y: auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.emoji {
+  cursor: pointer;
+  font-size: 24px;
+  padding: 4px;
+  border-radius: 6px;
+  transition: all .15s ease;
+}
+
+.emoji:hover {
+  background: #f3f4f6;
+  transform: scale(1.2);
+}
+
+  /* Sticky Header */
+.sticky-header {
+  position: sticky;
+  top: 20px; /* distance from top of viewport */
+  z-index: 999; /* stays above chat */
+}
+/* ------------------ Background ------------------ */
+body {
+  background: linear-gradient(135deg, #dde7ff, #eef3ff);
+  background-attachment: fixed;
+  font-family: "Inter", sans-serif;
+}
+
+
+
+/* ------------------ Animations ------------------ */
+.animate-fade {
+  animation: fadeIn .6s ease;
+}
+
+.animate-slide {
+  animation: slideUp .5s ease;
+}
+
+.animate-pop {
+  animation: popIn .4s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity:0; }
+  to { opacity:1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(15px); opacity:0; }
+  to { transform: translateY(0); opacity:1; }
+}
+
+@keyframes popIn {
+  from { transform: scale(0.95); opacity:0; }
+  to { transform: scale(1); opacity:1; }
+}
+
+
+
+/* ------------------ Header Glass ------------------ */
+.header-glass {
+  backdrop-filter: blur(12px);
+  background: rgba(255,255,255,0.75);
+  border: 1px solid rgba(255,255,255,0.4);
+}
+
+
+
+/* ------------------ Chat Area ------------------ */
+.chat-area {
+  height: 500px;
+  overflow-y: auto;
+  background: #f7faff;
+}
+
+.chat-area::-webkit-scrollbar {
+  width: 6px;
+}
+
+.chat-area::-webkit-scrollbar-thumb {
+  background: #becadb;
+  border-radius: 10px;
+}
+
+
+
+/* ------------------ Avatars ------------------ */
+.avatar-lg {
+  width: 50px;
+  height: 50px;
+  font-size: 20px;
+}
+
+.avatar-sm {
+  width: 30px;
+  height: 30px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+
+/* ------------------ Chat Bubbles ------------------ */
+.chat-bubble {
+  padding: 11px 15px;
+  border-radius: 18px;
+  font-size: 14px;
+  max-width: 100%;
+  word-break: break-word;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+}
+
+.chat-bubble.sent {
+  background: #2563eb;
+  color: white;
+  border-bottom-right-radius: 6px;
+}
+
+.chat-bubble.received {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-bottom-left-radius: 6px;
+}
+
+
+
+/* ------------------ Reply Quote Inside Message ------------------ */
+.chat-reply-small {
+  background: #eef2ff;
+  border-left: 3px solid #4f75ff;
+  padding: 5px 10px;
+  border-radius: 10px;
+  font-size: 12px;
+  color: #475569;
+  margin-bottom: 6px;
+}
+
+
+
+/* ------------------ Timestamp ------------------ */
+.timestamp {
+  font-size: 11px;
+  color: #94a3b8;
+  margin-top: 3px;
+}
+
+
+
+/* ------------------ Reply Preview ------------------ */
+.reply-preview {
+  background: #eef2ff;
+  padding: 10px;
+  border-left: 4px solid #6366f1;
+  margin: 8px;
+  border-radius: 10px;
+}
+
+.reply-body {
+  font-size: 13px;
+  font-weight: 500;
+}
+
+
+
+/* ------------------ Input Bar ------------------ */
+.chat-input {
+  background: white;
+  border-top: 1px solid #e2e8f0;
+  padding: 12px;
+}
+
+.chat-textarea {
+  border: none;
+  background: transparent;
+  resize: none;
+  box-shadow: none;
+  font-size: 14px;
+}
+
+.emoji-icon {
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  color: #64748b;
+}
+
+.send-btn {
+  box-shadow: 0 4px 10px rgba(37,99,235,0.3);
+}
+</style>
+
+
+<style>
+
+/* ===============================
+   PREMIUM CHAT UI - JANOMAX
+==================================*/
+
+:root{
+  --primary:#2563eb;
+  --primary-dark:#1d4ed8;
+  --primary-light:#dbeafe;
+  --success:#10b981;
+  --white:#ffffff;
+  --bg:#eef4ff;
+  --card:rgba(255,255,255,.82);
+  --border:rgba(255,255,255,.55);
+  --text:#1e293b;
+  --muted:#64748b;
+  --shadow:0 12px 35px rgba(15,23,42,.12);
+  --shadow-lg:0 20px 45px rgba(37,99,235,.15);
+}
+
+/* ===============================
+   BODY
+==================================*/
+
+body{
+    font-family:"Inter",sans-serif;
+    background:
+        radial-gradient(circle at top left,#dbeafe 0%,transparent 40%),
+        radial-gradient(circle at bottom right,#c7d2fe 0%,transparent 35%),
+        linear-gradient(135deg,#edf4ff,#f8fbff);
+    background-attachment:fixed;
+    color:var(--text);
+}
+
+
+/* ===============================
+   ANIMATIONS
+==================================*/
+
+.animate-fade{
+    animation:fade .35s ease;
+}
+
+.animate-slide{
+    animation:slide .35s ease;
+}
+
+.animate-pop{
+    animation:pop .25s ease;
+}
+
+@keyframes fade{
+from{opacity:0;}
+to{opacity:1;}
+}
+
+@keyframes slide{
+from{
+opacity:0;
+transform:translateY(20px);
+}
+to{
+opacity:1;
+transform:translateY(0);
+}
+}
+
+@keyframes pop{
+from{
+opacity:0;
+transform:scale(.95);
+}
+to{
+opacity:1;
+transform:scale(1);
+}
+}
+
+
+/* ===============================
+   STICKY HEADER
+==================================*/
+
+.sticky-header{
+    position:sticky;
+    top:15px;
+    z-index:999;
+}
+
+
+/* ===============================
+   GLASS HEADER
+==================================*/
+
+.header-glass{
+    background:rgba(255,255,255,.82);
+    backdrop-filter:blur(18px);
+    -webkit-backdrop-filter:blur(18px);
+
+    border:1px solid rgba(255,255,255,.55);
+
+    border-radius:18px;
+
+    box-shadow:
+        0 10px 35px rgba(37,99,235,.08);
+
+    transition:.3s;
+}
+
+
+/* ===============================
+   CHAT AREA
+==================================*/
+
+.chat-area{
+
+    height:520px;
+
+    overflow-y:auto;
+
+    padding:18px;
+
+    border-radius:22px;
+
+    background:
+        linear-gradient(rgba(255,255,255,.75),
+        rgba(255,255,255,.75)),
+        url("https://www.transparenttextures.com/patterns/cubes.png");
+
+    box-shadow:var(--shadow);
+
+    border:1px solid rgba(255,255,255,.6);
+
+}
+
+.chat-area::-webkit-scrollbar{
+    width:8px;
+}
+
+.chat-area::-webkit-scrollbar-track{
+    background:transparent;
+}
+
+.chat-area::-webkit-scrollbar-thumb{
+
+    background:linear-gradient(var(--primary),#60a5fa);
+
+    border-radius:30px;
+
+}
+
+
+/* ===============================
+   AVATARS
+==================================*/
+
+.avatar-lg{
+
+    width:52px;
+    height:52px;
+
+    border-radius:50%;
+
+    background:linear-gradient(135deg,#2563eb,#60a5fa);
+
+    color:#fff;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:20px;
+    font-weight:700;
+
+    box-shadow:0 8px 18px rgba(37,99,235,.35);
+
+}
+
+.avatar-sm{
+
+    width:34px;
+    height:34px;
+
+    border-radius:50%;
+
+    background:linear-gradient(135deg,#2563eb,#60a5fa);
+
+    color:#fff;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:12px;
+    font-weight:600;
+
+}
+
+
+/* ===============================
+   CHAT BUBBLES
+==================================*/
+
+.chat-bubble{
+
+    padding:13px 16px;
+
+    border-radius:20px;
+
+    max-width:100%;
+
+    font-size:14px;
+
+    line-height:1.6;
+
+    word-break:break-word;
+
+    transition:.25s;
+
+    position:relative;
+
+    box-shadow:
+      0 8px 20px rgba(15,23,42,.06);
+
+}
+
+.chat-bubble:hover{
+
+    transform:translateY(-2px);
+
+    box-shadow:
+      0 12px 28px rgba(37,99,235,.10);
+
+}
+
+.chat-bubble.sent{
+
+    background:linear-gradient(135deg,#2563eb,#3b82f6);
+
+    color:#fff;
+
+    border-bottom-right-radius:6px;
+
+}
+
+.chat-bubble.received{
+
+    background:#fff;
+
+    color:#1e293b;
+
+    border:1px solid rgba(226,232,240,.9);
+
+    border-bottom-left-radius:6px;
+
+}
+
+
+/* ===============================
+   REPLY
+==================================*/
+
+.chat-reply-small{
+
+    background:#eef4ff;
+
+    border-left:4px solid var(--primary);
+
+    border-radius:12px;
+
+    padding:8px 12px;
+
+    font-size:12px;
+
+    margin-bottom:8px;
+
+    color:#475569;
+
+}
+
+.reply-preview{
+
+    background:#eff6ff;
+
+    border-left:4px solid var(--primary);
+
+    border-radius:14px;
+
+    padding:12px;
+
+    margin:10px;
+
+    box-shadow:0 6px 15px rgba(37,99,235,.08);
+
+}
+
+.reply-body{
+
+    font-size:13px;
+
+    font-weight:600;
+
+}
+
+
+/* ===============================
+   TIME
+==================================*/
+
+.timestamp{
+
+    font-size:11px;
+
+    color:#94a3b8;
+
+    margin-top:5px;
+
+    opacity:.9;
+
+}
+
+
+/* ===============================
+   INPUT AREA
+==================================*/
+
+.chat-input{
+
+    background:rgba(255,255,255,.92);
+
+    backdrop-filter:blur(12px);
+
+    border-top:1px solid rgba(226,232,240,.8);
+
+    border-radius:20px;
+
+    padding:12px;
+
+    box-shadow:0 -8px 20px rgba(15,23,42,.05);
+
+}
+
+.chat-textarea{
+
+    border:none;
+
+    background:transparent;
+
+    resize:none;
+
+    box-shadow:none;
+
+    font-size:15px;
+
+    color:#1e293b;
+
+}
+
+.chat-textarea:focus{
+
+    outline:none;
+
+    box-shadow:none;
+
+}
+
+.chat-textarea::placeholder{
+
+    color:#94a3b8;
+
+}
+
+
+
+
+
+/* ===============================
+   ICON BUTTONS
+==================================*/
+
+.emoji-icon{
+
+    border:none;
+
+    background:transparent;
+
+    color:#64748b;
+
+    font-size:22px;
+
+    transition:.25s;
+
+}
+
+.emoji-icon:hover{
+
+    color:var(--primary);
+
+    transform:scale(1.15);
+
+}
+
+
+/* ===============================
+   SEND BUTTON
+==================================*/
+
+.send-btn{
+
+    background:linear-gradient(135deg,#2563eb,#3b82f6);
+
+    color:#fff;
+
+    border:none;
+
+    border-radius:14px;
+
+    padding:10px 18px;
+
+    font-weight:600;
+
+    transition:.25s;
+
+    box-shadow:
+        0 12px 25px rgba(37,99,235,.30);
+
+}
+
+.send-btn:hover{
+
+    transform:translateY(-2px);
+
+    background:linear-gradient(135deg,#1d4ed8,#2563eb);
+
+    box-shadow:
+        0 16px 30px rgba(37,99,235,.40);
+
+}
+
+.send-btn:active{
+
+    transform:scale(.97);
+
+}
+
+</style>

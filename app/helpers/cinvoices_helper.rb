@@ -1,0 +1,2 @@
+module CinvoicesHelper
+end

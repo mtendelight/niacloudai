@@ -1,0 +1,49 @@
+<%= render "layouts/header" %>
+
+<div class="container mt-4">
+
+  <h3>📊 Import Results</h3>
+
+  <% if @results.present? %>
+
+    <div class="row mt-3">
+
+      <div class="col-md-3">
+        <div class="card p-3 bg-success text-white">
+          <h5>Saved</h5>
+          <h2><%= @results[:saved] %></h2>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="card p-3 bg-warning">
+          <h5>Duplicates</h5>
+          <h2><%= @results[:duplicates] %></h2>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="card p-3 bg-danger text-white">
+          <h5>Failed</h5>
+          <h2><%= @results[:failed] %></h2>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="card p-3 bg-primary text-white">
+          <h5>Total</h5>
+          <h2><%= @results[:total] %></h2>
+        </div>
+      </div>
+
+    </div>
+
+  <% else %>
+    <p>No import results found.</p>
+  <% end %>
+
+  <div class="mt-4">
+    <%= link_to "⬅ Back", jmpayments_import_path, class: "btn btn-secondary" %>
+  </div>
+
+</div>

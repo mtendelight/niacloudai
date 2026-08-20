@@ -1,0 +1,2 @@
+module Requirements::IndexHelper
+end

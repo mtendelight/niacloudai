@@ -1,0 +1,549 @@
+<div class="login">
+
+
+
+  <%= form_with(model: jmcustomer, local: true) do |form| %>
+    <!-- Customer details -->
+  <div class="card reward-circle-card text-center p-3 h-100">
+
+    <% if @jmcustomer.errors[:comments].any? %>
+  <div class="alert alert-danger py-1">
+    <%= @jmcustomer.errors[:comments].first %>
+  </div>
+<% end %>
+
+        <!-- Top Edit/Update Customer header/button -->
+  <div class="text-center mb-4">
+    <span class="edit-customer-header">
+      <i class="bi bi-pencil-square me-2"></i> Edit Customer
+    </span>
+  </div>
+  <fieldset>
+
+<!-- AVATAR -->
+<div class="reward-avatar mx-auto mb-3 position-relative">
+  <i class="bi bi-person-fill"></i>
+
+  <span class="reward-points">
+    Ksh. <%= jmcustomer.points %>
+  </span>
+
+  <% if jmcustomer.blacklist? %>
+    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+      <i class="bi bi-shield-fill-exclamation"></i>
+    </span>
+  <% end %>
+</div>
+
+<!-- NAME -->
+<h5 class="fw-bold text-primary mb-1">
+  <%= jmcustomer.name %>
+</h5>
+
+<% if jmcustomer.blacklist? %>
+  <div class="mb-2">
+    <span class="badge bg-danger px-3 py-2">
+      <i class="bi bi-shield-fill-exclamation me-1"></i>
+      BLACKLISTED CUSTOMER
+    </span>
+  </div>
+<% end %>
+
+<!-- PHONE -->
+<div class="text-muted small mb-2">
+  <i class="bi bi-telephone-fill text-success me-1"></i>
+  <%= jmcustomer.phone %>
+</div>
+
+<!-- LOCATION -->
+<div class="small text-muted mb-2">
+  <i class="bi bi-geo-alt-fill text-danger me-1"></i>
+  <%= jmcustomer.location.presence || "—" %>
+</div>
+
+<!-- UPDATED -->
+<div class="text-muted small">
+  <i class="bi bi-clock-history me-1"></i>
+  <%= jmcustomer.updated_at.strftime("%d %b %Y • %I:%M %p") %>
+</div>
+
+    
+ 
+
+</fieldset>
+
+<!-- Items selection -->
+<div class="mb-3 text-center">
+  <label class="form-label fw-bold required">Items</label>
+
+  <div id="items-container" class="d-flex flex-column align-items-center w-100">
+    <% # Group duplicate items for display on edit, sorted alphabetically %>
+    <% combined_items = jmcustomer.jmcustomer_items.group_by(&:janomax_id)
+       .sort_by { |janomax_id, items| items.first.janomax&.item_name.to_s.strip.downcase } %>
+
+    <% combined_items.each do |janomax_id, items| %>
+
+  <% first_item = items.first %>
+<% total_count = items.size %>
+
+<div class="item-field d-flex align-items-center justify-content-start mb-2 w-100" style="max-width: 400px;">
+  <span class="row-number fw-bold me-2"></span>
+
+  <%= form.fields_for :jmcustomer_items, first_item do |item_form| %>
+
+    <%= item_form.collection_select :janomax_id,
+      Janomax.all.order(Arel.sql("LOWER(TRIM(item_name))")),
+      :id, :item_name,
+      { prompt: "Select an item" },
+      {
+        class: "form-select elena text-truncate",
+        style: "max-width: 250px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;",
+        disabled: !@jmcustomer.imported?
+      } %>
+
+          <% if total_count > 1 %>
+            <span class="ms-2 text-muted flex-shrink-0">x <%= total_count %></span>
+          <% end %>
+
+          <%= item_form.hidden_field :_destroy, class: "destroy-flag" %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- Hidden template for new items -->
+  <div id="new-item-template" style="display: none;">
+    <div class="item-field d-flex align-items-center justify-content-start mb-2 w-100" style="max-width: 400px;">
+      <span class="row-number fw-bold me-2"></span>
+      <select name="jmcustomer[jmcustomer_items_attributes][NEW_RECORD][janomax_id]"
+              class="form-select elena text-truncate"
+              style="max-width: 250px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+        <option value="">Select an item</option>
+        <% Janomax.all.order(Arel.sql("LOWER(TRIM(item_name))")).each do |j| %>
+          <option value="<%= j.id %>"><%= j.item_name.strip %></option>
+
+        <% end %>
+      </select>
+      <input type="hidden" name="jmcustomer[jmcustomer_items_attributes][NEW_RECORD][_destroy]" value="false" class="destroy-flag">
+      <a href="#" class="btn btn-danger active btn-sm ms-2 remove-item">
+        <i class="bi bi-dash-circle me-1" style="color: white;"></i> Remove
+      </a>
+    </div>
+  </div>
+
+ <!-- Add Item button -->
+<div class="d-flex justify-content-center mt-2">
+  <button id="add-item" class="btn btn-primary btn-sm" disabled>
+    <i class="bi bi-plus-circle me-1"></i> Add Item
+  </button>
+</div>
+
+
+
+<hr/>
+
+<div class="redeem-points-container text-center mb-3">
+  <%= form.label :location, "Location", class: "form-label fw-bold d-block mb-2" %>
+  <%= form.text_field :location, 
+        class: "new22 form-control mx-auto", 
+        placeholder: "Enter points to redeem", 
+        required: true, 
+        min: 0 %>
+</div>
+<center>
+<div class="redeem-points-container text-center mb-3" style="width: 50%;">
+  <%= form.label :points, "Redeem Points", class: "form-label fw-bold d-block mb-2" %>
+  <%= form.number_field :points, 
+        class: "new22 form-control mx-auto", 
+        placeholder: "Enter points to redeem", 
+        required: true, 
+        min: 0 %>
+</div>
+
+<div class="customer-updated">
+  Last Updated: <%= @jmcustomer.updated_at.strftime("%d %b %Y") %>
+</div>
+
+
+<div class="mb-3">
+  <%= form.label :feedback, class: "form-label" %>
+  <%= form.select :feedback,
+      [["Positive", "positive"], ["Negative", "negative"]],
+      { prompt: "Select Feedback" },
+      { class: "new22", id: "feedback_select" } %>
+</div>
+
+<div class="mb-3" id="comments_field" style="display:none;">
+  <%= form.label :comments, class: "form-label" %>
+  <%= form.text_area :comments, class: "form-control" %>
+</div>
+
+
+       <div class="form-check mb-3">
+  <%= form.check_box :blacklist, class: "form-check-input" %>
+  <%= form.label :blacklist, "Blacklist Customer", class: "form-check-label" %>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const feedback = document.getElementById("feedback_select");
+    const comments = document.getElementById("comments_field");
+
+    if (!feedback || !comments) return; // <-- prevents errors if JS loads early
+
+    function toggleComments() {
+      if (feedback.value === "negative") {
+        comments.style.display = "block";
+      } else {
+        comments.style.display = "none";
+      }
+    }
+
+    feedback.addEventListener("change", toggleComments);
+    toggleComments(); // safe, even when value is blank
+  });
+</script>
+
+   <div class="d-flex justify-content-center mt-4 gap-2">
+  <%= form.submit "Submit",
+        class: "btn btn-primary",
+        id: "submit_jmcustomer",
+        data: { loading_text: "Processing..." } %>
+  <%= link_to "Cancel", jmcustomers_path, class: "btn btn-outline-secondary" %>
+</div>
+
+  <% end %>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const submitBtn = document.getElementById("submit_jmcustomer");
+  if (!submitBtn) return;
+
+  submitBtn.addEventListener("click", function (e) {
+    // Prevent double clicks
+    if (submitBtn.dataset.loading === "true") {
+      e.preventDefault();
+      return;
+    }
+
+    submitBtn.dataset.loading = "true";
+    submitBtn.value = submitBtn.dataset.loadingText || "Processing..."; // for input[type=submit]
+
+    // Optionally disable the button
+    submitBtn.classList.add("disabled");
+  });
+});
+</script>
+
+
+
+<style>
+
+    /* Search Card */
+.search-card {
+  max-width: 520px;
+  border-radius: 0.75rem;
+}
+
+.search-input {
+  min-width: 260px;
+}
+
+/* Reward Card */
+.reward-circle-card {
+  border-radius: 1rem;
+  border-top: 4px solid #0d6efd;
+  transition: all 0.25s ease;
+}
+
+.reward-circle-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 24px rgba(0,0,0,0.15);
+}
+
+/* Avatar Circle */
+.reward-avatar {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #0d6efd, #0b5ed7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  color: #fff;
+  font-size: 3.2rem;
+}
+
+/* Points Badge */
+.reward-points {
+  position: absolute;
+  bottom: -8px;
+  right: -8px;
+  background: #ffc107;
+  color: #000;
+  font-weight: 700;
+  font-size: 0.9rem;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 2px solid #fff;
+}
+
+/* Admin Warning */
+.admin-message {
+  text-align: center;
+  background: #f8d7da;
+  color: #842029;
+  padding: 14px;
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+  .customer-updated {
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #333;
+  margin: 1rem 0;
+  background-color: #f8f9fa;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  display: inline-block; /* shrink to content width */
+}
+/* Container */
+.login {
+  max-width: 700px;
+  margin: 40px auto;
+  padding: 30px 25px;
+  background-color: #f8f9fa;
+  border-radius: 12px;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+}
+
+/* Form labels */
+.login .form-label {
+  font-weight: 600;
+  color: #343a40;
+  text-align: center;
+}
+
+/* Form controls */
+.login .form-control,
+.login .form-select {
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 14px;
+}
+
+/* Buttons */
+.login .btn {
+  border-radius: 8px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Item rows */
+.item-field {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Center all items horizontally */
+  gap: 10px;
+  margin-bottom: 8px;
+  width: 100%;
+  max-width: 500px;
+}
+
+/* Row number */
+.item-field .row-number {
+  min-width: 20px;
+  text-align: right;
+}
+
+/* Responsive */
+@media (max-width: 576px) {
+  .item-field {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .item-field select,
+  .item-field .remove-item {
+    width: 100%;
+  }
+
+  #add-item {
+    width: 100%;
+    justify-content: center;
+  }
+}
+</style>
+
+
+<style>
+
+  .customer-updated {
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #333;
+  margin: 1rem 0;
+  background-color: #f8f9fa;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  display: inline-block; /* shrink to content width */
+}
+/* Container */
+.login {
+  max-width: 700px;
+  margin: 40px auto;
+  padding: 30px 25px;
+  background-color: #f8f9fa;
+  border-radius: 12px;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+}
+
+/* Form labels */
+.login .form-label {
+  font-weight: 600;
+  color: #343a40;
+  text-align: center;
+}
+
+/* Form controls */
+.login .form-control,
+.login .form-select {
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 14px;
+}
+
+/* Buttons */
+.login .btn {
+  border-radius: 8px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Item rows */
+.item-field {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Center all items horizontally */
+  gap: 10px;
+  margin-bottom: 8px;
+  width: 100%;
+  max-width: 500px;
+}
+
+/* Row number */
+.item-field .row-number {
+  min-width: 20px;
+  text-align: right;
+}
+
+/* Responsive */
+@media (max-width: 576px) {
+  .item-field {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .item-field select,
+  .item-field .remove-item {
+    width: 100%;
+  }
+
+  #add-item {
+    width: 100%;
+    justify-content: center;
+  }
+}
+</style>
+
+
+<script>
+(function() {
+  let initialized = false;
+
+  function initJmcustomerItems() {
+    if (initialized) return;
+    initialized = true;
+
+    const container = document.getElementById("items-container");
+    const addButton = document.getElementById("add-item");
+    if (!container || !addButton) return;
+
+    // Enable the Add Item button now that page is loaded
+    addButton.disabled = false;
+
+    // Renumber rows
+    function renumberRows() {
+      container.querySelectorAll(".item-field").forEach((field, index) => {
+        const numberSpan = field.querySelector(".row-number");
+        if (numberSpan) numberSpan.textContent = `${index + 1}.`;
+      });
+    }
+
+    // Initialize Select2 for all selects with class elena
+    function initSelect2ForElena() {
+      $('.elena').select2({
+        theme: 'bootstrap'
+      });
+    }
+
+    // Make existing selects required
+    container.querySelectorAll('select.elena').forEach(s => s.required = true);
+
+    // Add new item
+    addButton.addEventListener("click", function(e) {
+      e.preventDefault();
+      const timestamp = new Date().getTime();
+      const options = `<%= j options_from_collection_for_select(Janomax.all, :id, :item_name) %>`;
+
+      const newField = document.createElement("div");
+      newField.className = "item-field";
+      newField.innerHTML = `
+        <span class="row-number fw-bold"></span>
+        <select name="jmcustomer[jmcustomer_items_attributes][${timestamp}][janomax_id]" class="form-select elena" required>
+          <option value="">Select an item</option>
+          ${options}
+        </select>
+        <input type="hidden" name="jmcustomer[jmcustomer_items_attributes][${timestamp}][_destroy]" value="false" class="destroy-flag">
+        <a href="#" class="btn btn-danger active btn-sm remove-item" style="color: white;">
+          <i class="bi bi-dash-circle me-1" style="color: white;"></i> Remove
+        </a>
+      `;
+      container.appendChild(newField);
+
+      initSelect2ForElena();
+      renumberRows();
+    });
+
+    // Remove item
+    container.addEventListener("click", function(e) {
+      if (e.target && e.target.classList.contains("remove-item")) {
+        e.preventDefault();
+        const field = e.target.closest(".item-field");
+        if (!field) return;
+        const destroyInput = field.querySelector(".destroy-flag");
+        if (destroyInput) destroyInput.value = "1";
+        field.remove();
+        renumberRows();
+      }
+    });
+
+    renumberRows();
+    initSelect2ForElena();
+  }
+
+  document.addEventListener("turbo:load", initJmcustomerItems);
+  document.addEventListener("DOMContentLoaded", initJmcustomerItems);
+})();
+
+</script>
+

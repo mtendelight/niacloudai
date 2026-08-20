@@ -1,0 +1,31 @@
+# /views/devise/password_expired/show.html.haml
+
+- content_for :breadcrumbs, t('.password_expired')
+
+%h1= t('.renew_your_passord')
+%h2= t('.password_expired')
+
+.row
+  .col-md-4.col-md-offset-4
+    .cvForm
+      = form_for(resource, :as => resource_name, :url => [resource_name, :password_expired], :html => { :method => :put }) do |f|
+        %h4= t('.renew_your_password')
+
+        = devise_error_messages!
+
+        .form-group
+          = f.label :current_password, t('.current_password')
+          = f.password_field :current_password, autofocus: true, class: 'form-control'
+
+        .form-group
+          = f.label :password, t('.new_password')
+          = f.password_field :password, class: 'form-control'
+
+        .form-group
+          = f.label :password_confirmation, t('.confirm_new_password')
+          = f.password_field :password_confirmation, class: 'form-control'
+
+        = f.submit t('.change_my_password'), class: 'btn btn-default btn-lg'
+
+.row.top-spaced.center
+  = back_button root_path, t(:work_with_us_home)

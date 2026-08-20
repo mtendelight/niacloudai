@@ -1,0 +1,127 @@
+<%= render "layouts/header" %>
+ <% if current_user.superadmin?%>
+<div class="customer-show-container">
+  <!-- Display a notice if available -->
+  <% if notice.present? %>
+    <div class="alert alert-success">
+      <%= notice %>
+    </div>
+  <% end %>
+
+  <!-- Customer Details Card -->
+  <div class="customer-card">
+    <h2>Customer Details</h2>
+    <div class="container-fluid">
+      <div class="customer-info">
+        <p><strong>Name:</strong> <%= @customer.name %></p>
+        <p><strong>Phone:</strong> <%= @customer.phone %></p>
+        <p><strong>Alternative Phone:</strong> <%= @customer.alternative_phone %></p>
+        <p><strong>Email:</strong> <%= @customer.email %></p>
+        <p><strong>Payment Duration:</strong> <%= @customer.payment_duration %></p>
+        <p><strong>Payment Amount:</strong> <%= number_to_currency(@customer.payment_amount, unit: "Ksh. ") %></p>
+        <p><strong>Payment Date:</strong> <%= @customer.payment_date.strftime("%B %d, %Y") if @customer.payment_date.present? %></p>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="customer-actions">
+
+        <%= link_to 'Print', download_invoice_customer_path(@customer, format: :pdf), class: 'btn btn-info active', target: '_blank' %>
+
+       
+
+
+        <%= link_to "Data.xlsx", customers_path(format: "xlsx"), class: " btn btn-light active col-form-label" %> 
+
+        <%= link_to "Edit", edit_customer_path(@customer), class: "btn btn-primary active" %>
+        <%= link_to "Back", customers_path, class: "btn btn-secondary active" %>
+      </div>
+    </div>
+  </div>
+
+  <!-- Audit Logs Section -->
+  <div class="audit-logs mt-4">
+    <h2>Audit Logs:</h2>
+    <% if @customer.audits.present? %>
+      <% @customer.audits.each do |audit| %>
+        <div class="audit-log">
+          <div class="card-header">
+            <p>
+              <strong>Changed by:</strong> <%= audit.user&.username || 'Unknown' %><br>
+              <strong>Changes:</strong><br>
+              <% if audit.audited_changes.present? %>
+                <% audit.audited_changes.each do |attribute, values| %>
+                  <% if values.is_a?(Array) && values.size == 2 %>
+                    <%= attribute %>: <%= values[0] %> → <%= values[1] %><br>
+                  <% else %>
+                    <%= attribute %>: <%= values.inspect %><br>
+                  <% end %>
+                <% end %>
+              <% else %>
+                No changes recorded.<br>
+              <% end %>
+              <strong>Timestamp:</strong> <%= audit.created_at.strftime("%B %d, %Y %H:%M") %>
+            </p>
+          </div>
+        </div>
+      <% end %>
+    <% else %>
+      <p>No audit logs found for this customer.</p>
+    <% end %>
+  </div>
+</div>
+<%end%>
+<style>
+/* application.scss */
+
+.customer-show-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.customer-card {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.customer-info {
+  margin-bottom: 20px;
+}
+
+.customer-actions {
+  margin-top: 20px;
+}
+
+.btn-primary {
+  background-color: #007bff;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+}
+
+.btn:hover {
+  opacity: 0.9;
+}
+
+.audit-logs {
+  margin-top: 20px;
+}
+
+.audit-log {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 15px;
+  margin-bottom: 15px;
+}
+
+.card-header {
+  background-color: #f8f9fa;
+  padding: 10px;
+  border-radius: 5px;
+}
+</style>

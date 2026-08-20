@@ -1,0 +1,2 @@
+module JbaleaiHelper
+end

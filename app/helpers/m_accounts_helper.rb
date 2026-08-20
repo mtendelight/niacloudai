@@ -1,0 +1,2 @@
+module MAccountsHelper
+end

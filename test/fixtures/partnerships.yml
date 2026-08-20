@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  mentorship: one
+  name: MyString
+  partner_type: MyString
+  phone: MyString
+  location: MyString
+  notes: MyText
+
+two:
+  mentorship: two
+  name: MyString
+  partner_type: MyString
+  phone: MyString
+  location: MyString
+  notes: MyText

@@ -1,0 +1,2 @@
+module JanomaxleadsHelper
+end

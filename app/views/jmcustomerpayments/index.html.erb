@@ -1,0 +1,5565 @@
+<%= render "layouts/header" %>
+
+<div class="container my-4">
+
+  <div class="container">
+<%= render 'jmcustomers/submenu' %>
+
+    </div>
+
+
+
+  <h3 class="fw-bold mb-4">
+    <i class="bi bi-graph-up-arrow text-success me-1"></i>
+    Payments Tracker
+
+  </h3>
+<center>
+      <!-- IMPORT BUTTON -->
+  <%= link_to jmpayments_import_path,
+        class: "admin-btn d-flex align-items-center gap-1 px-3 py-2 #{'active' if current_page?(jmpayments_import_path)}",
+        data: { turbo: false } do %>
+    <i class="bi bi-file-earmark-arrow-up-fill"></i>
+    <span style="color: black !important;">Import PDF</span>
+  <% end %>
+
+<%= link_to jmcustomers_path,
+      class: "admin-btn d-flex align-items-center gap-1 px-3 py-2 #{'active' if current_page?(jmcustomers_path)}",
+      data: { turbo: false } do %>
+  <i class="bi bi-arrow-left-circle-fill"></i>
+  <span style="color: black !important;">Back to Customers</span>
+<% end %>
+
+<%= form_with url: search_jmpayments_path, method: :get, local: true do %>
+  <div class="input-group mb-3">
+
+    <%= text_field_tag :q, params[:q],
+          class: "form-control",
+          placeholder: "Search Mpesa, name, phone, ref..." %>
+
+    <button class="btn btn-primary">
+      <i class="bi bi-search"></i> Search
+    </button>
+
+  </div>
+<% end %>
+
+<%
+today_val      = @today_total.to_f
+yesterday_val  = @yesterday_total.to_f
+day2_val       = @day_before_total.to_f   # 2 days ago
+day3_val       = @three_days_ago_total.to_f # 👈 ADD THIS IN CONTROLLER
+
+# Growth chain
+today_growth =
+  yesterday_val > 0 ? ((today_val - yesterday_val) / yesterday_val * 100).round : nil
+
+yesterday_growth =
+  day2_val > 0 ? ((yesterday_val - day2_val) / day2_val * 100).round : nil
+
+day2_growth =
+  day3_val > 0 ? ((day2_val - day3_val) / day3_val * 100).round : nil
+%>
+
+
+
+
+<script>
+  
+  document.querySelectorAll('.export-btn').forEach(btn => {
+  btn.addEventListener('click', function () {
+    const icon = this.querySelector('i');
+    const spinner = this.querySelector('.spinner-border');
+
+    if (icon) icon.classList.add('d-none');
+    if (spinner) spinner.classList.remove('d-none');
+
+    this.classList.add('disabled');
+  });
+});
+</script>
+
+
+<div class="row g-3 mb-4">
+
+  <!-- TODAY -->
+  <div class="col-12 col-sm-6 col-lg-3">
+    <div class="card kpi-card border-0 h-100 highlight-card">
+      <div class="card-body d-flex flex-column">
+
+        <div class="d-flex justify-content-between mb-2">
+          <div class="kpi-icon bg-primary">
+            <i class="bi bi-calendar-day"></i>
+          </div>
+          <span class="badge bg-light text-dark">Today</span>
+        </div>
+
+         <h3 class="fw-bold">
+          KSh <%= number_with_delimiter(today_val.to_i) %>
+        </h3>
+
+        <% if today_growth %>
+          <div class="small <%= today_growth >= 0 ? 'text-success' : 'text-danger' %> mb-2">
+            <i class="bi <%= today_growth >= 0 ? 'bi-arrow-up' : 'bi-arrow-down' %>"></i>
+            <%= today_growth %>% vs yesterday
+          </div>
+        <% end %>
+
+        <!-- BUTTON -->
+        <div class="mt-auto">
+          <%= link_to jmcustomerpayments_path(format: :csv, type: "today"),
+              class: "btn btn-sm btn-outline-primary w-100 export-btn d-flex align-items-center justify-content-center gap-2",
+              data: { turbo: false } do %>
+
+            <i class="bi bi-download"></i>
+            <span>Download CSV</span>
+            <span class="spinner-border spinner-border-sm d-none"></span>
+
+          <% end %>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <!-- YESTERDAY -->
+  <div class="col-12 col-sm-6 col-lg-3">
+    <div class="card kpi-card border-0 h-100">
+      <div class="card-body d-flex flex-column">
+
+        <div class="d-flex justify-content-between mb-2">
+          <div class="kpi-icon bg-secondary">
+            <i class="bi bi-clock-history"></i>
+          </div>
+          <span class="badge bg-light text-dark">Yesterday</span>
+        </div>
+
+        <h3 class="fw-bold">
+          KSh <%= number_with_delimiter(yesterday_val.to_i) %>
+        </h3>
+
+        <% if yesterday_growth %>
+          <div class="small <%= yesterday_growth >= 0 ? 'text-success' : 'text-danger' %> mb-2">
+            <i class="bi <%= yesterday_growth >= 0 ? 'bi-arrow-up' : 'bi-arrow-down' %>"></i>
+            <%= yesterday_growth %>% vs 2 days ago
+          </div>
+        <% end %>
+
+        <div class="mt-auto">
+          <%= link_to jmcustomerpayments_path(format: :csv, type: "yesterday"),
+              class: "btn btn-sm btn-outline-secondary w-100 export-btn d-flex align-items-center justify-content-center gap-2",
+              data: { turbo: false } do %>
+
+            <i class="bi bi-download"></i>
+            <span>Download CSV</span>
+            <span class="spinner-border spinner-border-sm d-none"></span>
+
+          <% end %>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <!-- 2 DAYS AGO -->
+  <div class="col-12 col-sm-6 col-lg-3">
+    <div class="card kpi-card border-0 h-100">
+      <div class="card-body d-flex flex-column">
+
+        <div class="d-flex justify-content-between mb-2">
+          <div class="kpi-icon bg-warning">
+            <i class="bi bi-calendar2-minus"></i>
+          </div>
+          <span class="badge bg-light text-dark">2 Days Ago</span>
+        </div>
+
+         <h3 class="fw-bold">
+          KSh <%= number_with_delimiter(day2_val.to_i) %>
+        </h3>
+
+        <% if day2_growth %>
+          <div class="small <%= day2_growth >= 0 ? 'text-success' : 'text-danger' %> mb-2">
+            <i class="bi <%= day2_growth >= 0 ? 'bi-arrow-up' : 'bi-arrow-down' %>"></i>
+            <%= day2_growth %>% vs baseline
+          </div>
+        <% end %>
+
+        <div class="mt-auto">
+          <%= link_to jmcustomerpayments_path(format: :csv, type: "day_before"),
+              class: "btn btn-sm btn-outline-warning w-100 export-btn d-flex align-items-center justify-content-center gap-2",
+              data: { turbo: false } do %>
+
+            <i class="bi bi-download"></i>
+            <span>Download CSV</span>
+            <span class="spinner-border spinner-border-sm d-none"></span>
+
+          <% end %>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <!-- OLDER -->
+  <div class="col-12 col-sm-6 col-lg-3">
+    <div class="card kpi-card border-0 h-100">
+      <div class="card-body d-flex flex-column">
+
+        <div class="d-flex justify-content-between mb-2">
+          <div class="kpi-icon bg-dark">
+            <i class="bi bi-archive"></i>
+          </div>
+          <span class="badge bg-light text-dark">Older</span>
+        </div>
+
+          <h3 class="fw-bold">
+          KSh <%= number_with_delimiter(@current_year_total.to_i) %>
+        </h3>
+
+        <div class="mt-auto">
+          <%= link_to jmcustomerpayments_path(format: :csv, type: "older"),
+              class: "btn btn-sm btn-outline-dark w-100 export-btn d-flex align-items-center justify-content-center gap-2",
+              data: { turbo: false } do %>
+
+            <i class="bi bi-download"></i>
+            <span>Download CSV</span>
+            <span class="spinner-border spinner-border-sm d-none"></span>
+
+          <% end %>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<hr class="separator">
+<style>
+
+/* =========================================================
+   🚀 ULTRA PREMIUM KPI ANALYTICS UI
+========================================================= */
+
+/* =========================================================
+   ANALYTICS SECTION BACKGROUND
+========================================================= */
+
+.row.g-3.mb-4{
+
+  position:relative;
+
+  z-index:2;
+}
+
+/* =========================================================
+   KPI CARD
+========================================================= */
+
+.kpi-card{
+
+  position:relative;
+
+  overflow:hidden;
+
+  border-radius:30px !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.92),
+      rgba(248,250,252,.82)
+    ) !important;
+
+  border:
+    1px solid rgba(255,255,255,.7) !important;
+
+  backdrop-filter:blur(18px);
+
+  box-shadow:
+    0 10px 35px rgba(15,23,42,.05),
+    inset 0 1px 0 rgba(255,255,255,.9);
+
+  transition:
+    transform .35s ease,
+    box-shadow .35s ease,
+    border-color .35s ease;
+
+  isolation:isolate;
+}
+
+/* =========================================================
+   AURORA GLOW
+========================================================= */
+
+.kpi-card::before{
+
+  content:"";
+
+  position:absolute;
+
+  top:-100px;
+  right:-100px;
+
+  width:240px;
+  height:240px;
+
+  border-radius:50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(37,99,235,.12),
+      transparent 72%
+    );
+
+  transition:.45s ease;
+
+  z-index:-1;
+}
+
+.kpi-card::after{
+
+  content:"";
+
+  position:absolute;
+
+  inset:0;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,255,255,.14),
+      transparent
+    );
+
+  opacity:.7;
+
+  pointer-events:none;
+}
+
+/* =========================================================
+   HOVER EFFECT
+========================================================= */
+
+.kpi-card:hover{
+
+  transform:
+    translateY(-8px);
+
+  box-shadow:
+    0 28px 60px rgba(15,23,42,.12);
+
+  border-color:
+    rgba(37,99,235,.18) !important;
+}
+
+.kpi-card:hover::before{
+
+  transform:
+    scale(1.2);
+
+  opacity:1;
+}
+
+/* =========================================================
+   FEATURED CARD
+========================================================= */
+
+.highlight-card{
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(37,99,235,.10),
+      rgba(255,255,255,.88)
+    ) !important;
+
+  border:
+    1px solid rgba(37,99,235,.18) !important;
+
+  box-shadow:
+    0 20px 45px rgba(37,99,235,.12);
+}
+
+/* =========================================================
+   CARD BODY
+========================================================= */
+
+.kpi-card .card-body{
+
+  padding:1.35rem;
+
+  position:relative;
+
+  z-index:2;
+}
+
+/* =========================================================
+   ICON WRAPPER
+========================================================= */
+
+.kpi-icon{
+
+  position:relative;
+
+  width:54px;
+  height:54px;
+
+  border-radius:18px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  font-size:1.2rem;
+
+  color:white;
+
+  overflow:hidden;
+
+  box-shadow:
+    0 14px 30px rgba(15,23,42,.14);
+}
+
+/* =========================================================
+   ICON GLOSS
+========================================================= */
+
+.kpi-icon::before{
+
+  content:"";
+
+  position:absolute;
+
+  inset:0;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,255,255,.35),
+      transparent
+    );
+
+  opacity:.9;
+}
+
+/* =========================================================
+   ICON COLORS
+========================================================= */
+
+.bg-primary{
+
+  background:
+    linear-gradient(
+      135deg,
+      #2563eb,
+      #3b82f6
+    ) !important;
+}
+
+.bg-secondary{
+
+  background:
+    linear-gradient(
+      135deg,
+      #64748b,
+      #94a3b8
+    ) !important;
+}
+
+.bg-warning{
+
+  background:
+    linear-gradient(
+      135deg,
+      #f59e0b,
+      #fbbf24
+    ) !important;
+}
+
+.bg-dark{
+
+  background:
+    linear-gradient(
+      135deg,
+      #0f172a,
+      #334155
+    ) !important;
+}
+
+/* =========================================================
+   BADGE
+========================================================= */
+
+.kpi-card .badge{
+
+  height:32px;
+
+  padding:0 14px;
+
+  border-radius:999px;
+
+  display:flex;
+  align-items:center;
+
+  background:
+    rgba(255,255,255,.72) !important;
+
+  border:
+    1px solid rgba(226,232,240,.7);
+
+  color:#334155 !important;
+
+  font-size:.72rem;
+  font-weight:800;
+
+  letter-spacing:.03em;
+
+  backdrop-filter:blur(8px);
+}
+
+/* =========================================================
+   VALUE
+========================================================= */
+
+.kpi-card h3{
+
+  margin-top:18px;
+  margin-bottom:10px;
+
+  font-size:1.75rem;
+
+  font-weight:900;
+
+  letter-spacing:-.04em;
+
+  color:#0f172a;
+
+  line-height:1.1;
+}
+
+/* =========================================================
+   GROWTH TEXT
+========================================================= */
+
+.kpi-card .small{
+
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+
+  width:fit-content;
+
+  min-height:34px;
+
+  padding:0 14px;
+
+  border-radius:999px;
+
+  font-size:.74rem;
+  font-weight:800;
+
+  letter-spacing:.02em;
+}
+
+.text-success{
+
+  background:
+    rgba(16,185,129,.12);
+
+  color:#059669 !important;
+}
+
+.text-danger{
+
+  background:
+    rgba(239,68,68,.12);
+
+  color:#dc2626 !important;
+}
+
+/* =========================================================
+   DOWNLOAD BUTTON
+========================================================= */
+
+.export-btn{
+
+  position:relative;
+
+  overflow:hidden;
+
+  height:44px;
+
+  border-radius:16px !important;
+
+  border:none !important;
+
+  background:
+    linear-gradient(
+      135deg,
+      #2563eb,
+      #3b82f6
+    ) !important;
+
+  color:white !important;
+
+  font-size:.78rem;
+  font-weight:800;
+
+  letter-spacing:.02em;
+
+  transition:
+    transform .28s ease,
+    box-shadow .28s ease;
+}
+
+/* =========================================================
+   BUTTON SHINE
+========================================================= */
+
+.export-btn::before{
+
+  content:"";
+
+  position:absolute;
+
+  top:0;
+  left:-120%;
+
+  width:80%;
+  height:100%;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255,255,255,.35),
+      transparent
+    );
+
+  transition:.7s ease;
+}
+
+.export-btn:hover::before{
+
+  left:140%;
+}
+
+/* =========================================================
+   BUTTON HOVER
+========================================================= */
+
+.export-btn:hover{
+
+  transform:
+    translateY(-2px);
+
+  box-shadow:
+    0 14px 30px rgba(37,99,235,.28);
+}
+
+.export-btn:active{
+
+  transform:scale(.98);
+}
+
+/* =========================================================
+   BUTTON ICON
+========================================================= */
+
+.export-btn i{
+
+  font-size:.9rem;
+}
+
+/* =========================================================
+   SPINNER
+========================================================= */
+
+.spinner-border-sm{
+
+  width:.85rem;
+  height:.85rem;
+}
+
+/* =========================================================
+   SEPARATOR
+========================================================= */
+
+.separator{
+
+  border:none;
+
+  height:1px;
+
+  background:
+    linear-gradient(
+      to right,
+      transparent,
+      rgba(148,163,184,.24),
+      transparent
+    );
+
+  margin:2.5rem 0;
+
+  opacity:1;
+}
+
+/* =========================================================
+   FLOATING GRID EFFECT
+========================================================= */
+
+.kpi-card .card-body::before{
+
+  content:"";
+
+  position:absolute;
+
+  inset:0;
+
+  background-image:
+
+    linear-gradient(
+      rgba(148,163,184,.025) 1px,
+      transparent 1px
+    ),
+
+    linear-gradient(
+      90deg,
+      rgba(148,163,184,.025) 1px,
+      transparent 1px
+    );
+
+  background-size:30px 30px;
+
+  pointer-events:none;
+
+  z-index:-1;
+}
+
+/* =========================================================
+   MOBILE UX
+========================================================= */
+
+@media(max-width:768px){
+
+  .kpi-card{
+
+    border-radius:24px !important;
+  }
+
+  .kpi-card .card-body{
+
+    padding:1rem;
+  }
+
+  .kpi-icon{
+
+    width:46px;
+    height:46px;
+
+    border-radius:15px;
+
+    font-size:1rem;
+  }
+
+  .kpi-card h3{
+
+    font-size:1.3rem;
+  }
+
+  .export-btn{
+
+    height:40px;
+
+    border-radius:14px !important;
+
+    font-size:.74rem;
+  }
+
+  .kpi-card .badge{
+
+    height:28px;
+
+    font-size:.66rem;
+  }
+
+  .kpi-card .small{
+
+    font-size:.68rem;
+
+    padding:0 10px;
+  }
+}
+</style>
+
+
+<div class="container my-4">
+
+<div class="row g-3 mt-2">
+
+  <!-- CURRENT YEAR -->
+  <div class="col-md-4">
+    <div class="card border-0 shadow-sm h-100">
+      <div class="card-body d-flex flex-column">
+
+        <div class="d-flex justify-content-between align-items-start mb-3">
+          <div>
+            <span class="badge bg-success">Current Year</span>
+            <div class="small text-muted mt-1">
+              Revenue Collected
+            </div>
+          </div>
+
+          <div class="fs-4 text-success">
+            <i class="bi bi-calendar-range"></i>
+          </div>
+        </div>
+
+        <h3 class="fw-bold">
+          KSh <%= number_with_delimiter(@current_year_total.to_i) %>
+        </h3>
+
+        <div class="mt-2">
+          <span class="badge <%= @year_growth_1 >= 0 ? 'bg-success' : 'bg-danger' %>">
+            <%= @year_growth_1 %>%
+          </span>
+          <small class="text-muted ms-1">vs Previous Year</small>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- PREVIOUS YEAR -->
+  <div class="col-md-4">
+    <div class="card border-0 shadow-sm h-100">
+      <div class="card-body d-flex flex-column">
+
+        <div class="d-flex justify-content-between align-items-start mb-3">
+          <div>
+            <span class="badge bg-primary">Previous Year</span>
+            <div class="small text-muted mt-1">
+              Revenue Collected
+            </div>
+          </div>
+
+          <div class="fs-4 text-primary">
+            <i class="bi bi-calendar3"></i>
+          </div>
+        </div>
+
+        <h3 class="fw-bold">
+          KSh <%= number_with_delimiter(@prev_year_total.to_i) %>
+        </h3>
+
+        <div class="mt-2">
+          <span class="badge <%= @year_growth_2 >= 0 ? 'bg-success' : 'bg-danger' %>">
+            <%= @year_growth_2 %>%
+          </span>
+          <small class="text-muted ms-1">vs 2 Years Ago</small>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- 2 YEARS AGO -->
+  <div class="col-md-4">
+    <div class="card border-0 shadow-sm h-100">
+      <div class="card-body d-flex flex-column">
+
+        <div class="d-flex justify-content-between align-items-start mb-3">
+          <div>
+            <span class="badge bg-dark">2 Years Ago</span>
+            <div class="small text-muted mt-1">
+              Historical Baseline
+            </div>
+          </div>
+
+          <div class="fs-4 text-dark">
+            <i class="bi bi-clock-history"></i>
+          </div>
+        </div>
+
+        <h3 class="fw-bold">
+          KSh <%= number_with_delimiter(@prev2_year_total.to_i) %>
+        </h3>
+
+        <div class="mt-2">
+          <span class="badge bg-dark">
+            Baseline
+          </span>
+          <small class="text-muted ms-1">Reference Year</small>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<style>
+
+  /* Smaller figures */
+.card h3{
+  font-size: 1rem !important;
+  line-height: 1.2;
+  margin-bottom: .25rem;
+}
+
+/* Even smaller on mobile */
+@media (max-width: 768px){
+  .card h3{
+    font-size: .9rem !important;
+  }
+}
+  /* YEAR KPI CARDS */
+.year-card{
+  border-radius: 16px;
+  transition: .2s ease;
+}
+
+.year-card .card-body{
+  padding: .9rem;
+}
+
+.year-card:hover{
+  transform: translateY(-2px);
+}
+
+.year-card .badge{
+  font-size: .65rem;
+  padding: .3rem .55rem;
+  font-weight: 600;
+}
+
+.year-card .kpi-subtitle{
+  font-size: .68rem;
+  color: #94a3b8;
+  margin-top: 3px;
+}
+
+.year-card .kpi-value{
+  font-size: 1rem !important;
+  font-weight: 700;
+  line-height: 1.2;
+  margin: .4rem 0;
+}
+
+.year-card .kpi-icon{
+  font-size: 1rem;
+  opacity: .8;
+}
+
+.year-card .growth-badge{
+  font-size: .65rem;
+  padding: .25rem .45rem;
+}
+
+.year-card small{
+  font-size: .68rem;
+}
+
+@media(max-width:768px){
+  .year-card .kpi-value{
+    font-size: .9rem;
+  }
+
+  .year-card .card-body{
+    padding: .8rem;
+  }
+}
+
+
+</style>
+
+<hr/>
+
+<div class="row g-3 mb-4">
+
+  <!-- PROJECTED CURRENT MONTH -->
+<div class="col-md-3">
+  <div class="card border-0 shadow-sm h-100 bg-success bg-gradient text-white">
+    <div class="card-body d-flex flex-column">
+
+      <div class="d-flex justify-content-between align-items-start mb-3">
+        <div>
+          <span class="badge bg-light text-success fw-semibold">
+            Projected Revenue
+          </span>
+          <div class="small opacity-75 mt-1">
+            Current Month Forecast
+          </div>
+        </div>
+
+        <div class="fs-3">
+          <i class="bi bi-graph-up-arrow"></i>
+        </div>
+      </div>
+
+      <h3 class="fw-bold mb-2">
+        KSh <%= number_with_delimiter(@projected_current_month.to_i) %>
+      </h3>
+
+ <% if @projection_vs_last_month.present? %>
+  <% positive = @projection_vs_last_month >= 0 %>
+
+  <span class="badge rounded-pill px-3 py-2
+    <%= positive ? 'bg-success-subtle text-success' : 'bg-danger-subtle text-danger' %>">
+
+    <i class="bi <%= positive ? 'bi-arrow-up-right' : 'bi-arrow-down-right' %>"></i>
+
+    <%= number_with_precision(@projection_vs_last_month, precision: 0) %>%
+  </span>
+
+  <small class="text-muted ms-2">
+    vs last month
+  </small>
+<% end %>
+
+      <div class="mt-auto pt-3 border-top border-light border-opacity-25">
+        <small class="text-white-50 d-block">
+          Based on 3-Month Average + KSh 1M
+        </small>
+
+        <small class="fw-semibold">
+          Avg: KSh <%= number_with_delimiter(@avg_3_months.to_i) %>
+        </small>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!-- CURRENT MONTH -->
+<div class="col-md-3">
+  <div class="card border-0 shadow-sm h-100">
+    <div class="card-body d-flex flex-column">
+
+      <div class="d-flex justify-content-between align-items-start mb-3">
+        <div>
+          <span class="badge bg-primary">
+            Current Month
+          </span>
+          <div class="small text-muted mt-1">
+            Revenue Collected
+          </div>
+        </div>
+
+        <div class="fs-4 text-primary">
+          <i class="bi bi-calendar3"></i>
+        </div>
+      </div>
+
+      <h3 class="fw-bold mb-2">
+        KSh <%= number_with_delimiter(@current_month_total.to_i) %>
+      </h3>
+
+      <% if @month_growth_1.present? %>
+        <div class="mb-3">
+          <span class="badge <%= @month_growth_1 >= 0 ? 'bg-success' : 'bg-danger' %>">
+            <i class="bi <%= @month_growth_1 >= 0 ? 'bi-arrow-up-right' : 'bi-arrow-down-right' %>"></i>
+            <%= @month_growth_1 %>%
+          </span>
+
+          <small class="text-muted ms-1">
+            vs Last Month
+          </small>
+        </div>
+      <% end %>
+
+      <div class="mt-auto pt-3 border-top">
+        <small class="text-muted d-block mb-2">
+          Current Month Transactions
+        </small>
+
+        <%= link_to jmcustomerpayments_path(format: :csv, type: "current_month"),
+            class: "btn btn-sm btn-outline-primary w-100 export-btn d-flex align-items-center justify-content-center gap-2",
+            data: { turbo: false } do %>
+
+          <i class="bi bi-download"></i>
+          <span>Download CSV</span>
+          <span class="spinner-border spinner-border-sm d-none"></span>
+
+        <% end %>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!-- LAST MONTH -->
+<div class="col-md-3">
+  <div class="card border-0 shadow-sm h-100">
+    <div class="card-body d-flex flex-column">
+
+      <div class="d-flex justify-content-between align-items-start mb-3">
+        <div>
+          <span class="badge bg-secondary">
+            Last Month
+          </span>
+          <div class="small text-muted mt-1">
+            Revenue Collected
+          </div>
+        </div>
+
+        <div class="fs-4 text-secondary">
+          <i class="bi bi-calendar2"></i>
+        </div>
+      </div>
+
+      <h3 class="fw-bold mb-2">
+        KSh <%= number_with_delimiter(@prev_month_total.to_i) %>
+      </h3>
+
+      <% if @month_growth_2.present? %>
+        <div class="mb-3">
+          <span class="badge <%= @month_growth_2 >= 0 ? 'bg-success' : 'bg-danger' %>">
+            <i class="bi <%= @month_growth_2 >= 0 ? 'bi-arrow-up-right' : 'bi-arrow-down-right' %>"></i>
+            <%= @month_growth_2 %>%
+          </span>
+
+          <small class="text-muted ms-1">
+            vs 2 Months Ago
+          </small>
+        </div>
+      <% end %>
+
+      <div class="mt-auto pt-3 border-top">
+        <small class="text-muted d-block mb-2">
+          Last Month Transactions
+        </small>
+
+        <%= link_to jmcustomerpayments_path(format: :csv, type: "last_month"),
+            class: "btn btn-sm btn-outline-secondary w-100 export-btn d-flex align-items-center justify-content-center gap-2",
+            data: { turbo: false } do %>
+
+          <i class="bi bi-download"></i>
+          <span>Download CSV</span>
+          <span class="spinner-border spinner-border-sm d-none"></span>
+
+        <% end %>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+  <!-- 2 MONTHS AGO -->
+<div class="col-md-3">
+  <div class="card border-0 shadow-sm h-100">
+    <div class="card-body d-flex flex-column">
+
+      <div class="d-flex justify-content-between align-items-start mb-3">
+        <div>
+          <span class="badge bg-dark">
+            2 Months Ago
+          </span>
+          <div class="small text-muted mt-1">
+            Revenue Collected
+          </div>
+        </div>
+
+        <div class="fs-4 text-dark">
+          <i class="bi bi-calendar2-week"></i>
+        </div>
+      </div>
+
+      <h3 class="fw-bold mb-2">
+        KSh <%= number_with_delimiter(@prev2_month_total.to_i) %>
+      </h3>
+
+      <div class="mb-3">
+        <span class="badge bg-dark">
+          Historical Baseline
+        </span>
+
+        <small class="text-muted ms-1">
+          Comparison Period
+        </small>
+      </div>
+
+      <div class="mt-auto pt-3 border-top">
+        <small class="text-muted d-block mb-2">
+          2 Months Ago Transactions
+        </small>
+
+        <%= link_to jmcustomerpayments_path(format: :csv, type: "prev2_month"),
+            class: "btn btn-sm btn-outline-dark w-100 export-btn d-flex align-items-center justify-content-center gap-2",
+            data: { turbo: false } do %>
+
+          <i class="bi bi-download"></i>
+          <span>Download CSV</span>
+          <span class="spinner-border spinner-border-sm d-none"></span>
+
+        <% end %>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+</div>
+
+<style>
+  
+  .kpi-card {
+  border-radius: 14px;
+  transition: all 0.2s ease;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.05);
+}
+
+.kpi-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 26px rgba(0,0,0,0.08);
+}
+
+.kpi-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 16px;
+}
+
+.kpi-card {
+  border-radius: 16px;
+  transition: all 0.25s ease;
+  background: #ffffff;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.05);
+  position: relative;
+  overflow: hidden;
+}
+
+.kpi-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 14px 32px rgba(0,0,0,0.08);
+}
+
+/* highlight best card */
+.highlight-card {
+  border: 2px solid #0d6efd;
+  background: linear-gradient(180deg, #f8fbff, #ffffff);
+}
+
+/* icon */
+.kpi-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 16px;
+}
+
+/* button */
+.action-btn {
+  transition: 0.2s;
+}
+
+.action-btn:hover {
+  background: #0d6efd;
+  color: white;
+  border-color: #0d6efd;
+}
+</style>
+
+
+
+<% best = @current_daily.max %>
+<% worst = @current_daily.reject(&:zero?).min %>
+
+
+
+<%
+curr_total  = @current_daily.sum
+prev1_total = @prev1_daily.sum
+prev2_total = @prev2_daily.sum
+
+growth_1 = prev1_total > 0 ? ((curr_total - prev1_total).to_f / prev1_total * 100).round : 0
+growth_2 = prev2_total > 0 ? ((prev1_total - prev2_total).to_f / prev2_total * 100).round : 0
+%>
+
+<%
+delta = @today_total.to_f - @forecast_3m.to_f
+is_positive = delta >= 0
+%>
+
+<div class="row g-2 mb-3">
+
+  <div class="col-12">
+    <div class="p-3 rounded-4 bg-light shadow-sm">
+
+      <!-- HEADER -->
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <div class="fw-semibold text-muted">
+          <i class="bi bi-graph-up text-primary me-1"></i>
+          Forecast
+        </div>
+
+        <div class="small text-muted">
+          3M Avg
+        </div>
+      </div>
+
+      <!-- MAIN VALUE -->
+      <div class="d-flex align-items-end justify-content-between">
+
+        <div>
+          <div class="small text-muted">Expected Today</div>
+          <div class="fw-bold fs-5">
+            KSh <%= number_with_delimiter(@forecast_3m.to_i) %>
+          </div>
+        </div>
+
+        <!-- DELTA -->
+        <div class="text-end <%= is_positive ? 'text-success' : 'text-danger' %>">
+          <div class="fw-semibold">
+            <i class="bi <%= is_positive ? 'bi-arrow-up-right' : 'bi-arrow-down-right' %>"></i>
+            <%= number_with_delimiter(delta.abs.to_i) %>
+          </div>
+          <div class="small">
+            vs expected
+          </div>
+        </div>
+
+      </div>
+
+      <!-- FOOTER -->
+      <div class="mt-2 small text-muted d-flex justify-content-between">
+        <span>
+          <i class="bi bi-calendar-range me-1"></i>
+          Based on last 3 months
+        </span>
+
+        <span>
+          Actual: 
+          <strong>KSh <%= number_with_delimiter(@today_total.to_i) %></strong>
+        </span>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<div class="row g-2 mb-3">
+
+  <!-- 🔥 BEST DAY -->
+  <div class="col-12 col-md-6">
+    <div class="d-flex align-items-center p-2 rounded-3 bg-light h-100">
+
+      <div class="me-2 text-success fs-5">
+        <i class="bi bi-graph-up-arrow"></i>
+      </div>
+
+      <div class="flex-grow-1">
+        <div class="small text-muted">Best Day</div>
+        <div class="fw-semibold">
+          <%= @best_day_date&.strftime("%a, %d %b %Y") || "-" %>
+        </div>
+      </div>
+
+      <div class="text-end fw-bold text-success">
+        KSh <%= number_with_delimiter(@best_day) %>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ⚠️ WORST DAY -->
+  <div class="col-12 col-md-6">
+    <div class="d-flex align-items-center p-2 rounded-3 bg-light h-100">
+
+      <div class="me-2 text-danger fs-5">
+        <i class="bi bi-graph-down-arrow"></i>
+      </div>
+
+      <div class="flex-grow-1">
+        <div class="small text-muted">Slowest Day</div>
+        <div class="fw-semibold">
+          <%= @worst_day_date&.strftime("%a, %d %b %Y") || "-" %>
+        </div>
+      </div>
+
+      <div class="text-end fw-bold text-danger">
+        KSh <%= number_with_delimiter(@worst_day) %>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+
+<% @current_daily ||= [] %>
+<% @previous_daily ||= [] %>
+<% @days ||= [] %>
+
+<div class="card border-0 shadow-sm rounded-4 mb-4">
+
+  <!-- HEADER -->
+  <div class="card-header bg-white border-0 fw-semibold d-flex justify-content-between align-items-center">
+    <div>
+      <i class="bi bi-graph-up text-primary me-1"></i>
+      Daily Revenue Comparison
+    </div>
+    <small class="text-muted">Last 3 Months</small>
+  </div>
+
+  <div class="card-body">
+
+    <% curr_total = @current_daily.sum %>
+    <% prev1_total = @prev1_daily.sum %>
+    <% prev2_total = @prev2_daily.sum %>
+
+    <div class="row g-2 mb-3">
+
+      <!-- 🔥 CURRENT MONTH -->
+      <div class="col-12 col-md-4">
+        <div class="p-2 rounded-3 bg-light h-100 text-center">
+
+          <div class="small text-muted">This Month</div>
+
+          <div class="fw-bold fs-5">
+            <%= number_to_currency(curr_total, unit: "KSh ", precision: 0) %>
+          </div>
+
+          <div class="mt-1">
+            <span class="badge <%= growth_1 >= 0 ? 'bg-success' : 'bg-danger' %>">
+              <i class="bi <%= growth_1 >= 0 ? 'bi-arrow-up' : 'bi-arrow-down' %>"></i>
+              <%= growth_1 %>%
+            </span>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- 🟡 LAST MONTH -->
+      <div class="col-12 col-md-4">
+        <div class="p-2 rounded-3 bg-light h-100 text-center">
+
+          <div class="small text-muted">Last Month</div>
+
+          <div class="fw-bold">
+            <%= number_to_currency(prev1_total, unit: "KSh ", precision: 0) %>
+          </div>
+
+          <div class="mt-1">
+            <span class="badge <%= growth_2 >= 0 ? 'bg-success' : 'bg-danger' %>">
+              <i class="bi <%= growth_2 >= 0 ? 'bi-arrow-up' : 'bi-arrow-down' %>"></i>
+              <%= growth_2 %>%
+            </span>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- 🔵 2 MONTHS AGO -->
+      <div class="col-12 col-md-4">
+        <div class="p-2 rounded-3 bg-light h-100 text-center">
+
+          <div class="small text-muted">2 Months Ago</div>
+
+          <div class="fw-bold">
+            <%= number_to_currency(prev2_total, unit: "KSh ", precision: 0) %>
+          </div>
+
+          <div class="small text-muted mt-1">
+            <i class="bi bi-dash"></i> baseline
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+
+    <!-- CHART -->
+    <div style="height: 300px;">
+      <canvas id="growthChart"></canvas>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- =========================================================
+     🔥 UNIFIED PREMIUM ANALYTICS SECTION
+     MERGED ALL CHARTS INTO ONE MODERN SWITCHER UI
+========================================================= -->
+
+<div class="premium-analytics-card">
+
+<!-- ===================== -->
+<!-- PREMIUM ANALYTICS HEADER -->
+<!-- ===================== -->
+
+<div class="analytics-topbar">
+
+  <div class="analytics-left">
+
+    <div class="analytics-badge">
+      <i class="bi bi-bar-chart-line-fill"></i>
+      LIVE ANALYTICS
+    </div>
+
+    <h1 class="analytics-title">
+      <i class="bi bi-graph-up-arrow"></i>
+      Revenue Intelligence Center
+    </h1>
+
+    <p class="analytics-subtitle">
+      Monitor revenue trends, branch performance, customer growth, forecasts and business insights in one intelligent dashboard.
+    </p>
+
+  </div>
+
+  <div class="analytics-status">
+
+    <div class="status-card">
+      <div class="status-dot"></div>
+
+      <div>
+        <small>System Status</small>
+        <strong>Operational</strong>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<style>
+  /* =====================================
+   PREMIUM ANALYTICS HEADER
+===================================== */
+
+.analytics-topbar{
+
+    position:relative;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:30px;
+
+    padding:34px;
+
+    margin-bottom:35px;
+
+    border-radius:28px;
+
+    overflow:hidden;
+
+    background:
+    linear-gradient(135deg,#0F172A 0%,#172554 55%,#1E3A8A 100%);
+
+    color:#fff;
+
+    box-shadow:
+    0 18px 45px rgba(15,23,42,.18);
+
+}
+
+.analytics-topbar::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:380px;
+    height:380px;
+
+    border-radius:50%;
+
+    background:
+    radial-gradient(circle,
+    rgba(255,255,255,.12),
+    transparent 70%);
+
+    right:-120px;
+    top:-120px;
+
+}
+
+.analytics-topbar::after{
+
+    content:"";
+
+    position:absolute;
+
+    width:220px;
+    height:220px;
+
+    border-radius:50%;
+
+    background:
+    radial-gradient(circle,
+    rgba(59,130,246,.30),
+    transparent 70%);
+
+    left:-80px;
+    bottom:-100px;
+
+}
+
+/* Left */
+
+.analytics-left{
+
+    position:relative;
+    z-index:2;
+
+}
+
+/* Badge */
+
+.analytics-badge{
+
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+
+    padding:8px 16px;
+
+    border-radius:50px;
+
+    margin-bottom:18px;
+
+    background:rgba(255,255,255,.15);
+
+    backdrop-filter:blur(16px);
+
+    border:1px solid rgba(255,255,255,.25);
+
+    font-size:.78rem;
+
+    letter-spacing:2px;
+
+    font-weight:700;
+
+    text-transform:uppercase;
+
+}
+
+/* Title */
+
+.analytics-title{
+
+    display:flex;
+    align-items:center;
+    gap:15px;
+
+    margin:0;
+
+    font-size:2.35rem;
+
+    font-weight:800;
+
+    letter-spacing:-.6px;
+
+    color:#fff;
+
+}
+
+.analytics-title i{
+
+    font-size:2.1rem;
+
+    color:#38BDF8;
+
+}
+
+/* Subtitle */
+
+.analytics-subtitle{
+
+    margin-top:14px;
+
+    max-width:760px;
+
+    font-size:1.08rem;
+
+    line-height:1.8;
+
+    color:rgba(255,255,255,.82);
+
+}
+
+/* Right */
+
+.analytics-status{
+
+    position:relative;
+    z-index:2;
+
+}
+
+/* Status */
+
+.status-card{
+
+    display:flex;
+    align-items:center;
+    gap:14px;
+
+    padding:18px 24px;
+
+    border-radius:18px;
+
+    background:rgba(255,255,255,.12);
+
+    backdrop-filter:blur(18px);
+
+    border:1px solid rgba(255,255,255,.18);
+
+}
+
+.status-card small{
+
+    display:block;
+
+    color:rgba(255,255,255,.75);
+
+    font-size:.8rem;
+
+}
+
+.status-card strong{
+
+    display:block;
+
+    margin-top:2px;
+
+    font-size:1.05rem;
+
+}
+
+.status-dot{
+
+    width:14px;
+    height:14px;
+
+    border-radius:50%;
+
+    background:#22C55E;
+
+    box-shadow:
+    0 0 0 8px rgba(34,197,94,.18);
+
+    animation:pulseStatus 2s infinite;
+
+}
+
+@keyframes pulseStatus{
+
+0%{
+transform:scale(1);
+box-shadow:0 0 0 0 rgba(34,197,94,.45);
+}
+
+70%{
+transform:scale(1.12);
+box-shadow:0 0 0 18px rgba(34,197,94,0);
+}
+
+100%{
+transform:scale(1);
+box-shadow:0 0 0 0 rgba(34,197,94,0);
+}
+
+}
+
+/* Mobile */
+
+@media(max-width:992px){
+
+.analytics-topbar{
+
+flex-direction:column;
+
+align-items:flex-start;
+
+padding:28px;
+
+}
+
+.analytics-title{
+
+font-size:1.9rem;
+
+}
+
+.analytics-subtitle{
+
+font-size:1rem;
+
+}
+
+.analytics-status{
+
+width:100%;
+
+}
+
+.status-card{
+
+width:100%;
+
+justify-content:center;
+
+}
+
+}
+</style>
+
+    <!-- SWITCHER -->
+    <div class="chart-switcher">
+
+      <button class="chart-tab active"
+              data-chart="lineChartWrap">
+        <i class="bi bi-graph-up"></i>
+        Trend
+      </button>
+
+      <button class="chart-tab"
+              data-chart="barChartWrap">
+        <i class="bi bi-bar-chart"></i>
+        Compare
+      </button>
+
+      <button class="chart-tab"
+              data-chart="radarChartWrap">
+        <i class="bi bi-bullseye"></i>
+        Radar
+      </button>
+
+      <button class="chart-tab"
+              data-chart="streamChartWrap">
+        <i class="bi bi-water"></i>
+        Stream
+      </button>
+
+      <button class="chart-tab"
+              data-chart="bubbleChartWrap">
+        <i class="bi bi-circle-square"></i>
+        Bubble
+      </button>
+
+      <button class="chart-tab"
+              data-chart="heatmapWrap">
+        <i class="bi bi-grid-3x3-gap"></i>
+        Heatmap
+      </button>
+
+      <button class="chart-tab"
+              data-chart="cumulativeChartWrap">
+        <i class="bi bi-graph-up-arrow"></i>
+        Forecast
+      </button>
+
+    </div>
+
+  </div>
+
+  <!-- BODY -->
+  <div class="analytics-body">
+
+    <!-- LINE -->
+    <div class="chart-pane active" id="lineChartWrap">
+      <canvas id="mergedLineChart"></canvas>
+    </div>
+
+    <!-- BAR -->
+    <div class="chart-pane" id="barChartWrap">
+      <canvas id="mergedBarChart"></canvas>
+    </div>
+
+    <!-- RADAR -->
+    <div class="chart-pane" id="radarChartWrap">
+      <canvas id="mergedRadarChart"></canvas>
+    </div>
+
+    <!-- STREAM -->
+    <div class="chart-pane" id="streamChartWrap">
+      <canvas id="mergedStreamChart"></canvas>
+    </div>
+
+    <!-- BUBBLE -->
+    <div class="chart-pane" id="bubbleChartWrap">
+      <canvas id="mergedBubbleChart"></canvas>
+    </div>
+
+    <!-- HEATMAP -->
+    <div class="chart-pane" id="heatmapWrap">
+      <div id="mergedHeatmap"></div>
+    </div>
+
+    <!-- FORECAST -->
+    <div class="chart-pane" id="cumulativeChartWrap">
+      <canvas id="mergedForecastChart"></canvas>
+    </div>
+
+  </div>
+
+</div>
+
+<style>
+
+/* =========================================================
+   🚀 ENTERPRISE ANALYTICS ENGINE
+========================================================= */
+
+.analytics-dashboard{
+
+  position:relative;
+
+  padding:1.2rem;
+
+  border-radius:34px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #f8fbff,
+      #f1f5f9
+    );
+
+  overflow:hidden;
+}
+
+/* =========================================================
+   BACKGROUND GLOW
+========================================================= */
+
+.analytics-dashboard::before{
+
+  content:"";
+
+  position:absolute;
+
+  top:-180px;
+  right:-180px;
+
+  width:420px;
+  height:420px;
+
+  border-radius:50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(37,99,235,.12),
+      transparent 72%
+    );
+
+  pointer-events:none;
+}
+
+.analytics-dashboard::after{
+
+  content:"";
+
+  position:absolute;
+
+  bottom:-220px;
+  left:-220px;
+
+  width:460px;
+  height:460px;
+
+  border-radius:50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(124,58,237,.10),
+      transparent 72%
+    );
+
+  pointer-events:none;
+}
+
+/* =========================================================
+   CHART CONTAINER
+========================================================= */
+
+.chart-shell{
+
+  position:relative;
+
+  overflow:hidden;
+
+  border-radius:30px;
+
+  background:
+    rgba(255,255,255,.82);
+
+  border:
+    1px solid rgba(255,255,255,.8);
+
+  backdrop-filter:blur(18px);
+
+  box-shadow:
+    0 10px 40px rgba(15,23,42,.06);
+
+  padding:1rem;
+}
+
+/* =========================================================
+   TABS
+========================================================= */
+
+.chart-switcher{
+
+  display:flex;
+
+  gap:.8rem;
+
+  flex-wrap:wrap;
+
+  margin-bottom:1.5rem;
+}
+
+.chart-tab{
+
+  position:relative;
+
+  border:none;
+
+  height:46px;
+
+  padding:0 1.2rem;
+
+  border-radius:16px;
+
+  background:
+    rgba(255,255,255,.75);
+
+  color:#64748b;
+
+  font-size:.82rem;
+  font-weight:800;
+
+  letter-spacing:.02em;
+
+  transition:
+    all .28s ease;
+
+  backdrop-filter:blur(10px);
+
+  border:
+    1px solid rgba(226,232,240,.8);
+}
+
+.chart-tab:hover{
+
+  transform:
+    translateY(-2px);
+
+  color:#2563eb;
+
+  box-shadow:
+    0 10px 24px rgba(37,99,235,.12);
+}
+
+.chart-tab.active{
+
+  background:
+    linear-gradient(
+      135deg,
+      #2563eb,
+      #3b82f6
+    );
+
+  color:white;
+
+  border-color:transparent;
+
+  box-shadow:
+    0 18px 34px rgba(37,99,235,.28);
+}
+
+/* =========================================================
+   CHART PANES
+========================================================= */
+
+.chart-stage{
+
+  position:relative;
+
+  min-height:560px;
+}
+
+.chart-pane{
+
+  position:absolute;
+
+  inset:0;
+
+  opacity:0;
+
+  visibility:hidden;
+
+  pointer-events:none;
+
+  width:100%;
+
+  transition:
+    opacity .25s ease,
+    visibility .25s ease;
+}
+
+.chart-pane.active{
+
+  position:relative;
+
+  opacity:1;
+
+  visibility:visible;
+
+  pointer-events:auto;
+}
+
+/* =========================================================
+   CANVAS
+========================================================= */
+
+.chart-pane canvas{
+
+  width:100% !important;
+
+  height:540px !important;
+
+  display:block;
+}
+
+/* =========================================================
+   HEATMAP
+========================================================= */
+
+.modern-heatmap-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    120px repeat(31, 1fr);
+
+  gap:8px;
+
+  align-items:center;
+}
+
+.modern-heatmap-header{
+
+  text-align:center;
+
+  font-size:.72rem;
+
+  font-weight:700;
+
+  color:#94a3b8;
+}
+
+.modern-month-label{
+
+  font-size:.82rem;
+
+  font-weight:800;
+
+  color:#334155;
+}
+
+.modern-heat-cell{
+
+  aspect-ratio:1/1;
+
+  border-radius:10px;
+
+  transition:
+    transform .2s ease,
+    box-shadow .2s ease;
+}
+
+.modern-heat-cell:hover{
+
+  transform:scale(1.15);
+
+  box-shadow:
+    0 10px 18px rgba(37,99,235,.18);
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media(max-width:768px){
+
+  .analytics-dashboard{
+
+    padding:.8rem;
+
+    border-radius:24px;
+  }
+
+  .chart-shell{
+
+    border-radius:22px;
+  }
+
+  .chart-tab{
+
+    height:40px;
+
+    padding:0 .9rem;
+
+    font-size:.72rem;
+
+    border-radius:12px;
+  }
+
+  .chart-pane canvas{
+
+    height:420px !important;
+  }
+
+  .chart-stage{
+
+    min-height:430px;
+  }
+
+}
+
+</style>
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function(){
+
+  // =====================================================
+  // GLOBAL CHART FIXES
+  // =====================================================
+
+  Chart.defaults.responsive = true;
+
+  Chart.defaults.maintainAspectRatio = false;
+
+  Chart.defaults.animation = false;
+
+  Chart.defaults.devicePixelRatio =
+    window.devicePixelRatio || 1;
+
+  Chart.defaults.events = [
+
+    "mousemove",
+    "mouseout",
+    "click",
+    "touchstart",
+    "touchmove"
+
+  ];
+
+  // =====================================================
+  // DATA
+  // =====================================================
+
+  const labels =
+    <%= raw @days.to_json %>;
+
+  const current =
+    <%= raw @current_daily.to_json %>;
+
+  const prev1 =
+    <%= raw @prev1_daily.to_json %>;
+
+  const prev2 =
+    <%= raw @prev2_daily.to_json %>;
+
+  const cumulative =
+    <%= raw @current_cumulative.to_json %>;
+
+  // =====================================================
+  // COLORS
+  // =====================================================
+
+  const COLORS = {
+
+    blue:"#2563eb",
+
+    green:"#10b981",
+
+    orange:"#f59e0b",
+
+    red:"#ef4444",
+
+    purple:"#7c3aed",
+
+    text:"#64748b",
+
+    dark:"#0f172a",
+
+    grid:"rgba(148,163,184,.08)"
+  };
+
+  // =====================================================
+  // CHART REGISTRY
+  // =====================================================
+
+  const charts = {};
+
+  // =====================================================
+  // GRADIENT
+  // =====================================================
+
+  function gradient(ctx,color){
+
+    const g =
+      ctx.createLinearGradient(
+        0,
+        0,
+        0,
+        520
+      );
+
+    g.addColorStop(
+      0,
+      color.replace("1)", ".28)")
+    );
+
+    g.addColorStop(
+      1,
+      color.replace("1)", ".02)")
+    );
+
+    return g;
+  }
+
+  // =====================================================
+  // COMMON OPTIONS
+  // =====================================================
+
+  const commonOptions = {
+
+    responsive:true,
+
+    maintainAspectRatio:false,
+
+    interaction:{
+
+      mode:"nearest",
+
+      axis:"x",
+
+      intersect:false
+    },
+
+    plugins:{
+
+      legend:{
+
+        position:"bottom",
+
+        labels:{
+
+          usePointStyle:true,
+
+          pointStyle:"circle",
+
+          padding:24,
+
+          color:COLORS.text,
+
+          font:{
+            size:12,
+            weight:"700"
+          }
+        }
+      },
+
+      tooltip:{
+
+        enabled:true,
+
+        backgroundColor:
+          "rgba(255,255,255,.96)",
+
+        titleColor:
+          COLORS.dark,
+
+        bodyColor:
+          COLORS.text,
+
+        borderColor:
+          "rgba(226,232,240,.9)",
+
+        borderWidth:1,
+
+        cornerRadius:18,
+
+        padding:16,
+
+        displayColors:true,
+
+        callbacks:{
+
+          label(context){
+
+            return (
+              context.dataset.label +
+              ": KSh " +
+              Number(
+                context.raw ||
+                context.parsed.y ||
+                0
+              ).toLocaleString()
+            );
+
+          }
+        }
+      }
+    },
+
+    scales:{
+
+      x:{
+
+        grid:{
+          display:false
+        },
+
+        border:{
+          display:false
+        },
+
+        ticks:{
+
+          color:"#94a3b8",
+
+          font:{
+            size:11,
+            weight:"700"
+          }
+        }
+      },
+
+      y:{
+
+        beginAtZero:true,
+
+        border:{
+          display:false
+        },
+
+        grid:{
+          color:COLORS.grid
+        },
+
+        ticks:{
+
+          color:COLORS.text,
+
+          font:{
+            size:11,
+            weight:"700"
+          },
+
+          callback(value){
+
+            return (
+              "KSh " +
+              Number(value).toLocaleString()
+            );
+          }
+        }
+      }
+    }
+  };
+
+  // =====================================================
+  // DATASET HELPER
+  // =====================================================
+
+  function datasetConfig(){
+
+    return {
+
+      hitRadius:24,
+
+      hoverRadius:8,
+
+      pointHitRadius:24,
+
+      pointHoverRadius:8
+    };
+
+  }
+
+  // =====================================================
+  // LINE
+  // =====================================================
+
+  const lineCtx =
+    document
+      .getElementById(
+        "mergedLineChart"
+      )
+      .getContext("2d");
+
+  charts.line = new Chart(lineCtx,{
+
+    type:"line",
+
+    data:{
+
+      labels,
+
+      datasets:[
+
+        {
+
+          ...datasetConfig(),
+
+          label:"This Month",
+
+          data:current,
+
+          borderColor:COLORS.blue,
+
+          backgroundColor:
+            gradient(
+              lineCtx,
+              "rgba(37,99,235,1)"
+            ),
+
+          fill:true,
+
+          tension:.45,
+
+          borderWidth:4,
+
+          pointRadius:0
+        },
+
+        {
+
+          ...datasetConfig(),
+
+          label:"Last Month",
+
+          data:prev1,
+
+          borderColor:COLORS.red,
+
+          borderDash:[8,6],
+
+          borderWidth:3,
+
+          tension:.45,
+
+          pointRadius:0
+        },
+
+        {
+
+          ...datasetConfig(),
+
+          label:"2 Months Ago",
+
+          data:prev2,
+
+          borderColor:COLORS.green,
+
+          borderDash:[3,3],
+
+          borderWidth:3,
+
+          tension:.45,
+
+          pointRadius:0
+        }
+
+      ]
+    },
+
+    options:commonOptions
+  });
+
+  // =====================================================
+  // BAR
+  // =====================================================
+
+  charts.bar = new Chart(
+
+    document.getElementById(
+      "mergedBarChart"
+    ),
+
+    {
+
+      type:"bar",
+
+      data:{
+
+        labels,
+
+        datasets:[
+
+          {
+
+            ...datasetConfig(),
+
+            label:"This Month",
+
+            data:current,
+
+            backgroundColor:
+              "rgba(37,99,235,.88)",
+
+            borderRadius:18,
+
+            borderSkipped:false
+          },
+
+          {
+
+            ...datasetConfig(),
+
+            label:"Last Month",
+
+            data:prev1,
+
+            backgroundColor:
+              "rgba(16,185,129,.88)",
+
+            borderRadius:18,
+
+            borderSkipped:false
+          },
+
+          {
+
+            ...datasetConfig(),
+
+            label:"2 Months Ago",
+
+            data:prev2,
+
+            backgroundColor:
+              "rgba(245,158,11,.88)",
+
+            borderRadius:18,
+
+            borderSkipped:false
+          }
+
+        ]
+      },
+
+      options:commonOptions
+    }
+  );
+
+  // =====================================================
+  // RADAR
+  // =====================================================
+
+  charts.radar = new Chart(
+
+    document.getElementById(
+      "mergedRadarChart"
+    ),
+
+    {
+
+      type:"radar",
+
+      data:{
+
+        labels,
+
+        datasets:[
+
+          {
+
+            ...datasetConfig(),
+
+            label:"This Month",
+
+            data:current,
+
+            borderColor:COLORS.blue,
+
+            backgroundColor:
+              "rgba(37,99,235,.18)",
+
+            borderWidth:3
+          },
+
+          {
+
+            ...datasetConfig(),
+
+            label:"Last Month",
+
+            data:prev1,
+
+            borderColor:COLORS.red,
+
+            backgroundColor:
+              "rgba(239,68,68,.12)",
+
+            borderWidth:3
+          }
+
+        ]
+      },
+
+      options:{
+        ...commonOptions
+      }
+    }
+  );
+
+  // =====================================================
+  // STREAM
+  // =====================================================
+
+  charts.stream = new Chart(
+
+    document.getElementById(
+      "mergedStreamChart"
+    ),
+
+    {
+
+      type:"line",
+
+      data:{
+
+        labels,
+
+        datasets:[
+
+          {
+
+            ...datasetConfig(),
+
+            label:"2 Months Ago",
+
+            data:prev2,
+
+            fill:true,
+
+            backgroundColor:
+              "rgba(245,158,11,.35)",
+
+            borderColor:"#f59e0b",
+
+            tension:.45,
+
+            pointRadius:0
+          },
+
+          {
+
+            ...datasetConfig(),
+
+            label:"Last Month",
+
+            data:prev1,
+
+            fill:true,
+
+            backgroundColor:
+              "rgba(16,185,129,.35)",
+
+            borderColor:"#10b981",
+
+            tension:.45,
+
+            pointRadius:0
+          },
+
+          {
+
+            ...datasetConfig(),
+
+            label:"This Month",
+
+            data:current,
+
+            fill:true,
+
+            backgroundColor:
+              "rgba(37,99,235,.35)",
+
+            borderColor:"#2563eb",
+
+            tension:.45,
+
+            pointRadius:0
+          }
+
+        ]
+      },
+
+      options:commonOptions
+    }
+  );
+
+  // =====================================================
+  // BUBBLE
+  // =====================================================
+
+  // =====================================================
+// BUBBLE CHART FIXED
+// =====================================================
+
+charts.bubble = new Chart(
+
+  document.getElementById(
+    "mergedBubbleChart"
+  ),
+
+  {
+
+    type:"bubble",
+
+    data:{
+
+      datasets:[
+
+        {
+
+          label:"This Month",
+
+          data:
+            current.map((v,i)=>({
+
+              x:i + 1,
+
+              y:v,
+
+              r:Math.max(
+                Math.min(v / 7000, 28),
+                6
+              )
+
+            })),
+
+          backgroundColor:
+            current.map(v => {
+
+              const alpha =
+                Math.max(
+                  Math.min(v / Math.max(...current), 1),
+                  .25
+                );
+
+              return `rgba(37,99,235,${alpha})`;
+
+            }),
+
+          borderColor:"#2563eb",
+
+          borderWidth:2,
+
+          hoverBorderWidth:3,
+
+          hoverBackgroundColor:
+            "rgba(37,99,235,.72)",
+
+          hoverBorderColor:"#1d4ed8",
+
+          hitRadius:30,
+
+          hoverRadius:10
+        }
+
+      ]
+    },
+
+    options:{
+
+      ...commonOptions,
+
+      interaction:{
+
+        mode:"nearest",
+
+        intersect:true
+      },
+
+      plugins:{
+
+        ...commonOptions.plugins,
+
+        tooltip:{
+
+          ...commonOptions.plugins.tooltip,
+
+          callbacks:{
+
+            label(context){
+
+              const point =
+                context.raw;
+
+              return [
+
+                `Day: ${point.x}`,
+
+                `Revenue: KSh ${
+                  Number(point.y)
+                    .toLocaleString()
+                }`,
+
+                `Intensity: ${point.r}`
+              ];
+
+            }
+          }
+        }
+      },
+
+      scales:{
+
+        x:{
+
+          beginAtZero:true,
+
+          grid:{
+            color:"rgba(148,163,184,.08)"
+          },
+
+          ticks:{
+
+            color:"#94a3b8",
+
+            font:{
+              size:11,
+              weight:"700"
+            }
+          }
+        },
+
+        y:{
+
+          beginAtZero:true,
+
+          grid:{
+            color:"rgba(148,163,184,.08)"
+          },
+
+          ticks:{
+
+            color:"#64748b",
+
+            font:{
+              size:11,
+              weight:"700"
+            },
+
+            callback(value){
+
+              return (
+                "KSh " +
+                Number(value)
+                  .toLocaleString()
+              );
+
+            }
+          }
+        }
+      }
+    }
+  }
+);
+
+  // =====================================================
+  // FORECAST
+  // =====================================================
+
+  const forecastCtx =
+    document
+      .getElementById(
+        "mergedForecastChart"
+      )
+      .getContext("2d");
+
+  charts.forecast = new Chart(
+
+    forecastCtx,
+
+    {
+
+      type:"line",
+
+      data:{
+
+        labels,
+
+        datasets:[
+
+          {
+
+            ...datasetConfig(),
+
+            label:"Cumulative Revenue",
+
+            data:cumulative,
+
+            borderColor:"#7c3aed",
+
+            backgroundColor:
+              gradient(
+                forecastCtx,
+                "rgba(124,58,237,1)"
+              ),
+
+            fill:true,
+
+            tension:.45,
+
+            borderWidth:4,
+
+            pointRadius:0
+          }
+
+        ]
+      },
+
+      options:commonOptions
+    }
+  );
+
+  // =====================================================
+  // REFRESH ENGINE
+  // =====================================================
+
+  function refreshChart(chart){
+
+    if(!chart) return;
+
+    chart._active = [];
+
+    chart.resize();
+
+    chart.update("resize");
+
+    chart.render();
+
+    chart.bindEvents();
+
+  }
+
+  function refreshAllCharts(){
+
+    Object.values(charts)
+      .forEach(chart => {
+
+        refreshChart(chart);
+
+      });
+
+  }
+
+  // =====================================================
+// PREMIUM HEATMAP ENGINE
+// =====================================================
+
+const heatmap =
+  document.getElementById(
+    "mergedHeatmap"
+  );
+
+if(heatmap){
+
+  // CLEAR OLD
+  heatmap.innerHTML = "";
+
+  const months = [
+
+    {
+      name:"<%= 2.months.ago.strftime('%b %Y') %>",
+      values:prev2
+    },
+
+    {
+      name:"<%= 1.month.ago.strftime('%b %Y') %>",
+      values:prev1
+    },
+
+    {
+      name:"<%= Date.today.strftime('%b %Y') %>",
+      values:current
+    }
+
+  ];
+
+  const allValues =
+    months.flatMap(m => m.values);
+
+  const max =
+    Math.max(...allValues,1);
+
+  const grid =
+    document.createElement("div");
+
+  grid.className =
+    "modern-heatmap-grid";
+
+  // EMPTY CORNER
+  const corner =
+    document.createElement("div");
+
+  grid.appendChild(corner);
+
+  // DAYS
+  for(let d=1; d<=31; d++){
+
+    const header =
+      document.createElement("div");
+
+    header.className =
+      "modern-heatmap-header";
+
+    header.innerText = d;
+
+    grid.appendChild(header);
+
+  }
+
+  // MONTHS
+  months.forEach(month => {
+
+    const label =
+      document.createElement("div");
+
+    label.className =
+      "modern-month-label";
+
+    label.innerText =
+      month.name;
+
+    grid.appendChild(label);
+
+    for(let i=0;i<31;i++){
+
+      const value =
+        month.values[i] || 0;
+
+      const intensity =
+        value / max;
+
+      const alpha =
+        Math.max(
+          intensity,
+          .08
+        );
+
+      const cell =
+        document.createElement("div");
+
+      cell.className =
+        "modern-heat-cell";
+
+      cell.style.background =
+        `linear-gradient(
+          145deg,
+          rgba(59,130,246,${alpha}),
+          rgba(37,99,235,${alpha * .88})
+        )`;
+
+      cell.title =
+        `${month.name}
+Day ${i+1}
+KSh ${Number(value)
+          .toLocaleString()}`;
+
+      grid.appendChild(cell);
+
+    }
+
+  });
+
+  heatmap.appendChild(grid);
+
+}
+
+  // =====================================================
+  // TAB SWITCHER
+  // =====================================================
+
+  const tabs =
+    document.querySelectorAll(".chart-tab");
+
+  const panes =
+    document.querySelectorAll(".chart-pane");
+
+  tabs.forEach(tab => {
+
+    tab.addEventListener("click", function(){
+
+      const targetId =
+        this.dataset.chart;
+
+      tabs.forEach(t =>
+        t.classList.remove("active")
+      );
+
+      panes.forEach(p =>
+        p.classList.remove("active")
+      );
+
+      this.classList.add("active");
+
+      const target =
+        document.getElementById(targetId);
+
+      if(target){
+
+        target.classList.add("active");
+
+        requestAnimationFrame(() => {
+
+          setTimeout(() => {
+
+            refreshAllCharts();
+
+            window.dispatchEvent(
+              new Event("resize")
+            );
+
+          }, 120);
+
+        });
+
+      }
+
+    });
+
+  });
+
+  // =====================================================
+  // INITIAL FIX
+  // =====================================================
+
+  window.addEventListener("load", () => {
+
+    setTimeout(() => {
+
+      refreshAllCharts();
+
+    }, 400);
+
+  });
+
+  // =====================================================
+  // VISIBILITY FIX
+  // =====================================================
+
+  document.addEventListener(
+    "visibilitychange",
+    () => {
+
+      if(!document.hidden){
+
+        setTimeout(() => {
+
+          refreshAllCharts();
+
+        }, 120);
+
+      }
+
+    }
+  );
+
+});
+</script>
+
+<style>
+  /* =========================================================
+   🔥 ULTRA PREMIUM HEATMAP
+========================================================= */
+
+#mergedHeatmap{
+
+  position:relative;
+
+  overflow:auto;
+
+  padding:1rem;
+
+  border-radius:28px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.92),
+      rgba(248,250,252,.86)
+    );
+
+  border:
+    1px solid rgba(255,255,255,.85);
+
+  backdrop-filter:blur(18px);
+
+  box-shadow:
+    0 12px 38px rgba(15,23,42,.06);
+
+  scrollbar-width:none;
+}
+
+#mergedHeatmap::-webkit-scrollbar{
+  display:none;
+}
+
+/* =========================================================
+   GRID
+========================================================= */
+
+.modern-heatmap-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    130px repeat(31, minmax(34px,1fr));
+
+  gap:10px;
+
+  align-items:center;
+
+  min-width:1280px;
+}
+
+/* =========================================================
+   DAY HEADERS
+========================================================= */
+
+.modern-heatmap-header{
+
+  height:34px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  font-size:.7rem;
+
+  font-weight:800;
+
+  color:#94a3b8;
+
+  border-radius:10px;
+
+  background:
+    rgba(255,255,255,.72);
+
+  border:
+    1px solid rgba(226,232,240,.7);
+
+  backdrop-filter:blur(8px);
+}
+
+/* =========================================================
+   MONTH LABEL
+========================================================= */
+
+.modern-month-label{
+
+  height:42px;
+
+  display:flex;
+  align-items:center;
+
+  padding-left:14px;
+
+  border-radius:14px;
+
+  font-size:.8rem;
+
+  font-weight:800;
+
+  letter-spacing:.02em;
+
+  color:#0f172a;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,255,255,.88),
+      rgba(248,250,252,.82)
+    );
+
+  border:
+    1px solid rgba(226,232,240,.8);
+
+  box-shadow:
+    0 6px 18px rgba(15,23,42,.04);
+}
+
+/* =========================================================
+   HEAT CELLS
+========================================================= */
+
+.modern-heat-cell{
+
+  position:relative;
+
+  width:100%;
+  aspect-ratio:1/1;
+
+  border-radius:14px;
+
+  cursor:pointer;
+
+  transition:
+    transform .18s ease,
+    box-shadow .18s ease,
+    filter .18s ease;
+
+  border:
+    1px solid rgba(255,255,255,.45);
+
+  overflow:hidden;
+}
+
+/* =========================================================
+   INNER GLOW
+========================================================= */
+
+.modern-heat-cell::before{
+
+  content:"";
+
+  position:absolute;
+
+  inset:0;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,255,255,.22),
+      transparent
+    );
+
+  opacity:.9;
+}
+
+/* =========================================================
+   HOVER
+========================================================= */
+
+.modern-heat-cell:hover{
+
+  transform:
+    scale(1.12);
+
+  z-index:10;
+
+  filter:brightness(1.08);
+
+  box-shadow:
+    0 14px 28px rgba(37,99,235,.18);
+}
+
+/* =========================================================
+   TOOLTIP IMPROVEMENT
+========================================================= */
+
+.modern-heat-cell[title]{
+
+  position:relative;
+}
+
+/* =========================================================
+   BUBBLE CHART CANVAS
+========================================================= */
+
+#mergedBubbleChart{
+
+  border-radius:26px;
+
+  background:
+    radial-gradient(
+      circle at top right,
+      rgba(37,99,235,.05),
+      transparent 35%
+    ),
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.92),
+      rgba(248,250,252,.82)
+    );
+
+  border:
+    1px solid rgba(255,255,255,.82);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.92),
+    0 10px 35px rgba(15,23,42,.05);
+
+  padding:10px;
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media(max-width:768px){
+
+  #mergedHeatmap{
+
+    border-radius:22px;
+
+    padding:.7rem;
+  }
+
+  .modern-heatmap-grid{
+
+    grid-template-columns:
+      100px repeat(31, minmax(28px,1fr));
+
+    gap:7px;
+  }
+
+  .modern-month-label{
+
+    height:36px;
+
+    font-size:.7rem;
+
+    padding-left:10px;
+  }
+
+  .modern-heatmap-header{
+
+    height:28px;
+
+    font-size:.62rem;
+  }
+
+  .modern-heat-cell{
+
+    border-radius:10px;
+  }
+
+}
+</style>
+
+
+
+
+
+
+
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+  const canvas = document.getElementById("growthChart");
+  if (!canvas) return;
+
+  const ctx = canvas.getContext("2d");
+
+  // =========================
+  // GRADIENTS
+  // =========================
+
+  const blueGradient = ctx.createLinearGradient(0, 0, 0, 400);
+  blueGradient.addColorStop(0, "rgba(37,99,235,.30)");
+  blueGradient.addColorStop(1, "rgba(37,99,235,0)");
+
+  const redGradient = ctx.createLinearGradient(0, 0, 0, 400);
+  redGradient.addColorStop(0, "rgba(239,68,68,.22)");
+  redGradient.addColorStop(1, "rgba(239,68,68,0)");
+
+  const greenGradient = ctx.createLinearGradient(0, 0, 0, 400);
+  greenGradient.addColorStop(0, "rgba(16,185,129,.22)");
+  greenGradient.addColorStop(1, "rgba(16,185,129,0)");
+
+  // =========================
+  // GLOW EFFECT
+  // =========================
+
+  const glowPlugin = {
+    id: "glowPlugin",
+
+    beforeDatasetDraw(chart, args) {
+      const { ctx } = chart;
+
+      ctx.save();
+
+      const colors = [
+        "#2563eb",
+        "#ef4444",
+        "#10b981"
+      ];
+
+      ctx.shadowColor = colors[args.index] || "#2563eb";
+      ctx.shadowBlur = 12;
+      ctx.shadowOffsetX = 0;
+      ctx.shadowOffsetY = 5;
+    },
+
+    afterDatasetDraw(chart) {
+      chart.ctx.restore();
+    }
+  };
+
+  // =========================
+  // CROSSHAIR
+  // =========================
+
+  const crosshairPlugin = {
+    id: "crosshairPlugin",
+
+    afterDraw(chart) {
+
+      if (!chart.tooltip?._active?.length) return;
+
+      const ctx = chart.ctx;
+
+      const x = chart.tooltip._active[0].element.x;
+
+      const topY = chart.scales.y.top;
+      const bottomY = chart.scales.y.bottom;
+
+      ctx.save();
+
+      ctx.beginPath();
+      ctx.setLineDash([5, 5]);
+
+      ctx.moveTo(x, topY);
+      ctx.lineTo(x, bottomY);
+
+      ctx.strokeStyle = "rgba(148,163,184,.35)";
+      ctx.lineWidth = 1;
+
+      ctx.stroke();
+
+      ctx.restore();
+    }
+  };
+
+  Chart.register(glowPlugin, crosshairPlugin);
+
+  // =========================
+  // CHART
+  // =========================
+
+  new Chart(ctx, {
+    type: "line",
+
+    data: {
+      labels: <%= raw @days.to_json %>,
+
+      datasets: [
+
+        {
+          label: "This Month",
+          data: <%= raw @current_daily.to_json %>,
+
+          borderColor: "#2563eb",
+          backgroundColor: blueGradient,
+
+          fill: true,
+          tension: 0.45,
+          borderWidth: 4,
+
+          pointRadius: 4,
+          pointHoverRadius: 9,
+          pointHitRadius: 25,
+
+          pointBackgroundColor: "#fff",
+          pointBorderColor: "#2563eb",
+          pointBorderWidth: 3,
+
+          pointHoverBackgroundColor: "#2563eb",
+          pointHoverBorderColor: "#fff",
+          pointHoverBorderWidth: 3
+        },
+
+        {
+          label: "Last Month",
+          data: <%= raw @prev1_daily.to_json %>,
+
+          borderColor: "#ef4444",
+          backgroundColor: redGradient,
+
+          fill: true,
+          tension: 0.45,
+          borderDash: [8, 5],
+          borderWidth: 3,
+
+          pointRadius: 4,
+          pointHoverRadius: 9,
+          pointHitRadius: 25,
+
+          pointBackgroundColor: "#fff",
+          pointBorderColor: "#ef4444",
+          pointBorderWidth: 3,
+
+          pointHoverBackgroundColor: "#ef4444",
+          pointHoverBorderColor: "#fff",
+          pointHoverBorderWidth: 3
+        },
+
+        {
+          label: "2 Months Ago",
+          data: <%= raw @prev2_daily.to_json %>,
+
+          borderColor: "#10b981",
+          backgroundColor: greenGradient,
+
+          fill: true,
+          tension: 0.45,
+          borderDash: [3, 3],
+          borderWidth: 3,
+
+          pointRadius: 4,
+          pointHoverRadius: 9,
+          pointHitRadius: 25,
+
+          pointBackgroundColor: "#fff",
+          pointBorderColor: "#10b981",
+          pointBorderWidth: 3,
+
+          pointHoverBackgroundColor: "#10b981",
+          pointHoverBorderColor: "#fff",
+          pointHoverBorderWidth: 3
+        }
+
+      ]
+    },
+
+    options: {
+
+      responsive: true,
+      maintainAspectRatio: false,
+
+      animation: {
+        duration: 1800,
+        easing: "easeOutQuart"
+      },
+
+      interaction: {
+        mode: "index",
+        intersect: false
+      },
+
+      hover: {
+        mode: "index",
+        intersect: false
+      },
+
+      plugins: {
+
+        datalabels: {
+          display: false
+        },
+
+        legend: {
+          position: "bottom",
+
+          labels: {
+            usePointStyle: true,
+            pointStyle: "circle",
+
+            padding: 24,
+            boxWidth: 10,
+            boxHeight: 10,
+
+            color: "#475569",
+
+            font: {
+              size: 13,
+              weight: "600"
+            }
+          }
+        },
+
+        tooltip: {
+
+          backgroundColor: "#ffffff",
+
+          titleColor: "#0f172a",
+          bodyColor: "#475569",
+
+          borderColor: "#e2e8f0",
+          borderWidth: 1,
+
+          cornerRadius: 16,
+
+          padding: 16,
+          boxPadding: 6,
+
+          displayColors: true,
+
+          callbacks: {
+
+            title(context) {
+              return `Day ${context[0].label}`;
+            },
+
+            label(context) {
+              return (
+                context.dataset.label +
+                ": KSh " +
+                Number(context.raw || 0).toLocaleString()
+              );
+            }
+          }
+        }
+      },
+
+      scales: {
+
+        x: {
+
+          grid: {
+            display: false,
+            drawBorder: false
+          },
+
+          ticks: {
+            color: "#94a3b8",
+
+            font: {
+              size: 12,
+              weight: "600"
+            }
+          }
+        },
+
+        y: {
+
+          beginAtZero: true,
+
+          border: {
+            display: false
+          },
+
+          grid: {
+            color: "rgba(148,163,184,.12)",
+            drawBorder: false
+          },
+
+          ticks: {
+
+            padding: 10,
+
+            color: "#64748b",
+
+            font: {
+              size: 12
+            },
+
+            callback(value) {
+              return "KSh " + Number(value).toLocaleString();
+            }
+          }
+        }
+      }
+    }
+  });
+
+});
+</script>
+
+
+
+<style>
+#growthChart{
+  cursor: crosshair;
+}
+
+.chart-card {
+  background: #fff;
+  border-radius: 24px;
+  padding: 24px;
+  border: 1px solid #eef2f7;
+
+  box-shadow:
+    0 10px 30px rgba(15,23,42,.05),
+    0 1px 3px rgba(15,23,42,.08);
+
+  transition: all .3s ease;
+}
+
+.chart-card:hover {
+  transform: translateY(-3px);
+
+  box-shadow:
+    0 20px 40px rgba(15,23,42,.08),
+    0 8px 16px rgba(15,23,42,.06);
+}
+
+.chart-wrapper {
+  height: 420px;
+}
+
+.chart-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: .25rem;
+}
+
+.chart-subtitle {
+  color: #64748b;
+  font-size: .85rem;
+  margin-bottom: 1.25rem;
+}
+
+.chart-wrapper{
+  height: 450px;
+  position: relative;
+}
+</style>
+
+
+
+
+
+
+<div class="card border-0 shadow-sm rounded-4 mb-4">
+
+  <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center">
+    <div>
+      <i class="bi bi-bar-chart-line-fill text-success me-2"></i>
+      Cumulative Revenue Trend
+    </div>
+
+    <span class="badge bg-success-subtle text-success">
+      Forecast: <%= number_to_currency(@forecast, unit: "KSh ", precision: 0) %>
+    </span>
+  </div>
+
+  <div class="card-body">
+
+    <div class="row text-center mb-3">
+
+      <div class="col-md-4">
+        <div class="small text-muted">Current Progress</div>
+        <div class="fw-bold fs-5 text-primary">
+          <%= number_to_currency(@curr_total, unit: "KSh ", precision: 0) %>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="small text-muted">Projected Month End</div>
+        <div class="fw-bold fs-5 text-success">
+          <%= number_to_currency(@forecast, unit: "KSh ", precision: 0) %>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="small text-muted">Best Day</div>
+        <div class="fw-bold fs-5 text-warning">
+          <%= number_to_currency(@best_day, unit: "KSh ", precision: 0) %>
+        </div>
+      </div>
+
+    </div>
+
+    <div style="height:350px;">
+      <canvas id="cumulativeChart"></canvas>
+    </div>
+
+
+
+  </div>
+
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+
+<script>
+if (window.ChartDataLabels) {
+  try {
+    Chart.register(ChartDataLabels);
+  } catch(e) {}
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+
+  const canvas = document.getElementById('cumulativeChart');
+  if (!canvas) return;
+
+  const ctx = canvas.getContext('2d');
+
+  // =========================
+  // GRADIENTS
+  // =========================
+
+  const blueGradient = ctx.createLinearGradient(0, 0, 0, 400);
+  blueGradient.addColorStop(0, 'rgba(37,99,235,.30)');
+  blueGradient.addColorStop(1, 'rgba(37,99,235,0)');
+
+  const redGradient = ctx.createLinearGradient(0, 0, 0, 400);
+  redGradient.addColorStop(0, 'rgba(239,68,68,.18)');
+  redGradient.addColorStop(1, 'rgba(239,68,68,0)');
+
+  const greenGradient = ctx.createLinearGradient(0, 0, 0, 400);
+  greenGradient.addColorStop(0, 'rgba(16,185,129,.18)');
+  greenGradient.addColorStop(1, 'rgba(16,185,129,0)');
+
+  // =========================
+  // GLOW PLUGIN
+  // =========================
+
+  const glowPlugin = {
+    id: 'glowPlugin',
+
+    beforeDatasetDraw(chart, args) {
+      const ctx = chart.ctx;
+
+      ctx.save();
+
+      const colors = [
+        '#2563eb',
+        '#ef4444',
+        '#10b981'
+      ];
+
+      ctx.shadowColor = colors[args.index] || '#2563eb';
+      ctx.shadowBlur = 10;
+      ctx.shadowOffsetY = 4;
+    },
+
+    afterDatasetDraw(chart) {
+      chart.ctx.restore();
+    }
+  };
+
+  // =========================
+  // CROSSHAIR
+  // =========================
+
+  const crosshairPlugin = {
+    id: 'crosshairPlugin',
+
+    afterDraw(chart) {
+
+      if (!chart.tooltip?.getActiveElements()?.length) return;
+
+      const ctx = chart.ctx;
+
+      const activePoint =
+        chart.tooltip.getActiveElements()[0];
+
+      const x = activePoint.element.x;
+
+      ctx.save();
+
+      ctx.beginPath();
+      ctx.setLineDash([5,5]);
+
+      ctx.moveTo(x, chart.scales.y.top);
+      ctx.lineTo(x, chart.scales.y.bottom);
+
+      ctx.strokeStyle = 'rgba(148,163,184,.35)';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+
+      ctx.restore();
+    }
+  };
+
+  Chart.register(glowPlugin);
+  Chart.register(crosshairPlugin);
+
+  // =========================
+  // CHART
+  // =========================
+
+  new Chart(ctx, {
+
+    type: 'line',
+
+    data: {
+      labels: <%= raw @days.to_json %>,
+
+      datasets: [
+
+        {
+          label: 'This Month',
+          data: <%= raw @current_cumulative.to_json %>,
+
+          borderColor: '#2563eb',
+          backgroundColor: blueGradient,
+
+          fill: true,
+          tension: 0.45,
+          borderWidth: 4,
+
+          pointRadius: 4,
+          pointHoverRadius: 9,
+
+          pointBackgroundColor: '#fff',
+          pointBorderColor: '#2563eb',
+          pointBorderWidth: 3,
+
+          pointHoverBackgroundColor: '#2563eb',
+          pointHoverBorderColor: '#fff'
+        },
+
+        {
+          label: 'Last Month',
+          data: <%= raw @prev1_cumulative.to_json %>,
+
+          borderColor: '#ef4444',
+          backgroundColor: redGradient,
+
+          fill: false,
+          tension: 0.45,
+          borderDash: [8,5],
+          borderWidth: 3,
+
+          pointRadius: 4,
+          pointHoverRadius: 9,
+
+          pointBackgroundColor: '#fff',
+          pointBorderColor: '#ef4444',
+          pointBorderWidth: 3
+        },
+
+        {
+          label: '2 Months Ago',
+          data: <%= raw @prev2_cumulative.to_json %>,
+
+          borderColor: '#10b981',
+          backgroundColor: greenGradient,
+
+          fill: false,
+          tension: 0.45,
+          borderDash: [3,3],
+          borderWidth: 3,
+
+          pointRadius: 4,
+          pointHoverRadius: 9,
+
+          pointBackgroundColor: '#fff',
+          pointBorderColor: '#10b981',
+          pointBorderWidth: 3
+        }
+      ]
+    },
+
+    options: {
+
+      responsive: true,
+      maintainAspectRatio: false,
+
+      animation: {
+        duration: 1800,
+        easing: 'easeOutQuart'
+      },
+
+      interaction: {
+        mode: 'index',
+        intersect: false
+      },
+
+      plugins: {
+
+        datalabels: {
+          display: false
+        },
+
+        legend: {
+          position: 'bottom',
+
+          labels: {
+            usePointStyle: true,
+            pointStyle: 'circle',
+
+            padding: 24,
+
+            color: '#475569',
+
+            font: {
+              size: 13,
+              weight: '600'
+            }
+          }
+        },
+
+        tooltip: {
+
+          backgroundColor: '#fff',
+
+          titleColor: '#0f172a',
+          bodyColor: '#475569',
+
+          borderColor: '#e2e8f0',
+          borderWidth: 1,
+
+          cornerRadius: 16,
+
+          padding: 14,
+
+          callbacks: {
+
+            title(context) {
+              return `Day ${context[0].label}`;
+            },
+
+            label(context) {
+              return (
+                context.dataset.label +
+                ': KSh ' +
+                Number(context.raw || 0).toLocaleString()
+              );
+            }
+          }
+        }
+      },
+
+      scales: {
+
+        x: {
+
+          grid: {
+            display: false
+          },
+
+          border: {
+            display: false
+          },
+
+          ticks: {
+            color: '#94a3b8',
+
+            font: {
+              size: 12,
+              weight: '600'
+            }
+          }
+        },
+
+        y: {
+
+          beginAtZero: true,
+
+          border: {
+            display: false
+          },
+
+          grid: {
+            color: 'rgba(148,163,184,.12)'
+          },
+
+          ticks: {
+
+            color: '#64748b',
+
+            callback(value) {
+              return 'KSh ' +
+                Number(value).toLocaleString();
+            }
+          }
+        }
+      }
+    }
+  });
+
+});
+</script>
+
+<style>
+  .chart-card {
+  background: #fff;
+  border: 1px solid #eef2f7;
+  border-radius: 24px;
+  padding: 24px;
+
+  box-shadow:
+    0 10px 30px rgba(15,23,42,.05),
+    0 1px 3px rgba(15,23,42,.08);
+
+  transition: all .3s ease;
+}
+
+.chart-card:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 20px 40px rgba(15,23,42,.08),
+    0 8px 16px rgba(15,23,42,.06);
+}
+
+.chart-wrapper {
+  position: relative;
+  height: 420px;
+}
+
+.chart-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 4px;
+}
+
+.chart-subtitle {
+  color: #64748b;
+  font-size: .875rem;
+  margin-bottom: 18px;
+}
+</style>
+
+
+<%
+current_best_index  = @current_week_totals.index(@current_week_totals.max)
+current_worst_index = @current_week_totals.index(@current_week_totals.min)
+
+last_best_index = @last_week_totals.index(@last_week_totals.max)
+
+best_day_this_week   = @weekday_labels[current_best_index]
+worst_day_this_week  = @weekday_labels[current_worst_index]
+best_day_last_week   = @weekday_labels[last_best_index]
+
+best_amount  = @current_week_totals[current_best_index]
+worst_amount = @current_week_totals[current_worst_index]
+last_best_amount = @last_week_totals[last_best_index]
+%>
+
+<!-- ================================= -->
+<!-- Executive Insight Card -->
+<!-- ================================= -->
+
+<div class="insight-card mb-4">
+
+  <div class="insight-icon">
+    <i class="bi bi-lightbulb-fill"></i>
+  </div>
+
+  <div class="flex-grow-1">
+
+    <div class="insight-title">
+      AI Revenue Insight
+    </div>
+
+    <div class="insight-text">
+
+      <span class="text-success fw-bold">
+        <%= best_day_this_week %>
+      </span>
+
+      generated the highest revenue this week of
+
+      <strong class="text-success">
+        <%= number_to_currency(best_amount, unit: "KSh ", precision: 0) %>
+      </strong>.
+
+      This compares with
+
+      <strong class="text-primary">
+        <%= best_day_last_week %>
+      </strong>
+
+      which recorded
+
+      <strong class="text-primary">
+        <%= number_to_currency(last_best_amount, unit: "KSh ", precision: 0) %>
+      </strong>
+
+      as last week's strongest day.
+
+      <br><br>
+
+      The weakest day this week was
+
+      <span class="text-danger fw-bold">
+        <%= worst_day_this_week %>
+      </span>
+
+      with revenue of
+
+      <strong class="text-danger">
+        <%= number_to_currency(worst_amount, unit: "KSh ", precision: 0) %>
+      </strong>.
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<div class="row g-4 mb-5">
+
+  <!-- THIS WEEK -->
+
+  <div class="col-lg-4">
+
+    <div class="metric-card metric-primary">
+
+      <div class="metric-icon">
+        <i class="bi bi-cash-stack"></i>
+      </div>
+
+      <small>This Week Revenue</small>
+
+      <h2>
+        <%= number_to_currency(@current_total,
+              unit: "KSh ",
+              precision: 0) %>
+      </h2>
+
+      <div class="metric-footer">
+        <i class="bi bi-calendar-week"></i>
+        Current Week
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- LAST WEEK -->
+
+  <div class="col-lg-4">
+
+    <div class="metric-card metric-dark">
+
+      <div class="metric-icon">
+        <i class="bi bi-clock-history"></i>
+      </div>
+
+      <small>Last Week Revenue</small>
+
+      <h2>
+        <%= number_to_currency(@last_total,
+              unit: "KSh ",
+              precision: 0) %>
+      </h2>
+
+      <div class="metric-footer">
+        <i class="bi bi-calendar"></i>
+        Previous Week
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- GROWTH -->
+
+  <div class="col-lg-4">
+
+    <div class="metric-card <%= @week_growth >= 0 ? "metric-success" : "metric-danger" %>">
+
+      <div class="metric-icon">
+
+        <% if @week_growth >= 0 %>
+          <i class="bi bi-graph-up-arrow"></i>
+        <% else %>
+          <i class="bi bi-graph-down-arrow"></i>
+        <% end %>
+
+      </div>
+
+      <small>Week Growth</small>
+
+      <h2>
+
+        <% if @week_growth >= 0 %>
+          +<%= @week_growth %>%
+        <% else %>
+          <%= @week_growth %>%
+        <% end %>
+
+      </h2>
+
+      <div class="metric-footer">
+
+        <% if @week_growth >= 0 %>
+          <i class="bi bi-arrow-up-circle-fill"></i>
+          Positive Growth
+        <% else %>
+          <i class="bi bi-arrow-down-circle-fill"></i>
+          Revenue Decline
+        <% end %>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+
+<style>
+
+/*==========================
+EXECUTIVE INSIGHT
+==========================*/
+
+.insight-card{
+
+display:flex;
+align-items:center;
+gap:20px;
+
+padding:22px 26px;
+
+background:#fff;
+
+border-radius:20px;
+
+border:1px solid #eef2f7;
+
+box-shadow:
+0 10px 30px rgba(15,23,42,.08);
+
+transition:.35s;
+
+}
+
+.insight-card:hover{
+
+transform:translateY(-3px);
+
+box-shadow:
+0 18px 40px rgba(15,23,42,.12);
+
+}
+
+.insight-icon{
+
+width:70px;
+height:70px;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+border-radius:18px;
+
+font-size:28px;
+
+background:linear-gradient(135deg,#2563eb,#38bdf8);
+
+color:#fff;
+
+}
+
+.insight-title{
+
+font-size:1.1rem;
+
+font-weight:700;
+
+margin-bottom:5px;
+
+color:#0f172a;
+
+}
+
+.insight-text{
+
+color:#64748b;
+
+font-size:.96rem;
+
+line-height:1.7;
+
+}
+
+/*==========================
+METRIC CARDS
+==========================*/
+
+.metric-card{
+
+position:relative;
+
+overflow:hidden;
+
+border-radius:24px;
+
+padding:30px;
+
+color:#fff;
+
+transition:.35s;
+
+box-shadow:
+0 12px 30px rgba(15,23,42,.10);
+
+height:100%;
+
+}
+
+.metric-card:hover{
+
+transform:translateY(-6px);
+
+box-shadow:
+0 25px 45px rgba(15,23,42,.18);
+
+}
+
+.metric-card::before{
+
+content:"";
+
+position:absolute;
+
+width:180px;
+height:180px;
+
+border-radius:50%;
+
+top:-80px;
+right:-70px;
+
+background:
+rgba(255,255,255,.12);
+
+}
+
+.metric-icon{
+
+width:65px;
+height:65px;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+border-radius:18px;
+
+background:rgba(255,255,255,.18);
+
+backdrop-filter:blur(15px);
+
+font-size:28px;
+
+margin-bottom:20px;
+
+}
+
+.metric-card small{
+
+display:block;
+
+font-size:.9rem;
+
+opacity:.9;
+
+margin-bottom:10px;
+
+letter-spacing:.5px;
+
+text-transform:uppercase;
+
+}
+
+.metric-card h2{
+
+font-size:2rem;
+
+font-weight:800;
+
+margin-bottom:18px;
+
+}
+
+.metric-footer{
+
+display:flex;
+align-items:center;
+gap:8px;
+
+font-size:.9rem;
+
+opacity:.95;
+
+}
+
+/*==========================
+GRADIENTS
+==========================*/
+
+.metric-primary{
+
+background:
+linear-gradient(135deg,#2563eb,#1d4ed8);
+
+}
+
+.metric-dark{
+
+background:
+linear-gradient(135deg,#334155,#0f172a);
+
+}
+
+.metric-success{
+
+background:
+linear-gradient(135deg,#16a34a,#22c55e);
+
+}
+
+.metric-danger{
+
+background:
+linear-gradient(135deg,#dc2626,#ef4444);
+
+}
+
+/*==========================
+RESPONSIVE
+==========================*/
+
+@media(max-width:768px){
+
+.metric-card{
+
+padding:24px;
+
+}
+
+.metric-card h2{
+
+font-size:1.6rem;
+
+}
+
+.insight-card{
+
+flex-direction:column;
+text-align:center;
+
+}
+
+}
+
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+
+<script>
+if (window.ChartDataLabels) {
+  Chart.register(ChartDataLabels);
+}
+</script>
+<script>
+if (window.ChartDataLabels) {
+  try {
+    Chart.register(ChartDataLabels);
+  } catch(e) {}
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+
+  const canvas = document.getElementById('weekComparisonChart');
+
+  if (!canvas) return;
+
+  if (window.weekComparisonChartInstance) {
+    window.weekComparisonChartInstance.destroy();
+  }
+
+  const ctx = canvas.getContext('2d');
+
+  // =========================
+  // GRADIENTS
+  // =========================
+
+  const blueGradient = ctx.createLinearGradient(0, 0, 0, 350);
+  blueGradient.addColorStop(0, '#3b82f6');
+  blueGradient.addColorStop(1, '#1d4ed8');
+
+  const greenGradient = ctx.createLinearGradient(0, 0, 0, 350);
+  greenGradient.addColorStop(0, '#22c55e');
+  greenGradient.addColorStop(1, '#15803d');
+
+  window.weekComparisonChartInstance = new Chart(ctx, {
+
+    type: 'bar',
+
+    data: {
+      labels: <%= raw @weekday_labels.to_json %>,
+
+      datasets: [
+
+        {
+          label: 'Last Week',
+          data: <%= raw @last_week.to_json %>,
+
+          backgroundColor: blueGradient,
+
+          borderRadius: 14,
+          borderSkipped: false,
+
+          maxBarThickness: 42,
+          categoryPercentage: .7,
+          barPercentage: .85
+        },
+
+        {
+          label: 'This Week',
+          data: <%= raw @this_week.to_json %>,
+
+          backgroundColor: greenGradient,
+
+          borderRadius: 14,
+          borderSkipped: false,
+
+          maxBarThickness: 42,
+          categoryPercentage: .7,
+          barPercentage: .85
+        }
+      ]
+    },
+
+    options: {
+
+      responsive: true,
+      maintainAspectRatio: false,
+
+      animation: {
+        duration: 1500,
+        easing: 'easeOutQuart'
+      },
+
+      layout: {
+        padding: {
+          top: 30,
+          left: 10,
+          right: 10
+        }
+      },
+
+      plugins: {
+
+        legend: {
+          position: 'bottom',
+
+          labels: {
+            usePointStyle: true,
+            pointStyle: 'circle',
+
+            padding: 24,
+
+            color: '#475569',
+
+            font: {
+              size: 13,
+              weight: '600'
+            }
+          }
+        },
+
+        tooltip: {
+
+          backgroundColor: '#fff',
+
+          titleColor: '#0f172a',
+          bodyColor: '#475569',
+
+          borderColor: '#e2e8f0',
+          borderWidth: 1,
+
+          cornerRadius: 16,
+
+          padding: 14,
+
+          callbacks: {
+
+            label(context) {
+
+              return (
+                context.dataset.label +
+                ': KSh ' +
+                Number(context.raw || 0).toLocaleString()
+              );
+            }
+          }
+        },
+
+        datalabels: {
+
+          display: true,
+
+          anchor: 'end',
+          align: 'top',
+
+          offset: 6,
+
+          color: '#64748b',
+
+          font: {
+            size: 11,
+            weight: '700'
+          },
+
+          formatter(value) {
+
+            if (!value) return '';
+
+            if (value >= 1000000) {
+              return (
+                (value / 1000000).toFixed(1) + 'M'
+              );
+            }
+
+            if (value >= 1000) {
+              return (
+                (value / 1000).toFixed(0) + 'K'
+              );
+            }
+
+            return value;
+          }
+        }
+      },
+
+      scales: {
+
+        x: {
+
+          grid: {
+            display: false
+          },
+
+          border: {
+            display: false
+          },
+
+          ticks: {
+
+            color: '#64748b',
+
+            font: {
+              size: 12,
+              weight: '600'
+            }
+          }
+        },
+
+        y: {
+
+          beginAtZero: true,
+
+          border: {
+            display: false
+          },
+
+          grid: {
+            color: 'rgba(148,163,184,.12)'
+          },
+
+          ticks: {
+
+            color: '#64748b',
+
+            padding: 10,
+
+            callback(value) {
+
+              if (value >= 1000000) {
+                return (
+                  'KSh ' +
+                  (value / 1000000).toFixed(1) +
+                  'M'
+                );
+              }
+
+              if (value >= 1000) {
+                return (
+                  'KSh ' +
+                  (value / 1000).toFixed(0) +
+                  'K'
+                );
+              }
+
+              return 'KSh ' + value;
+            }
+          }
+        }
+      }
+    }
+  });
+
+});
+</script>
+
+<style>
+  .chart-card {
+  background: #fff;
+  border: 1px solid #eef2f7;
+  border-radius: 24px;
+  padding: 24px;
+
+  box-shadow:
+    0 10px 30px rgba(15,23,42,.05),
+    0 1px 3px rgba(15,23,42,.08);
+
+  transition: all .3s ease;
+}
+
+.chart-card:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 20px 40px rgba(15,23,42,.08),
+    0 8px 16px rgba(15,23,42,.06);
+}
+
+.chart-wrapper {
+  height: 420px;
+  position: relative;
+}
+
+.chart-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 4px;
+}
+
+.chart-subtitle {
+  color: #64748b;
+  font-size: .875rem;
+  margin-bottom: 18px;
+}
+</style>
+
+
+
+<div class="d-flex gap-2 flex-wrap mb-3">
+
+  <span class="badge bg-success">
+    Best Day This Week: <%= @best_day %>
+  </span>
+
+  <span class="badge bg-danger">
+    Weakest Day This Week: <%= @worst_day %>
+  </span>
+
+</div>
+
+<div class="card border-0 shadow-sm rounded-4 mb-4">
+
+  <div class="card-header bg-white border-0 fw-semibold">
+    <i class="bi bi-calendar-week text-primary me-2"></i>
+    This Week vs Last Week Revenue
+  </div>
+
+  <div class="card-body">
+    <div style="height:400px;">
+      <canvas id="weekComparisonChart"></canvas>
+    </div>
+  </div>
+
+</div>
+
+<script>
+document.addEventListener("turbo:load", function () {
+
+  const weekCtx = document.getElementById('weekComparisonChart');
+  if (!weekCtx) return;
+
+  if (window.ChartDataLabels && !window.chartDataLabelsRegistered) {
+    Chart.register(ChartDataLabels);
+    window.chartDataLabelsRegistered = true;
+  }
+
+  if (window.weekComparisonChartInstance) {
+    window.weekComparisonChartInstance.destroy();
+  }
+
+  window.weekComparisonChartInstance = new Chart(weekCtx, {
+    type: 'bar',
+
+    data: {
+      labels: <%= raw @weekday_labels.to_json %>,
+
+      datasets: [
+        {
+          label: 'Last Week',
+          data: <%= raw @last_week.to_json %>,
+          backgroundColor: '#1e4f9c',
+          borderRadius: 8
+        },
+        {
+          label: 'This Week',
+          data: <%= raw @this_week.to_json %>,
+          backgroundColor: '#2e7d32',
+          borderRadius: 8
+        }
+      ]
+    },
+
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+
+      plugins: {
+        legend: {
+          position: 'bottom'
+        },
+
+        tooltip: {
+          enabled: true
+        }
+      }
+    }
+  });
+
+});
+</script>
+
+<div class="container my-4">
+
+  <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+    <h4 class="fw-bold mb-0">🏆 Top 5 Customers</h4>
+  </div>
+<%= link_to jmcustomerpayments_path(format: :csv, type: "high_value_customers"),
+    class: "btn btn-success btn-sm d-inline-flex align-items-center gap-2 px-3 py-2 rounded-pill shadow-sm export-btn",
+    data: { turbo: false } do %>
+
+  <span class="icon-wrapper">
+    <i class="bi bi-file-earmark-arrow-down"></i>
+  </span>
+
+  <span class="fw-semibold">Export CSV</span>
+
+  <span class="spinner-border spinner-border-sm d-none" role="status"></span>
+
+<% end %>
+
+<script>
+  document.querySelectorAll('.export-btn').forEach(btn => {
+    btn.addEventListener('click', function () {
+      const icon = this.querySelector('.icon-wrapper');
+      const spinner = this.querySelector('.spinner-border');
+
+      if (icon) icon.classList.add('d-none');
+      if (spinner) spinner.classList.remove('d-none');
+
+      this.classList.add('disabled');
+    });
+  });
+</script>
+<style>
+.export-btn {
+  transition: all 0.2s ease;
+}
+
+.export-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+
+.export-btn:active {
+  transform: scale(0.97);
+}
+</style>
+
+  <div class="card shadow-sm border-0">
+    <div class="table-responsive">
+
+      <table class="table table-hover align-middle mb-0">
+        <thead class="table-dark">
+          <tr>
+            <th style="width: 60px;">#</th>
+            <th>Customer</th>
+            <th>Phone</th>
+            <th class="text-end">Total Paid</th>
+            <th class="text-center">Payments</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% @top_customers.each_with_index do |c, i| %>
+            <tr>
+
+              <!-- Rank -->
+              <td>
+                <% rank = i + 1 %>
+                <span class="badge rounded-pill 
+                  <%= rank == 1 ? 'bg-warning text-dark' : rank == 2 ? 'bg-secondary' : rank == 3 ? 'bg-danger' : 'bg-primary' %>">
+                  <%= rank %>
+                </span>
+              </td>
+
+              <!-- Name -->
+              <td class="fw-semibold">
+                <%= c.name %>
+              </td>
+
+              <!-- Phone -->
+              <td class="text-muted">
+                <%= c.phone %>
+              </td>
+
+              <!-- Total Paid -->
+              <td class="text-end fw-bold text-success">
+                KES <%= number_with_delimiter(c.total_paid.to_i) %>
+              </td>
+
+              <!-- Payments count -->
+              <td class="text-center">
+                <span class="badge bg-light text-dark border">
+                  <%= c.total_payments %>
+                </span>
+              </td>
+
+            </tr>
+          <% end %>
+        </tbody>
+
+      </table>
+    </div>
+  </div>
+</div>
+
+  <!-- TODAY -->
+  <div class="card shadow-sm mb-3">
+    <div class="card-header bg-success text-white">
+      <i class="bi bi-sun-fill me-1"></i> Today
+      
+    </div>
+    <div class="table-responsive">
+      <%= render "table", payments: @today %>
+    </div>
+  </div>
+
+  <!-- YESTERDAY -->
+  <div class="card shadow-sm mb-3">
+    <div class="card-header bg-primary text-white">
+      <i class="bi bi-moon-fill me-1"></i> Yesterday
+    </div>
+    <div class="table-responsive">
+      <%= render "table", payments: @yesterday %>
+    </div>
+  </div>
+
+  <!-- DAY BEFORE -->
+  <div class="card shadow-sm mb-3">
+    <div class="card-header bg-warning">
+      <i class="bi bi-clock-history me-1"></i> Day Before Yesterday
+    </div>
+    <div class="table-responsive">
+      <%= render "table", payments: @day_before %>
+    </div>
+  </div>
+
+  <!-- OLDER -->
+  <div class="card shadow-sm mb-3">
+    <div class="card-header bg-dark text-white">
+      <i class="bi bi-archive me-1"></i> Older Payments
+    </div>
+    <div class="table-responsive">
+       <h3 class="fw-bold">
+          KSh <%= number_with_delimiter(@current_year_total.to_i) %>
+        </h3>
+    </div>
+    <div class="digg_pagination">
+  <div class="pagination justify-content-center">
+    <%= paginate @older %>
+  </div>
+  <p class="text-center">
+    <div class="login">
+    <%= form_with url: request.path, method: :get, local: false, id: 'rows-per-page-form' do |f| %>
+      <%= f.label :per_page, "Rows per page" %>
+     <%= f.select :per_page, options_for_select([10, 25, 50, 100,250,500,1000], params[:per_page] || 10), {}, class: "form-select", data: { turbo: false } %>
+
+
+    <% end %></div>
+      <br/>
+    <center><%= page_entries_info @older %></center>
+  </p>
+</div>
+
+
+
+<div class="container my-4">
+
+  <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+    <h4 class="fw-bold mb-0">🏆 Top 25 Customers</h4>
+  </div>
+
+  <div class="card shadow-sm border-0">
+    <div class="table-responsive">
+
+      <table class="table table-hover align-middle mb-0">
+        <thead class="table-dark">
+          <tr>
+            <th style="width: 60px;">#</th>
+            <th>Customer</th>
+            <th>Phone</th>
+            <th class="text-end">Total Paid</th>
+            <th class="text-center">Payments</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% @top_customerss.each_with_index do |c, i| %>
+            <tr>
+
+              <!-- Rank -->
+              <td>
+                <% rank = i + 1 %>
+                <span class="badge rounded-pill 
+                  <%= rank == 1 ? 'bg-warning text-dark' : rank == 2 ? 'bg-secondary' : rank == 3 ? 'bg-danger' : 'bg-primary' %>">
+                  <%= rank %>
+                </span>
+              </td>
+
+              <!-- Name -->
+              <td class="fw-semibold">
+                <%= c.name %>
+              </td>
+
+              <!-- Phone -->
+              <td class="text-muted">
+                <%= c.phone %>
+              </td>
+
+              <!-- Total Paid -->
+              <td class="text-end fw-bold text-success">
+                KES <%= number_with_delimiter(c.total_paid.to_i) %>
+              </td>
+
+              <!-- Payments count -->
+              <td class="text-center">
+                <span class="badge bg-light text-dark border">
+                  <%= c.total_payments %>
+                </span>
+              </td>
+
+            </tr>
+          <% end %>
+        </tbody>
+
+      </table>
+    </div>
+  </div>
+</div>
+
+
+<div class="container my-4">
+
+  <!-- Header -->
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h5 class="fw-bold mb-0">🔁 Most Active Customers (By Transactions)</h5>
+  </div>
+
+  <!-- Card -->
+  <div class="card border-0 shadow-sm rounded-3">
+    <div class="table-responsive">
+
+      <table class="table align-middle table-hover mb-0">
+
+        <!-- Head -->
+        <thead class="table-light">
+          <tr class="text-muted small text-uppercase">
+            <th style="width: 60px;">#</th>
+            <th>Customer</th>
+            <th class="text-center">Transactions</th>
+            <th class="text-end">Total Paid</th>
+          </tr>
+        </thead>
+
+        <!-- Body -->
+        <tbody>
+          <% @top_customers_by_transactions.each_with_index do |c, i| %>
+            <% rank = i + 1 %>
+
+            <tr>
+
+              <!-- Rank -->
+              <td>
+                <span class="badge rounded-pill px-3 py-2 
+                  <%= case rank
+                      when 1 then 'bg-warning text-dark'
+                      when 2 then 'bg-secondary'
+                      when 3 then 'bg-danger'
+                      else 'bg-light text-dark border'
+                      end %>">
+                  <%= rank %>
+                </span>
+              </td>
+
+              <!-- Name -->
+              <td class="fw-semibold">
+                <%= c.name.presence || "—" %>
+              </td>
+
+
+              <!-- Transactions -->
+              <td class="text-center">
+                <span class="badge bg-primary-subtle text-dark px-3 py-2">
+                  <%= c.total_payments %>
+                </span>
+              </td>
+
+              <!-- Total Paid -->
+              <td class="text-end fw-bold">
+                <span class="text-success">
+                  KES <%= number_with_delimiter(c.total_paid.to_i) %>
+                </span>
+              </td>
+
+            </tr>
+          <% end %>
+
+          <!-- Empty state -->
+          <% if @top_customers_by_transactions.blank? %>
+            <tr>
+              <td colspan="5" class="text-center text-muted py-4">
+                No transaction data available
+              </td>
+            </tr>
+          <% end %>
+
+        </tbody>
+
+      </table>
+    </div>
+  </div>
+</div>
+
+
+<script type="text/javascript">
+  
+document.addEventListener('DOMContentLoaded', function() {
+  const selectElement = document.querySelector('#rows-per-page-form select');
+
+  if (selectElement) {
+    selectElement.addEventListener('change', function() {
+      document.querySelector('#rows-per-page-form').submit();
+    });
+  }
+});
+
+</script>
+
+
+
+<style type="text/css">
+.btn-warning {
+  transition: 0.2s ease;
+  font-weight: 600;
+}
+
+.btn-warning:hover {
+  transform: translateY(-2px);
+}
+
+.table td, .table th {
+  vertical-align: middle;
+}
+
+.card {
+  border-radius: 16px;
+}
+
+  .form-select {
+  display: inline-block;
+  width: auto;
+  margin-left: 10px;
+}
+
+.btn-primary {
+  margin-left: 10px;
+}
+
+
+.digg_pagination {
+  text-align: center;
+  width: 100%;
+  margin-top: 10px; /* Reduced margin to compact layout */
+}
+
+.pagination {
+  display: inline-flex;
+  justify-content: center;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.pagination li {
+  margin: 0;
+}
+
+.pagination a,
+.pagination .current {
+  display: block;
+  padding: 3px 8px; /* Reduced padding for compactness */
+  margin: 2px; /* Reduced margin */
+  background-color: #007bff;
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+}
+
+.pagination a:hover {
+  background-color: #0056b3;
+}
+
+.pagination .current {
+  background-color: #0056b3;
+}
+
+.pagination .disabled {
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+.pagination .dots {
+  padding: 3px 8px;
+  margin: 2px;
+}
+
+.pagination .previous_page,
+.pagination .next_page {
+  font-weight: bold;
+}
+
+.table-success {
+  background-color: #d4edda;
+}
+
+.text-center {
+  text-align: center;
+}
+
+
+
+
+</style>
+  </div>
+
+</div>

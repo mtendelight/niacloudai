@@ -1,0 +1,1069 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+  <!-- Universal Responsive Support -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+
+    <title>Flow: The Ultimate Cloud-Based ERP System.</title>
+ <!--| <%= controller_name.capitalize %>-->
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <% if @enable_turbo %>
+    <%= turbo_include_tags %>
+  <% end %>
+
+
+     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+     
+   <%= javascript_importmap_tags %>
+  <%= javascript_include_tag 'trix' %>
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+<!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Bootstrap Icons -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+  <!-- Use CDN for Bootstrap 4 -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.3.1/dist/chartjs-plugin-datalabels.min.js"></script>
+
+  <!-- Load necessary charting libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.1/moment.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartkick@4.0.5/dist/chartkick.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0/dist/chartjs-plugin-datalabels.min.js"></script>
+
+
+  <!-- Load jQuery and Bootstrap's JS libraries -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+
+  <script type="text/javascript">
+   new Chartkick.ColumnChart("chart-1", {"man":4}, {"library":{"fontSize":"50px"}});
+</script>
+
+
+
+
+     <%= javascript_tag "slick-carousel" %>
+ <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartkick@4.0.5/dist/chartkick.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.0.0/dist/chart.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+ <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0/dist/chartjs-plugin-datalabels.min.js"></script>
+
+
+    <%= javascript_include_tag "https://www.gstatic.com/charts/loader.js" %>
+    <%= javascript_include_tag "//www.google.com/jsapi", "chartkick" %>
+ <%= javascript_tag "slick-carousel" %>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" integrity="sha384-xxxxxx" crossorigin="anonymous">
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+   
+<script type="text/javascript">
+   new Chartkick.ColumnChart("chart-1", {"man":4}, {"library":{"fontSize":"50px"}});
+</script>
+
+<!-- Manifest -->
+<link rel="manifest" href="/manifest.json">
+
+<!-- Service Worker -->
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+
+    navigator.serviceWorker.register("/service-worker.js")
+      .then((registration) => {
+
+        console.log("Service Worker registered:", registration.scope);
+
+        // Check for updates every minute
+        setInterval(() => {
+          registration.update();
+        }, 60000);
+
+        // New service worker found
+        registration.addEventListener("updatefound", () => {
+          const newWorker = registration.installing;
+
+          if (!newWorker) return;
+
+          newWorker.addEventListener("statechange", () => {
+
+            if (
+              newWorker.state === "installed" &&
+              navigator.serviceWorker.controller
+            ) {
+              console.log("New version available");
+
+              // Activate immediately
+              newWorker.postMessage({
+                type: "SKIP_WAITING"
+              });
+            }
+
+          });
+        });
+
+      })
+      .catch((error) => {
+        console.error("Service Worker registration failed:", error);
+      });
+
+    // Refresh automatically when the new service worker takes control
+    navigator.serviceWorker.addEventListener("controllerchange", () => {
+      console.log("New version activated");
+      window.location.reload();
+    });
+
+  });
+}
+</script>
+
+
+
+
+ <%= favicon_link_tag asset_path('favicon.png') %>
+
+
+
+
+
+
+  <!-- TikTok Pixel Code Start -->
+<script>
+!function (w, d, t) {
+  w.TiktokAnalyticsObject=t;var ttq=w[t]=w[t]||[];ttq.methods=["page","track","identify","instances","debug","on","off","once","ready","alias","group","enableCookie","disableCookie","holdConsent","revokeConsent","grantConsent"],ttq.setAndDefer=function(t,e){t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}};for(var i=0;i<ttq.methods.length;i++)ttq.setAndDefer(ttq,ttq.methods[i]);ttq.instance=function(t){for(
+var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n]);return e},ttq.load=function(e,n){var r="https://analytics.tiktok.com/i18n/pixel/events.js",o=n&&n.partner;ttq._i=ttq._i||{},ttq._i[e]=[],ttq._i[e]._u=r,ttq._t=ttq._t||{},ttq._t[e]=+new Date,ttq._o=ttq._o||{},ttq._o[e]=n||{};n=document.createElement("script")
+;n.type="text/javascript",n.async=!0,n.src=r+"?sdkid="+e+"&lib="+t;e=document.getElementsByTagName("script")[0];e.parentNode.insertBefore(n,e)};
+
+
+  ttq.load('D87MPNRC77U3T4AK36B0');
+  ttq.page();
+}(window, document, 'ttq');
+</script>
+<!-- TikTok Pixel Code End -->
+
+
+  </head>
+
+  
+
+
+  <!-- =========================================================
+       NIACLOUD APPLICATION SHELL
+  ========================================================== -->
+
+  <div class="erp-shell">
+
+    <!-- TOP BAR -->
+
+    <header class="nc-topbar">
+
+      <a
+        href="/"
+        class="nc-brand"
+      >
+
+        <span class="nc-brand-dot"></span>
+
+        <span>
+          NiaCloud
+          <span class="nc-brand-muted">
+            ERP
+          </span>
+        </span>
+
+      </a>
+
+
+      <div class="nc-topbar-right">
+
+        <span class="nc-status">
+          SYSTEM ONLINE
+        </span>
+
+        <span
+          class="mono"
+          style="
+            color:#6f888d;
+            font-size:9px;
+          "
+        >
+          AI • CLOUD • VOICE • SMS
+        </span>
+
+      </div>
+
+    </header>
+
+
+
+
+ <body>
+
+  <!-- ==========================================
+       APPLICATION CONTENT
+       BODY REMAINS UNCHANGED
+       ========================================== -->
+  <main class="app-content">
+    <%= yield %>
+  </main>
+
+
+  <!-- ==========================================
+       FOOTER
+       ========================================== -->
+  <div class="theme-bottom">
+    <%= render "layouts/footer1" %>
+  </div>
+
+
+  <%= javascript_import_module_tag("utils") %>
+
+  <script>
+    $(document).on('turbolinks:load', function() {
+      $('a[data-remote=true]').on('click', function(event) {
+        event.preventDefault();
+        $.getScript(this.href);
+      });
+    });
+  </script>
+
+</body>
+</html>
+
+
+
+<style type="text/css">
+    
+.full-width-container {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+
+.scroll-to-bottom {
+  position: fixed;
+  bottom: 100px;
+  right: 0px;
+  width: 40px;
+  height: 40px;
+  z-index: 999;
+  background-color: white !important;
+  border-radius: 50%;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.3s;
+}
+
+.scroll-to-bottom:hover {
+  background-color: #f0f0f0;
+}
+
+.scroll-to-bottom img {
+  width: 20px;
+  height: 20px;
+}
+
+
+/* ==========================================
+   GLOBAL THEME — TOP & BOTTOM ONLY
+   ========================================== */
+
+:root {
+  --theme-bg: #0f172a;
+  --theme-bg-2: #111827;
+  --theme-text: #ffffff;
+}
+
+/* TOP THEME AREA */
+.theme-top {
+  width: 100%;
+  background: linear-gradient(
+    135deg,
+    var(--theme-bg),
+    var(--theme-bg-2)
+  );
+  color: var(--theme-text);
+}
+
+/* BOTTOM THEME AREA */
+.theme-bottom {
+  width: 100%;
+  background: linear-gradient(
+    135deg,
+    var(--theme-bg-2),
+    var(--theme-bg)
+  );
+  color: var(--theme-text);
+}
+
+/* BODY RETAINS ITS NORMAL BACKGROUND */
+body {
+  background: inherit;
+}
+
+</style>
+
+
+</head></html>
+
+
+
+<!-- =========================================================
+       NIACLOUD GLOBAL THEME
+  ========================================================== -->
+
+  <style>
+
+
+
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+
+    body {
+
+      margin: 0;
+
+      min-height: 100vh;
+
+      font-family:
+        "DM Sans",
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
+      background:
+        radial-gradient(
+          circle at 12% 4%,
+          rgba(25,195,156,.12),
+          transparent 25%
+        ),
+        radial-gradient(
+          circle at 90% 15%,
+          rgba(244,185,79,.10),
+          transparent 22%
+        ),
+        var(--nc-ink);
+
+      color: var(--nc-text);
+
+      overflow-x: hidden;
+    }
+
+
+    body::before {
+
+      content: "";
+
+      position: fixed;
+
+      inset: 0;
+
+      z-index: -10;
+
+      pointer-events: none;
+
+      background:
+        radial-gradient(
+          ellipse at 72% 45%,
+          rgba(25,195,156,.045),
+          transparent 34%
+        ),
+        radial-gradient(
+          ellipse at 35% 0%,
+          rgba(244,185,79,.035),
+          transparent 30%
+        );
+    }
+
+
+    a {
+      text-decoration: none;
+    }
+
+
+    img {
+      max-width: 100%;
+    }
+
+
+    button,
+    input,
+    textarea,
+    select {
+      font-family: inherit;
+    }
+
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+
+      font-family:
+        "Manrope",
+        sans-serif;
+
+      letter-spacing: -.035em;
+    }
+
+
+    .mono {
+
+      font-family:
+        "Space Mono",
+        monospace;
+    }
+
+
+    /* =========================================================
+       GLOBAL CONTAINER
+    ========================================================== */
+
+    .container,
+    .container-fluid {
+
+      position: relative;
+    }
+
+
+    
+
+
+    /* =========================================================
+       NIACLOUD TOP BAR
+    ========================================================== */
+
+    .nc-topbar {
+
+      min-height: 68px;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: space-between;
+
+      gap: 20px;
+
+      padding: 12px 20px;
+
+      background:
+        rgba(6,17,22,.78);
+
+      border-bottom:
+        1px solid var(--nc-line);
+
+      backdrop-filter:
+        blur(20px);
+
+      -webkit-backdrop-filter:
+        blur(20px);
+
+      position: sticky;
+
+      top: 0;
+
+      z-index: 1000;
+    }
+
+
+    .nc-brand {
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 11px;
+
+      color: #fff;
+
+      font:
+        800 19px "Manrope",
+        sans-serif;
+    }
+
+
+    .nc-brand:hover {
+      color: #fff;
+    }
+
+
+    .nc-brand-dot {
+
+      width: 12px;
+      height: 12px;
+
+      border-radius: 50%;
+
+      background:
+        var(--nc-gold);
+
+      box-shadow:
+        0 0 0 6px
+        rgba(244,185,79,.10),
+
+        0 0 25px
+        rgba(244,185,79,.35);
+    }
+
+
+    .nc-brand-muted {
+
+      color: #7e959a;
+
+      font-weight: 600;
+    }
+
+
+    .nc-topbar-right {
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 10px;
+    }
+
+
+    .nc-status {
+
+      display: inline-flex;
+
+      align-items: center;
+
+      gap: 7px;
+
+      padding: 7px 10px;
+
+      border-radius: 99px;
+
+      border:
+        1px solid
+        rgba(25,195,156,.22);
+
+      background:
+        rgba(25,195,156,.06);
+
+      color: var(--nc-mint);
+
+      font:
+        700 9px "Space Mono";
+    }
+
+
+    .nc-status::before {
+
+      content: "";
+
+      width: 6px;
+      height: 6px;
+
+      border-radius: 50%;
+
+      background: var(--nc-mint);
+
+      box-shadow:
+        0 0 10px
+        rgba(25,195,156,.8);
+    }
+
+
+    
+    /* =========================================================
+       BUTTONS
+    ========================================================== */
+
+    .btn {
+
+      border-radius:
+        999px;
+
+      font-weight:
+        700;
+
+      transition:
+        all .22s ease;
+    }
+
+
+    .btn-primary {
+
+      background:
+        var(--nc-mint);
+
+      border-color:
+        var(--nc-mint);
+
+      color:
+        var(--nc-ink);
+    }
+
+
+    .btn-primary:hover {
+
+      background:
+        #24d3aa;
+
+      border-color:
+        #24d3aa;
+
+      color:
+        var(--nc-ink);
+
+      transform:
+        translateY(-2px);
+
+      box-shadow:
+        0 12px 25px
+        rgba(25,195,156,.20);
+    }
+
+
+    .btn-warning {
+
+      background:
+        var(--nc-gold);
+
+      border-color:
+        var(--nc-gold);
+
+      color:
+        var(--nc-ink);
+    }
+
+
+    .btn-success {
+
+      background:
+        var(--nc-mint);
+
+      border-color:
+        var(--nc-mint);
+
+      color:
+        var(--nc-ink);
+    }
+
+
+    .btn-outline-light {
+
+      border-color:
+        rgba(255,255,255,.16);
+
+      background:
+        rgba(255,255,255,.04);
+
+      color:
+        #fff;
+    }
+
+
+    .btn-outline-light:hover {
+
+      background:
+        #fff;
+
+      border-color:
+        #fff;
+
+      color:
+        var(--nc-ink);
+    }
+
+
+
+
+    .form-control::placeholder {
+
+      color:
+        #71888d;
+    }
+
+
+    .form-control:focus,
+    .form-select:focus {
+
+      color:
+        #fff !important;
+
+      background:
+        rgba(255,255,255,.065) !important;
+
+      border-color:
+        rgba(25,195,156,.55) !important;
+
+      box-shadow:
+        0 0 0 3px
+        rgba(25,195,156,.10) !important;
+    }
+
+
+
+
+    /* =========================================================
+       ALERTS
+    ========================================================== */
+
+    .alert {
+
+      border-radius:
+        15px;
+
+      border:
+        1px solid
+        rgba(255,255,255,.08);
+    }
+
+
+    /* =========================================================
+       NAV TABS
+    ========================================================== */
+
+    .nav-tabs {
+
+      border-bottom:
+        1px solid
+        rgba(255,255,255,.09);
+    }
+
+
+    .nav-tabs .nav-link {
+
+      color:
+        #81999e;
+
+      border:
+        0;
+
+      border-radius:
+        10px 10px 0 0;
+    }
+
+
+    .nav-tabs .nav-link:hover {
+
+      color:
+        #fff;
+    }
+
+
+    .nav-tabs .nav-link.active {
+
+      color:
+        var(--nc-mint);
+
+      background:
+        rgba(25,195,156,.07);
+
+      border-bottom:
+        2px solid
+        var(--nc-mint);
+    }
+
+
+    /* =========================================================
+       DROPDOWNS
+    ========================================================== */
+
+    .dropdown-menu {
+
+      border:
+        1px solid
+        rgba(255,255,255,.10);
+
+      border-radius:
+        16px;
+
+      background:
+        #0b2027;
+
+      box-shadow:
+        0 20px 60px
+        rgba(0,0,0,.35);
+
+      padding:
+        2px;
+    }
+
+
+    .dropdown-item {
+
+      color:
+        #cbd9da;
+
+      border-radius:
+        10px;
+
+      padding:
+        9px 12px;
+    }
+
+
+    .dropdown-item:hover {
+
+      color:
+        #fff;
+
+      background:
+        rgba(25,195,156,.10);
+    }
+
+
+    /* =========================================================
+       SCROLLBAR
+    ========================================================== */
+
+    ::-webkit-scrollbar {
+
+      width:
+        8px;
+
+      height:
+        8px;
+    }
+
+
+    ::-webkit-scrollbar-track {
+
+      background:
+        #061116;
+    }
+
+
+    ::-webkit-scrollbar-thumb {
+
+      background:
+        #23434b;
+
+      border-radius:
+        99px;
+    }
+
+
+    ::-webkit-scrollbar-thumb:hover {
+
+      background:
+        var(--nc-mint-dark);
+    }
+
+
+    /* =========================================================
+       SCROLL BUTTON
+    ========================================================== */
+
+    .scroll-to-bottom {
+
+      position:
+        fixed;
+
+      bottom:
+        85px;
+
+      right:
+        20px;
+
+      width:
+        46px;
+
+      height:
+        46px;
+
+      z-index:
+        999;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        center;
+
+      border:
+        1px solid
+        rgba(255,255,255,.12);
+
+      border-radius:
+        50%;
+
+      background:
+        #0b252d !important;
+
+      color:
+        var(--nc-mint);
+
+      box-shadow:
+        0 10px 30px
+        rgba(0,0,0,.30);
+
+      transition:
+        all .25s ease;
+    }
+
+
+    .scroll-to-bottom:hover {
+
+      transform:
+        translateY(-4px);
+
+      background:
+        var(--nc-mint) !important;
+
+      color:
+        var(--nc-ink);
+    }
+
+
+    .scroll-to-bottom i {
+
+      font-size:
+        20px;
+    }
+
+
+    .scroll-to-bottom img {
+
+      width:
+        20px;
+
+      height:
+        20px;
+    }
+
+
+    /* =========================================================
+       MOBILE
+    ========================================================== */
+
+    @media (max-width: 768px) {
+
+      .erp-shell {
+
+        width:
+          calc(100% - 14px);
+
+        margin:
+          7px auto;
+
+        border-radius:
+          18px;
+      }
+
+
+      .nc-topbar {
+
+        min-height:
+          60px;
+
+        padding:
+          10px 13px;
+      }
+
+
+      .nc-brand {
+
+        font-size:
+          16px;
+      }
+
+
+      .nc-brand-dot {
+
+        width:
+          10px;
+
+        height:
+          10px;
+      }
+
+
+      .nc-status {
+
+        display:
+          none;
+      }
+
+
+      .nc-main {
+
+        padding:
+          12px;
+      }
+
+
+      .card {
+
+        border-radius:
+          18px !important;
+      }
+
+
+      .scroll-to-bottom {
+
+        right:
+          12px;
+
+        bottom:
+          72px;
+
+        width:
+          42px;
+
+        height:
+          42px;
+      }
+    }
+
+
+    /* =========================================================
+       REDUCED MOTION
+    ========================================================== */
+
+    @media (prefers-reduced-motion: reduce) {
+
+      *,
+      *::before,
+      *::after {
+
+        scroll-behavior:
+          auto !important;
+
+        transition:
+          none !important;
+
+        animation:
+          none !important;
+      }
+    }
+
+  </style>

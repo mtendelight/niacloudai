@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  phone_number: MyString
+  amount: 9.99
+  paid: false
+  book: one
+
+two:
+  phone_number: MyString
+  amount: 9.99
+  paid: false
+  book: two

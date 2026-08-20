@@ -1,0 +1,134 @@
+<%= render "layouts/header" %>
+
+<div class="container my-4">
+
+  <!-- HEADER -->
+  <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
+
+    <h4 class="fw-bold mb-0">
+      <i class="bi bi-search text-primary"></i>
+      Payment Search Results
+    </h4>
+
+    <%= link_to jmcustomerpayments_path,
+          class: "btn btn-outline-secondary btn-sm d-flex align-items-center gap-1" do %>
+      <i class="bi bi-arrow-left"></i>
+      Back
+    <% end %>
+
+  </div>
+
+  <!-- SEARCH BAR -->
+  <div class="card shadow-sm mb-3">
+    <div class="card-body">
+
+      <%= form_with url: search_jmpayments_path, method: :get, local: true do %>
+        <div class="input-group">
+
+          <span class="input-group-text">
+            <i class="bi bi-funnel"></i>
+          </span>
+
+          <%= text_field_tag :q, params[:q],
+                class: "form-control",
+                placeholder: "Search Mpesa code, name, phone, ref..." %>
+
+          <button class="btn btn-primary">
+            <i class="bi bi-search"></i>
+          </button>
+
+        </div>
+      <% end %>
+
+    </div>
+  </div>
+
+  <!-- RESULTS CARD -->
+  <div class="card shadow-sm">
+
+    <div class="card-header bg-dark text-white d-flex justify-content-between">
+      <span>
+        <i class="bi bi-receipt me-1"></i>
+        Results
+      </span>
+
+      <span class="badge bg-light text-dark">
+        <%= @jmpayments&.count || 0 %> found
+      </span>
+    </div>
+
+    <div class="table-responsive">
+
+      <table class="table table-hover align-middle mb-0">
+
+        <thead class="table-light">
+          <tr>
+            <th><i class="bi bi-calendar"></i> Date</th>
+            <th>Mpesa</th>
+            <th>Name</th>
+            <th>Phone</th>
+            <th class="text-end">Amount</th>
+             <th class="text-end">Action</th>
+          </tr>
+        </thead>
+
+        <tbody>
+
+          <% if @jmpayments.present? %>
+            <% @jmpayments.each do |p| %>
+
+              <tr>
+
+                <td>
+                  <span class="badge bg-secondary">
+                    <%= p.date %>
+                  </span>
+                </td>
+
+                <td>
+                  <code><%= p.mpesa_code %></code>
+                </td>
+
+                <td>
+                  <i class="bi bi-person-circle text-primary me-1"></i>
+                  <%= p.name %>
+                </td>
+
+                <td>
+                  <i class="bi bi-phone text-success me-1"></i>
+                  <%= p.mpesa_number %>
+                </td>
+
+                <td class="text-end fw-bold text-success">
+                  KSh <%= number_with_delimiter(p.amount.to_i) %>
+                </td>
+
+                      <!-- EDIT ACTION -->
+<td class="text-end">
+  <%= link_to edit_jmpayment_path(p), class: "btn btn-sm btn-primary" do %>
+    <i class="bi bi-pencil-square"></i>
+  <% end %>
+</td>
+
+              </tr>
+
+            <% end %>
+          <% else %>
+
+            <tr>
+              <td colspan="5" class="text-center text-muted py-4">
+                <i class="bi bi-inbox fs-4 d-block mb-1"></i>
+                No payments found
+              </td>
+            </tr>
+
+          <% end %>
+
+        </tbody>
+
+      </table>
+
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,2 @@
+class Aiknowledge < ApplicationRecord
+end

@@ -1,0 +1,167 @@
+<style>
+  .required:after {
+    content: " *";
+    color: red;
+  }
+  .feedback-form {
+    max-width: 600px; /* Limit the width of the form */
+    margin: auto; /* Center the form */
+    padding: 20px; /* Add padding */
+    border: 1px solid #ccc; /* Add border */
+    border-radius: 5px; /* Rounded corners */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    background-color: #f9f9f9; /* Light background */
+  }
+  .feedback-form h2 {
+    color: #333; /* Darker heading color */
+    margin-bottom: 20px; /* Space below heading */
+  }
+  .feedback-form div {
+    margin-bottom: 15px; /* Space between fields */
+  }
+  .feedback-form label {
+    display: block; /* Labels on separate lines */
+    margin-bottom: 5px; /* Space between label and input */
+    font-weight: bold; /* Bold labels */
+  }
+  .feedback-form input[type="text"],
+  .feedback-form input[type="email"],
+  .feedback-form select,
+  .feedback-form textarea {
+    width: 100%; /* Full-width inputs */
+    padding: 10px; /* Padding inside inputs */
+    border: 1px solid #ccc; /* Border */
+    border-radius: 4px; /* Rounded corners */
+    font-size: 16px; /* Larger font size */
+  }
+  .feedback-form textarea {
+    height: 100px; /* Fixed height for textarea */
+    resize: none; /* Prevent resizing */
+  }
+  .feedback-form .actions {
+    text-align: right; /* Align submit button to the right */
+  }
+  .feedback-form button {
+    background-color: #4CAF50; /* Green background */
+    color: white; /* White text */
+    padding: 10px 20px; /* Padding */
+    border: none; /* No border */
+    border-radius: 4px; /* Rounded corners */
+    font-size: 16px; /* Larger font size */
+    cursor: pointer; /* Pointer cursor */
+  }
+  .feedback-form button:hover {
+    background-color: #45a049; /* Darker green on hover */
+  }
+  .error-messages {
+    color: red; /* Error message color */
+    margin-bottom: 15px; /* Space below error messages */
+  }
+</style>
+<div class="container">
+<div class="feedback-form">
+  <div class="login">
+
+<%= form_with(model: @customer, local: true) do |form| %>
+  <div class="form-group">
+    <%= form.label :name, "Full Name", class: "required" %>
+    <%= form.text_field :name, class: 'form-control new24', required: true %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :phone, class: "required"  %>
+    <%= form.text_field :phone, class: 'form-control new24', required: true %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :alternative_phone, class: "required"  %>
+    <%= form.text_field :alternative_phone, class: 'form-control new24' , required: true%>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :email, class: "required"  %>
+    <%= form.email_field :email, class: 'form-control new24', required: true%>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :quantity, class: "required"  %>
+    <%= form.number_field :quantity, class: 'form-control new24', required: true%>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :payment_duration, class: "required"  %>
+    <%= form.collection_select :payment_duration, PaymentDuration.all, :name, :name, { prompt: "Select Payment Duration" }, { class: 'form-control new24', id: 'payment_duration_select' , required: true} %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :payment_date, class: "required"  %>
+    <%= form.date_field :payment_date, class: 'form-control new24', id: 'payment_date', required: true %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :payment_amount, class: "required"  %>
+    <%= form.text_field :payment_amount, class: 'form-control new24', id: 'payment_amount', readonly: true %>
+  </div>
+
+  <!-- Here we show next payment date dynamically without saving it -->
+  <div class="form-group">
+    <label>Next Payment Date (Auto-calculated)</label>
+    <input type="text" class="form-control new24" id="display_next_payment_date" readonly>
+  </div>
+
+  <div class="actions">
+    <%= form.submit 'Submit', class: 'btn btn-primary' %>
+  </div>
+<% end %>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const paymentDurationSelect = document.getElementById('payment_duration_select');
+    const paymentAmountField = document.getElementById('payment_amount');
+    const paymentDateField = document.getElementById('payment_date');
+    const nextPaymentDateDisplay = document.getElementById('display_next_payment_date');
+
+    // Function to calculate the next payment date based on payment duration
+    function calculateNextPaymentDate(paymentDate, duration) {
+      const currentDate = new Date(paymentDate);
+      if (duration === 'monthly') {
+        currentDate.setMonth(currentDate.getMonth() + 1);
+      } else if (duration === 'quarterly') {
+        currentDate.setMonth(currentDate.getMonth() + 3);
+      } else if (duration === 'yearly') {
+        currentDate.setFullYear(currentDate.getFullYear() + 1);
+      }
+      return currentDate.toISOString().split('T')[0]; // Return as YYYY-MM-DD format
+    }
+
+    // Event listener for payment duration change
+    paymentDurationSelect.addEventListener('change', function() {
+      const selectedDuration = paymentDurationSelect.options[paymentDurationSelect.selectedIndex].text.toLowerCase();
+
+      // Set payment amount based on duration
+      if (selectedDuration === 'monthly') {
+        paymentAmountField.value = 3500;
+      } else if (selectedDuration === 'quarterly') {
+        paymentAmountField.value = 10000;
+      } else if (selectedDuration === 'yearly') {
+        paymentAmountField.value = 39000;
+      }
+
+      // Set the next payment date based on payment duration
+      const paymentDateValue = paymentDateField.value;
+      if (paymentDateValue) {
+        const nextPaymentDate = calculateNextPaymentDate(paymentDateValue, selectedDuration);
+        nextPaymentDateDisplay.value = nextPaymentDate;
+      }
+    });
+
+    // Update the next payment date when payment date is changed
+    paymentDateField.addEventListener('change', function() {
+      const selectedDuration = paymentDurationSelect.options[paymentDurationSelect.selectedIndex].text.toLowerCase();
+      if (paymentDateField.value && selectedDuration) {
+        const nextPaymentDate = calculateNextPaymentDate(paymentDateField.value, selectedDuration);
+        nextPaymentDateDisplay.value = nextPaymentDate;
+      }
+    });
+  });
+</script>

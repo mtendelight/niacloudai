@@ -1,0 +1,788 @@
+
+
+
+<style type="text/css">
+
+.container {
+  max-width: 100% !important;
+}
+
+.menu-item-select {
+    width: 100%; /* Set to 100% of the parent container */
+    max-width: 400px; /* Set a maximum width if desired */
+    min-width: 200px; /* Set a minimum width to maintain usability */
+}
+
+/* Optional: Style adjustments for smaller devices */
+@media (max-width: 576px) {
+    .menu-item-select {
+        max-width: 100%; /* Make sure it adapts to smaller screens */
+    }
+}
+
+
+.order-summary {
+    padding: 16px; /* Padding around the summary */
+    display: flex; /* Use flexbox for layout */
+    flex-wrap: wrap; /* Allow items to wrap to the next line */
+    justify-content: center; /* Center items horizontally */
+    align-items: flex-start; /* Align items at the start vertically */
+    text-align: center; /* Center text within items */
+    word-break: break-word; /* Break long words */
+    background-color: #f9f9f9; /* Optional background color */
+    border-radius: 8px; /* Rounded corners */
+    overflow-x: auto; /* Prevent overflow on small devices */
+    max-width: 600px; /* Maximum width of the summary */
+    margin: auto; /* Center container horizontally */
+    width: 100%; /* Full width up to the max-width */
+}
+
+
+.order-item {
+    margin: 0; /* Set margin to 0 */
+    padding: 10px; /* Padding for order item */
+    border: 1px solid #ddd; /* Optional: border for each item */
+    border-radius: 4px; /* Rounded corners for order items */
+    flex: 1 1 calc(33.333% - 20px); /* Allow items to grow, shrink, and set base width */
+    box-sizing: border-box; /* Include padding and border in element's total width/height */
+    max-width: calc(33.333% - 20px); /* Set max width to prevent overflow */
+    margin: 10px; /* Optional margin between items */
+
+
+}
+
+
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .order-item {
+    flex: 1 1 100%; /* One item per row on small devices */
+        max-width: 100%; /* Max width for small devices */
+    }
+}
+
+@media (max-width: 576px) {
+    .order-item {
+        flex: 1 1 100%; /* One item per row on small devices */
+        max-width: 100%; /* Max width for small devices */
+    }
+}
+
+
+
+  .menu-item-select {
+    width: 100% !important;
+  }
+
+.field {
+    width: 100%; /* Ensures the field takes full width of its parent */
+    max-width: 100%; /* Prevents overflowing the parent container */
+    overflow: hidden; /* Prevents overflow from any child elements */
+}
+
+.menu-item-select {
+    width: 100% !important; /* Ensure select takes full width */
+    max-width: 100%; /* Prevents overflow */
+    box-sizing: border-box; /* Include padding and border in the element's total width */
+}
+
+/* Optional: Center the field if needed */
+.center {
+    display: flex;
+    justify-content: center; /* Center the contents */
+    align-items: center; /* Center vertically */
+}
+
+/* Additional styles to manage smaller devices */
+@media (max-width: 576px) {
+    .menu-item-select {
+        width: 100% !important; /* Allow full width on small devices */
+    }
+}
+
+
+.select2-container {
+    width: 100% !important; /* Force Select2 to take full width */
+}
+
+.quantity-button {
+        width: 50px !important; /* Set a fixed width for buttons */
+        margin: 5px; /* Remove default margins */
+    }
+.quantity-wrapper {
+    display: flex;
+    align-items: center; /* Center items vertically */
+    justify-content: center; /* Center all items */
+}
+/* Adjust the quantity field's width and button styles on small devices */
+@media (max-width: 576px) { /* Adjust this breakpoint as necessary */
+    .quantity-field {
+        max-width: 30%; /* Set max-width to 30% */
+        width: 100%; /* Ensure it takes full width of the parent */
+        margin: 0; /* Remove any margins */
+    }
+
+    .quantity-button {
+        width: 50px; /* Set a fixed width for buttons */
+        margin: 0; /* Remove default margins */
+        padding: 0 5px; /* Optional: add some padding for better click area */
+    }
+
+    /* Reduce space between buttons and the quantity field */
+    .quantity-button + .quantity-field, 
+    .quantity-field + .quantity-button {
+        margin-left: 5px !important; /* Adjust this value as needed */
+        margin-right: 5px !important; /* Adjust this value as needed */
+    }
+}
+
+
+
+
+@media (min-width: 576px) { /* Adjust this breakpoint as necessary */
+    .quantity-field {
+        max-width: 50%; /* Set max-width to 30% */
+        width: 80%; /* Ensure it takes full width of the parent */
+        margin: 0; /* Remove any margins */
+    }
+
+    .quantity-button {
+        width: 60px; /* Set a fixed width for buttons */
+        margin: 0; /* Remove default margins */
+        padding: 0 5px; /* Optional: add some padding for better click area */
+    }
+
+    /* Reduce space between buttons and the quantity field */
+    .quantity-button + .quantity-field, 
+    .quantity-field + .quantity-button {
+        margin-left: 1px !important; /* Adjust this value as needed */
+        margin-right: 1px !important; /* Adjust this value as needed */
+    }
+}
+ 
+
+  .select2-container {
+    width: 80% !important; /* Ensure full width */
+    max-width: 300px; /* Set a maximum width */
+    margin: 0 auto; /* Center align */
+  }
+
+  .select2-selection {
+    border: 1px solid #ced4da; /* Soft border */
+    border-radius: 4px; /* Rounded corners */
+    padding: 5px; /* Add some padding */
+    transition: border-color 0.3s; /* Transition effect for border color */
+  }
+
+  .select2-selection--single .select2-selection__rendered {
+    line-height: 28px; /* Center the text vertically */
+    color: #495057; /* Text color */
+  }
+
+  .select2-selection--single .select2-selection__arrow {
+    height: 28px; /* Height of the arrow */
+    right: 10px; /* Positioning the arrow */
+  }
+
+  .select2-selection--single:hover {
+    border-color: #80bdff; /* Change border color on hover */
+  }
+
+  .select2-search {
+    padding: 5px; /* Add padding to search input */
+  }
+
+  .select2-search__field {
+    border: 1px solid #ced4da; /* Soft border for search input */
+    border-radius: 4px; /* Rounded corners */
+    padding: 5px; /* Padding inside search input */
+    width: calc(100% - 20px); /* Full width minus padding */
+  }
+
+  .select2-search__field:focus {
+    outline: none; /* Remove default outline */
+    border-color: #80bdff; /* Change border color on focus */
+  }
+
+  .select2-results__option {
+    padding: 8px 12px; /* Padding for options */
+    color: #333; /* Text color for options */
+  }
+
+  .select2-results__option--highlighted {
+    background-color: #007bff; /* Highlight color */
+    color: #fff; /* Text color for highlighted option */
+  }
+  // Style the single selection box to match Bootstrap form controls
+.select2-selection--single {
+  height: 38px !important;
+  border: 1px solid #ced4da !important;
+  border-radius: 4px !important;
+  outline: none !important;
+  padding: .375rem .75rem !important;
+  font-size: 1.1rem !important; // Increase font size for the selected item
+}
+
+// Adjust the arrow height for better alignment
+.select2-selection__arrow {
+  height: 36px !important;
+}
+
+// Style dropdown options to ensure text color and alignment matches
+.select2-results__option {
+  padding: .5rem .75rem !important;
+  color: black !important;  // Adjust text color as needed
+  text-align: center !important;  // Adjust text alignment as needed
+  font-size: 1.1rem !important; // Increase font size for dropdown options
+}
+
+    .menu-item-select {
+    width: 100% !important; /* Make it take the full width of its container */
+    max-width: 300px; /* Set a maximum width */
+    min-width: 150px; /* Set a minimum width */
+    box-sizing: border-box; /* Include padding and border in the element's total width */
+  }
+
+
+     .select2-container {
+      width: 100% !important;
+      max-width: 300px;
+      width: 100% !important;
+     margin-bottom: 15px;
+    }
+
+   
+
+   .required:after {
+    content: " *";
+    color: red;
+  }
+  input[readonly] {
+    background-color: #f0f0f0; /* Light grey background for readonly fields */
+    color: #888888; /* Darker grey text color */
+    border: 1px solid #cccccc; /* Optional: grey border */
+    cursor: not-allowed; /* Change cursor to indicate it's not editable */
+}
+
+input[readonly]:hover {
+    background-color: #f0f0f0; /* Keep the same background on hover */
+}
+
+
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f8f8;
+    margin: 0;
+    padding: 20px;
+}
+
+.order-form {
+    background-color: #ffffff;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+h3 {
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 10px;
+    color: #007bff;
+}
+
+.field {
+    margin-bottom: 15px;
+}
+
+.field label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.field input[type="number"],
+.field select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    transition: border-color 0.2s ease;
+}
+
+.field input[type="number"]:focus,
+.field select:focus {
+    border-color: #007bff;
+}
+
+.actions {
+    margin-top: 10px;
+}
+
+.actions .remove_menu_item {
+    color: #ff4d4d;
+    text-decoration: none;
+}
+
+.actions .remove_menu_item:hover {
+    text-decoration: underline;
+}
+
+.submit-button {
+    background-color: #007bff;
+    color: #ffffff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s ease;
+}
+
+.submit-button:hover {
+    background-color: #0056b3;
+}
+
+#order_items_summary p {
+    margin: 5px 0;
+    font-size: 14px;
+    color: #555555;
+}
+
+.order-form {
+    max-width: 100%; /* Set a max width for the form */
+    margin: 0 auto; /* Center the form on the page */
+}
+
+.field {
+    margin-bottom: 15px; /* Spacing between fields */
+}
+
+.field.center {
+    display: flex; /* Use flexbox for centering */
+    flex-direction: column;
+    align-items: center; /* Center the contents */
+}
+
+.small-field {
+    width: 80%; /* Adjust the width for smaller fields */
+    max-width: 300px; /* Set a max width */
+    padding: 8px; /* Add some padding for better appearance */
+}
+
+.select-table, .menu-item-select, .quantity-field {
+    width: 100%; /* Make selects fill their container */
+}
+
+.add-menu-button {
+    background-color: #28a745; /* Green color for the button */
+    color: #ffffff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s ease;
+}
+
+.add-menu-button:hover {
+    background-color: #218838; /* Darker green on hover */
+}
+
+.submit-button {
+    background-color: #007bff; /* Blue color for the submit button */
+    color: #ffffff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s ease;
+}
+
+.submit-button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+
+/* Style for making the number field bigger */
+.large-field {
+    width: 100%; /* Full width of the parent container */
+    padding: 12px; /* Add padding for a better look */
+    font-size: 25px; /* Increase font size */
+    border: 1px solid #cccccc; /* Border color */
+    border-radius: 4px; /* Slightly rounded corners */
+    box-sizing: border-box; /* Include padding and border in element's total width */
+}
+
+/* Optional: Add some margin for spacing */
+.field {
+    margin-bottom: 15px; /* Space between fields */
+}
+
+  .elena2 {
+      background-color: #baecf3 !important;
+ background-image: url('https://www.transparenttextures.com/patterns/skulls.png') !important;
+    }
+
+
+
+
+
+</style>
+
+
+  
+  <div class="container elena2" style="width: 100% !important;">
+      
+
+<div class="login">
+
+
+<%= form_with(model: @order, local: true, html: { class: 'order-form', id: 'order_form' }, data: { turbo: false }) do |form| %>
+
+  <% if @order.errors.any? %>
+    <div class="alert alert-danger">
+      <h4><%= pluralize(@order.errors.count, "error") %> prevented this order from being saved:</h4>
+      <ul>
+        <% @order.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+
+   <h2 class="heading">
+   
+          (<%= link_to "Refresh", new_order_path, class: "btn btn-warning" %>)(<%= link_to "<<Back", orders_path, class: "btn btn-warning" %>)</h2>
+   
+ <br/>
+ <div class="row"><div class="col">
+ <div class="field center new22" style="width: 100%">
+   <strong style="color: brown; font-weight: bold;"> <%= form.label :login, "Select Waiter", class: "required" %></strong>
+ <%= form.collection_select :user_id, User.with_role('waiter').order(username: :asc), :id, :username, 
+          { prompt: "Select Waiter", id: 'username_select' }, 
+          { class: "form-control new24 elena", required: true, selected: @order.user_id } %>
+
+  </div></div>
+
+<div class="col">
+    <div class="field center new22" style="width: 100%">
+     <strong style="color: brown; font-weight: bold;"> <%= form.label :table_id, "Select Table", class: "required" %></strong>
+      <%= form.collection_select :table_id, Table.all, :id, :number, { prompt: "Select Table No." }, { class: 'select_table small-field  elena', required: true } %>
+    </div></div></div>
+
+ <div class="form-group elena2">
+  <%= form.hidden_field :kitchen_status_id, value: @order.kitchen_status_id %>
+</div>
+
+
+<h3>Menu</h3>
+
+<div id="menu_items">
+
+  <%= form.fields_for :order_items do |f| %>
+    <div class="menu_item_fields new22">
+      <div class="row mb-3 align-items-center"> <!-- Align items vertically -->
+        <div class="col-md-7 col-12"> <!-- Adjusted column size -->
+        <div class="field center">
+    <%= f.label :menu_item_id, "Menu Item", class: "required" %>
+    <%= f.collection_select :menu_item_id, MenuItem.all.order(created_at: "ASC"), :id, :f_name, { prompt: "Select Menu Item" }, { class: 'menu-item-select small-field select2 new22', data: { price: f.object.price || 0 }, required: true } %>
+</div>
+
+        </div>
+        <div class="col-md-3 col-12"> <!-- Adjusted column size -->
+          <div class="field center">
+            <%= f.label :quantity, "Qty", class: "required" %>
+            <div class="quantity-controls d-flex align-items-center"> 
+
+                <div class="quantity-wrapper">
+    <button type="button" class="quantity-button btn-danger" data-action="decrease" style="font-size: 40px;">-</button>
+    <%= f.number_field :quantity, value: 1, required: true, class: 'quantity-field new22', min: 0 %>
+    <button type="button" class="quantity-button btn-success" data-action="increase" style="font-size: 40px;">+</button>
+</div>
+
+              
+            </div>
+
+          </div>
+        </div>
+        <div class="col-md-2   col-12"> <!-- Adjusted column size -->
+          <div class="actions text-end"> <!-- Align actions to the right -->
+            <%= link_to "Remove", "#", class: "remove_menu_item btn btn-danger" %> <!-- Added Bootstrap button styling -->
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<h3></h3>
+    <div class="actions">
+      <%= button_tag "+ Add Menu Item +", id: "add_menu_item", class: 'btn  btn-success menu-item-select ' %>   
+
+     
+    
+    </div>
+</div>
+  
+
+  
+
+<h2>Order Items</h2>
+
+<div id="order_items_summary" class="order-summary">
+  <% @order.order_items.each do |order_item| %>
+    <% if order_item.menu_item_id.present? %>
+      <% menu_item = MenuItem.find(order_item.menu_item_id) %>
+      <div class="table-responsive">
+        <p>
+          <%= "OrderItem ##{order_item.id}: #{menu_item.name} (Qty: #{order_item.quantity})" %>
+        </p>
+      </div>
+    <% end %>
+  <% end %>
+</div>
+
+
+     <div class="field center" style="width: 30%">
+<br/>
+<%= form.number_field :total_price, step: 0.01, readonly: true, value: 0, class: 'small-field new3' %>
+<br/>
+ <strong style="color: brown; font-size: 20px;"><b style="color: black;">By <br/><br/></b> <h3><%= current_user.username %></h3></strong>
+
+<br/>
+    <div>
+      <%= form.submit "Place Order", class: 'btn btn-warning active ' %>
+    
+    </div>
+<br/><br/>
+  <% end %>
+</div>
+
+</div>
+
+<script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function() {
+  const menuItemsContainer = document.getElementById('menu_items');
+  const addMenuItemButton = document.getElementById('add_menu_item');
+  const orderForm = document.getElementById('order_form'); // Assuming you have an order form element
+  let itemIndex = <%= @order.order_items.size %>; // Start indexing from current count
+
+  // Function to get price for menu item
+  function getMenuItemPrice(menuItemId) {
+    const menuItems = <%= raw MenuItem.all.to_json %>;
+    const menuItem = menuItems.find(item => item.id == menuItemId);
+    return menuItem ? menuItem.price : 0;
+  }
+
+  // Function to calculate the total price
+  function calculateTotalPrice() {
+    let total = 0;
+
+    // Loop through each menu item fields
+    menuItemsContainer.querySelectorAll('.menu_item_fields').forEach(function(itemFields) {
+      const menuItemSelect = itemFields.querySelector('.menu-item-select');
+      const quantityField = itemFields.querySelector('.quantity-field');
+
+      // Get the selected option and its ID
+      const selectedOption = menuItemSelect.selectedOptions[0];
+      const price = parseFloat(selectedOption ? getMenuItemPrice(selectedOption.value) : 0) || 0;
+
+      // Get the quantity from the order item
+      const quantity = parseInt(quantityField.value) || 0; // Default to 0 if not set
+
+      // Calculate total price for this item
+      total += price * quantity; 
+    });
+
+    // Update the total price field in the form
+    document.querySelector('input[name="order[total_price]"]').value = total.toFixed(2); // Format to 2 decimal places
+  }
+
+  // Function to initialize Select2
+  function initializeSelect2(selectElement) {
+    $(selectElement).select2({
+      // Add any Select2 options here
+      placeholder: "Select a menu item",
+      allowClear: true
+    });
+  }
+
+  // Function to initialize quantity controls
+  function initializeQuantityControls(control) {
+    const quantityInput = control.querySelector('.quantity-field');
+
+    control.querySelector('[data-action="increase"]').addEventListener('click', () => {
+      quantityInput.value = parseInt(quantityInput.value) + 1;
+      calculateTotalPrice(); // Recalculate total after change
+      updateOrderItemsSummary(); // Update summary after quantity change
+    });
+
+    control.querySelector('[data-action="decrease"]').addEventListener('click', () => {
+      const newValue = parseInt(quantityInput.value) - 1;
+      quantityInput.value = Math.max(newValue, 0); // Prevent negative quantity
+      calculateTotalPrice(); // Recalculate total after change
+      updateOrderItemsSummary(); // Update summary after quantity change
+    });
+  }
+
+  // Function to add a new menu item
+  function addNewMenuItem() {
+    const newMenuItemFields = menuItemsContainer.children[0].cloneNode(true);
+    
+    // Update the name and id of inputs to include the new index
+    newMenuItemFields.querySelectorAll('input, select').forEach(function(input) {
+      const name = input.name.replace(/\[\d+\]/, `[${itemIndex}]`); // Update the index
+      const id = input.id.replace(/_\d+$/, `_${itemIndex}`); // Update the ID
+      input.name = name;
+      input.id = id;
+      input.value = ""; // Reset the value
+    });
+    
+    // Reset quantity to 0 and price data attribute
+    newMenuItemFields.querySelector('.quantity-field').value = 0; // Set default quantity to 0
+    newMenuItemFields.querySelectorAll('.menu-item-select').forEach(select => {
+      select.selectedIndex = 0; // Reset selection
+    });
+    
+    // Initialize Select2 for the new menu item select
+    const newMenuItemSelect = newMenuItemFields.querySelector('.menu-item-select');
+    initializeSelect2(newMenuItemSelect);
+
+    // Initialize quantity controls for the new menu item
+    const quantityControls = newMenuItemFields.querySelector('.quantity-controls');
+    initializeQuantityControls(quantityControls);
+    
+    menuItemsContainer.appendChild(newMenuItemFields);
+    calculateTotalPrice(); // Update total price after adding new item
+    updateOrderItemsSummary(); // Update summary after adding new item
+    itemIndex++; // Increment index for the next item
+  }
+
+  // Event listener for adding a new menu item
+  addMenuItemButton.addEventListener('click', function(e) {
+    e.preventDefault();
+    menuItemsContainer.style.display = 'block'; // Show menu items container
+    addNewMenuItem(); // Add new menu item
+  });
+
+  // Use event delegation for menu items container
+  menuItemsContainer.addEventListener('click', function(e) {
+    const target = e.target;
+
+    // Check if 'Remove' button is clicked
+    if (target.classList.contains('remove_menu_item')) {
+      e.preventDefault();
+      const itemFields = target.closest('.menu_item_fields');
+      if (itemFields) {
+        itemFields.remove();
+        // Update total price and summary after removal
+        calculateTotalPrice();
+        updateOrderItemsSummary();
+      }
+    }
+  });
+
+  // Listen for changes in the menu item selection
+  menuItemsContainer.addEventListener('change', function(e) {
+    const target = e.target;
+
+    // Check if a menu item selection has changed
+    if (target.classList.contains('menu-item-select')) {
+      // Update total price and summary when a menu item is selected or changed
+      calculateTotalPrice();
+      updateOrderItemsSummary();
+    }
+  });
+
+  // Event listener for quantity changes
+  menuItemsContainer.addEventListener('input', function(e) {
+    if (e.target && e.target.classList.contains('quantity-field')) {
+      calculateTotalPrice(); // Update total price when quantity changes
+      updateOrderItemsSummary(); // Update summary when quantity changes
+    }
+  });
+
+  // Function to update the order items summary
+  function updateOrderItemsSummary() {
+    const summaryContainer = document.getElementById('order_items_summary');
+    summaryContainer.innerHTML = ""; // Clear current summary
+    menuItemsContainer.querySelectorAll('.menu_item_fields').forEach(function(itemFields) {
+      const menuItemSelect = itemFields.querySelector('.menu-item-select');
+      const selectedOption = menuItemSelect.selectedOptions[0];
+      const quantity = itemFields.querySelector('.quantity-field').value;
+      if (selectedOption) {
+        const itemSummary = document.createElement('p');
+        itemSummary.textContent = `OrderItem #${selectedOption.value}: ${selectedOption.textContent} (Qty: ${quantity})`;
+        summaryContainer.appendChild(itemSummary);
+      }
+    });
+  }
+
+  // Initialize the order items when the page loads
+  function initializeOrderItems() {
+    menuItemsContainer.querySelectorAll('.menu_item_fields').forEach(function(itemFields, index) {
+      const quantityControls = itemFields.querySelector('.quantity-controls');
+      initializeQuantityControls(quantityControls); // Initialize for existing items
+
+      // Initialize Select2 for the first item only if it’s the first row
+      if (index === 0) {
+        // Do not apply Select2
+      } else {
+        const menuItemSelect = itemFields.querySelector('.menu-item-select');
+        initializeSelect2(menuItemSelect);
+      }
+    });
+  }
+
+orderForm.addEventListener('submit', function(e) {
+    let hasZeroQuantity = false;
+
+    // Check for any item with quantity of 0
+    menuItemsContainer.querySelectorAll('.menu_item_fields').forEach(function(itemFields) {
+        const quantityField = itemFields.querySelector('.quantity-field');
+        const quantity = parseInt(quantityField.value) || 0; // Default to 0 if not set
+        if (quantity === 0) {
+            hasZeroQuantity = true;
+        }
+    });
+
+    // If there's an item with 0 quantity, prevent submission and show a confirm prompt
+    if (hasZeroQuantity) {
+        e.preventDefault(); // Prevent form submission
+        const confirmSubmission = confirm("Hello <%=current_user.username %>, One or more items in your order have a quantity of 0. Please review the order before proceeding. Click 'Cancel' or 'OK' to make corrections.");
+        if (!confirmSubmission) {
+            return; // If the user clicks "Cancel", exit the function
+        }
+    }
+});
+
+
+// Validation for order submission
+orderForm.addEventListener('submit', function(e) {
+    let allQuantitiesValid = true;
+
+    // Check if any item has a quantity of 0
+    menuItemsContainer.querySelectorAll('.menu_item_fields').forEach(function(itemFields) {
+        const quantityField = itemFields.querySelector('.quantity-field');
+        const quantity = parseInt(quantityField.value) || 0; // Default to 0 if not set
+        if (quantity === 0) {
+            allQuantitiesValid = false;
+        }
+    });
+
+    // If all quantities are greater than 0, show a confirmation prompt
+    if (allQuantitiesValid) {
+        e.preventDefault(); // Prevent form submission
+        const confirmSubmission = confirm("Hello <%=current_user.username %>, Please confirm that the items listed under order items are accurate according to the customer's order before proceeding. Click 'OK' to continue to submit or 'Cancel' to go back and make corrections.");
+        if (confirmSubmission) {
+            // If the user clicks "OK", submit the form
+            orderForm.submit();
+        }
+        // If the user clicks "Cancel", the form will not be submitted
+    }
+});
+
+  initializeOrderItems(); // Run initialization on page load
+});
+</script>

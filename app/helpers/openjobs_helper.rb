@@ -1,0 +1,2 @@
+module OpenjobsHelper
+end

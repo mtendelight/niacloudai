@@ -1,0 +1,389 @@
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
+<%= render "layouts/header" %>
+
+<div class="container py-3">
+
+  <%= render "layouts/header1" %>
+
+<style>
+
+:root{
+  --primary:#2563eb;
+  --primary-dark:#1d4ed8;
+  --success:#16a34a;
+  --bg:#f4f7fb;
+  --card:#ffffff;
+  --text:#111827;
+  --muted:#6b7280;
+  --border:#e5e7eb;
+}
+
+body{
+  background:var(--bg);
+}
+
+/* =========================
+   PAGE HEADER
+========================= */
+
+.upload-header{
+  text-align:center;
+  margin-bottom:1.2rem;
+}
+
+.upload-title{
+  font-size:1.5rem;
+  font-weight:800;
+  color:var(--text);
+  margin-bottom:.25rem;
+}
+
+.upload-subtitle{
+  color:var(--muted);
+  font-size:.9rem;
+  margin:0;
+}
+
+/* =========================
+   GRID
+========================= */
+
+.upload-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+  gap:1rem;
+}
+
+/* =========================
+   CARD
+========================= */
+
+.upload-card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:22px;
+  padding:1.2rem;
+  box-shadow:0 6px 24px rgba(0,0,0,.05);
+  transition:.2s ease;
+  position:relative;
+  overflow:hidden;
+}
+
+.upload-card:hover{
+  transform:translateY(-3px);
+  box-shadow:0 14px 34px rgba(0,0,0,.08);
+}
+
+.upload-card::before{
+  content:"";
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:5px;
+  background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+}
+
+/* =========================
+   TOP
+========================= */
+
+.upload-top{
+  display:flex;
+  align-items:center;
+  gap:.9rem;
+  margin-bottom:1rem;
+}
+
+.upload-icon{
+  width:58px;
+  height:58px;
+  border-radius:18px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+  color:#fff;
+  font-size:1.4rem;
+  flex-shrink:0;
+}
+
+.upload-info h3{
+  margin:0;
+  font-size:1.05rem;
+  font-weight:800;
+  color:var(--text);
+}
+
+.upload-info p{
+  margin:.2rem 0 0;
+  font-size:.8rem;
+  color:var(--muted);
+}
+
+/* =========================
+   TEMPLATE
+========================= */
+
+.template-box{
+  background:#f8fafc;
+  border:1px dashed #cbd5e1;
+  border-radius:16px;
+  padding:.9rem;
+  margin-bottom:1rem;
+}
+
+.template-link{
+  display:flex;
+  align-items:center;
+  gap:.7rem;
+  text-decoration:none;
+  font-weight:700;
+  color:#166534;
+  font-size:.88rem;
+}
+
+.template-link img{
+  width:34px;
+  height:34px;
+}
+
+/* =========================
+   FILE INPUT
+========================= */
+
+.file-upload{
+  position:relative;
+  margin-bottom:1rem;
+}
+
+.file-upload input[type=file]{
+  width:100%;
+  border:2px dashed #cbd5e1;
+  border-radius:16px;
+  padding:1rem;
+  background:#f9fafb;
+  font-size:.82rem;
+  cursor:pointer;
+  transition:.2s ease;
+}
+
+.file-upload input[type=file]:hover{
+  border-color:#93c5fd;
+  background:#fff;
+}
+
+/* =========================
+   BUTTON
+========================= */
+
+.upload-btn{
+  width:100%;
+  border:none;
+  border-radius:16px;
+  padding:.9rem 1rem;
+  background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+  color:#fff;
+  font-size:.9rem;
+  font-weight:800;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:.55rem;
+  transition:.2s ease;
+}
+
+.upload-btn:hover{
+  transform:translateY(-1px);
+  box-shadow:0 10px 22px rgba(37,99,235,.25);
+}
+
+/* =========================
+   BADGE
+========================= */
+
+.type-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:.3rem;
+  background:#eff6ff;
+  color:var(--primary);
+  font-size:.72rem;
+  font-weight:700;
+  padding:.35rem .65rem;
+  border-radius:999px;
+  margin-top:.4rem;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:768px){
+
+  .upload-title{
+    font-size:1.25rem;
+  }
+
+  .upload-card{
+    border-radius:18px;
+    padding:1rem;
+  }
+
+  .upload-top{
+    align-items:flex-start;
+  }
+
+  .upload-icon{
+    width:52px;
+    height:52px;
+    font-size:1.2rem;
+  }
+
+}
+
+</style>
+
+<!-- =========================
+     HEADER
+========================= -->
+
+<div class="upload-header">
+
+  <h1 class="upload-title">
+    📤 Ticket Upload Center
+  </h1>
+
+  <p class="upload-subtitle">
+    Import FTTH and LOS tickets quickly using Excel templates
+  </p>
+
+</div>
+
+<!-- =========================
+     GRID
+========================= -->
+
+<div class="upload-grid">
+
+  <!-- FTTH -->
+  <div class="upload-card">
+
+    <div class="upload-top">
+
+      <div class="upload-icon">
+        <i class="bi bi-router-fill"></i>
+      </div>
+
+      <div class="upload-info">
+        <h3>FTTH Tickets</h3>
+
+        <p>
+          Upload FTTH customer installation tickets
+        </p>
+
+        <span class="type-badge">
+          <i class="bi bi-file-earmark-excel"></i>
+          FTTH Import
+        </span>
+      </div>
+
+    </div>
+
+    <div class="template-box">
+
+      <%= link_to "/data.xlsx",
+          target: "_blank",
+          class: "template-link" do %>
+
+        <%= image_tag "excel.png" %>
+
+        <span>
+          Download FTTH Template
+        </span>
+
+      <% end %>
+
+    </div>
+
+    <%= form_tag import_tickets_path, multipart: true do %>
+
+      <div class="file-upload">
+        <%= file_field_tag :file %>
+      </div>
+
+      <%= button_tag type: "submit",
+          class: "upload-btn" do %>
+
+        <i class="bi bi-cloud-arrow-up-fill"></i>
+        Upload FTTH Tickets
+
+      <% end %>
+
+    <% end %>
+
+  </div>
+
+  <!-- LOS -->
+  <div class="upload-card">
+
+    <div class="upload-top">
+
+      <div class="upload-icon" style="background:linear-gradient(135deg,#16a34a,#15803d);">
+        <i class="bi bi-broadcast-pin"></i>
+      </div>
+
+      <div class="upload-info">
+        <h3>LOS Tickets</h3>
+
+        <p>
+          Upload LOS maintenance and support tickets
+        </p>
+
+        <span class="type-badge" style="background:#dcfce7;color:#166534;">
+          <i class="bi bi-file-earmark-excel"></i>
+          LOS Import
+        </span>
+      </div>
+
+    </div>
+
+    <div class="template-box">
+
+      <%= link_to "/los.xlsx",
+          target: "_blank",
+          class: "template-link" do %>
+
+        <%= image_tag "excel.png" %>
+
+        <span>
+          Download LOS Template
+        </span>
+
+      <% end %>
+
+    </div>
+
+    <%= form_tag import_locs_path, multipart: true do %>
+
+      <div class="file-upload">
+        <%= file_field_tag :file %>
+      </div>
+
+      <%= button_tag type: "submit",
+          class: "upload-btn",
+          style:"background:linear-gradient(135deg,#16a34a,#15803d);" do %>
+
+        <i class="bi bi-cloud-arrow-up-fill"></i>
+        Upload LOS Tickets
+
+      <% end %>
+
+    <% end %>
+
+  </div>
+
+</div>
+
+</div>

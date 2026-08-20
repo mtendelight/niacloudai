@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  stock_movement_batch: one
+  bale_name: MyString
+  qty: 9.99
+  unit_price: 9.99
+
+two:
+  stock_movement_batch: two
+  bale_name: MyString
+  qty: 9.99
+  unit_price: 9.99

@@ -1,0 +1,50 @@
+wb = xlsx_package.workbook
+
+# Add a worksheet for the invoice
+wb.add_worksheet(name: "Invoice") do |sheet|
+  # Styles
+  title_style = sheet.styles.add_style(b: true, sz: 16, alignment: { horizontal: :center })
+  bold_style = sheet.styles.add_style(b: true)
+  centered_bold_style = sheet.styles.add_style(b: true, alignment: { horizontal: :center })
+  text_style = sheet.styles.add_style(alignment: { horizontal: :left })
+  thank_you_style = sheet.styles.add_style(b: true, sz: 12, alignment: { horizontal: :center })
+
+  # Header section
+  sheet.add_row ["Nia Chef Invoice"], style: title_style
+  sheet.merge_cells("A1:C1") # Merge cells for the title
+
+  sheet.add_row ["Invoice for:"], style: bold_style
+  sheet.add_row ["Name:", @cust.name], style: text_style
+  sheet.add_row ["Phone:", @cust.phone], style: text_style
+  sheet.add_row ["Alternative Phone:", @cust.alternative_phone], style: text_style
+  sheet.add_row ["Email:", @cust.email], style: text_style
+  sheet.add_row [] # Empty row for spacing
+
+  # Payment details
+  sheet.add_row ["Payment Details:"], style: bold_style
+  sheet.add_row ["Payment Duration:", @cust.payment_duration], style: text_style
+  sheet.add_row ["Payment Date:", @cust.payment_date.strftime('%B %d, %Y')], style: text_style
+  sheet.add_row ["Payment Amount:", "KES #{number_with_delimiter(@cust.payment_amount, delimiter: ',')}"], style: text_style
+  sheet.add_row [] # Empty row for spacing
+
+  # Order information
+  current_date = Date.today.strftime('%Y%m%d')
+  order_id = "#{current_date}-#{@cust.id}"
+  sheet.add_row ["Order ID:", "##{order_id}"], style: text_style
+  sheet.add_row ["Order Date:", @cust.created_at.strftime('%B %d, %Y %T')], style: text_style
+  sheet.add_row [] # Empty row for spacing
+
+  # Items ordered
+  sheet.add_row ["Items Ordered"], style: bold_style
+  sheet.add_row ["System", "Payment Duration", "Payment Amount"], style: centered_bold_style
+  sheet.add_row ["Niachef System", "#{@cust.payment_duration}", "KES #{number_with_delimiter(@cust.payment_amount, delimiter: ',')}"], style: text_style
+
+  # Footer with payment method
+  sheet.add_row [] # Empty row for spacing
+  sheet.add_row ["Payment Method:", "Mpesa"], style: text_style
+  sheet.add_row ["Till Number:", "5151085"], style: text_style
+
+  # Thank you note
+  sheet.add_row [] # Empty row for spacing
+  sheet.add_row ["Thank you for your business!"], style: thank_you_style
+end

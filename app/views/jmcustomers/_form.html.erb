@@ -1,0 +1,267 @@
+<div class="form-wrapper">
+
+  <div class="card form-card shadow-sm border-0">
+    <div class="card-body p-4">
+
+      <!-- TITLE -->
+      <div class="text-center mb-4">
+        <h4 class="fw-bold text-primary">
+          <i class="bi bi-person-plus-fill me-1"></i>
+          New Customer
+        </h4>
+        <small class="text-muted">Fill in customer details and items</small>
+      </div>
+<div class="login">
+      <%= form_with(model: jmcustomer, local: true) do |form| %>
+
+        <!-- ERRORS -->
+        <% if @jmcustomer.errors.any? %>
+          <div class="alert alert-danger">
+            <strong>
+              <i class="bi bi-exclamation-triangle me-1"></i>
+              <%= pluralize(@jmcustomer.errors.count, "error") %>
+            </strong>
+            <ul class="mb-0 mt-2">
+              <% @jmcustomer.errors.full_messages.each do |msg| %>
+                <li><%= msg %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+
+        <!-- NAME -->
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Full Name</label>
+          <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-person"></i></span>
+            <%= form.text_field :name, class: "form-control", placeholder: "John Doe", required: true %>
+          </div>
+        </div>
+
+        <!-- PHONE -->
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Phone Number</label>
+          <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-telephone"></i></span>
+            <%= form.text_field :phone,
+                  class: "form-control",
+                  placeholder: "07XXXXXXXX",
+                  required: true,
+                  pattern: "0[0-9]{9}",
+                  maxlength: 10 %>
+          </div>
+          <small class="text-muted">Must start with 0 and be 10 digits</small>
+        </div>
+
+        <!-- LOCATION -->
+        <div class="mb-4">
+          <label class="form-label fw-semibold">Location</label>
+          <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-geo-alt"></i></span>
+            <%= form.text_field :location, class: "form-control", placeholder: "Nairobi", required: true %>
+          </div>
+        </div>
+
+        <!-- ITEMS -->
+        <div class="mb-4">
+          <label class="form-label fw-semibold text-center w-100">
+            <i class="bi bi-box-seam me-1"></i> Items
+          </label>
+
+          <div id="items-container" class="items-box">
+            <%= form.fields_for :jmcustomer_items do |item_form| %>
+              <div class="item-row">
+
+                <span class="row-number"></span>
+
+                <%= item_form.collection_select :janomax_id,
+                      Janomax.all,
+                      :id,
+                      :item_name,
+                      { prompt: "Select item" },
+                      { class: "form-select elena flex-grow-1" } %>
+
+                <%= item_form.hidden_field :_destroy, class: "destroy-flag" %>
+
+                <button class="btn btn-outline-danger btn-sm remove-item">
+                  <i class="bi bi-x-circle"></i>
+                </button>
+
+              </div>
+            <% end %>
+          </div>
+
+          <button id="add-item" class="btn btn-outline-primary w-100 mt-2">
+            <i class="bi bi-plus-circle me-1"></i> Add Item
+          </button>
+        </div>
+
+        <!-- ACTIONS -->
+        <div class="d-flex gap-2">
+          <%= form.submit "Save Customer",
+                class: "btn btn-primary w-100",
+                id: "submit_jmcustomer",
+                data: { loading_text: "Saving..." } %>
+
+          <%= link_to "Cancel", jmcustomers_path,
+                class: "btn btn-light border w-100" %>
+        </div>
+
+      <% end %>
+
+    </div>
+  </div>
+</div>
+
+<style>
+  
+
+  .form-wrapper {
+  max-width: 720px;
+  margin: 40px auto;
+}
+
+.form-card {
+  border-radius: 1rem;
+}
+
+/* Inputs */
+.input-group-text {
+  background: #f1f3f5;
+  border: none;
+}
+
+.form-control,
+.form-select {
+  border-radius: 0.5rem;
+  padding: 10px;
+}
+
+.form-control:focus {
+  box-shadow: none;
+  border-color: #0d6efd;
+}
+
+/* Items box */
+.items-box {
+  background: #f8f9fa;
+  border-radius: 10px;
+  padding: 15px;
+}
+
+/* Item row */
+.item-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.row-number {
+  font-weight: bold;
+  min-width: 25px;
+}
+
+/* Buttons */
+.btn {
+  border-radius: 0.5rem;
+  font-weight: 600;
+}
+
+/* Mobile */
+@media (max-width: 576px) {
+  .item-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .item-row .btn {
+    width: 100%;
+  }
+}
+</style>
+
+
+
+
+<script>
+(function() {
+  let initialized = false;
+
+  function initJmcustomerItems() {
+    if (initialized) return;
+    initialized = true;
+
+    const container = document.getElementById("items-container");
+    const addButton = document.getElementById("add-item");
+    if (!container || !addButton) return;
+
+    // Enable the Add Item button now that page is loaded
+    addButton.disabled = false;
+
+    // Renumber rows
+    function renumberRows() {
+      container.querySelectorAll(".item-field").forEach((field, index) => {
+        const numberSpan = field.querySelector(".row-number");
+        if (numberSpan) numberSpan.textContent = `${index + 1}.`;
+      });
+    }
+
+    // Initialize Select2 for all selects with class elena
+    function initSelect2ForElena() {
+      $('.elena').select2({
+        theme: 'bootstrap'
+      });
+    }
+
+    // Make existing selects required
+    container.querySelectorAll('select.elena').forEach(s => s.required = true);
+
+    // Add new item
+    addButton.addEventListener("click", function(e) {
+      e.preventDefault();
+      const timestamp = new Date().getTime();
+      const options = `<%= j options_from_collection_for_select(Janomax.all, :id, :item_name) %>`;
+
+      const newField = document.createElement("div");
+      newField.className = "item-field";
+      newField.innerHTML = `
+        <span class="row-number fw-bold"></span>
+        <select name="jmcustomer[jmcustomer_items_attributes][${timestamp}][janomax_id]" class="form-select elena" required>
+          <option value="">Select an item</option>
+          ${options}
+        </select>
+        <input type="hidden" name="jmcustomer[jmcustomer_items_attributes][${timestamp}][_destroy]" value="false" class="destroy-flag">
+        <a href="#" class="btn btn-danger active btn-sm remove-item" style="color: white;">
+          <i class="bi bi-dash-circle me-1" style="color: white;"></i> Remove
+        </a>
+      `;
+      container.appendChild(newField);
+
+      initSelect2ForElena();
+      renumberRows();
+    });
+
+    // Remove item
+    container.addEventListener("click", function(e) {
+      if (e.target && e.target.classList.contains("remove-item")) {
+        e.preventDefault();
+        const field = e.target.closest(".item-field");
+        if (!field) return;
+        const destroyInput = field.querySelector(".destroy-flag");
+        if (destroyInput) destroyInput.value = "1";
+        field.remove();
+        renumberRows();
+      }
+    });
+
+    renumberRows();
+    initSelect2ForElena();
+  }
+
+  document.addEventListener("turbo:load", initJmcustomerItems);
+  document.addEventListener("DOMContentLoaded", initJmcustomerItems);
+})();
+
+</script>
+

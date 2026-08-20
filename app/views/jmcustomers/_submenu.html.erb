@@ -1,0 +1,873 @@
+<nav class="compact-admin-menu mb-4">
+
+  <!-- CUSTOMERS -->
+  <%= link_to jmcustomers_path,
+      class: "menu-item #{'active' if current_page?(jmcustomers_path)}",
+      data: { turbo: false } do %>
+
+    <div class="menu-icon">
+      <i class="bi bi-people-fill"></i>
+    </div>
+
+    <span>Customers</span>
+
+  <% end %>
+
+
+  <!-- CALL CENTER -->
+  <%= link_to dashboard_janomaxleads_path,
+      class: "menu-item #{'active' if current_page?(dashboard_janomaxleads_path)}",
+      data: { turbo: false } do %>
+
+    <div class="menu-icon">
+      <i class="bi bi-telephone-outbound-fill"></i>
+    </div>
+
+    <span>Call Center</span>
+
+  <% end %>
+
+
+
+  <!-- LEADS -->
+  <%= link_to jmleads_path,
+      class: "menu-item #{'active' if current_page?(jmleads_path)}",
+      data: { turbo: false } do %>
+
+    <div class="menu-icon">
+      <i class="bi bi-person-lines-fill"></i>
+    </div>
+
+    <span>Leads</span>
+
+  <% end %>
+
+
+
+  <!-- SMS -->
+  <%= link_to jmai_index_path,
+      class: "menu-item #{'active' if current_page?(jmai_index_path)}",
+      data: { turbo: false } do %>
+
+    <div class="menu-icon">
+      <i class="bi bi-robot"></i>
+    </div>
+
+    <span>SMS</span>
+
+  <% end %>
+
+
+
+
+  <!-- PRODUCTS -->
+<%= link_to aiproducts_path,
+    class: "menu-item #{'active' if current_page?(jmproducts_path)}",
+    data: { turbo: false } do %>
+
+  <div class="menu-icon">
+    <i class="bi bi-bag-fill"></i>
+  </div>
+
+  <span>Products</span>
+
+<% end %>
+
+
+<!-- SAMPLE BALES -->
+<%= link_to jsamples_path,
+    class: "menu-item #{'active' if current_page?(jsamples_path)}",
+    data: { turbo: false } do %>
+
+  <div class="menu-icon">
+    <i class="bi bi-box-seam-fill"></i>
+  </div>
+
+  <span>Sample Bales</span>
+
+<% end %>
+
+
+
+<!-- JFAQ -->
+<%= link_to jfaqs_path,
+    class: "menu-item #{'active' if current_page?(jfaqs_path)}",
+    data: { turbo: false } do %>
+
+  <div class="menu-icon">
+    <i class="bi bi-question-circle-fill"></i>
+  </div>
+
+  <span>FAQs</span>
+
+<% end %>
+
+
+<!-- WHATSAPP MESSAGES -->
+<%= link_to ailogs_path,
+    class: "menu-item #{'active' if current_page?(ailogs_path)}",
+    data: { turbo: false } do %>
+
+  <div class="menu-icon">
+    <i class="bi bi-whatsapp"></i>
+  </div>
+
+  <span>WhatsApp</span>
+
+<% end %>
+
+
+<!-- BUSINESS INTELLIGENCE -->
+<%= link_to jbi_index_path,
+    class: "menu-item #{'active' if current_page?(jbi_index_path)}",
+    data: { turbo: false },
+    rel: "noopener" do %>
+
+  <div class="menu-icon">
+    <i class="bi bi-bar-chart-line-fill"></i>
+  </div>
+
+  <span>BI Dashboard</span>
+
+<% end %>
+
+
+
+</nav>
+
+
+
+<style>
+
+  
+
+/* =========================================================
+   ROOT
+========================================================= */
+
+:root{
+
+  --primary:#2563eb;
+  --primary-light:#3b82f6;
+
+  --success:#10b981;
+  --danger:#ef4444;
+
+  --dark:#0f172a;
+
+  --text:#0f172a;
+  --muted:#64748b;
+
+  --border:#e2e8f0;
+  --soft:#f8fafc;
+
+}
+
+/* =========================================================
+   MAIN MENU
+========================================================= */
+
+.compact-admin-menu{
+
+  display:flex;
+  flex-wrap:wrap;
+  align-items:flex-start;
+
+  gap:10px;
+
+  padding:14px;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,.98),
+      rgba(248,250,252,.96)
+    );
+
+  border:1px solid rgba(226,232,240,.9);
+
+  border-radius:26px;
+
+  box-shadow:
+    0 10px 35px rgba(15,23,42,.06);
+
+  position:relative;
+
+  overflow:hidden;
+
+}
+
+/* TOP GLOW */
+
+.compact-admin-menu::before{
+
+  content:"";
+
+  position:absolute;
+
+  top:0;
+  left:0;
+  right:0;
+
+  height:70px;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(59,130,246,.05),
+      transparent
+    );
+
+  pointer-events:none;
+
+}
+
+/* =========================================================
+   MENU ITEM
+========================================================= */
+
+.menu-item{
+
+  position:relative;
+
+  width:82px;
+  min-height:82px;
+
+  display:flex;
+  flex-direction:column;
+
+  align-items:center;
+  justify-content:center;
+
+  gap:7px;
+
+  padding:10px 8px;
+
+  border-radius:22px;
+
+  text-decoration:none !important;
+
+  background:#fff;
+
+  border:1px solid #edf2f7;
+
+  overflow:hidden;
+
+  transition:all .22s ease;
+
+}
+
+/* SHINE */
+
+.menu-item::after{
+
+  content:"";
+
+  position:absolute;
+
+  inset:0;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,255,255,.75),
+      transparent 60%
+    );
+
+  pointer-events:none;
+
+}
+
+/* ICON */
+
+.menu-icon{
+
+  width:42px;
+  height:42px;
+
+  border-radius:14px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  background:
+    linear-gradient(
+      135deg,
+      #eff6ff,
+      #dbeafe
+    );
+
+  color:var(--primary);
+
+  transition:all .22s ease;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.9);
+
+}
+
+.menu-icon i{
+  font-size:18px;
+}
+
+/* LABEL */
+
+.menu-item span{
+
+  font-size:10px;
+  font-weight:800;
+
+  line-height:1.15;
+
+  text-align:center;
+
+  color:#334155;
+
+  letter-spacing:.2px;
+
+  transition:.22s ease;
+
+}
+
+/* HOVER */
+
+.menu-item:hover{
+
+  transform:translateY(-4px);
+
+  border-color:#bfdbfe;
+
+  box-shadow:
+    0 16px 26px rgba(37,99,235,.12);
+
+}
+
+.menu-item:hover .menu-icon{
+
+  transform:scale(1.08);
+
+  background:
+    linear-gradient(
+      135deg,
+      #dbeafe,
+      #bfdbfe
+    );
+
+}
+
+/* ACTIVE */
+
+.menu-item.active{
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--primary),
+      var(--primary-light)
+    );
+
+  border-color:transparent;
+
+  box-shadow:
+    0 18px 30px rgba(37,99,235,.22);
+
+}
+
+.menu-item.active span{
+  color:#fff;
+}
+
+.menu-item.active .menu-icon{
+
+  background:rgba(255,255,255,.16);
+
+  color:#fff;
+
+  box-shadow:none;
+
+}
+
+/* HIGHLIGHT */
+
+.menu-item.highlight{
+
+  background:
+    linear-gradient(
+      135deg,
+      #059669,
+      #10b981
+    );
+
+  border:none;
+
+  box-shadow:
+    0 18px 28px rgba(16,185,129,.22);
+
+}
+
+.menu-item.highlight span{
+  color:#fff;
+}
+
+.menu-item.highlight .menu-icon{
+
+  background:rgba(255,255,255,.16);
+
+  color:#fff;
+
+}
+
+/* BADGE */
+
+.menu-badge{
+
+  position:absolute;
+
+  top:6px;
+  right:6px;
+
+  min-width:20px;
+  height:20px;
+
+  padding:0 5px;
+
+  border-radius:999px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #ef4444,
+      #dc2626
+    );
+
+  color:#fff;
+
+  font-size:10px;
+  font-weight:800;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  border:2px solid #fff;
+
+  box-shadow:
+    0 8px 18px rgba(239,68,68,.25);
+
+}
+
+/* =========================================================
+   SUPERADMIN
+========================================================= */
+
+.superadmin-wrapper{
+
+  width:100%;
+
+  margin-top:10px;
+
+  padding-top:16px;
+
+  border-top:1px dashed #cbd5e1;
+
+}
+
+/* TITLE */
+
+.superadmin-title{
+
+  display:flex;
+  align-items:center;
+  gap:8px;
+
+  margin-bottom:12px;
+
+  color:#64748b;
+
+  font-size:12px;
+  font-weight:800;
+
+  letter-spacing:.3px;
+
+}
+
+.superadmin-title i{
+  color:#f59e0b;
+}
+
+/* GRID */
+
+.superadmin-grid{
+
+  display:flex;
+  flex-wrap:wrap;
+
+  gap:10px;
+
+}
+
+/* CARD */
+
+.superadmin-card{
+
+  width:82px;
+  min-height:82px;
+
+  display:flex;
+  flex-direction:column;
+
+  align-items:center;
+  justify-content:center;
+
+  gap:7px;
+
+  padding:10px 8px;
+
+  border-radius:22px;
+
+  text-decoration:none !important;
+
+  background:
+    linear-gradient(
+      180deg,
+      #111827,
+      #0f172a
+    );
+
+  border:1px solid rgba(255,255,255,.06);
+
+  transition:all .22s ease;
+
+  position:relative;
+
+  overflow:hidden;
+
+}
+
+.superadmin-card::after{
+
+  content:"";
+
+  position:absolute;
+
+  inset:0;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,255,255,.05),
+      transparent
+    );
+
+  pointer-events:none;
+
+}
+
+.superadmin-card:hover{
+
+  transform:translateY(-4px);
+
+  box-shadow:
+    0 18px 28px rgba(15,23,42,.30);
+
+}
+
+/* ACTIVE */
+
+.superadmin-card.active{
+
+  background:
+    linear-gradient(
+      135deg,
+      #2563eb,
+      #1d4ed8
+    );
+
+}
+
+/* ICON */
+
+.super-icon{
+
+  width:40px;
+  height:40px;
+
+  border-radius:14px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  font-size:16px;
+
+}
+
+.super-icon.revenue{
+  background:#dcfce7;
+  color:#16a34a;
+}
+
+.super-icon.targets{
+  background:#dbeafe;
+  color:#2563eb;
+}
+
+.super-icon.outputs{
+  background:#f3e8ff;
+  color:#9333ea;
+}
+
+/* ACTIVE */
+
+.superadmin-card.active .super-icon{
+
+  background:rgba(255,255,255,.16);
+
+  color:#fff;
+
+}
+
+/* TEXT */
+
+.super-content h6{
+
+  margin:0;
+
+  font-size:10px;
+  font-weight:800;
+
+  text-align:center;
+
+  line-height:1.15;
+
+  color:#fff;
+
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media(max-width:768px){
+
+  .compact-admin-menu{
+
+    justify-content:center;
+
+    gap:8px;
+
+    padding:12px;
+
+    border-radius:22px;
+
+  }
+
+  .menu-item,
+  .superadmin-card{
+
+    width:74px;
+    min-height:74px;
+
+    border-radius:20px;
+
+  }
+
+  .menu-icon,
+  .super-icon{
+
+    width:38px;
+    height:38px;
+
+  }
+
+  .menu-icon i,
+  .super-icon i{
+
+    font-size:16px;
+
+  }
+
+}
+
+/* =========================================================
+   EXTRA SMALL
+========================================================= */
+
+@media(max-width:480px){
+
+  .compact-admin-menu{
+
+    gap:7px;
+
+    padding:10px;
+
+  }
+
+  .menu-item,
+  .superadmin-card{
+
+    width:68px;
+    min-height:68px;
+
+    padding:8px 6px;
+
+    border-radius:18px;
+
+  }
+
+  .menu-icon,
+  .super-icon{
+
+    width:34px;
+    height:34px;
+
+    border-radius:12px;
+
+  }
+
+  .menu-item span,
+  .super-content h6{
+
+    font-size:9px;
+
+  }
+
+  .menu-icon i,
+  .super-icon i{
+
+    font-size:14px;
+
+  }
+
+}
+
+
+/* =========================================
+   SMALLER PREMIUM MENU ICONS
+========================================= */
+
+.menu-icon{
+
+  width:38px;
+  height:38px;
+
+  border-radius:13px;
+
+}
+
+.menu-icon i{
+
+  font-size:15px;
+
+}
+
+/* LABEL */
+
+.menu-item span{
+
+  font-size:9px;
+
+  font-weight:800;
+
+  letter-spacing:.2px;
+
+}
+
+/* SMALL MENU CARD */
+
+.menu-item{
+
+  width:78px;
+  min-height:80px;
+
+  padding:10px 8px;
+
+  gap:6px;
+
+  border-radius:22px;
+
+}
+
+/* =========================================
+   SUPER ADMIN ICONS
+========================================= */
+
+.super-icon{
+
+  width:36px;
+  height:36px;
+
+  border-radius:12px;
+
+}
+
+.super-icon i{
+
+  font-size:14px;
+
+}
+
+.super-content h6{
+
+  font-size:9px;
+
+}
+
+/* SUPER CARD */
+
+.superadmin-card{
+
+  width:78px;
+  min-height:80px;
+
+  padding:10px 8px;
+
+  gap:6px;
+
+  border-radius:22px;
+
+}
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media(max-width:768px){
+
+  .menu-item,
+  .superadmin-card{
+
+    width:70px;
+    min-height:72px;
+
+    padding:8px 6px;
+
+  }
+
+  .menu-icon,
+  .super-icon{
+
+    width:32px;
+    height:32px;
+
+    border-radius:10px;
+
+  }
+
+  .menu-icon i,
+  .super-icon i{
+
+    font-size:13px;
+
+  }
+
+  .menu-item span,
+  .super-content h6{
+
+    font-size:8px;
+
+  }
+
+}
+</style>

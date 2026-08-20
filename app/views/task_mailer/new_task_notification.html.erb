@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+</head>
+
+<body style="margin:0;padding:0;background:#f4f6f9;font-family:Arial,Helvetica,sans-serif;">
+
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#f4f6f9;padding:40px 15px;">
+
+<tr>
+<td align="center">
+
+<table width="700" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 6px 18px rgba(0,0,0,.08);">
+
+<tr>
+<td style="background:#0d6efd;color:#fff;padding:25px;text-align:center;">
+
+<h1 style="margin:0;font-size:28px;">
+⏰ Momak ERP
+</h1>
+
+<p style="margin-top:10px;font-size:16px;">
+Task Reminder
+</p>
+
+</td>
+</tr>
+
+<tr>
+<td style="padding:35px;">
+
+<p style="font-size:17px;">
+Hello <strong><%= @username.titleize %></strong>,
+</p>
+
+<p style="font-size:16px;color:#555;line-height:1.7;">
+This is a reminder that one of your assigned tasks is approaching its deadline.
+Please review the details below and complete it before the due time.
+</p>
+
+<table width="100%" cellpadding="12" cellspacing="0" style="border-collapse:collapse;border:1px solid #e5e5e5;margin-top:25px;">
+
+<tr style="background:#f8f9fa;">
+<td width="180"><strong>Task</strong></td>
+<td><%= @task.title %></td>
+</tr>
+
+<tr>
+<td><strong>Description</strong></td>
+<td><%= @task.description.presence || "No description provided." %></td>
+</tr>
+
+<tr style="background:#f8f9fa;">
+<td><strong>Due Date</strong></td>
+<td>
+<%= @task.due_date.strftime("%A, %d %B %Y") %>
+</td>
+</tr>
+
+<tr>
+<td><strong>Due Time</strong></td>
+<td>
+<%= @task.due_date.strftime("%I:%M %p") %>
+</td>
+</tr>
+
+<tr style="background:#f8f9fa;">
+<td><strong>Status</strong></td>
+<td>
+<%= @task.status.to_s.titleize.presence || "Pending" %>
+</td>
+</tr>
+
+<tr>
+<td><strong>Recurring</strong></td>
+<td>
+<%=
+if @task.daily?
+  "Daily"
+elsif @task.weekly?
+  "Weekly"
+elsif @task.monthly?
+  "Monthly"
+else
+  "One Time"
+end
+%>
+</td>
+</tr>
+
+</table>
+
+<div style="text-align:center;margin-top:35px;">
+
+<a href="https://momakerp.com/tasks"
+style="
+display:inline-block;
+padding:15px 35px;
+background:#198754;
+color:#ffffff;
+text-decoration:none;
+font-size:17px;
+font-weight:bold;
+border-radius:8px;">
+Open Momak ERP
+</a>
+
+</div>
+
+<div style="margin-top:35px;padding:18px;background:#fff8e6;border-left:5px solid #ffc107;border-radius:6px;">
+
+<strong>Reminder</strong><br>
+
+Completing tasks on time improves planning, accountability, and overall team productivity.
+
+</div>
+
+<p style="margin-top:35px;color:#666;">
+Thank you for using
+<strong>Momak ERP</strong>.
+</p>
+
+</td>
+</tr>
+
+<tr>
+
+<td style="background:#f8f9fa;padding:20px;text-align:center;font-size:13px;color:#777;">
+
+<strong>Momak ERP</strong><br>
+
+Business Management System
+
+<br><br>
+
+🌐 https://momakerp.com
+
+</td>
+
+</tr>
+
+</table>
+
+</td>
+</tr>
+
+</table>
+
+</body>
+</html>

@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <title><%= content_for(:title) || "#{controller_name.capitalize} | Fiber System" %></title>
+
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+
+  <!-- Icons -->
+  <link rel="icon" href="/icon.png" type="image/png">
+  <link rel="icon" href="/icon.svg" type="image/svg+xml">
+  <%= favicon_link_tag asset_path('p.png') %>
+
+  <!-- Rails Assets -->
+  <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+  <%= javascript_importmap_tags %>
+
+  <!-- External Libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.1/moment.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- ChartKick Safe Init -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      if (typeof Chartkick !== "undefined") {
+        new Chartkick.ColumnChart("chart-1", { man: 4 });
+      }
+    });
+  </script>
+
+  <style>
+    body {
+      font-size: 14px;
+      background: #f8fafc;
+    }
+
+    /* Navbar */
+    .custom-navbar {
+      background: linear-gradient(135deg, #008080, #006666);
+    }
+
+    .navbar-nav .nav-link {
+      font-weight: 500;
+      color: #f1f1f1 !important;
+      margin-right: 10px;
+      transition: 0.2s ease-in-out;
+    }
+
+    .navbar-nav .nav-link:hover {
+      color: #ffd966 !important;
+    }
+
+    .dropdown-menu {
+      border-radius: 10px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+      border: none;
+    }
+
+    .dropdown-item:hover {
+      background-color: #f1f1f1;
+    }
+
+    .btn-warning {
+      border-radius: 10px;
+      font-weight: 600;
+    }
+
+    .kpi-btn {
+      box-shadow: 0 4px 12px rgba(255, 193, 7, 0.3);
+    }
+
+    /* Page container */
+    .page-container {
+      padding: 20px 0;
+    }
+
+    /* Canvas fix */
+    #canvas-holder {
+      background-color: #fff;
+      position: absolute;
+      inset: 8px;
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- 🔷 NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-dark custom-navbar shadow-sm">
+  <div class="container-fluid">
+
+    <a class="navbar-brand fw-bold" href="/fiber/index">
+      <i class="bi bi-diagram-3-fill me-1"></i> Fiber System
+    </a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="mainNav">
+
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+        <li class="nav-item">
+          <a href="/fiber/index" class="nav-link active">
+            <i class="bi bi-diagram-3-fill me-1"></i> FTTX
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a href="/import/index" class="nav-link">
+            <i class="bi bi-box-arrow-in-down me-1"></i> IMPORT
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a href="/tickets" class="nav-link">
+            <i class="bi bi-ticket-perforated-fill me-1"></i> CRQs
+          </a>
+        </li>
+
+        <!-- OPEN CRQs -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+            <i class="bi bi-clock-history me-1"></i> OPEN CRQs
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="/console/index">Scheduled</a></li>
+            <li><a class="dropdown-item" href="/pending/index">On Hold</a></li>
+          </ul>
+        </li>
+
+        <!-- LOS -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+            <i class="bi bi-geo-alt-fill me-1"></i> LOS
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="/losconsole/index">Scheduled</a></li>
+            <li><a class="dropdown-item" href="/lospending/index">On Hold</a></li>
+            <li><a class="dropdown-item" href="/locs">All LOS</a></li>
+          </ul>
+        </li>
+
+        <!-- OSP -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+            <i class="bi bi-diagram-2-fill me-1"></i> OSP
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="/osps">Open OSP</a></li>
+            <li><a class="dropdown-item" href="/allosp/index">All OSP</a></li>
+          </ul>
+        </li>
+
+        <!-- REPORTS -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+            <i class="bi bi-bar-chart-line-fill me-1"></i> Reports
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="/report/index">CRQs</a></li>
+            <li><a class="dropdown-item" href="/los/index">LOS</a></li>
+          </ul>
+        </li>
+
+      </ul>
+
+      <a href="/ospkpi/index" class="btn btn-warning kpi-btn">
+        <i class="bi bi-graph-up-arrow me-1"></i> KPI
+      </a>
+
+    </div>
+  </div>
+</nav>
+
+<!-- 🔷 PAGE CONTENT -->
+<div class="container page-container">
+  <%= yield %>
+  <br/>
+</div>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+
+
+</body>
+
+
+<style>
+
+  /* =========================================================
+      ULTRA PREMIUM ADMIN UI
+      Fiber System Layout CSS
+  ========================================================== */
+
+  :root{
+    --primary:#0f766e;
+    --primary-2:#115e59;
+    --accent:#fbbf24;
+
+    --bg:#f4f7fb;
+    --surface:#ffffff;
+    --surface-2:#f8fafc;
+
+    --text:#0f172a;
+    --muted:#64748b;
+
+    --border:rgba(15,23,42,0.06);
+
+    --shadow-sm:
+      0 2px 8px rgba(15,23,42,0.05);
+
+    --shadow-md:
+      0 8px 24px rgba(15,23,42,0.08);
+
+    --shadow-lg:
+      0 18px 50px rgba(15,23,42,0.12);
+
+    --radius-sm:12px;
+    --radius-md:18px;
+    --radius-lg:24px;
+
+    --transition:all .25s ease;
+  }
+
+  /* =========================================================
+      RESET
+  ========================================================== */
+
+  *{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+  }
+
+  html{
+    scroll-behavior:smooth;
+  }
+
+  body{
+    background:
+      radial-gradient(circle at top right,
+      rgba(15,118,110,0.07),
+      transparent 20%),
+
+      radial-gradient(circle at bottom left,
+      rgba(251,191,36,0.07),
+      transparent 20%),
+
+      var(--bg);
+
+    color:var(--text);
+    font-family:
+      Inter,
+      -apple-system,
+      BlinkMacSystemFont,
+      "Segoe UI",
+      sans-serif;
+
+    font-size:14px;
+    line-height:1.5;
+    min-height:100vh;
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  a{
+    text-decoration:none !important;
+  }
+
+  /* =========================================================
+      PREMIUM NAVBAR
+  ========================================================== */
+
+  .custom-navbar{
+    background:
+      linear-gradient(
+        135deg,
+        var(--primary),
+        var(--primary-2)
+      );
+
+    backdrop-filter:blur(14px);
+
+    border-bottom:
+      1px solid rgba(255,255,255,0.08);
+
+    padding:.85rem 1rem;
+
+    position:sticky;
+    top:0;
+    z-index:1000;
+
+    box-shadow:
+      0 10px 30px rgba(15,23,42,0.08);
+  }
+
+  .navbar-brand{
+    display:flex;
+    align-items:center;
+    gap:10px;
+
+    color:#fff !important;
+    font-weight:800;
+    font-size:1.15rem;
+    letter-spacing:.3px;
+  }
+
+  .navbar-brand i{
+    color:var(--accent);
+    font-size:1.3rem;
+  }
+
+  /* =========================================================
+      NAVIGATION LINKS
+  ========================================================== */
+
+  .navbar-nav{
+    gap:6px;
+  }
+
+  .navbar-nav .nav-link{
+    position:relative;
+
+    display:flex;
+    align-items:center;
+    gap:8px;
+
+    padding:.8rem 1rem !important;
+
+    border-radius:14px;
+
+    color:rgba(255,255,255,.88) !important;
+
+    font-weight:600;
+    letter-spacing:.2px;
+
+    transition:var(--transition);
+  }
+
+  .navbar-nav .nav-link i{
+    font-size:1rem;
+  }
+
+  .navbar-nav .nav-link:hover{
+    background:rgba(255,255,255,0.10);
+    color:#fff !important;
+
+    transform:translateY(-1px);
+  }
+
+  .navbar-nav .nav-link.active{
+    background:rgba(255,255,255,0.14);
+
+    color:#fff !important;
+
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.10),
+      0 4px 12px rgba(0,0,0,0.08);
+  }
+
+  .navbar-nav .nav-link.active::before{
+    content:"";
+
+    position:absolute;
+    left:10px;
+    right:10px;
+    bottom:4px;
+
+    height:2px;
+
+    border-radius:20px;
+
+    background:var(--accent);
+  }
+
+  /* =========================================================
+      NAVBAR TOGGLER
+  ========================================================== */
+
+  .navbar-toggler{
+    border:none !important;
+    box-shadow:none !important;
+
+    padding:.55rem .8rem;
+
+    border-radius:12px;
+
+    background:rgba(255,255,255,0.10);
+  }
+
+  /* =========================================================
+      DROPDOWN MENU
+  ========================================================== */
+
+  .dropdown-menu{
+    border:none;
+
+    border-radius:20px;
+
+    overflow:hidden;
+
+    padding:.55rem;
+
+    margin-top:12px;
+
+    background:
+      rgba(255,255,255,0.96);
+
+    backdrop-filter:blur(14px);
+
+    box-shadow:
+      0 20px 50px rgba(15,23,42,0.12),
+      0 2px 8px rgba(15,23,42,0.06);
+
+    animation:dropdownFade .18s ease;
+  }
+
+  @keyframes dropdownFade{
+    from{
+      opacity:0;
+      transform:translateY(8px);
+    }
+    to{
+      opacity:1;
+      transform:translateY(0);
+    }
+  }
+
+  .dropdown-item{
+    display:flex;
+    align-items:center;
+    gap:10px;
+
+    padding:.8rem .95rem;
+
+    border-radius:14px;
+
+    color:var(--text);
+
+    font-weight:600;
+
+    transition:var(--transition);
+  }
+
+  .dropdown-item i{
+    color:var(--primary);
+    font-size:.95rem;
+  }
+
+  .dropdown-item:hover{
+    background:#f1f5f9;
+
+    transform:translateX(3px);
+  }
+
+  /* =========================================================
+      KPI BUTTON
+  ========================================================== */
+
+  .kpi-btn{
+    background:
+      linear-gradient(
+        135deg,
+        #facc15,
+        #f59e0b
+      );
+
+    border:none !important;
+
+    color:#1e293b !important;
+
+    border-radius:16px;
+
+    padding:.75rem 1.1rem;
+
+    font-weight:800;
+
+    letter-spacing:.2px;
+
+    transition:var(--transition);
+
+    box-shadow:
+      0 10px 25px rgba(251,191,36,0.30),
+      inset 0 1px 0 rgba(255,255,255,0.4);
+  }
+
+  .kpi-btn:hover{
+    transform:
+      translateY(-2px)
+      scale(1.01);
+
+    box-shadow:
+      0 14px 32px rgba(251,191,36,0.35);
+  }
+
+  .kpi-btn:active{
+    transform:scale(.98);
+  }
+
+  /* =========================================================
+      PAGE CONTAINER
+  ========================================================== */
+
+  .page-container{
+    padding-top:26px;
+    padding-bottom:40px;
+
+    animation:fadeIn .25s ease;
+  }
+
+  @keyframes fadeIn{
+    from{
+      opacity:0;
+      transform:translateY(6px);
+    }
+    to{
+      opacity:1;
+      transform:translateY(0);
+    }
+  }
+
+  /* =========================================================
+      PREMIUM CARDS
+  ========================================================== */
+
+  .card{
+    background:
+      rgba(255,255,255,0.94);
+
+    backdrop-filter:blur(12px);
+
+    border:none !important;
+
+    border-radius:var(--radius-lg) !important;
+
+    overflow:hidden;
+
+    box-shadow:var(--shadow-md);
+
+    transition:var(--transition);
+  }
+
+  .card:hover{
+    transform:translateY(-2px);
+
+    box-shadow:var(--shadow-lg);
+  }
+
+  .card-header{
+    background:transparent !important;
+
+    border-bottom:
+      1px solid rgba(15,23,42,0.05) !important;
+
+    padding:1rem 1.2rem;
+
+    font-weight:700;
+  }
+
+  .card-body{
+    padding:1.2rem;
+  }
+
+  /* =========================================================
+      TABLES
+  ========================================================== */
+
+  .table{
+    margin-bottom:0;
+  }
+
+  .table thead{
+    background:#f8fafc;
+  }
+
+  .table th{
+    border:none !important;
+
+    padding:1rem .9rem;
+
+    color:var(--muted);
+
+    font-size:12px;
+    font-weight:700;
+
+    text-transform:uppercase;
+    letter-spacing:.4px;
+  }
+
+  .table td{
+    padding:1rem .9rem;
+
+    vertical-align:middle;
+
+    border-color:#f1f5f9 !important;
+  }
+
+  .table tbody tr{
+    transition:var(--transition);
+  }
+
+  .table tbody tr:hover{
+    background:#f8fafc;
+  }
+
+  /* =========================================================
+      FORM ELEMENTS
+  ========================================================== */
+
+  .form-control,
+  .form-select{
+    min-height:48px;
+
+    border-radius:16px;
+
+    border:
+      1px solid #dbe4ee;
+
+    background:#fff;
+
+    box-shadow:none !important;
+
+    transition:var(--transition);
+  }
+
+  .form-control:focus,
+  .form-select:focus{
+    border-color:var(--primary);
+
+    box-shadow:
+      0 0 0 4px rgba(15,118,110,0.12) !important;
+  }
+
+  /* =========================================================
+      BUTTONS
+  ========================================================== */
+
+  .btn{
+    border-radius:14px;
+
+    font-weight:700;
+
+    transition:var(--transition);
+  }
+
+  .btn:hover{
+    transform:translateY(-1px);
+  }
+
+  /* =========================================================
+      BADGES
+  ========================================================== */
+
+  .badge{
+    border-radius:999px;
+
+    padding:.5rem .7rem;
+
+    font-weight:700;
+  }
+
+  /* =========================================================
+      SCROLLBAR
+  ========================================================== */
+
+  ::-webkit-scrollbar{
+    width:10px;
+    height:10px;
+  }
+
+  ::-webkit-scrollbar-thumb{
+    background:
+      linear-gradient(
+        180deg,
+        var(--primary),
+        var(--primary-2)
+      );
+
+    border-radius:999px;
+  }
+
+  ::-webkit-scrollbar-track{
+    background:transparent;
+  }
+
+  /* =========================================================
+      CHART CONTAINER
+  ========================================================== */
+
+  #canvas-holder{
+    background:#fff;
+
+    border-radius:20px;
+
+    padding:10px;
+
+    box-shadow:var(--shadow-md);
+  }
+
+  canvas{
+    border-radius:16px;
+  }
+
+  /* =========================================================
+      GLASS EFFECT
+  ========================================================== */
+
+  .glass{
+    background:
+      rgba(255,255,255,0.70);
+
+    backdrop-filter:blur(14px);
+
+    border:
+      1px solid rgba(255,255,255,0.4);
+  }
+
+  /* =========================================================
+      MOBILE RESPONSIVE
+  ========================================================== */
+
+  @media(max-width:991px){
+
+    .navbar-collapse{
+      margin-top:14px;
+    }
+
+    .navbar-nav{
+      gap:4px;
+    }
+
+    .navbar-nav .nav-link{
+      padding:.9rem 1rem !important;
+    }
+
+    .kpi-btn{
+      width:100%;
+      margin-top:12px;
+      justify-content:center;
+    }
+
+    .page-container{
+      padding-left:10px;
+      padding-right:10px;
+    }
+
+    .card{
+      border-radius:18px !important;
+    }
+
+  }
+
+</style>

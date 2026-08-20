@@ -1,0 +1,27 @@
+<turbo-stream action="replace" target="callcomments_list">
+  <template>
+    <% comments = @jmcustomer.callcomments.to_s.split("\n\n").reverse %>
+
+    <% comments.each do |c| %>
+      <div class="call-comment my-2 p-3 shadow-sm rounded-3 bg-white border">
+        <% timestamp, text = c.split("]", 2) %>
+
+        <div class="small text-primary fw-bold mb-1">
+          <%= timestamp.gsub("[","") %>
+        </div>
+
+        <div class="text-dark">
+          <%= text.strip %>
+        </div>
+      </div>
+    <% end %>
+  </template>
+</turbo-stream>
+
+<turbo-stream action="replace" target="new_callcomment">
+  <template>
+    <textarea id="new_callcomment" name="new_callcomment"
+              rows="3" class="form-control"
+              placeholder="Type new call comment..."></textarea>
+  </template>
+</turbo-stream>

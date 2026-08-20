@@ -1,0 +1,36 @@
+<% viewer = local_assigns[:current_user] %>
+<% is_me = viewer.present? && message.user_id == viewer.id %>
+
+<div class="d-flex mb-3 <%= is_me ? 'justify-content-end' : 'justify-content-start' %>">
+
+  <div class="d-flex align-items-end gap-2" style="max-width:75%;">
+
+    <% unless is_me %>
+      <div class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center"
+           style="width:32px;height:32px;font-size:12px;">
+        <%= message.user.username.first.upcase %>
+      </div>
+    <% end %>
+
+    <div>
+
+      <div class="px-3 py-2 rounded-4 shadow-sm <%= is_me ? 'bg-primary text-white' : 'bg-white border' %>">
+        <%= simple_format(message.content) %>
+      </div>
+
+      <div class="text-muted small mt-1 <%= is_me ? 'text-end' : 'text-start' %>">
+        <%= message.created_at.strftime("%H:%M") %>
+      </div>
+
+    </div>
+
+    <% if is_me %>
+      <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center"
+           style="width:32px;height:32px;font-size:12px;">
+        <%= message.user.username.first.upcase %>
+      </div>
+    <% end %>
+
+  </div>
+
+</div>

@@ -1,0 +1,94 @@
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-7 col-md-9">
+
+      <div class="card border-0 shadow-lg rounded-4 text-center">
+
+        <div class="card-body p-5">
+
+          <div class="display-1 fw-bold text-danger mb-3">
+            404
+          </div>
+
+          <div class="mb-4">
+            <i class="bi bi-exclamation-triangle-fill text-warning"
+               style="font-size:5rem;"></i>
+          </div>
+
+          <h2 class="fw-bold mb-3">
+            Page Not Found
+          </h2>
+
+          <p class="text-muted fs-5">
+            Sorry, the page you are looking for doesn't exist,
+            has been moved, or the URL is incorrect.
+          </p>
+
+          <hr class="my-4">
+
+          <div class="d-grid gap-3 d-md-flex justify-content-center">
+
+            <%= link_to root_path,
+                class: "btn btn-primary btn-lg px-4" do %>
+              <i class="bi bi-house-door-fill"></i>
+              Back Home
+            <% end %>
+
+            <button onclick="history.back()"
+                    class="btn btn-outline-secondary btn-lg px-4">
+              <i class="bi bi-arrow-left-circle"></i>
+              Go Back
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="text-center mt-4 text-muted">
+        Error Code: <strong>404</strong> • Janomax System
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<style>
+body{
+    background:#f4f6f9;
+}
+
+.card{
+    border-radius:20px;
+}
+
+.display-1{
+    font-size:7rem;
+    line-height:1;
+}
+
+.btn{
+    border-radius:12px;
+    font-weight:600;
+    transition:.25s;
+}
+
+.btn:hover{
+    transform:translateY(-2px);
+}
+
+@media(max-width:768px){
+    .display-1{
+        font-size:5rem;
+    }
+
+    h2{
+        font-size:1.6rem;
+    }
+
+    .btn{
+        width:100%;
+    }
+}
+</style>

@@ -1,0 +1,226 @@
+<%= render "layouts/header" %>
+
+<div class="container py-4">
+
+  <% if current_user&.superadmin? %>
+
+  <!-- HEADER -->
+  <div class="header-bar mb-4">
+
+    <!-- LEFT -->
+    <%= link_to "/jrewards/index", class: "btn btn-light border d-flex align-items-center gap-2 shadow-sm" do %>
+      <i class="bi bi-arrow-left"></i>
+      <span class="d-none d-sm-inline">Back</span>
+    <% end %>
+
+    <!-- CENTER -->
+    <div class="text-center flex-grow-1">
+      <h4 class="fw-bold text-primary mb-1">
+        <i class="bi bi-gift-fill me-1"></i>
+        Customer Rewards
+      </h4>
+      <small class="text-muted">
+        Search customers by phone number
+      </small>
+    </div>
+
+    <!-- RIGHT (empty but keeps balance automatically) -->
+    <div class="header-spacer"></div>
+
+  </div>
+
+  <!-- SEARCH -->
+  <div class="card border-0 shadow-sm search-card mx-auto mb-4">
+    <div class="card-body p-3">
+<div class="login">
+      <%= search_form_for @y, url: query_jmcustomers_path do |f| %>
+        <div class="input-group">
+
+          <span class="input-group-text bg-white">
+            <i class="bi bi-telephone-fill text-primary"></i>
+          </span>
+</div>
+          <%= f.search_field :phone_eq,
+              class: "form-control",
+              placeholder: "07XXXXXXXX" %>
+
+          <button class="btn btn-primary px-4">
+            <i class="bi bi-search"></i>
+            <span class="d-none d-md-inline"> Search</span>
+          </button>
+
+        </div>
+      <% end %>
+
+    </div>
+  </div>
+
+  <!-- RESULTS -->
+  <div class="row g-4 justify-content-center">
+
+    <% @jmcustomers.each do |customer| %>
+      <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+
+        <div class="card reward-card text-center h-100">
+
+          <!-- AVATAR -->
+          <div class="reward-avatar mx-auto mt-3">
+            <i class="bi bi-person-fill"></i>
+            <span class="reward-points">
+              <i class="bi bi-cash-coin me-1"></i>
+              <%= customer.points %>
+            </span>
+          </div>
+
+          <div class="card-body pt-4">
+
+            <!-- NAME -->
+            <h6 class="fw-bold text-primary mb-1">
+              <%= customer.name %>
+            </h6>
+
+            <!-- PHONE -->
+            <div class="text-muted small mb-2">
+              <i class="bi bi-telephone me-1"></i>
+              <%= customer.phone %>
+            </div>
+
+            <!-- STATUS -->
+            <% if customer.returning? %>
+              <span class="badge bg-success-subtle text-success mb-2">
+                <i class="bi bi-arrow-repeat me-1"></i> Returning
+              </span>
+            <% else %>
+              <span class="badge bg-secondary-subtle text-muted mb-2">
+                <i class="bi bi-person-plus me-1"></i> New
+              </span>
+            <% end %>
+
+            <!-- LOCATION -->
+            <div class="small text-muted mt-2">
+              <i class="bi bi-geo-alt-fill text-danger me-1"></i>
+              <%= customer.location.presence || "No location" %>
+            </div>
+
+            <!-- UPDATED -->
+            <div class="small text-muted mt-1">
+              <i class="bi bi-clock me-1"></i>
+              <%= time_ago_in_words(customer.updated_at) %> ago
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    <% end %>
+
+  </div>
+
+  <% else %>
+    <div class="admin-message mt-5">
+      <i class="bi bi-shield-lock me-2"></i>
+      Access restricted. Please login as admin.
+    </div>
+  <% end %>
+
+</div>
+
+<style>
+
+/* ===== HEADER ===== */
+.header-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.header-spacer {
+  width: 60px;
+}
+
+/* ===== SEARCH ===== */
+.search-card {
+  max-width: 600px;
+  border-radius: 1rem;
+}
+
+/* ===== CARD ===== */
+.reward-card {
+  border-radius: 1rem;
+  border: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.05);
+}
+
+.reward-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+}
+
+/* ===== AVATAR ===== */
+.reward-avatar {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #0d6efd, #4dabf7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  color: white;
+  position: relative;
+}
+
+/* ===== POINTS ===== */
+.reward-points {
+  position: absolute;
+  bottom: -8px;
+  right: -8px;
+  background: #ffc107;
+  color: #000;
+  font-weight: 600;
+  font-size: 0.75rem;
+  padding: 5px 8px;
+  border-radius: 999px;
+  border: 2px solid white;
+}
+
+/* ===== ADMIN ===== */
+.admin-message {
+  text-align: center;
+  background: #ffe5e5;
+  color: #b02a37;
+  padding: 14px;
+  border-radius: 10px;
+  font-weight: 600;
+}
+
+/* ===== MOBILE ===== */
+@media (max-width: 576px) {
+
+  .header-bar {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+  }
+
+  .header-spacer {
+    display: none;
+  }
+
+  .input-group {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .input-group-text {
+    display: none;
+  }
+
+  .btn {
+    width: 100%;
+    border-radius: 0.5rem !important;
+  }
+}
+
+</style>

@@ -1,0 +1,21 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  location: MyString
+  address: MyString
+  plan: MyString
+  rate: 9.99
+  start_date: 2026-03-24
+  end_date: 2026-03-24
+  photo_url: MyString
+
+two:
+  name: MyString
+  location: MyString
+  address: MyString
+  plan: MyString
+  rate: 9.99
+  start_date: 2026-03-24
+  end_date: 2026-03-24
+  photo_url: MyString

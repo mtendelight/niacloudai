@@ -1,0 +1,2 @@
+module OltsHelper
+end

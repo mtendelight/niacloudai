@@ -1,0 +1,444 @@
+<div class="container py-4">
+
+  <div class="lead-form-card">
+
+    <!-- Header -->
+    <div class="lead-header">
+
+      <div class="lead-header-icon">
+        <i class="bi bi-person-lines-fill"></i>
+      </div>
+
+      <div>
+        <h3 class="mb-1 fw-bold">
+          <%= jmlead.new_record? ? "Create New Lead" : "Edit Lead" %>
+        </h3>
+
+        <small class="text-muted">
+          Manage customer enquiries and assign sales ownership.
+        </small>
+      </div>
+
+    </div>
+
+    <div class="login">
+
+    <%= form_with(model: jmlead, local: true) do |form| %>
+
+      <% if jmlead.errors.any? %>
+
+        <div class="alert alert-danger border-0 shadow-sm rounded-4">
+
+          <div class="fw-bold mb-2">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+            <%= pluralize(jmlead.errors.count, "error") %> prevented saving
+          </div>
+
+          <ul class="mb-0 ps-3">
+
+            <% jmlead.errors.full_messages.each do |msg| %>
+
+              <li><%= msg %></li>
+
+            <% end %>
+
+          </ul>
+
+        </div>
+
+      <% end %>
+
+      <div class="row g-4">
+
+        <!-- Customer -->
+
+        <div class="col-md-6">
+
+          <label class="form-label fw-semibold">
+
+            <i class="bi bi-person-fill text-primary me-1"></i>
+
+            Customer Name
+
+          </label>
+
+          <div class="input-icon">
+
+            <i class="bi bi-person"></i>
+
+            <%= form.text_field :name,
+                  class:"form-control",
+                  placeholder:"John Doe" %>
+
+          </div>
+
+        </div>
+
+        <!-- Phone -->
+
+        <div class="col-md-6">
+
+          <label class="form-label fw-semibold">
+
+            <i class="bi bi-telephone-fill text-success me-1"></i>
+
+            Phone Number
+
+          </label>
+
+          <div class="input-icon">
+
+            <i class="bi bi-telephone"></i>
+
+            <%= form.telephone_field :phone,
+                  class:"form-control",
+                  placeholder:"0712345678",
+                  required:true %>
+
+          </div>
+
+        </div>
+
+        <!-- Items -->
+
+        <div class="col-12">
+
+          <label class="form-label fw-semibold">
+
+            <i class="bi bi-box-seam-fill text-warning me-1"></i>
+
+            Items Required
+
+          </label>
+
+          <%= form.text_area :items_required,
+                rows:4,
+                class:"form-control",
+                placeholder:"Describe products required..." %>
+
+        </div>
+
+        <!-- Status -->
+
+        <div class="col-md-6">
+
+          <label class="form-label fw-semibold">
+
+            <i class="bi bi-flag-fill text-danger me-1"></i>
+
+            Lead Status
+
+          </label>
+
+          <%= form.select :status,
+                Jmlead.statuses.keys.map { |s| [s.titleize, s] },
+                { prompt:"Select Status" },
+                class:"form-select" %>
+
+        </div>
+
+        <!-- Assignment -->
+
+        <div class="col-md-6">
+
+          <label class="form-label fw-semibold d-flex justify-content-between">
+
+            <span>
+
+              <i class="bi bi-person-workspace text-primary me-1"></i>
+
+              Lead Owner
+
+            </span>
+
+            <% if jmlead.jstaff.present? %>
+
+              <span class="badge rounded-pill bg-success-subtle text-success">
+
+                <i class="bi bi-check-circle-fill me-1"></i>
+
+                <%= jmlead.jstaff.name %>
+
+              </span>
+
+            <% end %>
+
+          </label>
+
+          <div class="assign-box">
+
+            <div class="assign-icon">
+
+              <i class="bi bi-person-badge-fill"></i>
+
+            </div>
+
+            <%= form.collection_select :jstaff_id,
+                  Jstaff.order(:name),
+                  :id,
+                  :name,
+                  { prompt:"Assign Sales Representative..." },
+                  class:"form-select border-0 shadow-none" %>
+
+          </div>
+
+        </div>
+
+        <!-- Comments -->
+
+        <div class="col-12">
+
+          <label class="form-label fw-semibold">
+
+            <i class="bi bi-chat-left-text-fill text-info me-1"></i>
+
+            Internal Notes
+
+          </label>
+
+          <%= form.text_area :general_comments,
+                rows:4,
+                class:"form-control",
+                placeholder:"Notes for the sales team..." %>
+
+        </div>
+
+      </div>
+
+      <hr class="my-4">
+
+      <div class="d-flex gap-3 flex-wrap">
+
+        <%= form.submit(
+              jmlead.new_record? ? "Create Lead" : "Update Lead",
+              class:"btn btn-primary btn-lg flex-fill"
+            ) %>
+
+        <%= link_to jmleads_path,
+              class:"btn btn-light btn-lg border flex-fill" do %>
+
+          <i class="bi bi-arrow-left"></i>
+
+          Back
+
+        <% end %>
+
+      </div>
+
+    <% end %>
+</div>
+  </div>
+
+</div>
+
+<style>
+  .lead-form-card{
+
+    max-width:900px;
+
+    margin:auto;
+
+    padding:35px;
+
+    background:#fff;
+
+    border-radius:24px;
+
+    border:1px solid #edf2f7;
+
+    box-shadow:0 15px 45px rgba(15,23,42,.08);
+
+}
+
+.lead-header{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:18px;
+
+    margin-bottom:35px;
+
+}
+
+.lead-header-icon{
+
+    width:70px;
+
+    height:70px;
+
+    border-radius:20px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:28px;
+
+    background:linear-gradient(135deg,#2563eb,#3b82f6);
+
+    color:#fff;
+
+}
+
+.form-label{
+
+    margin-bottom:8px;
+
+    font-weight:700;
+
+}
+
+.input-icon{
+
+    position:relative;
+
+}
+
+.input-icon i{
+
+    position:absolute;
+
+    left:18px;
+
+    top:50%;
+
+    transform:translateY(-50%);
+
+    color:#94a3b8;
+
+}
+
+.input-icon .form-control{
+
+    padding-left:48px;
+
+}
+
+.form-control,
+.form-select{
+
+    border-radius:14px;
+
+    border:1px solid #dbe2ea;
+
+    padding:14px 16px;
+
+    transition:.25s;
+
+}
+
+.form-control:focus,
+.form-select:focus{
+
+    border-color:#2563eb;
+
+    box-shadow:0 0 0 4px rgba(37,99,235,.12);
+
+}
+
+.assign-box{
+
+    display:flex;
+
+    align-items:center;
+
+    border:1px solid #dbe2ea;
+
+    border-radius:16px;
+
+    overflow:hidden;
+
+    transition:.25s;
+
+}
+
+.assign-box:focus-within{
+
+    border-color:#2563eb;
+
+    box-shadow:0 0 0 4px rgba(37,99,235,.10);
+
+}
+
+.assign-icon{
+
+    width:62px;
+
+    height:58px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    background:#eff6ff;
+
+    color:#2563eb;
+
+    font-size:22px;
+
+    border-right:1px solid #dbe2ea;
+
+}
+
+.assign-box .form-select{
+
+    border:none;
+
+    box-shadow:none;
+
+}
+
+.btn{
+
+    border-radius:14px;
+
+    padding:13px 22px;
+
+    font-weight:700;
+
+}
+
+.btn-primary{
+
+    background:linear-gradient(135deg,#2563eb,#3b82f6);
+
+    border:none;
+
+}
+
+.btn-primary:hover{
+
+    transform:translateY(-2px);
+
+    box-shadow:0 12px 25px rgba(37,99,235,.22);
+
+}
+
+.alert{
+
+    border-radius:18px;
+
+}
+
+textarea.form-control{
+
+    min-height:130px;
+
+}
+
+@media(max-width:768px){
+
+    .lead-form-card{
+
+        padding:22px;
+
+    }
+
+}
+</style>

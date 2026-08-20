@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  m_subcontractor: one
+  start_date: 2026-03-24
+  end_date: 2026-03-24
+  total_amount: 9.99
+
+two:
+  m_subcontractor: two
+  start_date: 2026-03-24
+  end_date: 2026-03-24
+  total_amount: 9.99

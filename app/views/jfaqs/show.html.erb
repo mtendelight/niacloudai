@@ -1,0 +1,418 @@
+<%= render "layouts/header" %>
+
+<div class="faq-show-page">
+
+  <!-- PREMIUM BACKGROUND -->
+  <div class="faq-orb faq-orb-1"></div>
+  <div class="faq-orb faq-orb-2"></div>
+  <div class="faq-grid"></div>
+
+  <!-- HERO -->
+  <section class="faq-show-hero">
+    
+    <div class="faq-tag">
+      <i class="bi bi-patch-question-fill"></i>
+      Janomax Help Center
+    </div>
+
+    <div class="faq-crumb">
+      <%= link_to "Support", jfaqs_path %>
+      <span>/</span>
+      FAQ Details
+    </div>
+
+    <h1>
+      <%= @jfaq.question %>?
+    </h1>
+
+  </section>
+
+  <!-- CONTENT -->
+  <div class="container faq-wrap">
+
+    <div class="faq-card">
+
+      <!-- QUESTION -->
+      <div class="faq-question-box">
+        <div class="faq-icon">
+          <i class="bi bi-chat-left-text-fill"></i>
+        </div>
+
+        <div>
+          <div class="faq-label">Question</div>
+          <h2><%= @jfaq.question %>?</h2>
+        </div>
+      </div>
+
+      <!-- ANSWER -->
+      <div class="faq-section">
+
+        <div class="faq-answer-header">
+          <div class="faq-answer-icon">
+            <i class="bi bi-lightbulb-fill"></i>
+          </div>
+
+          <div>
+            <div class="faq-label">Answer</div>
+            <h3>Helpful Information</h3>
+          </div>
+        </div>
+
+        <div class="faq-content-text">
+          <%= simple_format(@jfaq.answer) %>
+        </div>
+
+      </div>
+
+      <!-- ACTIONS -->
+      <div class="faq-actions">
+
+        <%= link_to jfaqs_path,
+            class: "btn-premium btn-back active" do %>
+          <i class="bi bi-arrow-left"></i>
+          Back to FAQs
+        <% end %>
+
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<style>
+:root{
+  --bg-primary:#020617;
+  --bg-secondary:#0f172a;
+  --card-bg:rgba(15,23,42,0.72);
+  --border:rgba(255,255,255,0.08);
+
+  --text-primary:#ffffff;
+  --text-secondary:#cbd5e1;
+  --text-muted:#94a3b8;
+
+  --primary:#38bdf8;
+  --primary-dark:#0ea5e9;
+  --success:#22c55e;
+
+  --shadow:0 25px 60px rgba(0,0,0,0.55);
+  --radius:24px;
+}
+
+/* ====================================
+   PAGE
+==================================== */
+.faq-show-page{
+  position:relative;
+  overflow:hidden;
+  min-height:100vh;
+  background:
+    radial-gradient(circle at top left, #172554 0%, transparent 30%),
+    radial-gradient(circle at bottom right, #0f172a 0%, transparent 30%),
+    linear-gradient(180deg, #020617 0%, #0b1120 100%);
+  color:var(--text-secondary);
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+}
+
+/* ====================================
+   BACKGROUND FX
+==================================== */
+.faq-orb{
+  position:absolute;
+  border-radius:50%;
+  filter:blur(90px);
+  opacity:.18;
+  pointer-events:none;
+}
+
+.faq-orb-1{
+  width:300px;
+  height:300px;
+  background:#0ea5e9;
+  top:-120px;
+  left:-100px;
+}
+
+.faq-orb-2{
+  width:260px;
+  height:260px;
+  background:#2563eb;
+  right:-80px;
+  bottom:40px;
+}
+
+.faq-grid{
+  position:absolute;
+  inset:0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-size:40px 40px;
+  mask-image:linear-gradient(to bottom, rgba(0,0,0,0.45), transparent);
+  pointer-events:none;
+}
+
+/* ====================================
+   HERO
+==================================== */
+.faq-show-hero{
+  position:relative;
+  z-index:2;
+  text-align:center;
+  padding:80px 20px 45px;
+}
+
+.faq-tag{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:10px 18px;
+  border-radius:999px;
+  background:rgba(56,189,248,0.12);
+  border:1px solid rgba(56,189,248,0.25);
+  color:#7dd3fc;
+  font-size:.82rem;
+  font-weight:700;
+  margin-bottom:18px;
+  backdrop-filter:blur(10px);
+}
+
+.faq-crumb{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-bottom:18px;
+  font-size:.88rem;
+  color:var(--text-muted);
+}
+
+.faq-crumb a{
+  color:#93c5fd;
+  text-decoration:none;
+}
+
+.faq-crumb a:hover{
+  color:#38bdf8;
+}
+
+.faq-show-hero h1{
+  font-size:clamp(2rem,4vw,3.2rem);
+  font-weight:900;
+  line-height:1.2;
+  letter-spacing:-1px;
+  max-width:900px;
+  margin:auto;
+  color:#fff;
+  text-shadow:0 5px 25px rgba(0,0,0,0.45);
+}
+
+/* ====================================
+   WRAP
+==================================== */
+.faq-wrap{
+  position:relative;
+  z-index:2;
+  padding:10px 16px 90px;
+}
+
+/* ====================================
+   CARD
+==================================== */
+.faq-card{
+  max-width:920px;
+  margin:auto;
+  background:var(--card-bg);
+  backdrop-filter:blur(20px);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:34px;
+  box-shadow:var(--shadow);
+  position:relative;
+  overflow:hidden;
+}
+
+.faq-card::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(
+    135deg,
+    rgba(255,255,255,0.05),
+    transparent 30%
+  );
+  pointer-events:none;
+}
+
+/* ====================================
+   QUESTION BOX
+==================================== */
+.faq-question-box{
+  display:flex;
+  align-items:flex-start;
+  gap:18px;
+  padding:24px;
+  border-radius:22px;
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.06);
+  margin-bottom:28px;
+}
+
+.faq-icon{
+  width:58px;
+  height:58px;
+  min-width:58px;
+  border-radius:18px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:1.3rem;
+  background:linear-gradient(135deg,#0ea5e9,#2563eb);
+  color:#fff;
+  box-shadow:0 10px 25px rgba(14,165,233,.35);
+}
+
+.faq-label{
+  font-size:.78rem;
+  font-weight:700;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:#7dd3fc;
+  margin-bottom:8px;
+}
+
+.faq-question-box h2{
+  margin:0;
+  color:#fff;
+  font-size:1.45rem;
+  line-height:1.5;
+  font-weight:800;
+}
+
+/* ====================================
+   ANSWER
+==================================== */
+.faq-section{
+  margin-top:10px;
+}
+
+.faq-answer-header{
+  display:flex;
+  align-items:center;
+  gap:16px;
+  margin-bottom:22px;
+}
+
+.faq-answer-icon{
+  width:52px;
+  height:52px;
+  border-radius:16px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(34,197,94,0.14);
+  color:#4ade80;
+  font-size:1.2rem;
+  border:1px solid rgba(34,197,94,0.25);
+}
+
+.faq-section h3{
+  margin:0;
+  color:#fff;
+  font-size:1.15rem;
+  font-weight:800;
+}
+
+.faq-content-text{
+  background:rgba(255,255,255,0.03);
+  border:1px solid rgba(255,255,255,0.05);
+  border-radius:20px;
+  padding:26px;
+  color:#dbe4f0;
+  font-size:1rem;
+  line-height:2;
+}
+
+.faq-content-text p:last-child{
+  margin-bottom:0;
+}
+
+/* ====================================
+   ACTIONS
+==================================== */
+.faq-actions{
+  margin-top:32px;
+  padding-top:24px;
+  border-top:1px solid rgba(255,255,255,0.06);
+  display:flex;
+  justify-content:flex-start;
+}
+
+/* ====================================
+   BUTTONS
+==================================== */
+.btn-premium{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  padding:14px 22px;
+  border-radius:16px;
+  font-weight:700;
+  font-size:.95rem;
+  text-decoration:none;
+  transition:all .25s ease;
+}
+
+.btn-back{
+  background:linear-gradient(135deg,#1e293b,#111827);
+  color:#fff;
+  border:1px solid rgba(255,255,255,0.08);
+  box-shadow:0 10px 24px rgba(0,0,0,.25);
+}
+
+.btn-back:hover{
+  transform:translateY(-2px);
+  background:linear-gradient(135deg,#334155,#1f2937);
+  color:#fff;
+  box-shadow:0 16px 30px rgba(0,0,0,.35);
+}
+
+/* ====================================
+   MOBILE
+==================================== */
+@media (max-width:768px){
+
+  .faq-show-hero{
+    padding:65px 18px 35px;
+  }
+
+  .faq-card{
+    padding:22px;
+    border-radius:22px;
+  }
+
+  .faq-question-box{
+    flex-direction:column;
+  }
+
+  .faq-question-box h2{
+    font-size:1.2rem;
+  }
+
+  .faq-content-text{
+    padding:20px;
+    line-height:1.9;
+  }
+
+  .faq-actions{
+    justify-content:center;
+  }
+
+  .btn-premium{
+    width:100%;
+    justify-content:center;
+  }
+
+}
+</style>

@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @jsample %>
+
+<div>
+  <%= link_to "Edit this jsample", edit_jsample_path(@jsample) %> |
+  <%= link_to "Back to jsamples", jsamples_path %>
+
+  <%= button_to "Destroy this jsample", @jsample, method: :delete %>
+</div>

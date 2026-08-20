@@ -1,0 +1,121 @@
+<%= render "layouts/header" %>
+
+<div class="container my-5">
+
+  <div class="payment-card mx-auto">
+    
+    <h4 class="text-primary mb-4 d-flex align-items-center gap-2">
+      <i class="bi bi-cash-coin"></i>
+      Add Payment
+    </h4>
+    <div class="login">
+
+    <%= form_with(model: [@jmcustomer, @jmpayment], local: true) do |f| %>
+
+      <div class="row g-3">
+
+        <!-- Date -->
+        <div class="col-md-4">
+          <%= f.label :date, class: "form-label fw-semibold" %>
+          <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-calendar-date"></i></span>
+            <%= f.date_field :date, class: "form-control form-control-lg" %>
+          </div>
+        </div>
+
+        <!-- Transaction Ref -->
+        <div class="col-md-4">
+          <%= f.label :transaction_ref, "Transaction Ref", class: "form-label fw-semibold" %>
+          <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-receipt"></i></span>
+            <%= f.text_field :transaction_ref, class: "form-control form-control-lg", placeholder: "e.g. INV123" %>
+          </div>
+        </div>
+
+        <!-- Name -->
+        <div class="col-md-4">
+          <%= f.label :name, class: "form-label fw-semibold" %>
+          <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-person"></i></span>
+            <%= f.text_field :name, class: "form-control form-control-lg", placeholder: "Customer name" %>
+          </div>
+        </div>
+
+        <!-- Mpesa Code -->
+        <div class="col-md-4">
+          <%= f.label :mpesa_code, class: "form-label fw-semibold" %>
+          <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-upc-scan"></i></span>
+            <%= f.text_field :mpesa_code, class: "form-control form-control-lg", placeholder: "MPESA Code" %>
+          </div>
+        </div>
+
+        <!-- Mpesa Number -->
+        <div class="col-md-4">
+          <%= f.label :mpesa_number, class: "form-label fw-semibold" %>
+          <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-phone"></i></span>
+            <%= f.text_field :mpesa_number, class: "form-control form-control-lg", placeholder: "07XXXXXXXX" %>
+          </div>
+        </div>
+
+        <!-- Amount -->
+        <div class="col-md-4">
+          <%= f.label :amount, class: "form-label fw-semibold" %>
+          <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-currency-dollar"></i></span>
+            <%= f.number_field :amount, step: 0.01, class: "form-control form-control-lg", placeholder: "0.00" %>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Submit -->
+      <div class="mt-4 d-flex justify-content-between flex-wrap gap-2">
+        <%= f.submit class: "btn btn-success px-4 d-flex align-items-center gap-2" do %>
+          <i class="bi bi-check-circle"></i> Save Payment
+        <% end %>
+
+        <%= link_to jmcustomer_path(@jmcustomer), class: "btn btn-outline-secondary px-4 d-flex align-items-center gap-2" do %>
+          <i class="bi bi-arrow-left"></i> Back
+        <% end %>
+      </div>
+
+    <% end %>
+  </div>
+</div>
+
+<style>
+/* Card */
+.payment-card {
+  max-width: 900px;
+  background: #fff;
+  padding: 30px 25px;
+  border-radius: 0.7rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  border: 1px solid #dee2e6;
+}
+
+/* Inputs */
+.form-control, .input-group-text {
+  border-radius: 0.5rem;
+}
+
+.form-control:focus {
+  border-color: #198754;
+  box-shadow: 0 0 5px rgba(25,135,84,0.4);
+}
+
+/* Icons */
+.input-group-text {
+  background: #f8f9fa;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+</style>

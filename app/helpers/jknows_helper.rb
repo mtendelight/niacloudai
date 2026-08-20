@@ -1,0 +1,2 @@
+module JknowsHelper
+end

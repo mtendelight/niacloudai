@@ -1,0 +1,3922 @@
+<!-- ========================= -->
+<!-- MODERN PREMIUM CRM UI -->
+<!-- ========================= -->
+
+<style>
+
+
+  @media (max-width:768px){
+
+    .crm-table thead{
+        display:none;
+    }
+
+    .crm-table{
+        border:0;
+    }
+
+    .crm-table tbody,
+    .crm-table tr,
+    .crm-table td{
+        display:block;
+        width:100%;
+    }
+
+    .crm-table tbody tr{
+        margin-bottom:18px;
+        border-radius:18px;
+        overflow:hidden;
+        background:#fff;
+        box-shadow:0 8px 25px rgba(0,0,0,.08);
+        border:1px solid #edf2f7;
+    }
+
+    .crm-table td{
+        display:flex;
+        justify-content:space-between;
+        align-items:flex-start;
+        gap:12px;
+        padding:14px 16px;
+        border-bottom:1px solid #f1f5f9;
+    }
+
+    .crm-table td:last-child{
+        border-bottom:none;
+    }
+
+    .crm-table td::before{
+        content:attr(data-label);
+        flex:0 0 95px;
+        font-weight:700;
+        color:#64748b;
+        font-size:.78rem;
+        text-transform:uppercase;
+    }
+
+    .crm-avatar{
+        width:40px;
+        height:40px;
+        font-size:15px;
+    }
+
+    .crm-table .btn{
+        width:42px;
+        height:42px;
+    }
+
+    .crm-table .badge{
+        font-size:.72rem;
+    }
+
+}
+
+@media(max-width:768px){
+
+    .container{
+        padding-left:10px;
+        padding-right:10px;
+    }
+
+    .crm-header{
+        padding:14px;
+    }
+
+    .crm-title{
+        font-size:1.15rem;
+    }
+
+}
+
+:root{
+  --crm-primary:#2563eb;
+  --crm-primary-dark:#1d4ed8;
+  --crm-success:#16a34a;
+  --crm-warning:#f59e0b;
+  --crm-danger:#dc2626;
+  --crm-bg:#f4f7fb;
+  --crm-card:#ffffff;
+  --crm-text:#0f172a;
+  --crm-muted:#64748b;
+  --crm-border:#e2e8f0;
+  --crm-shadow:0 10px 30px rgba(15,23,42,.08);
+  --crm-radius:18px;
+}
+
+/* ========================= */
+/* GLOBAL */
+/* ========================= */
+
+body{
+  background:var(--crm-bg);
+}
+
+.crm-page{
+  padding-bottom:40px;
+}
+
+.crm-glass{
+  background:rgba(255,255,255,.82);
+  backdrop-filter:blur(12px);
+  border:1px solid rgba(255,255,255,.6);
+  box-shadow:var(--crm-shadow);
+  border-radius:var(--crm-radius);
+}
+
+/* ========================= */
+/* HEADER */
+/* ========================= */
+
+.crm-header{
+  padding:20px;
+  margin-bottom:18px;
+}
+
+.crm-title{
+  font-size:1.55rem;
+  font-weight:800;
+  color:var(--crm-text);
+  margin:0;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.crm-title i{
+  width:45px;
+  height:45px;
+  border-radius:14px;
+  background:linear-gradient(135deg,var(--crm-primary),#60a5fa);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#fff;
+  font-size:1.2rem;
+  box-shadow:0 6px 20px rgba(37,99,235,.35);
+}
+
+.crm-subtitle{
+  color:var(--crm-muted);
+  font-size:.92rem;
+  margin-top:4px;
+}
+
+/* ========================= */
+/* PREMIUM BUTTONS */
+/* ========================= */
+
+.crm-btn{
+  border:none;
+  border-radius:14px;
+  padding:.78rem 1.15rem;
+  font-size:.88rem;
+  font-weight:700;
+  display:inline-flex;
+  align-items:center;
+  gap:.55rem;
+  text-decoration:none;
+  transition:.22s ease;
+}
+
+.crm-btn:hover{
+  transform:translateY(-2px);
+}
+
+.crm-btn-primary{
+  background:linear-gradient(135deg,var(--crm-primary),var(--crm-primary-dark));
+  color:#fff;
+  box-shadow:0 10px 20px rgba(37,99,235,.22);
+}
+
+.crm-btn-warning{
+  background:linear-gradient(135deg,#f59e0b,#fbbf24);
+  color:#fff;
+  box-shadow:0 10px 20px rgba(245,158,11,.25);
+}
+
+.crm-btn-light{
+  background:#fff;
+  color:var(--crm-text);
+  border:1px solid var(--crm-border);
+}
+
+/* ========================= */
+/* SEARCH */
+/* ========================= */
+
+.crm-search{
+  padding:18px;
+  margin-bottom:18px;
+}
+
+.crm-search-box{
+  position:relative;
+}
+
+.crm-search-box i{
+  position:absolute;
+  left:16px;
+  top:50%;
+  transform:translateY(-50%);
+  color:#94a3b8;
+  font-size:1rem;
+}
+
+.crm-search-input{
+  border:none !important;
+  height:55px;
+  border-radius:16px !important;
+  padding-left:48px !important;
+  background:#f8fafc !important;
+  font-size:.95rem;
+  box-shadow:none !important;
+}
+
+.crm-search-input:focus{
+  background:#fff !important;
+  border:1px solid #bfdbfe !important;
+  box-shadow:0 0 0 4px rgba(37,99,235,.12) !important;
+}
+
+/* ========================= */
+/* TABLE CARD */
+/* ========================= */
+
+.crm-table-card{
+  overflow:hidden;
+}
+
+.crm-table{
+  margin:0;
+}
+
+.crm-table thead{
+  background:linear-gradient(135deg,#0f172a,#1e293b);
+}
+
+.crm-table thead th{
+  color:#fff;
+  border:none;
+  font-size:.72rem;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  font-weight:700;
+  padding:18px 16px;
+}
+
+.crm-table tbody tr{
+  transition:.18s ease;
+  border-bottom:1px solid #f1f5f9;
+}
+
+.crm-table tbody tr:hover{
+  background:#f8fbff;
+  transform:scale(1.002);
+}
+
+.crm-table td{
+  padding:16px;
+  vertical-align:middle;
+  border:none;
+}
+
+/* ========================= */
+/* AVATAR */
+/* ========================= */
+
+.crm-avatar{
+  width:48px;
+  height:48px;
+  border-radius:16px;
+  background:linear-gradient(135deg,#dbeafe,#bfdbfe);
+  color:var(--crm-primary);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:1.1rem;
+  flex-shrink:0;
+}
+
+/* ========================= */
+/* BADGES */
+/* ========================= */
+
+.crm-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:.5rem .85rem;
+  border-radius:999px;
+  font-size:.75rem;
+  font-weight:700;
+}
+
+.crm-badge-success{
+  background:#dcfce7;
+  color:#15803d;
+}
+
+.crm-badge-warning{
+  background:#fef3c7;
+  color:#b45309;
+}
+
+.crm-badge-light{
+  background:#f8fafc;
+  color:#334155;
+  border:1px solid #e2e8f0;
+}
+
+/* ========================= */
+/* ACTION BUTTONS */
+/* ========================= */
+
+.crm-action{
+  width:38px;
+  height:38px;
+  border:none;
+  border-radius:12px;
+  background:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-decoration:none;
+  transition:.2s ease;
+  border:1px solid #e2e8f0;
+}
+
+.crm-action:hover{
+  transform:translateY(-2px);
+  box-shadow:0 8px 20px rgba(15,23,42,.12);
+}
+
+.crm-action-view{
+  color:var(--crm-primary);
+}
+
+.crm-action-edit{
+  color:var(--crm-success);
+}
+
+/* ========================= */
+/* EMPTY */
+/* ========================= */
+
+.crm-empty{
+  padding:70px 20px;
+  text-align:center;
+}
+
+.crm-empty-icon{
+  width:90px;
+  height:90px;
+  border-radius:28px;
+  margin:auto;
+  background:linear-gradient(135deg,#dbeafe,#eff6ff);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:var(--crm-primary);
+  font-size:2rem;
+  margin-bottom:18px;
+}
+
+/* ========================= */
+/* PAGINATION */
+/* ========================= */
+
+.pagination{
+  gap:6px;
+}
+
+.pagination a,
+.pagination .current{
+  border:none !important;
+  border-radius:12px !important;
+  padding:8px 14px !important;
+  font-size:.82rem;
+  font-weight:700;
+}
+
+.pagination a{
+  background:#fff !important;
+  color:var(--crm-primary) !important;
+  box-shadow:0 2px 8px rgba(15,23,42,.05);
+}
+
+.pagination .current{
+  background:linear-gradient(135deg,var(--crm-primary),var(--crm-primary-dark)) !important;
+  color:#fff !important;
+}
+
+/* ========================= */
+/* MOBILE */
+/* ========================= */
+
+@media(max-width:768px){
+
+  .crm-header{
+    padding:16px;
+  }
+
+  .crm-title{
+    font-size:1.15rem;
+  }
+
+ /* Phones only */
+@media (max-width:575.98px){
+
+    .table-responsive{
+        overflow-x:auto;
+        -webkit-overflow-scrolling:touch;
+
+        scrollbar-width:none;
+        -ms-overflow-style:none;
+    }
+
+    .table-responsive::-webkit-scrollbar{
+        display:none;
+    }
+
+    .crm-table{
+        min-width:780px;
+    }
+
+    .crm-table thead{
+        display:table-header-group;
+    }
+
+    .crm-table tbody{
+        display:table-row-group;
+    }
+
+    .crm-table tr{
+        display:table-row;
+    }
+
+    .crm-table td,
+    .crm-table th{
+        display:table-cell;
+        white-space:nowrap;
+        padding:10px 8px;
+        font-size:.82rem;
+        vertical-align:middle;
+    }
+
+    .crm-avatar{
+        width:34px;
+        height:34px;
+        font-size:.85rem;
+    }
+
+    .crm-table .badge{
+        font-size:.68rem;
+        padding:.3rem .55rem;
+    }
+
+    .crm-table .btn{
+        width:32px;
+        height:32px;
+        padding:0;
+    }
+
+    .crm-table td::before{
+        content:none !important;
+    }
+}
+
+  .crm-table tbody tr{
+    margin:14px;
+    border-radius:20px;
+    background:#fff;
+    box-shadow:0 8px 24px rgba(15,23,42,.06);
+    overflow:hidden;
+  }
+
+  .crm-table td{
+    justify-content:space-between;
+    gap:12px;
+    padding:14px 16px;
+    border-bottom:1px solid #f1f5f9;
+  }
+
+  .crm-table td:last-child{
+    border-bottom:none;
+  }
+
+  .crm-table td::before{
+    content:attr(data-label);
+    font-weight:700;
+    color:#64748b;
+    font-size:.78rem;
+  }
+
+}
+
+</style>
+
+
+
+
+<%= render "layouts/header" %>
+
+<div class="container">
+
+  
+
+
+<!-- =========================================
+     WHATSAPP CRM DASHBOARD HEADER
+========================================= -->
+
+<div class="whatsapp-dashboard-header">
+
+  <div class="whatsapp-header-main">
+
+    <!-- BRAND / TITLE -->
+    <div class="whatsapp-header-title">
+
+      <div class="whatsapp-header-icon">
+        <i class="bi bi-whatsapp"></i>
+      </div>
+
+      <div>
+        <div class="whatsapp-title-row">
+
+          <h1>
+            WhatsApp CRM
+          </h1>
+
+          <span class="whatsapp-live-badge">
+            <span class="live-dot"></span>
+            Live
+          </span>
+
+        </div>
+
+        <p>
+          Manage WhatsApp leads, conversations, follow-ups & conversions
+        </p>
+      </div>
+
+    </div>
+
+
+    <!-- ACTIONS -->
+    <div class="whatsapp-header-actions">
+
+      <%= link_to jmleads_path(format: "xlsx"),
+          class: "whatsapp-action whatsapp-export",
+          data: { turbo: false } do %>
+
+        <span class="action-icon">
+          <i class="bi bi-file-earmark-excel-fill"></i>
+        </span>
+
+        <span class="action-text">
+          <strong>Export</strong>
+          <small>Excel</small>
+        </span>
+
+      <% end %>
+
+
+      <%= link_to new_jmlead_path,
+          class: "whatsapp-action whatsapp-new-lead" do %>
+
+        <span class="action-icon">
+          <i class="bi bi-person-plus-fill"></i>
+        </span>
+
+        <span class="action-text">
+          <strong>New Lead</strong>
+          <small>Add customer</small>
+        </span>
+
+      <% end %>
+
+    </div>
+
+</div>
+
+
+
+<style>
+
+/* =====================================================
+   WHATSAPP CRM HEADER
+===================================================== */
+
+.whatsapp-dashboard-header {
+
+  position: relative;
+
+  padding: 20px;
+
+  margin-bottom: 20px;
+
+  border-radius: 20px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #ffffff 0%,
+      #f8fafc 55%,
+      #f0fdf4 100%
+    );
+
+  border: 1px solid #e5e7eb;
+
+  box-shadow:
+    0 8px 30px rgba(15, 23, 42, .06);
+
+  overflow: hidden;
+
+}
+
+
+/* subtle decoration */
+
+.whatsapp-dashboard-header::after {
+
+  content: "";
+
+  position: absolute;
+
+  width: 180px;
+  height: 180px;
+
+  right: -70px;
+  top: -90px;
+
+  border-radius: 50%;
+
+  background: rgba(37, 211, 102, .08);
+
+  pointer-events: none;
+
+}
+
+
+/* =====================================================
+   MAIN HEADER
+===================================================== */
+
+.whatsapp-header-main {
+
+  position: relative;
+
+  z-index: 2;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 20px;
+
+}
+
+
+/* =====================================================
+   TITLE
+===================================================== */
+
+.whatsapp-header-title {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 14px;
+
+  min-width: 0;
+
+}
+
+
+.whatsapp-header-icon {
+
+  width: 52px;
+  height: 52px;
+
+  flex-shrink: 0;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 16px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #25d366,
+      #128c7e
+    );
+
+  color: #fff;
+
+  font-size: 25px;
+
+  box-shadow:
+    0 8px 18px rgba(37, 211, 102, .25);
+
+}
+
+
+.whatsapp-title-row {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 9px;
+
+  flex-wrap: wrap;
+
+}
+
+
+.whatsapp-title-row h1 {
+
+  margin: 0;
+
+  font-size: 1.35rem;
+
+  line-height: 1.2;
+
+  font-weight: 850;
+
+  color: #0f172a;
+
+  letter-spacing: -.4px;
+
+}
+
+
+.whatsapp-header-title p {
+
+  margin: 4px 0 0;
+
+  font-size: .82rem;
+
+  font-weight: 500;
+
+  color: #64748b;
+
+}
+
+
+/* =====================================================
+   LIVE BADGE
+===================================================== */
+
+.whatsapp-live-badge {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 5px;
+
+  padding: 4px 8px;
+
+  border-radius: 999px;
+
+  background: #dcfce7;
+
+  color: #15803d;
+
+  font-size: .65rem;
+
+  font-weight: 800;
+
+  text-transform: uppercase;
+
+  letter-spacing: .4px;
+
+}
+
+
+.live-dot {
+
+  width: 6px;
+  height: 6px;
+
+  border-radius: 50%;
+
+  background: #22c55e;
+
+  box-shadow:
+    0 0 0 3px rgba(34, 197, 94, .12);
+
+}
+
+
+/* =====================================================
+   ACTIONS
+===================================================== */
+
+.whatsapp-header-actions {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  flex-shrink: 0;
+
+}
+
+
+.whatsapp-action {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 9px;
+
+  min-width: 120px;
+
+  padding: 9px 12px;
+
+  border-radius: 13px;
+
+  text-decoration: none !important;
+
+  border: 1px solid #e2e8f0;
+
+  background: #fff;
+
+  color: #0f172a;
+
+  transition:
+    transform .2s ease,
+    box-shadow .2s ease,
+    border-color .2s ease;
+
+}
+
+
+.whatsapp-action:hover {
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 8px 20px rgba(15, 23, 42, .08);
+
+}
+
+
+.action-icon {
+
+  width: 34px;
+  height: 34px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
+
+  font-size: 15px;
+
+}
+
+
+.action-text {
+
+  display: flex;
+
+  flex-direction: column;
+
+  line-height: 1.15;
+
+}
+
+
+.action-text strong {
+
+  font-size: .76rem;
+
+  font-weight: 800;
+
+}
+
+
+.action-text small {
+
+  margin-top: 3px;
+
+  font-size: .62rem;
+
+  color: #94a3b8;
+
+  font-weight: 600;
+
+}
+
+
+/* EXPORT */
+
+.whatsapp-export .action-icon {
+
+  background: #dcfce7;
+
+  color: #15803d;
+
+}
+
+
+/* NEW LEAD */
+
+.whatsapp-new-lead {
+
+  background:
+    linear-gradient(
+      135deg,
+      #128c7e,
+      #25d366
+    );
+
+  border-color: transparent;
+
+  color: #fff;
+
+  box-shadow:
+    0 6px 16px rgba(37, 211, 102, .20);
+
+}
+
+
+.whatsapp-new-lead .action-icon {
+
+  background: rgba(255,255,255,.16);
+
+  color: #fff;
+
+}
+
+
+.whatsapp-new-lead .action-text small {
+
+  color: rgba(255,255,255,.75);
+
+}
+
+
+/* =====================================================
+   STATS
+===================================================== */
+
+.whatsapp-header-stats {
+
+  position: relative;
+
+  z-index: 2;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+
+  gap: 8px;
+
+  margin-top: 16px;
+
+  padding-top: 14px;
+
+  border-top: 1px solid #e5e7eb;
+
+}
+
+
+.whatsapp-mini-stat {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 9px;
+
+  padding: 9px 11px;
+
+  border-radius: 12px;
+
+  background: rgba(255,255,255,.72);
+
+  border: 1px solid rgba(226,232,240,.8);
+
+}
+
+
+.mini-stat-icon {
+
+  width: 32px;
+  height: 32px;
+
+  flex-shrink: 0;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 9px;
+
+  font-size: 13px;
+
+}
+
+
+.mini-stat-icon.blue {
+
+  background: #dbeafe;
+  color: #2563eb;
+
+}
+
+
+.mini-stat-icon.orange {
+
+  background: #ffedd5;
+  color: #ea580c;
+
+}
+
+
+.mini-stat-icon.green {
+
+  background: #dcfce7;
+  color: #16a34a;
+
+}
+
+
+.mini-stat-icon.red {
+
+  background: #fee2e2;
+  color: #dc2626;
+
+}
+
+
+.whatsapp-mini-stat > div:last-child {
+
+  display: flex;
+
+  flex-direction: column;
+
+  min-width: 0;
+
+}
+
+
+.whatsapp-mini-stat strong {
+
+  font-size: .95rem;
+
+  line-height: 1;
+
+  font-weight: 850;
+
+  color: #0f172a;
+
+}
+
+
+.whatsapp-mini-stat span {
+
+  margin-top: 3px;
+
+  font-size: .61rem;
+
+  color: #64748b;
+
+  font-weight: 650;
+
+}
+
+
+/* =====================================================
+   TABLET
+===================================================== */
+
+@media (max-width: 900px) {
+
+  .whatsapp-header-main {
+
+    align-items: flex-start;
+
+    flex-direction: column;
+
+  }
+
+  .whatsapp-header-actions {
+
+    width: 100%;
+
+  }
+
+  .whatsapp-action {
+
+    flex: 1;
+
+  }
+
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 576px) {
+
+  .whatsapp-dashboard-header {
+
+    padding: 14px;
+
+    border-radius: 16px;
+
+  }
+
+  .whatsapp-header-icon {
+
+    width: 44px;
+    height: 44px;
+
+    border-radius: 13px;
+
+    font-size: 21px;
+
+  }
+
+  .whatsapp-title-row h1 {
+
+    font-size: 1.08rem;
+
+  }
+
+  .whatsapp-header-title p {
+
+    font-size: .72rem;
+
+    max-width: 280px;
+
+  }
+
+  .whatsapp-header-actions {
+
+    gap: 6px;
+
+  }
+
+  .whatsapp-action {
+
+    min-width: 0;
+
+    padding: 8px;
+
+  }
+
+  .action-text small {
+
+    display: none;
+
+  }
+
+  .action-text strong {
+
+    font-size: .7rem;
+
+  }
+
+  .action-icon {
+
+    width: 31px;
+    height: 31px;
+
+  }
+
+  .whatsapp-header-stats {
+
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 6px;
+
+  }
+
+  .whatsapp-mini-stat {
+
+    padding: 8px;
+
+  }
+
+}
+
+</style>
+
+<div class="login">
+<%= form_with url: jmleads_path, method: :get, local: true do %>
+
+  <%= hidden_field_tag :filter, params[:filter] %>
+  <%= hidden_field_tag :per_page, (params[:per_page].presence || 10) %>
+
+  <div class="input-group shadow-sm">
+
+    <span class="input-group-text bg-white border-end-0">
+      <i class="bi bi-search"></i>
+    </span>
+
+    <%= text_field_tag :search,
+          params[:search],
+          class: "form-control border-start-0 border-end-0",
+          placeholder: "Search by ID, customer, phone, items or status..." %>
+
+    <% if params[:search].present? %>
+
+      <%= link_to jmleads_path(filter: params[:filter], per_page: params[:per_page]),
+          class: "input-group-text bg-white border-start-0 text-danger search-clear",
+          title: "Clear Search" do %>
+
+        <i class="bi bi-x-lg"></i>
+
+      <% end %>
+
+    <% end %>
+
+    <button class="btn btn-primary px-4">
+      <i class="bi bi-search me-1"></i>
+      Search
+    </button>
+
+  </div>
+
+<% end %>
+
+</div>
+
+<style>
+  .search-clear{
+    cursor:pointer;
+    text-decoration:none;
+    transition:all .2s ease;
+}
+
+.search-clear:hover{
+    background:#ef4444 !important;
+    color:#fff !important;
+    border-color:#ef4444 !important;
+}
+
+.input-group .form-control:focus{
+    box-shadow:none;
+}
+
+.input-group{
+    border-radius:14px;
+    overflow:hidden;
+}
+
+.input-group-text{
+    background:#fff;
+}
+</style>
+
+
+<style type="text/css">
+
+
+  .customer-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;          /* Space between button and search form */
+  margin: 1rem 0;
+  justify-content: flex-start; /* Align left */
+}
+
+.admin-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 1rem;
+  font-size: 0.95rem;
+  background-color: #007bff;
+  color: #fff;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: all 0.25s ease;
+  font-weight: 500;
+}
+
+.admin-btn:hover {
+  background-color: #0056b3;
+}
+
+.admin-btn.active {
+  background-color: #0056b3;
+  font-weight: 600;
+}
+
+.myform {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.search-input {
+  padding: 0.45rem 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 0.95rem;
+}
+
+.search-btn {
+  padding: 0.45rem 0.85rem;
+  border: none;
+  border-radius: 6px;
+  background-color: #28a745;
+  color: #fff;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: all 0.25s ease;
+}
+
+.search-btn:hover {
+  background-color: #1e7e34;
+}
+
+  .admin-message {
+  text-align: center;       /* Center the text */
+  color: #dc3545;           /* Bootstrap danger/red color */
+  font-weight: 600;         /* Bold text */
+  font-size: 16px;          /* Slightly larger text */
+  margin: 20px 0;           /* Space around the message */
+  background-color: #f8d7da; /* Light red background */
+  padding: 12px 20px;       /* Padding inside the box */
+  border-radius: 8px;       /* Rounded corners */
+  border: 1px solid #f5c2c7; /* Subtle border */
+}
+
+
+  fieldset {
+    border: 0px solid #4CAF50; /* Green border */
+    border-radius: 40px; /* Rounded corners */
+    padding: 2rem; /* Padding inside the fieldset */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    background-color: #f9f9f9; /* Light background color */
+    margin-bottom: 20px; /* Space between fieldsets */
+    transition: all 0.3s ease-in-out; /* Smooth transitions */
+    width: auto; /* Use full width for smaller devices */
+    justify-content: center;
+
+}
+
+
+@media (max-width: 600px) {
+       fieldset {
+    border: 0px solid #4CAF50; /* Green border */
+    border-radius: 40px; /* Rounded corners */
+    
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    background-color: #f9f9f9; /* Light background color */
+    margin-bottom: 20px; /* Space between fieldsets */
+    transition: all 0.3s ease-in-out; /* Smooth transitions */
+    width: 100%; /* Use full width for smaller devices */
+    justify-content: center;
+
+}
+      
+      .form-row {
+          flex-direction: column; /* Stack fields vertically on small screens */
+      }
+
+      .field, .action {
+          width: 100%; /* Make fields full-width on small screens */
+          margin-bottom: 10px; /* Add some spacing between stacked fields */
+      }
+  }
+
+
+
+
+    .custom-fieldset {
+      padding: 2rem; /* Reduced padding for the span */
+      margin: 0.5rem; /* Reduced margin for the span */
+      display: block; /* Ensure it behaves like a block element */
+      border: 1px solid #dee2e6; /* Optional: style the border */
+      border-radius: 0.5rem; /* Optional: round the corners */
+      justify-content: center;
+      margin-left: 25px;
+      width: 90%;
+  }
+
+.card-text {
+    display: block; /* Make each span behave like a block for easier spacing */
+    margin: -3px 0; /* Add margin for vertical spacing */
+    font-size: 16px; /* Set font size for readability */
+    color: #333; /* Dark gray text color for contrast */
+}
+
+.card-text strong {
+    color: #007bff; /* Blue color for strong text to differentiate labels */
+}
+
+.card-title {
+    font-weight: bold; /* Make card title bold */
+    font-size: 1.5rem; /* Increase font size for better visibility */
+}
+
+.animal-image img {
+    border-radius: 10px; /* Add rounded corners to images */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+.card {
+    border: 1px solid #dee2e6; /* Light border for cards */
+    border-radius: 0.5rem; /* Rounded corners for cards */
+    transition: transform 0.2s; /* Smooth transition effect on hover */
+}
+
+.card:hover {
+    transform: scale(1.05); /* Scale up the card slightly on hover */
+}
+
+.btn {
+    min-width: 80px; /* Set a minimum width for buttons */
+    margin: 0 5px; /* Add margin between buttons */
+}
+
+
+.img-responsive {
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 5px;
+}
+
+button {
+  background-color: #25D366;
+  border: none;
+  color: white;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+  .form-select {
+  display: inline-block;
+  width: auto;
+  margin-left: 10px;
+}
+
+.btn-primary {
+  margin-left: 10px;
+}
+
+
+.clickable-image {
+  cursor: pointer;
+}
+
+.digg_pagination {
+  text-align: center;
+  width: 100%;
+  margin-top: 10px; /* Reduced margin to compact layout */
+}
+
+.pagination {
+  display: inline-flex;
+  justify-content: center;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.pagination li {
+  margin: 0;
+}
+
+.pagination a,
+.pagination .current {
+  display: block;
+  padding: 3px 8px; /* Reduced padding for compactness */
+  margin: 2px; /* Reduced margin */
+  background-color: #007bff;
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+}
+
+.pagination a:hover {
+  background-color: #0056b3;
+}
+
+.pagination .current {
+  background-color: #0056b3;
+}
+
+.pagination .disabled {
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+.pagination .dots {
+  padding: 3px 8px;
+  margin: 2px;
+}
+
+.pagination .previous_page,
+.pagination .next_page {
+  font-weight: bold;
+}
+
+.table-success {
+  background-color: #d4edda;
+}
+
+.text-center {
+  text-align: center;
+}
+
+
+
+
+</style>
+
+
+  <%= render 'jmleads/submenu' %>
+<%# =====================================================
+    UNCONTACTED LEADS
+===================================================== %>
+
+<div class="d-flex justify-content-between align-items-center mb-2">
+
+  <div>
+    <h6 class="fw-bold mb-0">
+      <i class="bi bi-person-x-fill text-danger me-1"></i>
+      Uncontacted Leads
+    </h6>
+
+    <small class="text-muted">
+      Last 60 Days
+    </small>
+  </div>
+
+  <span class="badge rounded-pill bg-danger-subtle text-danger">
+    <i class="bi bi-chat-dots-fill me-1"></i>
+    <%= @uncontacted_count.to_i %>
+  </span>
+
+</div>
+
+
+<% if @uncontacted_days.present? %>
+
+  <div class="uncontacted-grid <%= 'single-day' if @uncontacted_days.length == 1 %>">
+
+    <% @uncontacted_days.each do |day| %>
+
+      <% active = params[:uncontacted_date].to_s == day[:date].to_s %>
+      <% pending = day[:count].to_i > 0 %>
+
+      <%= link_to jmleads_path(
+            filter: "uncontacted",
+            uncontacted_date: day[:date]
+          ),
+          class: [
+            "uncontacted-card",
+            pending ? "card-pending" : "card-clear",
+            ("active" if active)
+          ].compact.join(" ") do %>
+
+        <div class="uc-top">
+
+          <span class="uc-icon">
+
+            <% if pending %>
+              <i class="bi bi-person-x-fill"></i>
+            <% else %>
+              <i class="bi bi-check-circle-fill"></i>
+            <% end %>
+
+          </span>
+
+          <i class="bi bi-arrow-up-right uc-arrow"></i>
+
+        </div>
+
+
+        <strong class="uc-count">
+          <%= day[:count].to_i %>
+        </strong>
+
+
+        <span class="uc-date">
+          <i class="bi bi-calendar3"></i>
+          <%= day[:date].strftime("%d %b") %>
+        </span>
+
+
+        <span class="uc-status">
+
+          <% if pending %>
+
+            <i class="bi bi-exclamation-circle-fill"></i>
+            Pending
+
+          <% else %>
+
+            <i class="bi bi-check-circle-fill"></i>
+            Clear
+
+          <% end %>
+
+        </span>
+
+      <% end %>
+
+    <% end %>
+
+  </div>
+
+<% else %>
+
+  <div class="uncontacted-empty">
+
+    <div class="empty-icon">
+      <i class="bi bi-check-circle-fill"></i>
+    </div>
+
+    <div class="empty-content">
+      <strong>All caught up</strong>
+
+      <small>
+        No uncontacted leads found.
+      </small>
+    </div>
+
+    <span class="empty-badge">
+      <i class="bi bi-check-lg"></i>
+      Clear
+    </span>
+
+  </div>
+
+<% end %>
+
+
+<hr/>
+
+<style>
+
+
+  /* =====================================================
+   UNCONTACTED GRID
+===================================================== */
+
+.uncontacted-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(125px, 1fr));
+  gap: 10px;
+}
+
+/*
+   If only one day exists, DON'T stretch it across
+   the whole container. Keep the same compact card size.
+*/
+.uncontacted-grid.single-day {
+  grid-template-columns: minmax(125px, 160px);
+}
+
+
+/* =====================================================
+   CARD
+===================================================== */
+
+.uncontacted-card {
+  display: block;
+  min-height: 135px;
+  padding: 15px;
+
+  border-radius: 13px;
+
+  color: #343a40;
+  text-decoration: none;
+
+  line-height: 1.2;
+
+  transition:
+    transform .2s ease,
+    box-shadow .2s ease,
+    border-color .2s ease;
+}
+
+
+/* =====================================================
+   CLEAR
+===================================================== */
+
+.card-clear {
+  background: #f0fff4;
+  border: 1px solid #86efac;
+}
+
+.card-clear .uc-icon {
+  background: #dcfce7;
+  color: #16a34a;
+}
+
+.card-clear .uc-count,
+.card-clear .uc-status {
+  color: #15803d;
+}
+
+
+/* =====================================================
+   PENDING
+===================================================== */
+
+.card-pending {
+  background: #fff5f5;
+  border: 1px solid #fca5a5;
+}
+
+.card-pending .uc-icon {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.card-pending .uc-count,
+.card-pending .uc-status {
+  color: #b91c1c;
+}
+
+
+/* =====================================================
+   TOP
+===================================================== */
+
+.uc-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+
+/* =====================================================
+   ICON
+===================================================== */
+
+.uc-icon {
+  width: 36px;
+  height: 36px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
+
+  font-size: 16px;
+
+  flex-shrink: 0;
+}
+
+
+/* =====================================================
+   ARROW
+===================================================== */
+
+.uc-arrow {
+  font-size: 14px;
+  color: #adb5bd;
+  transition: .2s ease;
+}
+
+.uncontacted-card:hover .uc-arrow {
+  color: #dc3545;
+  transform: translate(2px, -2px);
+}
+
+
+/* =====================================================
+   COUNT
+===================================================== */
+
+.uc-count {
+  display: block;
+
+  font-size: 2rem;
+  font-weight: 900;
+
+  line-height: 1;
+
+  margin-bottom: 10px;
+
+  letter-spacing: -.5px;
+}
+
+
+/* =====================================================
+   DATE
+===================================================== */
+
+.uc-date {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+
+  font-size: .78rem;
+  font-weight: 700;
+
+  color: #64748b;
+
+  margin-bottom: 7px;
+}
+
+.uc-date i {
+  font-size: 12px;
+}
+
+
+/* =====================================================
+   STATUS
+===================================================== */
+
+.uc-status {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+
+  font-size: .68rem;
+  font-weight: 800;
+
+  text-transform: uppercase;
+  letter-spacing: .4px;
+}
+
+.uc-status i {
+  font-size: 10px;
+}
+
+
+/* =====================================================
+   HOVER / ACTIVE
+===================================================== */
+
+.uncontacted-card:hover,
+.uncontacted-card.active {
+  text-decoration: none;
+
+  transform: translateY(-3px);
+
+  box-shadow:
+    0 8px 20px rgba(15, 23, 42, .09),
+    0 15px 35px rgba(15, 23, 42, .05);
+}
+
+.card-clear:hover,
+.card-clear.active {
+  border-color: #22c55e;
+}
+
+.card-pending:hover,
+.card-pending.active {
+  border-color: #ef4444;
+}
+
+
+/* =====================================================
+   EMPTY STATE
+===================================================== */
+
+.uncontacted-empty {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  padding: 14px 16px;
+
+  background: linear-gradient(
+    135deg,
+    #f0fff4,
+    #f8fffa
+  );
+
+  border: 1px solid #bbf7d0;
+
+  border-radius: 14px;
+}
+
+
+.empty-icon {
+  width: 40px;
+  height: 40px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 11px;
+
+  background: #dcfce7;
+  color: #16a34a;
+
+  font-size: 18px;
+}
+
+
+.empty-content {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.empty-content strong {
+  font-size: .9rem;
+  font-weight: 800;
+  color: #166534;
+}
+
+.empty-content small {
+  font-size: .75rem;
+  color: #64748b;
+}
+
+
+.empty-badge {
+  margin-left: auto;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+
+  padding: 5px 9px;
+
+  border-radius: 999px;
+
+  background: #dcfce7;
+  color: #15803d;
+
+  font-size: .65rem;
+  font-weight: 800;
+
+  text-transform: uppercase;
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 768px) {
+
+  .uncontacted-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .uncontacted-grid.single-day {
+    grid-template-columns: minmax(125px, 150px);
+  }
+
+  .uncontacted-card {
+    min-height: 125px;
+    padding: 13px;
+  }
+
+  .uc-count {
+    font-size: 1.8rem;
+  }
+
+}
+
+
+/* =====================================================
+   SMALL MOBILE
+===================================================== */
+
+@media (max-width: 480px) {
+
+  .uncontacted-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .uncontacted-grid.single-day {
+    grid-template-columns: minmax(120px, 145px);
+  }
+
+  .uncontacted-card {
+    min-height: 120px;
+    padding: 12px;
+    border-radius: 12px;
+  }
+
+  .uc-icon {
+    width: 34px;
+    height: 34px;
+    font-size: 15px;
+  }
+
+  .uc-count {
+    font-size: 1.7rem;
+  }
+
+  .uc-date {
+    font-size: .72rem;
+  }
+
+  .uc-status {
+    font-size: .62rem;
+  }
+
+  .uncontacted-empty {
+    padding: 12px;
+  }
+
+  .empty-badge {
+    display: none;
+  }
+
+}
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+.uncontacted-header h6 {
+  font-size: 1rem;
+}
+
+.uncontacted-header small {
+  font-size: .8rem;
+}
+
+.uncontacted-header .badge {
+  font-size: .85rem;
+  padding: 8px 13px;
+}
+
+
+/* =====================================================
+   GRID
+===================================================== */
+
+.uncontacted-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(auto-fit, minmax(125px, 1fr));
+
+  gap: 10px;
+
+  align-items: stretch;
+}
+
+
+/* =====================================================
+   SINGLE DAY
+   Keep it compact instead of stretching full width
+===================================================== */
+
+.uncontacted-grid.single-day {
+  grid-template-columns: 125px;
+}
+
+
+/* =====================================================
+   CARD
+===================================================== */
+
+.uncontacted-card {
+  display: block;
+
+  width: 100%;
+  min-height: 135px;
+
+  padding: 15px;
+
+  box-sizing: border-box;
+
+  border-radius: 13px;
+
+  color: #343a40;
+  text-decoration: none;
+
+  line-height: 1.2;
+
+  transition:
+    transform .2s ease,
+    box-shadow .2s ease,
+    border-color .2s ease;
+}
+
+
+/* =====================================================
+   CLEAR
+===================================================== */
+
+.card-clear {
+  background: #f0fff4;
+  border: 1px solid #86efac;
+}
+
+.card-clear .uc-icon {
+  background: #dcfce7;
+  color: #16a34a;
+}
+
+.card-clear .uc-count,
+.card-clear .uc-status {
+  color: #15803d;
+}
+
+
+/* =====================================================
+   PENDING
+===================================================== */
+
+.card-pending {
+  background: #fff5f5;
+  border: 1px solid #fca5a5;
+}
+
+.card-pending .uc-icon {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.card-pending .uc-count,
+.card-pending .uc-status {
+  color: #b91c1c;
+}
+
+
+/* =====================================================
+   TOP
+===================================================== */
+
+.uc-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 10px;
+}
+
+
+/* =====================================================
+   ICON
+===================================================== */
+
+.uc-icon {
+  width: 36px;
+  height: 36px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
+
+  font-size: 16px;
+
+  flex-shrink: 0;
+}
+
+
+/* =====================================================
+   ARROW
+===================================================== */
+
+.uc-arrow {
+  font-size: 14px;
+  color: #adb5bd;
+
+  transition: .2s ease;
+}
+
+.uncontacted-card:hover .uc-arrow {
+  color: #dc3545;
+
+  transform:
+    translate(2px, -2px);
+}
+
+
+/* =====================================================
+   COUNT
+===================================================== */
+
+.uc-count {
+  display: block;
+
+  font-size: 2rem;
+  font-weight: 900;
+
+  line-height: 1;
+
+  margin-bottom: 10px;
+
+  letter-spacing: -.5px;
+}
+
+
+/* =====================================================
+   DATE
+===================================================== */
+
+.uc-date {
+  display: flex;
+  align-items: center;
+
+  gap: 5px;
+
+  font-size: .78rem;
+
+  font-weight: 700;
+
+  color: #64748b;
+
+  margin-bottom: 7px;
+}
+
+.uc-date i {
+  font-size: 12px;
+}
+
+
+/* =====================================================
+   STATUS
+===================================================== */
+
+.uc-status {
+  display: flex;
+  align-items: center;
+
+  gap: 5px;
+
+  font-size: .68rem;
+
+  font-weight: 800;
+
+  text-transform: uppercase;
+
+  letter-spacing: .4px;
+}
+
+.uc-status i {
+  font-size: 10px;
+}
+
+
+/* =====================================================
+   HOVER
+===================================================== */
+
+.uncontacted-card:hover,
+.uncontacted-card.active {
+
+  text-decoration: none;
+
+  transform: translateY(-3px);
+
+  box-shadow:
+    0 8px 20px rgba(15, 23, 42, .09),
+    0 15px 35px rgba(15, 23, 42, .05);
+}
+
+.card-clear:hover,
+.card-clear.active {
+  border-color: #22c55e;
+}
+
+.card-pending:hover,
+.card-pending.active {
+  border-color: #ef4444;
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 768px) {
+
+  .uncontacted-grid {
+    grid-template-columns:
+      repeat(3, minmax(0, 1fr));
+
+    gap: 8px;
+  }
+
+  .uncontacted-card {
+    min-height: 125px;
+    padding: 13px;
+  }
+
+  .uc-count {
+    font-size: 1.8rem;
+  }
+
+  /* Keep one card compact */
+  .uncontacted-grid.single-day {
+    grid-template-columns: 125px;
+  }
+
+}
+
+
+/* =====================================================
+   SMALL MOBILE
+===================================================== */
+
+@media (max-width: 480px) {
+
+  .uncontacted-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+
+    gap: 8px;
+  }
+
+  .uncontacted-card {
+    min-height: 120px;
+    padding: 12px;
+
+    border-radius: 12px;
+  }
+
+  .uc-icon {
+    width: 34px;
+    height: 34px;
+
+    font-size: 15px;
+  }
+
+  .uc-count {
+    font-size: 1.7rem;
+  }
+
+  .uc-date {
+    font-size: .72rem;
+  }
+
+  .uc-status {
+    font-size: .62rem;
+  }
+
+  /* Single card remains the same compact size */
+  .uncontacted-grid.single-day {
+    grid-template-columns: 120px;
+  }
+
+}
+
+</style>
+
+
+
+
+
+
+<div class="crm-table-wrapper">
+
+  <table class="table table-hover align-middle crm-table mb-0">
+
+    <thead>
+      <tr>
+
+        <th>
+        #
+        </th>
+
+        <th>
+          <i class="bi bi-person-vcard me-1"></i>
+          Lead
+        </th>
+
+        <th>
+          <i class="bi bi-telephone me-1"></i>
+          Phone
+        </th>
+
+        <th>
+          <i class="bi bi-box-seam me-1"></i>
+          Items Required
+        </th>
+
+        <th>
+          <i class="bi bi-activity me-1"></i>
+          Status
+        </th>
+
+          <th>
+          <i class="bi bi-calendar3 me-1"></i>
+          Created
+        </th>
+
+      
+
+        <th>
+          <i class="bi bi-chat-left-text me-1"></i>
+          Last Comments
+        </th>
+
+        <th class="text-center">
+          <i class="bi bi-lightning-charge me-1"></i>
+          Actions
+        </th>
+
+      </tr>
+    </thead>
+
+
+    <tbody>
+
+      <% @jmleads.each do |lead| %>
+
+        <%
+          customer_name =
+            lead.jmcustomer&.name.presence ||
+            lead.name.presence ||
+            "Unknown Customer"
+
+          converted =
+            lead.status.to_s.downcase == "converted"
+
+          updates =
+            lead.conversation.to_s
+                .split(/\n{2,}/)
+                .reject(&:blank?)
+
+          row_class =
+            converted ? "crm-lead-row converted-lead-row" : "crm-lead-row"
+        %>
+
+
+        <tr class="<%= row_class %>">
+
+
+          <!-- ==================================================
+               SELECT
+          =================================================== -->
+
+ 
+<td class="text-center">
+
+  <%= link_to jmlead_path(lead),
+      class: "crm-view-btn",
+      data: { turbo: false },
+      title: "View Lead",
+      aria: { label: "View Lead" } do %>
+
+    <i class="bi bi-eye-fill"></i>
+
+  <% end %>
+
+</td>
+
+
+
+
+          <!-- ==================================================
+               LEAD
+          =================================================== -->
+
+          <td>
+
+            <div class="crm-lead-profile">
+
+              <div class="crm-avatar">
+
+                <%= customer_name.first.upcase %>
+
+              </div>
+
+
+              <div class="crm-lead-info">
+
+                <div class="crm-lead-name">
+
+                  <%= customer_name %>
+
+                  <% if converted %>
+
+                    <span class="converted-mini-badge"
+                          title="Converted lead">
+
+                      <i class="bi bi-check-circle-fill"></i>
+
+                    </span>
+
+                  <% end %>
+
+                </div>
+
+
+                <div class="crm-lead-id">
+
+                  <i class="bi bi-hash"></i>
+
+                  <%= lead.sglid.presence || lead.id %>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </td>
+
+
+          <!-- ==================================================
+               PHONE
+          =================================================== -->
+
+          <td>
+
+            <a href="tel:<%= lead.phone %>"
+               class="crm-phone-link">
+
+              <span class="crm-phone-icon">
+
+                <i class="bi bi-telephone-fill"></i>
+
+              </span>
+
+              <span>
+                <%= lead.phone %>
+              </span>
+
+            </a>
+
+          </td>
+
+<!-- ==================================================
+     ITEMS
+================================================== -->
+
+<td>
+
+  <div class="crm-items">
+
+    <span class="crm-items-icon">
+      <i class="bi bi-box-seam"></i>
+    </span>
+
+    <span class="crm-items-text">
+      <%= truncate(
+            lead.items_required.to_s,
+            length: 32
+          ) %>
+    </span>
+
+  </div>
+
+</td>
+
+
+<style>
+.crm-items {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+
+    max-width: 220px;
+
+    padding: 6px 9px;
+
+    background: #f8fafc;
+
+    border: 1px solid #e8edf2;
+
+    border-radius: 9px;
+
+    color: #4b5563;
+
+    font-size: 10.5px;
+    font-weight: 600;
+
+    line-height: 1.3;
+
+    vertical-align: middle;
+}
+
+
+/* Icon */
+
+.crm-items-icon {
+    width: 24px;
+    height: 24px;
+
+    min-width: 24px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 7px;
+
+    color: #2563eb;
+
+    background: #eff6ff;
+
+    border: 1px solid #dbeafe;
+
+    font-size: 11px;
+}
+
+
+/* Text */
+
+.crm-items-text {
+    display: block;
+
+    max-width: 175px;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+}
+
+
+/* Hover */
+
+.crm-items:hover {
+    background: #f1f5f9;
+
+    border-color: #dbe3ea;
+}
+
+
+/* Mobile */
+
+@media (max-width: 768px) {
+
+    .crm-items {
+        max-width: 170px;
+
+        padding: 5px 7px;
+
+        gap: 5px;
+
+        font-size: 9.5px;
+    }
+
+    .crm-items-icon {
+        width: 22px;
+        height: 22px;
+        min-width: 22px;
+
+        font-size: 10px;
+    }
+
+    .crm-items-text {
+        max-width: 125px;
+    }
+
+}
+
+</style>
+
+
+          <!-- ==================================================
+               STATUS
+          =================================================== -->
+
+          <td>
+
+            <% if converted %>
+
+              <span class="crm-status crm-status-converted">
+
+                <span class="crm-status-dot"></span>
+
+                <i class="bi bi-check-circle-fill"></i>
+
+                Converted
+
+              </span>
+
+            <% elsif lead.status.to_s.downcase == "assigned" %>
+
+              <span class="crm-status crm-status-assigned">
+
+                <span class="crm-status-dot"></span>
+
+                <i class="bi bi-person-check-fill"></i>
+
+                Assigned
+
+              </span>
+
+            <% else %>
+
+              <span class="crm-status crm-status-pending">
+
+                <span class="crm-status-dot"></span>
+
+                <i class="bi bi-hourglass-split"></i>
+
+                Pending
+
+              </span>
+
+            <% end %>
+
+          </td>
+
+
+          <!-- ==================================================
+               CREATED
+          =================================================== -->
+
+          <td>
+
+            <div class="crm-date">
+
+              <div class="crm-date-main">
+
+                <i class="bi bi-calendar-event"></i>
+
+                <%= lead.created_at.strftime("%d %b %Y") %>
+
+              </div>
+
+              <div class="crm-date-relative">
+
+                <i class="bi bi-clock"></i>
+
+                <%= time_ago_in_words(lead.created_at) %> ago
+
+              </div>
+
+            </div>
+
+          </td>
+
+
+          <!-- ==================================================
+               LAST COMMENTS
+          =================================================== -->
+
+          <td>
+
+            <% if updates.any? %>
+
+              <% update = updates.last %>
+
+              <% body =
+                   update
+                     .gsub(/\ACustomer:\s*/m, "")
+                     .strip
+              %>
+
+              <% lines =
+                   body
+                     .lines
+                     .map(&:strip)
+                     .reject(&:blank?)
+              %>
+
+              <% timestamp = nil %>
+
+              <% if lines.first&.match?(/^\[.*\]$/) %>
+
+                <% timestamp =
+                     lines.shift.delete("[]")
+                %>
+
+              <% end %>
+
+
+              <div class="latest-conversation-card">
+
+                <div class="latest-conversation-header">
+
+                  <span class="latest-badge">
+
+                    <i class="bi bi-chat-dots-fill"></i>
+
+                    Latest
+
+                  </span>
+
+
+                  <% if timestamp.present? %>
+
+                    <span class="latest-time">
+
+                      <i class="bi bi-clock"></i>
+
+                      <%= timestamp %>
+
+                    </span>
+
+                  <% end %>
+
+                </div>
+
+
+                <div class="latest-conversation-text">
+
+                  <%= truncate(
+                        lines.join(" "),
+                        length: 180
+                      ) %>
+
+                </div>
+
+              </div>
+
+
+            <% else %>
+
+              <div class="no-conversation">
+
+                <span class="no-conversation-icon">
+
+                  <i class="bi bi-chat-square-dots"></i>
+
+                </span>
+
+                <span>
+                  No conversation yet
+                </span>
+
+              </div>
+
+            <% end %>
+
+          </td>
+
+
+          <!-- ==================================================
+               ACTIONS
+          =================================================== -->
+
+          <td>
+
+            <div class="crm-actions">
+
+              <!-- VIEW -->
+
+              <%= link_to jmlead_path(lead),
+                  class: "crm-action-btn crm-action-view",
+                  data: { turbo: false },
+                  title: "View Lead" do %>
+
+                <i class="bi bi-eye-fill"></i>
+
+              <% end %>
+
+
+              <!-- EDIT -->
+
+              <%= link_to edit_jmlead_path(lead),
+                  class: "crm-action-btn crm-action-edit",
+                  data: { turbo: false },
+                  title: "Edit Lead" do %>
+
+                <i class="bi bi-pencil-fill"></i>
+
+              <% end %>
+
+            </div>
+
+          </td>
+
+        </tr>
+
+      <% end %>
+
+    </tbody>
+
+  </table>
+
+</div>
+
+
+<!-- Pagination -->
+<div class="leads-pagination">
+
+  <div class="d-flex justify-content-center mb-3">
+    <%= paginate @jmleads %>
+  </div>
+
+  <div class="d-flex justify-content-center align-items-center gap-2 mb-3">
+
+    <%= form_with url: request.path,
+          method: :get,
+          local: true,
+          id: "rows-per-page-form",
+          class: "d-flex align-items-center gap-2" do |f| %>
+
+      <%= f.label :per_page,
+          "Rows per page",
+          class: "mb-0 fw-semibold" %>
+
+      <%= f.select :per_page,
+          options_for_select(
+            [10, 25, 50, 100, 250, 500, 1000],
+            params[:per_page] || 10
+          ),
+          {},
+          class: "form-select form-select-sm",
+          style: "width:100px;",
+          id: "rows-per-page" %>
+
+    <% end %>
+
+  </div>
+
+  <div class="text-center text-muted small">
+    <%= page_entries_info @jmleads %>
+  </div>
+
+</div>
+
+
+<style>
+
+  /* =====================================================
+   REMOVE DOUBLE SCROLLBARS
+===================================================== */
+
+/* Let the browser/page handle the main vertical scroll */
+html,
+body {
+  height: auto;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+
+/* Never create another page-level vertical scrollbar */
+.container-fluid,
+.container,
+main {
+  overflow-x: hidden;
+}
+
+
+/* =====================================================
+   PAGINATION
+===================================================== */
+
+.leads-pagination {
+  width: 100%;
+  overflow: visible !important;
+  padding: 10px 0 20px;
+}
+
+
+/* Remove empty pagination wrapper */
+.digg_pagination {
+  display: none !important;
+}
+
+
+/* Keep pagination itself compact */
+.leads-pagination .pagination {
+  display: inline-flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+
+/* =====================================================
+   TABLE RESPONSIVE
+===================================================== */
+
+/*
+   Horizontal scrolling is allowed ONLY for a wide table.
+   It will NOT create a second vertical scrollbar.
+*/
+
+.table-responsive {
+  overflow-x: auto !important;
+  overflow-y: visible !important;
+  -webkit-overflow-scrolling: touch;
+}
+
+
+/*
+   If you have a custom table wrapper with overflow,
+   don't allow it to become a second vertical page.
+*/
+
+.premium-table-scroll {
+  overflow-x: auto !important;
+  overflow-y: visible !important;
+}
+
+
+/* =====================================================
+   PAGINATION BUTTONS
+===================================================== */
+
+.leads-pagination .pagination a,
+.leads-pagination .pagination .current {
+  display: block;
+  padding: 5px 10px;
+  margin: 2px;
+
+  color: #fff;
+  background: #007bff;
+
+  text-decoration: none;
+
+  border-radius: 6px;
+}
+
+.leads-pagination .pagination a:hover {
+  background: #0056b3;
+}
+
+.leads-pagination .pagination .current {
+  background: #0056b3;
+}
+
+.leads-pagination .pagination .disabled {
+  pointer-events: none;
+  opacity: .5;
+}
+
+.leads-pagination .pagination .dots {
+  padding: 5px 10px;
+}
+/* =========================================================
+   PREMIUM CRM LEADS TABLE
+   ========================================================= */
+
+.crm-view-btn {
+    width: 52px !important;
+    height: 52px !important;
+
+    min-width: 52px;
+    min-height: 52px;
+
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50% !important;
+
+    background: #0d6efd !important;
+    border: none !important;
+
+    color: #ffffff !important;
+
+    font-size: 21px !important;
+
+    text-decoration: none !important;
+
+    box-shadow:
+        0 4px 12px rgba(13, 110, 253, .28);
+
+    opacity: 1 !important;
+
+    visibility: visible !important;
+
+    transition: transform .15s ease,
+                box-shadow .15s ease;
+}
+
+
+/* ALWAYS BLUE */
+
+.crm-view-btn:hover,
+.crm-view-btn:focus,
+.crm-view-btn:active,
+.crm-view-btn:visited {
+    background: #0d6efd !important;
+    color: #ffffff !important;
+    opacity: 1 !important;
+}
+
+
+/* Only enlarge slightly on hover */
+
+.crm-view-btn:hover {
+    transform: scale(1.06);
+
+    box-shadow:
+        0 6px 16px rgba(13, 110, 253, .35);
+}
+
+
+/* Click */
+
+.crm-view-btn:active {
+    transform: scale(.98);
+}
+
+
+.crm-view-btn i {
+    color: #ffffff !important;
+
+    font-size: 21px;
+
+    line-height: 1;
+}
+
+
+
+.crm-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+
+    background: #ffffff;
+
+    border: 1px solid #e8ecf0;
+    border-radius: 16px;
+
+    box-shadow:
+        0 6px 24px rgba(16, 24, 40, .055);
+
+    -webkit-overflow-scrolling: touch;
+}
+
+
+/* =========================================================
+   TABLE
+   ========================================================= */
+
+.crm-table {
+    min-width: 1250px;
+
+    border-collapse: separate;
+    border-spacing: 0;
+
+    color: #344054;
+
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.crm-table thead th {
+    padding: 14px 14px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #f9fafb,
+            #f4f6f8
+        );
+
+    color: #667085;
+
+    border-bottom: 1px solid #e4e7ec;
+
+    font-size: 10px;
+    font-weight: 800;
+
+    text-transform: uppercase;
+
+    letter-spacing: .055em;
+
+    white-space: nowrap;
+}
+
+.crm-table thead th:first-child {
+    border-top-left-radius: 16px;
+}
+
+.crm-table thead th:last-child {
+    border-top-right-radius: 16px;
+}
+
+.crm-table thead th i {
+    font-size: 11px;
+    opacity: .75;
+}
+
+
+/* =========================================================
+   ROW
+   ========================================================= */
+
+.crm-lead-row {
+    position: relative;
+
+    background: #ffffff;
+
+    transition:
+        background .18s ease,
+        box-shadow .18s ease;
+}
+
+.crm-lead-row > td {
+    padding: 13px 14px;
+
+    border-bottom: 1px solid #f0f2f4;
+
+    vertical-align: middle;
+}
+
+.crm-lead-row:hover {
+    background: #f8fafc;
+}
+
+
+/* =========================================================
+   CONVERTED LEAD
+   ========================================================= */
+
+.converted-lead-row {
+    background:
+        linear-gradient(
+            90deg,
+            #effbf5 0%,
+            #f8fdfb 55%,
+            #ffffff 100%
+        ) !important;
+}
+
+.converted-lead-row > td {
+    border-bottom-color: #d9eee3;
+}
+
+.converted-lead-row:hover {
+    background:
+        linear-gradient(
+            90deg,
+            #e5f8ee 0%,
+            #f2fbf6 55%,
+            #ffffff 100%
+        ) !important;
+}
+
+
+/* Green indicator on converted rows */
+
+.converted-lead-row > td:first-child {
+    position: relative;
+}
+
+.converted-lead-row > td:first-child::before {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    top: 10px;
+    bottom: 10px;
+
+    width: 3px;
+
+    background: #12b76a;
+
+    border-radius: 0 4px 4px 0;
+}
+
+
+
+
+/* =========================================================
+   LEAD PROFILE
+   ========================================================= */
+
+.crm-lead-profile {
+    display: flex;
+
+    align-items: center;
+
+    gap: 11px;
+
+    min-width: 190px;
+}
+
+
+.crm-avatar {
+    width: 42px;
+    height: 42px;
+
+    min-width: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+
+    color: #175cd3;
+
+    background:
+        linear-gradient(
+            135deg,
+            #eff4ff,
+            #e0eaff
+        );
+
+    border: 1px solid #dbe5ff;
+
+    font-size: 14px;
+    font-weight: 800;
+
+    box-shadow:
+        0 3px 8px rgba(37, 99, 235, .08);
+}
+
+
+/* Converted avatar */
+
+.converted-lead-row .crm-avatar {
+    color: #087443;
+
+    background:
+        linear-gradient(
+            135deg,
+            #e9f9f0,
+            #d9f4e5
+        );
+
+    border-color: #c7ebd7;
+}
+
+
+.crm-lead-info {
+    min-width: 0;
+}
+
+
+.crm-lead-name {
+    color: #101828;
+
+    font-size: 12.5px;
+    font-weight: 750;
+
+    line-height: 1.35;
+
+    max-width: 190px;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+.crm-lead-id {
+    margin-top: 3px;
+
+    color: #98a2b3;
+
+    font-size: 9px;
+    font-weight: 600;
+}
+
+
+.crm-lead-id i {
+    font-size: 8px;
+}
+
+
+.converted-mini-badge {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    margin-left: 5px;
+
+    color: #12b76a;
+
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   PHONE
+   ========================================================= */
+
+.crm-phone-link {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    color: #344054;
+
+    font-size: 11.5px;
+
+    text-decoration: none;
+
+    white-space: nowrap;
+
+    transition: color .15s ease;
+}
+
+.crm-phone-link:hover {
+    color: #087443;
+}
+
+.crm-phone-icon {
+    width: 28px;
+    height: 28px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 8px;
+
+    color: #079455;
+
+    background: #ecfdf3;
+
+    border: 1px solid #d1fadf;
+
+    font-size: 10px;
+}
+
+
+/* =========================================================
+   ITEMS
+   ========================================================= */
+
+.crm-items {
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    max-width: 210px;
+
+    color: #475467;
+
+    line-height: 1.4;
+}
+
+.crm-items-icon {
+    width: 27px;
+    height: 27px;
+
+    min-width: 27px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #6941c6;
+
+    background: #f4f3ff;
+
+    border: 1px solid #e9e7ff;
+
+    border-radius: 8px;
+
+    font-size: 10px;
+}
+
+
+/* =========================================================
+   STATUS
+   ========================================================= */
+
+.crm-status {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 5px;
+
+    padding: 6px 9px;
+
+    border-radius: 20px;
+
+    font-size: 9.5px;
+    font-weight: 750;
+
+    white-space: nowrap;
+}
+
+
+.crm-status-dot {
+    width: 5px;
+    height: 5px;
+
+    border-radius: 50%;
+
+    background: currentColor;
+}
+
+
+/* Converted */
+
+.crm-status-converted {
+    color: #087443;
+
+    background: #ecfdf3;
+
+    border: 1px solid #c6f0d7;
+}
+
+
+/* Assigned */
+
+.crm-status-assigned {
+    color: #175cd3;
+
+    background: #eff8ff;
+
+    border: 1px solid #cce5ff;
+}
+
+
+/* Pending */
+
+.crm-status-pending {
+    color: #b54708;
+
+    background: #fffaeb;
+
+    border: 1px solid #f9e7b5;
+}
+
+
+/* =========================================================
+   DATE
+   ========================================================= */
+
+.crm-date {
+    min-width: 110px;
+}
+
+.crm-date-main {
+    display: flex;
+
+    align-items: center;
+
+    gap: 5px;
+
+    color: #344054;
+
+    font-size: 10.5px;
+    font-weight: 650;
+
+    white-space: nowrap;
+}
+
+.crm-date-main i {
+    color: #667085;
+}
+
+.crm-date-relative {
+    display: flex;
+
+    align-items: center;
+
+    gap: 4px;
+
+    margin-top: 4px;
+
+    color: #98a2b3;
+
+    font-size: 8.5px;
+
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   LATEST CONVERSATION
+   ========================================================= */
+
+.latest-conversation-card {
+    width: 290px;
+
+    padding: 9px 11px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #f8fbff,
+            #ffffff
+        );
+
+    border: 1px solid #e4eaf0;
+
+    border-radius: 11px;
+
+    transition:
+        border-color .18s ease,
+        box-shadow .18s ease,
+        transform .18s ease;
+}
+
+.latest-conversation-card:hover {
+    border-color: #cbd5df;
+
+    box-shadow:
+        0 5px 14px rgba(16, 24, 40, .06);
+
+    transform: translateY(-1px);
+}
+
+
+/* Converted conversation */
+
+.converted-lead-row .latest-conversation-card {
+    background:
+        linear-gradient(
+            135deg,
+            #f0fbf5,
+            #ffffff
+        );
+
+    border-color: #d5eee0;
+}
+
+
+.latest-conversation-header {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 10px;
+
+    margin-bottom: 6px;
+}
+
+
+.latest-badge {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 4px;
+
+    padding: 4px 7px;
+
+    border-radius: 20px;
+
+    color: #175cd3;
+
+    background: #eff8ff;
+
+    border: 1px solid #d8ebff;
+
+    font-size: 8px;
+    font-weight: 800;
+}
+
+.converted-lead-row .latest-badge {
+    color: #087443;
+
+    background: #ecfdf3;
+
+    border-color: #d1fadf;
+}
+
+
+.latest-time {
+    color: #98a2b3;
+
+    font-size: 8px;
+
+    white-space: nowrap;
+}
+
+.latest-time i {
+    margin-right: 3px;
+}
+
+
+.latest-conversation-text {
+    color: #475467;
+
+    font-size: 10.5px;
+
+    line-height: 1.5;
+
+    word-break: break-word;
+
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+
+    overflow: hidden;
+}
+
+
+/* =========================================================
+   NO CONVERSATION
+   ========================================================= */
+
+.no-conversation {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    color: #98a2b3;
+
+    font-size: 9.5px;
+
+    white-space: nowrap;
+}
+
+.no-conversation-icon {
+    width: 27px;
+    height: 27px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #98a2b3;
+
+    background: #f8f9fa;
+
+    border: 1px solid #eaecf0;
+
+    border-radius: 8px;
+}
+
+
+/* =========================================================
+   ACTIONS
+   ========================================================= */
+
+.crm-actions {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 6px;
+}
+
+
+.crm-action-btn {
+    width: 34px;
+    height: 34px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 9px;
+
+    border: 1px solid;
+
+    font-size: 11px;
+
+    text-decoration: none;
+
+    transition:
+        transform .15s ease,
+        box-shadow .15s ease,
+        background .15s ease;
+}
+
+
+.crm-action-btn:hover {
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 4px 9px rgba(16, 24, 40, .1);
+}
+
+
+.crm-action-view {
+    color: #175cd3;
+
+    background: #eff8ff;
+
+    border-color: #d8ebff;
+}
+
+
+.crm-action-edit {
+    color: #6941c6;
+
+    background: #f4f3ff;
+
+    border-color: #e9e7ff;
+}
+
+
+/* =========================================================
+   MOBILE / TABLET
+   ========================================================= */
+
+@media (max-width: 991.98px) {
+
+    .crm-table-wrapper {
+        border-radius: 12px;
+    }
+
+    .crm-table {
+        min-width: 1100px;
+    }
+
+    .crm-table thead th,
+    .crm-lead-row > td {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 576px) {
+
+    .crm-table-wrapper {
+        border-radius: 10px;
+
+        box-shadow:
+            0 3px 14px rgba(16, 24, 40, .05);
+    }
+
+    .crm-table {
+        min-width: 1050px;
+
+        font-size: 11px;
+    }
+
+    .crm-table thead th {
+        padding: 11px 9px;
+
+        font-size: 9px;
+    }
+
+    .crm-lead-row > td {
+        padding: 10px 9px;
+    }
+
+    .crm-avatar {
+        width: 36px;
+        height: 36px;
+        min-width: 36px;
+
+        border-radius: 10px;
+
+        font-size: 12px;
+    }
+
+    .latest-conversation-card {
+        width: 250px;
+    }
+
+}
+</style>
+
+
+<style>
+
+
+.crm-table thead th{
+    background:#f8fafc;
+    font-size:.75rem;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+    color:#64748b;
+    border:none;
+    white-space:nowrap;
+    padding:16px;
+}
+
+
+
+
+
+</style>
+
+
+
+
+
+
+

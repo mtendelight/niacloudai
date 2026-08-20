@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+  <head>
+<meta charset="utf-8">
+ 
+<meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+  <title>NiaPOS| <%= controller_name.capitalize %></title>
+
+ 
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+
+<link href="https://vjs.zencdn.net/7.14.3/video-js.min.css" rel="stylesheet">
+<script src="https://vjs.zencdn.net/7.14.3/video.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.1/moment.min.js"></script>
+
+
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.6/Chart.bundle.min.js"></script>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+
+ <%= favicon_link_tag asset_path('flogo.png') %>
+  <%= javascript_include_tag "https://www.gstatic.com/charts/loader.js" %>
+    <%= javascript_include_tag "//www.google.com/jsapi", "chartkick" %>
+
+   <style type="text/css">
+    #canvas-holder {
+        background-color: #FFFFFF;
+        position: absolute;
+        top: 8px;
+        left: 8px;
+        right: 8px;
+        bottom: 8px;
+    }
+
+
+</style>
+
+
+
+
+  </head>
+
+ 
+ 
+
+
+ <div class="kichwa" >
+
+
+
+
+
+<nav class="jano navbar navbar-expand-lg navbar-dark bg-dark navbar-1">
+<nav class="container-fluid">
+
+
+
+
+
+</a>
+
+
+
+
+</div>
+</div></li></ul></div>
+</center></nav></nav>
+<style type="text/css">
+
+/* The navigation menu */
+.navbari {
+  overflow: hidden;
+  background-color: #333;
+}
+
+/* Navigation links */
+.navbari a {
+  float: left;
+  font-size: 16px;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+/* The subnavigation menu */
+.subnav {
+  float: left;
+  overflow: hidden;
+  margin-top:  0px;
+}
+
+/* Subnav button */
+.subnav .subnavbtn {
+  font-size: 16px;
+  border: none;
+  outline: none;
+  color: white;
+  padding: 12px 16px;
+  background-color: inherit;
+  font-family: inherit;
+  margin: 0;
+  top: 2px;
+}
+
+/* Add a red background color to navigation links on hover */
+.navbari a:hover, .subnav:hover .subnavbtn {
+  background-color: red;
+}
+
+/* Style the subnav content - positioned absolute */
+.subnav-content {
+  display: none;
+  position: absolute;
+  center: 0;
+ background-color: #000000;
+background-image: url("https://www.transparenttextures.com/patterns/skulls.png");
+  color:  black;
+  width: auto;
+  z-index: 1;
+  height: auto !important;
+   overflow: visible !important;
+ 
+}
+
+
+.subnavi-content {
+  display: none;
+  position: absolute;
+  center: 0;
+ background-color: black !important;
+background-image: url("https://www.transparenttextures.com/patterns/skulls.png");
+  color:  black;
+  width: auto;
+  z-index: 1;
+  height: auto !important;
+   overflow: visible !important;
+ 
+}
+
+
+/* Style the subnav links */
+.subnav-content a {
+  float: left;
+   overflow: visible !important;
+  color: black;
+  text-decoration: none;
+}
+
+
+.subnavi-content a {
+  float: right;
+  color: black;
+  text-decoration: none;
+
+}
+
+/* Add a grey background color on hover */
+.subnavi-content a:hover {
+    
+     overflow: visible !important;
+  color: white;
+
+}
+
+/* Add a grey background color on hover */
+.subnavi-content :hover {
+   background-color: grey ;
+   
+  color: black;
+}
+
+.subnav-content :hover {
+   background-color: grey ;
+   
+  color: black;
+}
+
+
+/* When you move the mouse over the subnav container, open the subnav content */
+.subnav:hover .subnav-content {
+  display: block;
+}
+
+
+.subnav:hover .subnavi-content {
+  display: block;
+}
+
+
+
+
+.circle-image {
+  border-radius: 50%;
+
+}
+
+ 
+</style>
+
+
+
+
+
+
+
+<div class="digg_pagination" style="text-align: center;">
+    <div>
+
+
+</div></div></div>
+
+
+
+<div class="digg_pagination" style="text-align: center;">
+    <div>
+
+
+</div>
+
+
+
+
+<script type="text/javascript">
+
+$(document).ready(function() {
+  $('.subnavbtn').on('click', function() {
+    var subnavContent = $(this).next('.subnav-content');
+    if (!subnavContent.hasClass('initial-click')) {
+      // First click, show the dropdown content
+      subnavContent.addClass('initial-click').show();
+    } else {
+      // Subsequent clicks, toggle the dropdown content
+      subnavContent.toggle();
+    }
+  });
+});
+
+</script>
+
+

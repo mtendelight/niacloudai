@@ -1,0 +1,186 @@
+<div class="form-wrapper">
+<div class="login">
+  <%= form_with(model: jmlead, local: true, class: "lead-form") do |form| %>
+
+    <!-- HEADER -->
+    <div class="text-center mb-4">
+      <h4 class="fw-bold text-primary">
+        <i class="bi bi-person-lines-fill me-1"></i>
+        <%= jmlead.new_record? ? "Create Lead" : "Update Lead" %>
+      </h4>
+      <small class="text-muted">Capture customer interest</small>
+    </div>
+
+    <!-- ERRORS -->
+    <% if jmlead.errors.any? %>
+      <div class="alert-danger-box">
+        <strong>
+          <i class="bi bi-exclamation-triangle me-1"></i>
+          <%= pluralize(jmlead.errors.count, "error") %>
+        </strong>
+        <ul>
+          <% jmlead.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <!-- NAME -->
+    <div class="form-group">
+      <label class="form-label required">Customer Name</label>
+      <div class="input-group">
+        <span class="input-icon"><i class="bi bi-person"></i></span>
+        <%= form.text_field :name, class: "form-control", placeholder: "John Doe", required: true %>
+      </div>
+    </div>
+
+    <!-- PHONE -->
+    <div class="form-group">
+      <label class="form-label required">Phone</label>
+      <div class="input-group">
+        <span class="input-icon"><i class="bi bi-telephone"></i></span>
+        <%= form.telephone_field :phone,
+              class: "form-control",
+              placeholder: "0712345678",
+              required: true %>
+      </div>
+    </div>
+
+    <!-- ITEMS -->
+    <div class="form-group">
+      <label class="form-label required">Items Required</label>
+      <div class="input-group">
+        <span class="input-icon"><i class="bi bi-box-seam"></i></span>
+        <%= form.text_area :items_required,
+              class: "form-control",
+              rows: 3,
+              placeholder: "e.g. 2 beds, 1 sofa",
+              required: true %>
+      </div>
+    </div>
+
+    <!-- STATUS -->
+    <div class="form-group">
+      <label class="form-label required">Status</label>
+      <%= form.select :status,
+            Jmlead.statuses.keys.map { |s| [s.titleize, s] },
+            { prompt: "Select status" },
+            class: "form-select",
+            required: true %>
+    </div>
+
+    <!-- COMMENTS -->
+    <div class="form-group">
+      <label class="form-label">Comments</label>
+      <%= form.text_area :general_comments,
+            class: "form-control",
+            rows: 3,
+            placeholder: "Internal notes..." %>
+    </div>
+
+    <!-- ACTIONS -->
+    <div class="form-actions">
+      <%= form.submit jmlead.new_record? ? "Create Lead" : "Update Lead",
+            class: "btn btn-primary w-100",
+            id: "submit_lead",
+            data: { loading_text: "Saving..." } %>
+
+      <%= link_to "Cancel", jmleads_path,
+            class: "btn btn-light border w-100" %>
+    </div>
+
+  <% end %>
+</div>
+
+<style>
+  
+  .form-wrapper {
+  max-width: 520px;
+  margin: 40px auto;
+  padding: 25px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+}
+
+/* Form */
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-label {
+  font-weight: 600;
+  margin-bottom: 6px;
+  display: block;
+}
+
+.required::after {
+  content: " *";
+  color: red;
+}
+
+/* Input group */
+.input-group {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.input-icon {
+  background: #f1f3f5;
+  padding: 10px 12px;
+  color: #555;
+}
+
+.form-control {
+  border: none;
+  padding: 10px;
+  width: 100%;
+}
+
+.form-control:focus {
+  outline: none;
+}
+
+/* Select */
+.form-select {
+  border-radius: 8px;
+  padding: 10px;
+}
+
+/* Error */
+.alert-danger-box {
+  background: #ffe5e5;
+  color: #b02a37;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+.alert-danger-box ul {
+  margin: 5px 0 0;
+  padding-left: 18px;
+}
+
+/* Buttons */
+.btn {
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+.form-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+/* Mobile */
+@media (max-width: 576px) {
+  .form-actions {
+    flex-direction: column;
+  }
+}
+</style>

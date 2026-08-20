@@ -1,0 +1,109 @@
+wb = xlsx_package.workbook
+
+wb.add_worksheet(name: "Customers") do |sheet|
+  styles = sheet.styles
+
+  # Header style
+  header_style = styles.add_style(
+    b: true,
+    fg_color: 'FFFFFF',
+    bg_color: '000000',
+    border: { style: :thin, color: '000000' },
+    alignment: { horizontal: :center, vertical: :center },
+    sz: 12
+  )
+
+  # Row style
+  row_style = styles.add_style(
+    fg_color: '000000',
+    border: { style: :thin, color: '000000' },
+    alignment: { horizontal: :left, vertical: :center },
+    sz: 11
+  )
+
+  # ✅ Headers (Number of Items added after Items)
+  headers = [
+    "First Name",
+    "Last Name",
+    "Phone",
+    "Location",
+    "Items",
+    "Qty",
+    "Last Update",
+    "Returning"
+  ]
+
+  sheet.add_row headers, style: header_style, height: 22
+
+  @jmcustomersa.each do |customer|
+    # Name split
+    name_parts = customer.name.to_s.strip.split(/\s+/, 2)
+    first_name = name_parts[0] || ""
+    last_name  = name_parts[1] || ""
+
+    # Phone cleanup
+    phone = customer.phone.to_s.strip.sub(/^0+/, "")
+
+    # Items text
+    items_tally = customer.janomaxes.map(&:item_name).tally
+    items_text = items_tally.map { |name, count|
+      count > 1 ? "#{name} - #{count}" : name
+    }.join(", ")
+
+    # ✅ Number of items (COUNT)
+    number_of_items = customer.janomaxes.count
+
+    last_update = customer.updated_at&.strftime("%Y-%m-%d %H:%M:%S") || ""
+    returning_text = customer.returning? ? "Yes" : "No"
+
+    sheet.add_row [
+      first_name,
+      last_name,
+      phone,
+      customer.location,
+      items_text,
+      number_of_items,
+      last_update,
+      returning_text
+    ], style: row_style
+  end
+
+  # ✅ Update filter range
+  sheet.auto_filter = "A1:H1"
+
+  # Freeze header row
+  sheet.sheet_view.pane do |pane|
+    pane.top_left_cell = "A2"
+    pane.state = :frozen
+    pane.y_split = 1
+  end
+
+  # Auto-adjust column widths
+  sheet.column_info.each_with_index do |col, i|
+    max_length = (
+      [headers[i].to_s.length] +
+      @jmcustomersa.map do |c|
+        case headers[i]
+        when "Items"
+          c.janomaxes.map(&:item_name).tally.map { |n, cnt|
+            cnt > 1 ? "#{n} - #{cnt}" : n
+          }.join(", ")
+        when "Number of Items"
+          c.janomaxes.count.to_s
+        when "Returning"
+          c.returning? ? "Yes" : "No"
+        when "Last Update"
+          c.updated_at&.strftime("%Y-%m-%d %H:%M:%S") || ""
+        when "First Name", "Last Name"
+          c.name.to_s.strip.split(/\s+/, 2)[headers[i] == "First Name" ? 0 : 1].to_s
+        when "Phone"
+          c.phone.to_s.strip.sub(/^0+/, "")
+        else
+          c.send(headers[i].downcase).to_s rescue ""
+        end.length
+      end
+    ).max
+
+    col.width = [max_length + 2, 30].min
+  end
+end

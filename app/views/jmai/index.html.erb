@@ -1,0 +1,3287 @@
+<%= render "layouts/header" %>
+
+<div class="container">
+<%= render 'jmcustomers/submenu' %>
+
+
+
+
+<style>
+
+  /* Center container */
+.admin-menu {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; /* center horizontally */
+  gap: 0.5rem;
+  margin: 1rem 0;
+}
+
+/* Buttons */
+.admin-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.6rem 1.2rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  border-radius: 0.5rem;
+  color: #fff;
+  background-color: #6c757d; /* default gray */
+  text-decoration: none;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.admin-btn i {
+  font-size: 1.1rem;
+}
+
+/* Hover effect */
+.admin-btn:hover {
+  background-color: #495057; /* slightly darker gray */
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+}
+
+/* Active / current page - bright blue highlight */
+.admin-btn.active {
+  background-color: #0d6efd !important; /* bright Bootstrap blue */
+  color: #fff;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+  transform: translateY(-1px);
+  border: 2px solid #fff; /* optional: adds contrast */
+}
+
+/* Responsive: wrap nicely on small screens */
+@media (max-width: 576px) {
+  .admin-btn {
+    flex: 1 1 45%; /* two buttons per row */
+    justify-content: center;
+  }
+}
+
+  /* New Customer Section */
+.new-customer-section .card {
+  max-width: 650px;
+  border-left: 5px solid #0d6efd; /* visible accent line */
+  background-color: #ffffff;
+  border-radius: 0.6rem;
+  transition: transform 0.2s ease;
+}
+
+.new-customer-section .card:hover {
+  transform: translateY(-3px); /* subtle hover effect for attention */
+}
+
+.new-customer-section h4 {
+  color: #0d6efd;
+  font-weight: 600;
+}
+
+.new-customer-section p {
+  font-size: 0.95rem;
+  color: #6c757d;
+}
+
+@media (max-width: 768px) {
+  .new-customer-section .card {
+    padding: 1.5rem;
+    max-width: 95%;
+  }
+}
+
+</style>
+
+
+
+<div class="container jmcustomers-dashboard my-5">
+  <!-- Header -->
+  <div class="text-center mb-5">
+    <h1 class="fw-bold text-primary mb-2">
+      🧾 Customer Follow-Up Dashboard
+    </h1>
+    <p class="text-muted fs-5 mb-0">
+      Identify inactive customers and re-engage them with exclusive offers
+    </p>
+  </div>
+
+  <!-- Summary + SMS Balance -->
+  <div class="border-0 shadow-sm rounded-4 mb-5">
+    <div class="card-body p-4">
+      <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center">
+        
+        <!-- Left: Info -->
+        <div class="mb-4 mb-md-0">
+          <h5 class="fw-semibold text-secondary mb-1">
+            <i class="bi bi-graph-up-arrow text-success me-2"></i>
+            Current Performance
+          </h5>
+          <p class="text-muted small mb-0">
+            Showing customers inactive for more than 
+            <strong>7 days</strong> — ready for re-engagement.
+          </p>
+        </div>
+
+        <!-- Right: SMS Balance -->
+        <div class="text-md-end">
+          <div class="bg-success bg-gradient text-white rounded-4 px-4 py-3 shadow-sm d-inline-block">
+            <div class="d-flex align-items-center justify-content-center gap-2 mb-1">
+              <i class="bi bi-chat-dots-fill fs-5"></i>
+              <span class="fs-6 fw-semibold">SMS Balance:</span>
+              <span class="fs-5 fw-bold"><%= @sms_balance %></span>
+            </div>
+            <div class="small text-white-50 text-start">
+              <i class="bi bi-wallet2 me-1"></i> 
+              <strong>Paybill:</strong> 4093753<br>
+              <i class="bi bi-cash-coin me-1"></i> 
+              <strong>Account:</strong> Bales
+            </div>
+          </div>
+          <%= link_to jmai_index_path, 
+                      class: "btn btn-outline-info btn-sm ms-md-3 mt-3 mt-md-0 px-3 d-inline-flex align-items-center" do %>
+            <i class="bi bi-arrow-clockwise me-1"></i> Refresh
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <style>
+  .filter-fieldset {
+    border: 2px solid #0d6efd;
+    border-radius: 12px;
+    padding: 15px 20px;
+    margin-bottom: 20px;
+    background: #f8faff;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+  }
+
+  .filter-fieldset legend {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #0d6efd;
+    padding: 0 10px;
+  }
+
+  .sms-button-group a {
+    margin: 4px;
+  }
+
+  .sms-btn {
+    padding: 6px 12px !important;
+    border-radius: 8px !important;
+    font-weight: 600;
+    font-size: 0.85rem;
+  }
+
+  .position-relative{
+    position:relative;
+}
+
+.input-icon{
+    position:absolute;
+    left:16px;
+    top:50%;
+    transform:translateY(-50%);
+    color:#198754;
+    font-size:18px;
+    z-index:5;
+}
+
+.premium-input{
+    padding-left:50px;
+}
+</style>
+
+
+<style>
+.sidekiq-dashboard{
+    border:none;
+    border-radius:22px;
+    overflow:hidden;
+    background:#fff;
+    box-shadow:0 15px 45px rgba(30,41,59,.08);
+}
+
+.sidekiq-header{
+    background:linear-gradient(135deg,#0f172a,#1d4ed8,#2563eb);
+    color:#fff;
+    padding:22px 28px;
+}
+
+.sidekiq-header h4{
+    font-weight:700;
+    margin:0;
+}
+
+.sidekiq-header small{
+    opacity:.85;
+    font-size:.9rem;
+}
+
+.metric-card{
+    background:#fff;
+    border-radius:18px;
+    padding:20px;
+    transition:.25s;
+    height:100%;
+    border:1px solid #eef2f7;
+    box-shadow:0 8px 25px rgba(15,23,42,.05);
+}
+
+.metric-card:hover{
+    transform:translateY(-6px);
+    box-shadow:0 18px 45px rgba(37,99,235,.12);
+}
+
+.metric-icon{
+    width:58px;
+    height:58px;
+    border-radius:16px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    margin:0 auto 15px;
+}
+
+.metric-number{
+    font-size:2rem;
+    font-weight:800;
+    margin-bottom:4px;
+    line-height:1;
+}
+
+.metric-title{
+    color:#64748b;
+    font-weight:600;
+    font-size:.92rem;
+}
+
+.icon-blue{
+    background:#dbeafe;
+    color:#2563eb;
+}
+
+.icon-green{
+    background:#dcfce7;
+    color:#16a34a;
+}
+
+.icon-red{
+    background:#fee2e2;
+    color:#dc2626;
+}
+
+.icon-yellow{
+    background:#fef9c3;
+    color:#ca8a04;
+}
+
+.icon-cyan{
+    background:#cffafe;
+    color:#0891b2;
+}
+
+.icon-gray{
+    background:#f1f5f9;
+    color:#475569;
+}
+
+.sidekiq-status{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    background:rgba(255,255,255,.15);
+    padding:8px 14px;
+    border-radius:30px;
+    font-size:.85rem;
+}
+
+.status-dot{
+    width:10px;
+    height:10px;
+    border-radius:50%;
+    background:#22c55e;
+    animation:pulse 1.5s infinite;
+}
+
+@keyframes pulse{
+    0%{transform:scale(.8);opacity:.6;}
+    70%{transform:scale(1.4);opacity:0;}
+    100%{transform:scale(.8);opacity:.6;}
+}
+</style>
+
+<div class="card sidekiq-dashboard mb-4">
+
+    <div class="sidekiq-header">
+
+        <div class="d-flex justify-content-between align-items-center flex-wrap">
+
+            <div>
+
+                <h4>
+                    <i class="bi bi-cpu-fill me-2"></i>
+                    Sidekiq Background Jobs
+                </h4>
+
+                <small>
+                    Real-time monitoring of queued jobs and workers.
+                </small>
+
+            </div>
+
+            <div class="sidekiq-status mt-3 mt-md-0">
+
+                <span class="status-dot"></span>
+
+                <span>Worker Online</span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="card-body p-4">
+
+        <div class="row g-4">
+
+            <div class="col-lg-2 col-md-4 col-6">
+
+                <div class="metric-card text-center">
+
+                    <div class="metric-icon icon-blue">
+                        <i class="bi bi-hourglass-split"></i>
+                    </div>
+
+                    <div class="metric-number text-primary">
+                        <%= number_with_delimiter(@sidekiq_stats.enqueued) %>
+                    </div>
+
+                    <div class="metric-title">
+                        Queued Jobs
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-lg-2 col-md-4 col-6">
+
+                <div class="metric-card text-center">
+
+                    <div class="metric-icon icon-green">
+                        <i class="bi bi-check-circle-fill"></i>
+                    </div>
+
+                    <div class="metric-number text-success">
+                        <%= number_with_delimiter(@sidekiq_stats.processed) %>
+                    </div>
+
+                    <div class="metric-title">
+                        Processed
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-lg-2 col-md-4 col-6">
+
+                <div class="metric-card text-center">
+
+                    <div class="metric-icon icon-red">
+                        <i class="bi bi-x-circle-fill"></i>
+                    </div>
+
+                    <div class="metric-number text-danger">
+                        <%= number_with_delimiter(@sidekiq_stats.failed) %>
+                    </div>
+
+                    <div class="metric-title">
+                        Failed Jobs
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-lg-2 col-md-4 col-6">
+
+                <div class="metric-card text-center">
+
+                    <div class="metric-icon icon-yellow">
+                        <i class="bi bi-cpu-fill"></i>
+                    </div>
+
+                    <div class="metric-number text-warning">
+                        <%= @sidekiq_workers.size %>
+                    </div>
+
+                    <div class="metric-title">
+                        Active Workers
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-lg-2 col-md-4 col-6">
+
+                <div class="metric-card text-center">
+
+                    <div class="metric-icon icon-cyan">
+                        <i class="bi bi-arrow-repeat"></i>
+                    </div>
+
+                    <div class="metric-number text-info">
+                        <%= @sidekiq_retry.size %>
+                    </div>
+
+                    <div class="metric-title">
+                        Retries
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-lg-2 col-md-4 col-6">
+
+                <div class="metric-card text-center">
+
+                    <div class="metric-icon icon-gray">
+                        <i class="bi bi-trash3-fill"></i>
+                    </div>
+
+                    <div class="metric-number text-secondary">
+                        <%= @sidekiq_dead.size %>
+                    </div>
+
+                    <div class="metric-title">
+                        Dead Jobs
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="card shadow border-0">
+
+  <div class="card-header bg-black text-success">
+    <i class="bi bi-terminal-fill"></i>
+    Live Worker Status
+  </div>
+
+  <div class="card-body bg-dark text-success" style="font-family:monospace;max-height:350px;overflow:auto;">
+
+<% if @sidekiq_workers.any? %>
+
+  <% @sidekiq_workers.each do |process_id, thread_id, work| %>
+
+    <% payload = work.payload %>
+
+    <div>
+
+      [<%= Time.current.strftime("%H:%M:%S") %>]
+
+      Worker:
+      <%= process_id %>
+
+      Thread:
+      <%= thread_id %>
+
+      Job:
+      <%= payload["wrapped"] || payload["class"] %>
+
+      Queue:
+      <%= payload["queue"] %>
+
+      Arguments:
+      <%= payload["args"].inspect %>
+
+    </div>
+
+    <hr class="border-secondary">
+
+  <% end %>
+
+<% else %>
+
+  <div class="text-warning">
+    No background jobs running...
+  </div>
+
+<% end %>
+
+  </div>
+
+</div>
+
+<script>
+(function () {
+  const INACTIVITY_TIME = 5 * 60 * 1000; // 5 minutes
+  let inactivityTimer;
+
+  function resetTimer() {
+    clearTimeout(inactivityTimer);
+    inactivityTimer = setTimeout(function () {
+      location.reload();
+    }, INACTIVITY_TIME);
+  }
+
+  // Events that count as user activity
+  [
+    "mousemove",
+    "mousedown",
+    "click",
+    "scroll",
+    "keypress",
+    "touchstart"
+  ].forEach(function(event) {
+    document.addEventListener(event, resetTimer, true);
+  });
+
+  // Start the timer when the page loads
+  resetTimer();
+})();
+</script>
+<link rel="stylesheet"
+href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+
+
+
+<div class="card shadow-lg border-0 sms-campaign-card mb-4">
+
+  <details open>
+
+    <summary class="sms-header">
+
+      <div class="d-flex justify-content-between align-items-center w-100">
+
+        <div>
+          <h4 class="mb-1">
+            <i class="bi bi-phone-fill me-2"></i>
+            Quick SMS
+          </h4>
+
+          <small>
+            Send a personalized SMS to one recipient.
+          </small>
+        </div>
+
+        <span class="collapse-icon">
+          <i class="bi bi-chevron-down"></i>
+        </span>
+
+      </div>
+
+    </summary>
+
+
+
+  <div class="login sms-wrapper">
+
+    <%= form_with url: send_single_sms_path, method: :post, local: true do %>
+
+      <div class="row g-4">
+
+        <!-- Customer Name -->
+        <div class="col-md-6">
+          <label for="customer_name" class="form-label fw-bold">
+            <i class="bi bi-person-fill me-1"></i>
+            Customer Name
+          </label>
+
+          <%= text_field_tag :name, "",
+                id: "customer_name",
+                class: "form-control premium-input",
+                placeholder: "Enter customer name" %>
+        </div>
+
+        <!-- Phone -->
+        <div class="col-md-6">
+          <label for="customer_phone" class="form-label fw-bold">
+            <i class="bi bi-telephone-fill me-1"></i>
+            Mobile Number
+          </label>
+
+          <%= text_field_tag :phone, "",
+                id: "customer_phone",
+                class: "form-control premium-input",
+                placeholder: "254712345678",
+                required: true %>
+
+          <small class="text-muted">
+            Format: 2547XXXXXXXX
+          </small>
+        </div>
+
+        <!-- Tags -->
+        <div class="col-12">
+          <div class="alert alert-success sms-info">
+            <strong>Available Placeholder:</strong>
+
+            <span class="badge bg-primary ms-2">{name}</span>
+
+            <span class="ms-2 text-muted">
+              Automatically replaced with the customer's name.
+            </span>
+          </div>
+        </div>
+
+        <!-- Message -->
+        <div class="col-12">
+          <label for="message" class="form-label fw-bold">
+            <i class="bi bi-chat-left-text-fill me-1"></i>
+            SMS Message
+          </label>
+
+          <%= text_area_tag :message,
+                "",
+                id: "message",
+                rows: 7,
+                class: "form-control premium-textarea",
+                placeholder: "Dear {name},
+
+Your order is ready for collection.
+
+Thank you for choosing Janomax." %>
+        </div>
+
+        <!-- Button -->
+        <div class="col-12 text-center">
+          <%= submit_tag "📨 Send SMS",
+                class: "btn sms-send-btn px-5" %>
+        </div>
+
+      </div>
+
+    <% end %>
+
+  </div>
+
+</details>
+
+
+<hr>
+
+
+<details class="sms-panel mt-4">
+
+  <summary class="sms-header">
+
+    <div class="d-flex justify-content-between align-items-center w-100">
+
+      <div>
+        <h4 class="mb-1">
+          <i class="bi bi-file-earmark-spreadsheet-fill me-2"></i>
+          Bulk SMS from Excel
+        </h4>
+
+        <small>
+          Upload Excel, preview recipients, then send personalized SMS.
+        </small>
+      </div>
+
+      <span class="collapse-icon">
+        <i class="bi bi-chevron-down"></i>
+      </span>
+
+    </div>
+
+  </summary>
+
+
+  <div class="p-4">
+    <div class="login">
+
+    <%= form_with url: send_bulk_sms_path,
+                  method: :post,
+                  multipart: true,
+                  local: true,
+                  id: "bulk-sms-form" do %>
+
+      <div class="row g-4">
+
+        <!-- Excel File -->
+        <div class="col-12">
+
+          <label for="bulk_excel_file"
+                 class="form-label fw-bold">
+
+            <i class="bi bi-file-earmark-excel-fill me-1"></i>
+            Excel File
+
+          </label>
+
+          <%= file_field_tag :file,
+                id: "bulk_excel_file",
+                accept: ".xlsx,.xls",
+                class: "form-control premium-input",
+                required: true %>
+
+          <small class="text-muted">
+            Required columns:
+            <strong>Name</strong> and <strong>Phone</strong>.
+            Optional:
+            <strong>Points</strong> and <strong>Location</strong>.
+          </small>
+
+        </div>
+
+
+        <!-- File Information -->
+        <div class="col-12 d-none" id="excel-info">
+
+          <div class="alert alert-primary mb-0">
+
+            <div class="d-flex justify-content-between align-items-center">
+
+              <div>
+                <strong>
+                  <i class="bi bi-file-earmark-spreadsheet me-1"></i>
+                  <span id="excel-file-name"></span>
+                </strong>
+
+                <div class="small mt-1">
+                  <span id="excel-row-count">0</span>
+                  recipients found
+                </div>
+              </div>
+
+              <div>
+                <span class="badge bg-success"
+                      id="valid-count">
+                  0 Valid
+                </span>
+
+                <span class="badge bg-danger"
+                      id="invalid-count">
+                  0 Invalid
+                </span>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- Message -->
+        <div class="col-12">
+
+          <div class="alert alert-success sms-info">
+
+            <strong>Available Placeholders:</strong>
+
+            <span class="badge bg-primary ms-2">
+              {name}
+            </span>
+
+            <span class="badge bg-primary ms-1">
+              {points}
+            </span>
+
+            <span class="badge bg-primary ms-1">
+              {location}
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <div class="col-12">
+
+          <label for="bulk_message"
+                 class="form-label fw-bold">
+
+            <i class="bi bi-chat-left-text-fill me-1"></i>
+            SMS Message
+
+          </label>
+
+          <%= text_area_tag :message,
+                "",
+                id: "bulk_message",
+                rows: 7,
+                class: "form-control premium-textarea",
+                placeholder: "Dear {name},
+
+Welcome to Janomax Premium Bales.
+
+You currently have {points} points.
+
+Our team in {location} is ready to assist you.",
+                required: true %>
+
+        </div>
+
+
+        <!-- Preview -->
+        <div class="col-12 d-none"
+             id="excel-preview-container">
+
+          <div class="card border-0 shadow-sm">
+
+            <div class="card-header bg-dark text-white">
+
+              <div class="d-flex justify-content-between align-items-center">
+
+                <div>
+                  <i class="bi bi-eye-fill me-2"></i>
+                  Excel Preview
+                </div>
+
+                <span class="badge bg-light text-dark"
+                      id="preview-count">
+                  0 rows
+                </span>
+
+              </div>
+
+            </div>
+
+
+<div class="table-responsive excel-table-wrapper">
+
+  <table
+    class="table table-hover table-bordered mb-0 excel-preview-table"
+    id="excel-preview-table"
+  >
+
+    <thead class="table-light">
+      <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>Phone</th>
+        <th>Points</th>
+        <th>Location</th>
+        <th>SMS Preview</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+
+    <tbody id="excel-preview-body">
+    </tbody>
+
+  </table>
+
+</div>
+
+
+          </div>
+
+        </div>
+
+
+        <!-- Preview Empty -->
+        <div class="col-12 d-none"
+             id="excel-preview-empty">
+
+          <div class="alert alert-warning mb-0">
+
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+
+            No valid recipients were found in this Excel file.
+
+          </div>
+
+        </div>
+
+
+        <!-- Sending Notice -->
+        <div class="col-12">
+
+          <div class="alert alert-info mb-0">
+
+            <i class="bi bi-info-circle-fill me-2"></i>
+
+            SMS will be sent in the background using Sidekiq.
+            You can leave this page after submitting.
+
+          </div>
+
+        </div>
+
+
+        <!-- Button -->
+        <div class="col-12 text-center">
+
+          <%= submit_tag "📨 Send Bulk SMS",
+                id: "bulk-sms-submit",
+                class: "btn sms-send-btn px-5",
+                disabled: true %>
+
+        </div>
+
+      </div>
+
+    <% end %>
+
+  </div></div>
+
+</details>
+
+<style>
+
+
+/* ==========================================
+   BULK SMS — FORCE CONTENT TO STAY IN PLACE
+   ========================================== */
+
+.bulk-sms-section {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+/* Prevent Bootstrap rows from creating overflow */
+.bulk-sms-section .row {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+/* Every column must be allowed to shrink */
+.bulk-sms-section .col-12,
+.bulk-sms-section .col-md-6,
+.bulk-sms-section .col-lg-6,
+.bulk-sms-section .col-lg-8,
+.bulk-sms-section .col-lg-4 {
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* Cards and alerts must never stretch parent */
+.bulk-sms-section .card,
+.bulk-sms-section .alert {
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+/* Excel preview stays inside available width */
+.bulk-sms-section #excel-preview-container {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  overflow: hidden;
+}
+
+/* Table scrolls INSIDE the preview */
+.bulk-sms-section #excel-preview-container .table-responsive {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+/* Don't allow long SMS/text to stretch page */
+.bulk-sms-section table {
+  max-width: 100%;
+}
+
+.bulk-sms-section th,
+.bulk-sms-section td {
+  white-space: nowrap;
+}
+
+/* SMS preview can wrap instead of forcing width */
+.bulk-sms-section th:last-child,
+.bulk-sms-section td:last-child {
+  white-space: normal;
+  min-width: 220px;
+  max-width: 350px;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+/* File name / long values */
+.bulk-sms-section #excel-file-name {
+  max-width: 60%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+
+  .bulk-sms-section {
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+  }
+
+  .bulk-sms-section .row {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .bulk-sms-section #excel-preview-container {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .bulk-sms-section #excel-preview-container .table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .bulk-sms-section .table {
+    min-width: 900px;
+  }
+
+  .bulk-sms-section .alert {
+    overflow: hidden;
+  }
+
+  .bulk-sms-section #excel-file-name {
+    max-width: 45%;
+  }
+}
+
+
+
+/* =========================================================
+   EXCEL PREVIEW TABLE — UNIVERSAL RESPONSIVE
+   ========================================================= */
+
+.excel-table-wrapper {
+  width: 100%;
+  max-width: 100%;
+
+  overflow-x: auto;
+  overflow-y: hidden;
+
+  -webkit-overflow-scrolling: touch;
+
+  scrollbar-width: thin;
+
+  border-radius: 10px;
+}
+
+
+/* =========================================================
+   TABLE
+   ========================================================= */
+
+.excel-preview-table {
+  width: 100%;
+
+  min-width: 850px;
+
+  margin-bottom: 0 !important;
+
+  white-space: normal;
+
+  table-layout: auto;
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.excel-preview-table thead th {
+  position: sticky;
+
+  top: 0;
+
+  z-index: 5;
+
+  padding: 10px 12px;
+
+  font-size: 13px;
+
+  font-weight: 700;
+
+  white-space: nowrap;
+
+  vertical-align: middle;
+
+  background: #f8f9fa;
+}
+
+
+/* =========================================================
+   BODY
+   ========================================================= */
+
+.excel-preview-table tbody td {
+  padding: 9px 12px;
+
+  font-size: 13px;
+
+  vertical-align: middle;
+
+  overflow-wrap: anywhere;
+
+  word-break: break-word;
+}
+
+
+/* =========================================================
+   COLUMN WIDTHS
+   ========================================================= */
+
+.excel-preview-table th:nth-child(1),
+.excel-preview-table td:nth-child(1) {
+  width: 50px;
+
+  min-width: 50px;
+
+  text-align: center;
+}
+
+
+.excel-preview-table th:nth-child(2),
+.excel-preview-table td:nth-child(2) {
+  min-width: 150px;
+}
+
+
+.excel-preview-table th:nth-child(3),
+.excel-preview-table td:nth-child(3) {
+  min-width: 125px;
+
+  white-space: nowrap;
+}
+
+
+.excel-preview-table th:nth-child(4),
+.excel-preview-table td:nth-child(4) {
+  min-width: 80px;
+
+  text-align: center;
+
+  white-space: nowrap;
+}
+
+
+.excel-preview-table th:nth-child(5),
+.excel-preview-table td:nth-child(5) {
+  min-width: 130px;
+}
+
+
+.excel-preview-table th:nth-child(6),
+.excel-preview-table td:nth-child(6) {
+  min-width: 300px;
+
+  max-width: 500px;
+}
+
+
+.excel-preview-table th:nth-child(7),
+.excel-preview-table td:nth-child(7) {
+  min-width: 110px;
+
+  text-align: center;
+}
+
+
+/* =========================================================
+   SMS PREVIEW
+   ========================================================= */
+
+.excel-preview-table td:nth-child(6) {
+  white-space: normal;
+
+  line-height: 1.45;
+
+  overflow-wrap: anywhere;
+
+  word-break: break-word;
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 767.98px) {
+
+  .excel-table-wrapper {
+    width: 100%;
+
+    max-width: 100%;
+
+    margin-left: 0;
+    margin-right: 0;
+
+    border-radius: 8px;
+
+    overflow-x: auto;
+  }
+
+
+  .excel-preview-table {
+    min-width: 760px;
+  }
+
+
+  .excel-preview-table thead th {
+    padding: 8px 9px;
+
+    font-size: 12px;
+  }
+
+
+  .excel-preview-table tbody td {
+    padding: 8px 9px;
+
+    font-size: 12px;
+  }
+
+
+  .excel-preview-table th:nth-child(6),
+  .excel-preview-table td:nth-child(6) {
+    min-width: 250px;
+  }
+
+}
+
+
+/* =========================================================
+   SMALL PHONES
+   ========================================================= */
+
+@media (max-width: 575.98px) {
+
+  .excel-preview-table {
+    min-width: 700px;
+  }
+
+
+  .excel-preview-table thead th {
+    padding: 7px 8px;
+
+    font-size: 11px;
+  }
+
+
+  .excel-preview-table tbody td {
+    padding: 7px 8px;
+
+    font-size: 11px;
+  }
+
+
+  .excel-preview-table th:nth-child(2),
+  .excel-preview-table td:nth-child(2) {
+    min-width: 120px;
+  }
+
+
+  .excel-preview-table th:nth-child(5),
+  .excel-preview-table td:nth-child(5) {
+    min-width: 110px;
+  }
+
+
+  .excel-preview-table th:nth-child(6),
+  .excel-preview-table td:nth-child(6) {
+    min-width: 230px;
+  }
+
+}
+
+
+/* =========================================================
+   VERY SMALL PHONES
+   ========================================================= */
+
+@media (max-width: 375px) {
+
+  .excel-preview-table {
+    min-width: 650px;
+  }
+
+
+  .excel-preview-table thead th {
+    font-size: 10px;
+
+    padding: 6px 7px;
+  }
+
+
+  .excel-preview-table tbody td {
+    font-size: 10px;
+
+    padding: 6px 7px;
+  }
+
+
+  .excel-preview-table th:nth-child(6),
+  .excel-preview-table td:nth-child(6) {
+    min-width: 210px;
+  }
+
+}
+
+
+/* =========================================================
+   TOUCH SCROLLING
+   ========================================================= */
+
+@media (pointer: coarse) {
+
+  .excel-table-wrapper {
+    cursor: grab;
+  }
+
+  .excel-table-wrapper:active {
+    cursor: grabbing;
+  }
+
+}
+
+
+</style>
+
+
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+  const fileInput = document.getElementById("bulk_excel_file");
+  const messageInput = document.getElementById("bulk_message");
+  const form = document.getElementById("bulk-sms-form");
+  const submitButton = document.getElementById("bulk-sms-submit");
+
+  const infoBox = document.getElementById("excel-info");
+  const fileName = document.getElementById("excel-file-name");
+  const rowCount = document.getElementById("excel-row-count");
+  const validCount = document.getElementById("valid-count");
+  const invalidCount = document.getElementById("invalid-count");
+
+  const previewContainer =
+    document.getElementById("excel-preview-container");
+
+  const previewEmpty =
+    document.getElementById("excel-preview-empty");
+
+  const previewBody =
+    document.getElementById("excel-preview-body");
+
+  const previewCount =
+    document.getElementById("preview-count");
+
+  let excelRows = [];
+
+
+  // ==========================================
+  // NORMALIZE PHONE
+  // ==========================================
+
+  function normalizePhone(phone) {
+
+    phone = String(phone || "")
+      .replace(/\D/g, "");
+
+    if (phone.startsWith("0")) {
+      phone = "254" + phone.substring(1);
+    }
+
+    else if (
+      phone.startsWith("7") ||
+      phone.startsWith("1")
+    ) {
+      phone = "254" + phone;
+    }
+
+    if (/^254[17]\d{8}$/.test(phone)) {
+      return phone;
+    }
+
+    return "";
+  }
+
+
+  // ==========================================
+  // ESCAPE HTML
+  // ==========================================
+
+  function escapeHtml(value) {
+
+    return String(value || "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+
+
+  // ==========================================
+  // PERSONALIZE MESSAGE
+  // ==========================================
+
+  function personalizeMessage(row) {
+
+    let message = messageInput.value || "";
+
+    return message
+      .replace(/\{name\}/gi, row.name || "Customer")
+      .replace(/\{points\}/gi, row.points || "")
+      .replace(/\{location\}/gi, row.location || "");
+  }
+
+
+  // ==========================================
+  // FIND COLUMN
+  // ==========================================
+
+  function findColumn(headers, possibleNames) {
+
+    return headers.findIndex(function (header) {
+
+      return possibleNames.includes(
+        String(header || "")
+          .trim()
+          .toLowerCase()
+          .replace(/\s+/g, "_")
+      );
+
+    });
+  }
+
+
+  // ==========================================
+  // BUILD PREVIEW
+  // ==========================================
+
+  function buildPreview() {
+
+    previewBody.innerHTML = "";
+
+    let valid = 0;
+    let invalid = 0;
+
+    excelRows.forEach(function (row, index) {
+
+      const phone = normalizePhone(row.phone);
+
+      const isValid = phone !== "";
+
+      if (isValid) {
+        valid++;
+      } else {
+        invalid++;
+      }
+
+      const sms = personalizeMessage({
+        name: row.name,
+        points: row.points,
+        location: row.location
+      });
+
+      const tr = document.createElement("tr");
+
+      tr.innerHTML = `
+        <td>${index + 1}</td>
+
+        <td>
+          <strong>
+            ${escapeHtml(row.name || "Customer")}
+          </strong>
+        </td>
+
+        <td>
+          ${escapeHtml(phone || row.phone || "-")}
+        </td>
+
+        <td>
+          ${escapeHtml(row.points || "-")}
+        </td>
+
+        <td>
+          ${escapeHtml(row.location || "-")}
+        </td>
+
+        <td style="min-width:300px;">
+          <div class="small text-muted"
+               style="white-space: pre-line;">
+            ${escapeHtml(sms)}
+          </div>
+        </td>
+
+        <td>
+          ${
+            isValid
+              ? `<span class="badge bg-success">
+                   <i class="bi bi-check-circle me-1"></i>
+                   Valid
+                 </span>`
+              : `<span class="badge bg-danger">
+                   <i class="bi bi-x-circle me-1"></i>
+                   Invalid Phone
+                 </span>`
+          }
+        </td>
+      `;
+
+      previewBody.appendChild(tr);
+
+    });
+
+
+    rowCount.textContent = excelRows.length;
+    previewCount.textContent = `${excelRows.length} rows`;
+
+    validCount.textContent = `${valid} Valid`;
+    invalidCount.textContent = `${invalid} Invalid`;
+
+    infoBox.classList.remove("d-none");
+
+    if (valid > 0) {
+
+      previewContainer.classList.remove("d-none");
+      previewEmpty.classList.add("d-none");
+
+      submitButton.disabled = false;
+
+    } else {
+
+      previewContainer.classList.add("d-none");
+      previewEmpty.classList.remove("d-none");
+
+      submitButton.disabled = true;
+    }
+  }
+
+
+  // ==========================================
+  // READ EXCEL
+  // ==========================================
+
+  fileInput.addEventListener("change", function () {
+
+    const file = fileInput.files[0];
+
+    if (!file) {
+      return;
+    }
+
+    fileName.textContent = file.name;
+
+    const reader = new FileReader();
+
+    reader.onload = function (event) {
+
+      try {
+
+        const data = new Uint8Array(event.target.result);
+
+        const workbook = XLSX.read(data, {
+          type: "array"
+        });
+
+        const firstSheet =
+          workbook.Sheets[workbook.SheetNames[0]];
+
+        const rows = XLSX.utils.sheet_to_json(
+          firstSheet,
+          {
+            header: 1,
+            defval: ""
+          }
+        );
+
+        if (!rows.length) {
+
+          alert("The Excel file is empty.");
+
+          return;
+        }
+
+        const headers = rows[0];
+
+        const nameIndex = findColumn(
+          headers,
+          [
+            "name",
+            "customer_name",
+            "customer"
+          ]
+        );
+
+        const phoneIndex = findColumn(
+          headers,
+          [
+            "phone",
+            "mobile",
+            "mobile_number",
+            "telephone"
+          ]
+        );
+
+        const pointsIndex = findColumn(
+          headers,
+          [
+            "points",
+            "customer_points"
+          ]
+        );
+
+        const locationIndex = findColumn(
+          headers,
+          [
+            "location",
+            "customer_location",
+            "town",
+            "city"
+          ]
+        );
+
+
+        if (
+          nameIndex === -1 ||
+          phoneIndex === -1
+        ) {
+
+          alert(
+            "Excel must contain Name and Phone columns."
+          );
+
+          submitButton.disabled = true;
+
+          return;
+        }
+
+
+        excelRows = [];
+
+
+        rows.slice(1).forEach(function (row) {
+
+          const name =
+            String(row[nameIndex] || "").trim();
+
+          const phone =
+            String(row[phoneIndex] || "").trim();
+
+          const points =
+            pointsIndex >= 0
+              ? String(row[pointsIndex] || "").trim()
+              : "";
+
+          const location =
+            locationIndex >= 0
+              ? String(row[locationIndex] || "").trim()
+              : "";
+
+
+          if (!name && !phone) {
+            return;
+          }
+
+
+          excelRows.push({
+            name: name,
+            phone: phone,
+            points: points,
+            location: location
+          });
+
+        });
+
+
+        buildPreview();
+
+      }
+
+      catch (error) {
+
+        console.error(error);
+
+        alert(
+          "Could not read this Excel file. Please check the file format."
+        );
+
+        submitButton.disabled = true;
+      }
+
+    };
+
+
+    reader.readAsArrayBuffer(file);
+
+  });
+
+
+  // ==========================================
+  // LIVE MESSAGE PREVIEW
+  // ==========================================
+
+  messageInput.addEventListener(
+    "input",
+    function () {
+
+      if (excelRows.length > 0) {
+        buildPreview();
+      }
+
+    }
+  );
+
+
+  // ==========================================
+  // CONFIRM BEFORE SEND
+  // ==========================================
+
+  form.addEventListener("submit", function (event) {
+
+    const validRecipients = excelRows.filter(function (row) {
+
+      return normalizePhone(row.phone) !== "";
+
+    });
+
+
+    if (validRecipients.length === 0) {
+
+      event.preventDefault();
+
+      alert(
+        "There are no valid phone numbers to send SMS to."
+      );
+
+      return;
+    }
+
+
+    const confirmed = confirm(
+      `You are about to send SMS to ${validRecipients.length} recipients.\n\nContinue?`
+    );
+
+
+    if (!confirmed) {
+      event.preventDefault();
+      return;
+    }
+
+
+    submitButton.disabled = true;
+
+    submitButton.innerHTML =
+      '<i class="bi bi-hourglass-split me-2"></i> Queuing SMS...';
+
+  });
+
+});
+</script>
+
+<hr/>
+
+
+<style type="text/css">
+
+
+  .form-select {
+  display: inline-block;
+  width: auto;
+  margin-left: 10px;
+}
+
+.btn-primary {
+  margin-left: 10px;
+}
+
+
+.digg_pagination {
+  text-align: center;
+  width: 100%;
+  margin-top: 10px; /* Reduced margin to compact layout */
+}
+
+.pagination {
+  display: inline-flex;
+  justify-content: center;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.pagination li {
+  margin: 0;
+}
+
+.pagination a,
+.pagination .current {
+  display: block;
+  padding: 3px 8px; /* Reduced padding for compactness */
+  margin: 2px; /* Reduced margin */
+  background-color: #007bff;
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+}
+
+.pagination a:hover {
+  background-color: #0056b3;
+}
+
+.pagination .current {
+  background-color: #0056b3;
+}
+
+.pagination .disabled {
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+.pagination .dots {
+  padding: 3px 8px;
+  margin: 2px;
+}
+
+.pagination .previous_page,
+.pagination .next_page {
+  font-weight: bold;
+}
+
+.table-success {
+  background-color: #d4edda;
+}
+
+.text-center {
+  text-align: center;
+}
+
+
+
+
+</style>
+
+<style>
+  /* ===== Container ===== */
+.jmcustomers-dashboard {
+  max-width: 1000px;
+  margin: 35px auto;
+  padding: 25px 30px;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  font-family: 'Inter', 'Segoe UI', sans-serif;
+}
+
+/* ===== Headings ===== */
+.heading {
+  text-align: center;
+  font-size: 2.4rem;
+  color: #007bff;
+  margin-bottom: 5px;
+  font-weight: 700;
+}
+
+.subheading {
+  text-align: center;
+  font-size: 1.1rem;
+  color: #555;
+  margin-bottom: 25px;
+}
+
+/* ===== Filter Bar ===== */
+.filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 25px;
+}
+
+.filter-label {
+  font-weight: bold;
+  color: #333;
+}
+
+.filter-btn {
+  border-radius: 8px;
+  padding: 6px 14px;
+  text-decoration: none;
+  color: #fff;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.filter-btn.all { background: #007bff; }
+.filter-btn.inactive { background: #ff9800; }
+.filter-btn.active { background: #28a745; }
+
+.filter-btn:hover {
+  opacity: 0.85;
+  transform: scale(1.05);
+}
+
+/* ===== Customer List ===== */
+.jmcustomer-list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* ===== Customer Card ===== */
+.customer-card {
+  background: linear-gradient(145deg, #fdfdfd, #f0f4f8);
+  border-radius: 16px;
+  border-left: 6px solid #28a745;
+  padding: 20px;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.customer-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 28px rgba(0,0,0,0.12);
+}
+
+/* Risk color borders */
+.customer-card.ok { border-left-color: #28a745; }
+.customer-card.warning { border-left-color: #ffc107; }
+.customer-card.critical { border-left-color: #dc3545; }
+
+/* ===== Header ===== */
+.customer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+
+.customer-name {
+  font-size: 1.3rem;
+  color: #007bff;
+  font-weight: 600;
+}
+
+.customer-contact {
+  color: #28a745;
+  font-weight: bold;
+  font-size: 1.05rem;
+}
+
+/* ===== Details ===== */
+.customer-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  font-size: 0.9rem;
+  border-radius: 10px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.items { background: #ffe6e6; color: #b71c1c; }
+.last-update { background: #d1ecf1; color: #0c5460; }
+.inactive-days { background: #fff3cd; color: #856404; }
+.returning.yes { background: #c3e6cb; color: #155724; }
+.returning.no { background: #f5c6cb; color: #721c24; }
+
+.badge:hover {
+  transform: scale(1.05);
+}
+
+/* ===== Action Bar ===== */
+.action-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.recommendation {
+  font-weight: 600;
+  color: #ff9800;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Buttons container */
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.btn-sm {
+  font-size: 0.9rem;
+  border-radius: 8px;
+  padding: 6px 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+
+.btn-sm:hover {
+  transform: scale(1.05);
+}
+
+/* Special Button Colors */
+.btn-primary { background: #007bff; color: #fff; }
+.btn-primary:hover { background: #0069d9; }
+
+.btn-warning { background: #ffc107; color: #212529; }
+.btn-warning:hover { background: #e0a800; }
+
+.btn-success { background: #28a745; color: #fff; }
+.btn-success:hover { background: #218838; }
+
+.btn-outline-primary { border: 2px solid #007bff; color: #007bff; }
+.btn-outline-primary:hover { background: #007bff; color: #fff; }
+
+/* ===== No Data ===== */
+.no-data {
+  text-align: center;
+  color: #777;
+  font-size: 1.1rem;
+  margin-top: 30px;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .customer-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .action-bar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .buttons {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .buttons .btn-sm {
+    flex: 1 1 48%;
+  }
+}
+
+  
+</style>
+
+
+<style>
+  .janomax-fieldset {
+    max-width: 480px;
+    margin: 20px auto;
+    padding: 15px 18px;
+    border-radius: 12px;
+    border: 1px solid #ddd;
+    background: #fff;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+  }
+
+  .janomax-fieldset legend {
+    font-weight: 700;
+    color: #0d6efd;
+    padding: 0 8px;
+    font-size: 16px;
+  }
+
+  .janomax-text {
+    font-size: 14px;
+    margin-bottom: 8px;
+    line-height: 1.4;
+  }
+
+  .janomax-contact {
+    font-weight: 600;
+    margin: 8px 0;
+  }
+
+  .janomax-contact span {
+    color: #198754;
+  }
+
+  .janomax-btn {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 8px 14px;
+    background: #25D366;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .janomax-btn:hover {
+    background: #1ebe5d;
+  }
+
+  .janomax-footer {
+    font-size: 13px;
+    color: #666;
+    margin-top: 6px;
+  }
+</style>
+
+
+<style>
+
+  /*====================================================
+  PREMIUM SMS CAMPAIGN
+====================================================*/
+
+.sms-campaign-card{
+    border:none;
+    border-radius:22px;
+    overflow:hidden;
+    background:#fff;
+    box-shadow:0 18px 45px rgba(15,23,42,.08);
+    transition:.35s;
+}
+
+.sms-campaign-card:hover{
+    box-shadow:0 24px 60px rgba(15,23,42,.12);
+}
+
+/* Header */
+
+.sms-header{
+    padding:22px 28px;
+    border:none;
+    background:linear-gradient(135deg,#0d6efd 0%,#198754 100%);
+    color:#fff;
+}
+
+.sms-header h4{
+    font-size:1.45rem;
+    font-weight:700;
+    margin:0;
+}
+
+.sms-header small{
+    color:rgba(255,255,255,.92);
+    font-size:.92rem;
+}
+
+.sms-header .btn{
+    width:44px;
+    height:44px;
+    border-radius:50%;
+    border:none;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:.35s;
+    box-shadow:0 6px 18px rgba(0,0,0,.15);
+}
+
+.sms-header .btn:hover{
+    transform:rotate(180deg) scale(1.05);
+}
+
+/* Body */
+
+.sms-campaign-card .card-body{
+    padding:32px;
+    background:#fff;
+}
+
+/* Form labels */
+
+.sms-campaign-card .form-label{
+    color:#1f2937;
+    font-weight:700;
+    margin-bottom:10px;
+    letter-spacing:.2px;
+}
+
+/* Inputs */
+
+.premium-input,
+.premium-textarea{
+
+    border:2px solid #e5e7eb;
+    border-radius:18px;
+    transition:.30s;
+    box-shadow:none;
+    background:#fff;
+
+}
+
+.premium-input{
+    height:56px;
+    padding:0 16px;
+    font-size:15px;
+}
+
+.premium-textarea{
+    min-height:260px;
+    padding:18px;
+    font-size:15px;
+    line-height:1.7;
+    resize:vertical;
+}
+
+.premium-input:focus,
+.premium-textarea:focus{
+
+    border-color:#198754;
+    box-shadow:0 0 0 .22rem rgba(25,135,84,.12);
+
+}
+
+/* Left info card */
+
+.sms-help{
+
+    margin-top:22px;
+    padding:22px;
+    border-radius:18px;
+    background:linear-gradient(180deg,#f8fffb,#ffffff);
+    border:1px solid #d8f4e3;
+
+}
+
+.sms-help h6{
+
+    font-weight:700;
+    color:#198754;
+    margin-bottom:18px;
+
+}
+
+.sms-help .badge{
+
+    padding:9px 15px;
+    border-radius:30px;
+    font-size:.86rem;
+    margin-right:8px;
+    margin-bottom:8px;
+
+}
+
+.sms-help::after{
+
+    content:"Tags are automatically replaced for each recipient before the SMS is sent.";
+    display:block;
+    margin-top:18px;
+    color:#6b7280;
+    font-size:.82rem;
+    line-height:1.6;
+
+}
+
+/* Login wrapper */
+
+.login{
+    max-width:1250px;
+    margin:auto;
+}
+
+/* Button */
+
+.btn-success{
+
+    background:linear-gradient(135deg,#198754,#20c997);
+    border:none;
+    border-radius:50px;
+    padding:14px 38px;
+    font-weight:700;
+    letter-spacing:.3px;
+    transition:.35s;
+    box-shadow:0 12px 28px rgba(25,135,84,.20);
+
+}
+
+.btn-success:hover{
+
+    transform:translateY(-3px);
+    box-shadow:0 18px 34px rgba(25,135,84,.28);
+
+}
+
+/* Scrollbar */
+
+.premium-textarea::-webkit-scrollbar{
+    width:8px;
+}
+
+.premium-textarea::-webkit-scrollbar-thumb{
+    background:#198754;
+    border-radius:20px;
+}
+
+.premium-textarea::-webkit-scrollbar-track{
+    background:#edf2f7;
+}
+
+/* Mobile */
+
+@media (max-width:991px){
+
+    .sms-campaign-card .card-body{
+        padding:20px;
+    }
+
+    .premium-textarea{
+        min-height:180px;
+    }
+
+    .btn-success{
+        width:100%;
+    }
+
+    .sms-help{
+        margin-top:0;
+    }
+
+    .sms-header{
+        padding:18px;
+    }
+
+    .sms-header h4{
+        font-size:1.2rem;
+    }
+
+}
+
+@media (max-width:576px){
+
+    .sms-header .d-flex{
+        flex-direction:column;
+        align-items:flex-start !important;
+        gap:15px;
+    }
+
+    .sms-header .btn{
+        align-self:flex-end;
+    }
+
+}
+  .sms-campaign-card{
+
+border-radius:20px;
+
+overflow:hidden;
+
+}
+
+.sms-header{
+
+background:linear-gradient(135deg,#198754,#20c997);
+
+color:#fff;
+
+padding:20px;
+
+border:none;
+
+}
+
+.sms-header small{
+
+color:rgba(255,255,255,.8);
+
+}
+
+.premium-input{
+
+border-radius:12px;
+
+padding:12px;
+
+}
+
+.premium-textarea{
+
+border-radius:15px;
+
+padding:18px;
+
+font-size:15px;
+
+min-height:240px;
+
+resize:vertical;
+
+}
+
+.premium-textarea:focus{
+
+border-color:#198754;
+
+box-shadow:0 0 0 .2rem rgba(25,135,84,.15);
+
+}
+
+.sms-help{
+
+background:#f8f9fa;
+
+padding:20px;
+
+border-radius:15px;
+
+}
+
+.sms-help .badge{
+
+margin:4px;
+
+padding:8px 12px;
+
+font-size:13px;
+
+}
+
+.btn-success{
+
+border-radius:50px;
+
+padding:12px 35px;
+
+font-weight:600;
+
+box-shadow:0 10px 20px rgba(25,135,84,.25);
+
+}
+</style>
+
+
+<style>
+
+  /* ==========================================
+   PREMIUM SMS CARD
+========================================== */
+
+.sms-campaign-card{
+    border:0;
+    border-radius:20px;
+    overflow:hidden;
+    box-shadow:0 10px 35px rgba(0,0,0,.08);
+    background:#fff;
+}
+
+/* Header */
+
+.sms-header{
+    cursor:pointer;
+    list-style:none;
+    padding:20px 25px;
+    background:linear-gradient(135deg,#0d6efd,#198754);
+    color:#fff;
+}
+
+.sms-header::-webkit-details-marker{
+    display:none;
+}
+
+.sms-header h4{
+    margin:0;
+    font-size:1.35rem;
+    font-weight:700;
+}
+
+.sms-header small{
+    color:rgba(255,255,255,.9);
+    font-size:.92rem;
+}
+
+.collapse-icon{
+    font-size:1.3rem;
+    transition:.3s;
+}
+
+details[open] .collapse-icon{
+    transform:rotate(180deg);
+}
+
+/* Body */
+
+.sms-wrapper{
+    padding:30px;
+    background:#fff;
+}
+
+/* Labels */
+
+.sms-wrapper label{
+    color:#344054;
+    font-weight:600;
+    margin-bottom:8px;
+}
+
+/* Inputs */
+
+.premium-input,
+.premium-textarea,
+.sms-wrapper .form-control,
+.sms-wrapper .form-select{
+
+    width:100%;
+    border:2px solid #e5e7eb;
+    border-radius:14px;
+    background:#fff;
+    box-shadow:none;
+    transition:.25s ease;
+
+}
+
+.premium-input,
+.sms-wrapper input,
+.sms-wrapper select{
+    height:52px;
+    padding:12px 15px;
+}
+
+.premium-textarea,
+.sms-wrapper textarea{
+    padding:15px;
+    min-height:180px;
+    resize:vertical;
+}
+
+.sms-wrapper input:focus,
+.sms-wrapper textarea:focus,
+.sms-wrapper select:focus{
+
+    border-color:#198754;
+    box-shadow:0 0 0 .18rem rgba(25,135,84,.15);
+
+}
+
+/* Placeholder card */
+
+.sms-info{
+    border:none;
+    border-left:5px solid #198754;
+    border-radius:14px;
+    background:#f8fffb;
+    padding:18px;
+}
+
+.sms-info strong{
+    color:#198754;
+}
+
+.sms-info .badge{
+    font-size:.85rem;
+    padding:8px 12px;
+}
+
+/* Button */
+
+.sms-send-btn{
+    background:linear-gradient(135deg,#198754,#20c997);
+    color:#fff;
+    border:none;
+    border-radius:50px;
+    font-weight:600;
+    padding:13px 36px;
+    transition:.3s;
+}
+
+.sms-send-btn:hover{
+
+    color:#fff;
+    transform:translateY(-2px);
+
+    box-shadow:0 12px 24px rgba(25,135,84,.25);
+
+}
+
+/* Responsive */
+
+@media(max-width:768px){
+
+    .sms-wrapper{
+        padding:18px;
+    }
+
+    .sms-header{
+        padding:16px;
+    }
+
+    .sms-send-btn{
+        width:100%;
+    }
+
+}
+
+  .sms-campaign-card{
+    border-radius:20px;
+    overflow:hidden;
+}
+
+.sms-header{
+    background:linear-gradient(135deg,#198754,#20c997);
+    color:#fff;
+    padding:20px 25px;
+}
+
+.sms-header h4{
+    font-weight:700;
+}
+
+.sms-header small{
+    color:rgba(255,255,255,.85);
+}
+
+.sms-placeholders{
+    background:#f8f9fa;
+    border-radius:15px;
+    padding:18px;
+    border-left:5px solid #20c997;
+}
+
+.sms-placeholders h6{
+    font-weight:700;
+    margin-bottom:12px;
+}
+
+.sms-placeholders .badge{
+    margin:4px;
+    padding:8px 14px;
+    font-size:13px;
+}
+
+.premium-input{
+    border-radius:14px;
+    min-height:50px;
+}
+
+.premium-textarea{
+    border-radius:16px;
+    min-height:220px;
+    resize:vertical;
+}
+
+.sms-send-btn{
+    background:linear-gradient(135deg,#198754,#20c997);
+    color:#fff;
+    border:none;
+    border-radius:50px;
+    font-weight:600;
+    padding:12px 35px;
+}
+
+.sms-send-btn:hover{
+    color:#fff;
+}
+
+  .sms-wrapper{
+    max-width:850px;
+    margin:0 auto;
+}
+
+.sms-info{
+    border-radius:15px;
+    padding:15px 20px;
+}
+
+.premium-input,
+.premium-textarea{
+    border-radius:14px;
+    border:2px solid #dee2e6;
+    padding:12px 15px;
+    transition:.3s;
+}
+
+.premium-input{
+    height:52px;
+}
+
+.premium-textarea{
+    min-height:180px;
+    resize:vertical;
+}
+
+.premium-input:focus,
+.premium-textarea:focus{
+    border-color:#198754;
+    box-shadow:0 0 0 .2rem rgba(25,135,84,.15);
+}
+
+.sms-send-btn{
+    background:linear-gradient(135deg,#198754,#20c997);
+    color:#fff;
+    border:none;
+    border-radius:50px;
+    padding:14px 35px;
+    font-size:17px;
+    font-weight:600;
+    box-shadow:0 10px 25px rgba(25,135,84,.25);
+    transition:.3s;
+}
+
+.sms-send-btn:hover{
+    color:#fff;
+    transform:translateY(-2px);
+}
+
+@media (max-width:768px){
+
+    .sms-wrapper{
+        max-width:100%;
+    }
+
+    .sms-send-btn{
+        width:100%;
+    }
+
+    .premium-input{
+        height:48px;
+    }
+
+}
+  /* ==============================
+   PREMIUM SMS CARD
+================================= */
+
+.sms-fieldset{
+    border:1px solid #e5e7eb;
+    border-radius:20px;
+    padding:25px;
+    margin:25px 0;
+    background:#fff;
+    box-shadow:0 8px 30px rgba(0,0,0,.06);
+}
+
+.sms-fieldset legend{
+    width:auto;
+    padding:10px 18px;
+    margin:0 0 20px;
+    border-radius:50px;
+    background:linear-gradient(135deg,#198754,#20c997);
+    color:#fff;
+    font-size:18px;
+    font-weight:700;
+}
+
+.sms-fieldset .row{
+    --bs-gutter-x:1.5rem;
+    --bs-gutter-y:1.25rem;
+}
+
+.sms-fieldset .form-label{
+    display:block;
+    margin-bottom:.55rem;
+    font-weight:600;
+    color:#344054;
+}
+
+.sms-fieldset .form-control,
+.sms-fieldset .form-select{
+    display:block;
+    width:100%;
+    min-height:50px;
+    border:1px solid #ced4da;
+    border-radius:14px;
+    padding:.75rem 1rem;
+    font-size:15px;
+    background:#fff;
+    transition:.25s;
+}
+
+.sms-fieldset textarea.form-control{
+    min-height:180px;
+    resize:vertical;
+    line-height:1.6;
+}
+
+.sms-fieldset .form-control:focus,
+.sms-fieldset .form-select:focus{
+    border-color:#20c997;
+    box-shadow:0 0 0 .2rem rgba(32,201,151,.15);
+}
+
+.sms-placeholders{
+    background:#f8f9fa;
+    border:1px solid #e9ecef;
+    border-radius:14px;
+    padding:16px;
+    height:100%;
+}
+
+.sms-placeholders .badge{
+    margin:3px;
+    padding:8px 12px;
+    font-size:13px;
+}
+
+.sms-send-btn{
+    border:none;
+    border-radius:50px;
+    background:linear-gradient(135deg,#198754,#20c997);
+    color:#fff;
+    font-weight:600;
+    padding:12px 28px;
+    transition:.3s;
+}
+
+.sms-send-btn:hover{
+    color:#fff;
+    transform:translateY(-2px);
+    box-shadow:0 8px 20px rgba(25,135,84,.25);
+}
+
+@media (max-width:768px){
+
+    .sms-fieldset{
+        padding:18px;
+    }
+
+    .sms-send-btn{
+        width:100%;
+    }
+
+}
+</style>
+<style>
+
+  /* ==========================================
+   BULK SMS CAMPAIGN
+========================================== */
+
+.sms-campaign-card{
+    border:none;
+    border-radius:22px;
+    overflow:hidden;
+    background:#fff;
+    box-shadow:0 12px 35px rgba(0,0,0,.08);
+}
+
+/* Header */
+
+.sms-header{
+    background:linear-gradient(135deg,#0d6efd,#198754);
+    color:#fff;
+    padding:22px 28px;
+    border:none;
+}
+
+.sms-header h4{
+    font-weight:700;
+    margin-bottom:4px;
+}
+
+.sms-header small{
+    color:rgba(255,255,255,.9);
+    font-size:.9rem;
+}
+
+.sms-header .btn{
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border:none;
+    transition:.3s;
+}
+
+.sms-header .btn:hover{
+    transform:rotate(180deg);
+}
+
+/* Body */
+
+.sms-campaign-card .card-body{
+    padding:30px;
+    background:#fff;
+}
+
+/* Labels */
+
+.sms-campaign-card .form-label{
+    font-weight:700;
+    color:#344054;
+    margin-bottom:8px;
+}
+
+/* Inputs */
+
+.premium-input,
+.premium-textarea{
+    border:2px solid #e9ecef;
+    border-radius:16px;
+    transition:.3s;
+    box-shadow:none;
+}
+
+.premium-input{
+    min-height:54px;
+}
+
+.premium-textarea{
+    min-height:240px;
+    resize:vertical;
+    padding:18px;
+    font-size:15px;
+}
+
+.premium-input:focus,
+.premium-textarea:focus{
+    border-color:#198754;
+    box-shadow:0 0 0 .18rem rgba(25,135,84,.12);
+}
+
+/* Placeholder Card */
+
+.sms-placeholders{
+    margin-top:20px;
+    padding:20px;
+    border-radius:18px;
+    background:linear-gradient(180deg,#f8fffb,#ffffff);
+    border:1px solid #d9f5e4;
+}
+
+.sms-placeholders h6{
+    font-weight:700;
+    color:#198754;
+    margin-bottom:15px;
+}
+
+.sms-placeholders .badge{
+    font-size:.9rem;
+    padding:8px 14px;
+    margin-right:8px;
+    margin-bottom:8px;
+    border-radius:30px;
+}
+
+.sms-placeholders::after{
+    content:"These placeholders are automatically replaced before sending.";
+    display:block;
+    margin-top:15px;
+    color:#6c757d;
+    font-size:.82rem;
+}
+
+/* Button */
+
+.sms-send-btn{
+    background:linear-gradient(135deg,#198754,#20c997);
+    border:none;
+    color:#fff;
+    font-weight:700;
+    font-size:15px;
+    padding:14px 40px;
+    border-radius:50px;
+    transition:.3s;
+    box-shadow:0 8px 20px rgba(25,135,84,.18);
+}
+
+.sms-send-btn:hover{
+    color:#fff;
+    transform:translateY(-3px);
+    box-shadow:0 14px 28px rgba(25,135,84,.28);
+}
+
+/* Collapse animation */
+
+.collapse{
+    transition:all .35s ease;
+}
+
+/* Mobile */
+
+@media (max-width:992px){
+
+    .sms-campaign-card .card-body{
+        padding:20px;
+    }
+
+    .premium-textarea{
+        min-height:180px;
+    }
+
+    .sms-send-btn{
+        width:100%;
+        margin-top:10px;
+    }
+
+    .sms-header{
+        padding:18px;
+    }
+
+    .sms-header h4{
+        font-size:1.2rem;
+    }
+
+    .sms-header small{
+        display:block;
+        margin-top:4px;
+    }
+
+}
+
+/* Premium select arrow */
+
+.form-select{
+    background-position:right 1rem center;
+    background-size:16px;
+}
+
+/* Nice scrollbar */
+
+.premium-textarea::-webkit-scrollbar{
+    width:8px;
+}
+
+.premium-textarea::-webkit-scrollbar-thumb{
+    background:#198754;
+    border-radius:20px;
+}
+
+.premium-textarea::-webkit-scrollbar-track{
+    background:#f1f3f5;
+}
+
+  .sms-side-card{
+    background:#f8fafc;
+    border:1px solid #e5e7eb;
+    border-radius:18px;
+    padding:20px;
+    height:100%;
+}
+
+.sms-placeholders{
+    background:#fff;
+    border:1px dashed #20c997;
+    border-radius:15px;
+    padding:18px;
+}
+
+.sms-placeholders h6{
+    font-weight:700;
+    color:#198754;
+    margin-bottom:15px;
+}
+
+.placeholder-tags{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+}
+
+.placeholder-tags .badge{
+    padding:9px 14px;
+    font-size:13px;
+    white-space:nowrap;
+}
+
+.premium-textarea{
+    width:100%;
+    min-height:260px;
+    max-width:100%;
+    border-radius:16px;
+    padding:18px;
+    resize:vertical;
+    overflow:auto;
+    box-sizing:border-box;
+}
+
+.sms-send-btn{
+    border:none;
+    background:linear-gradient(135deg,#198754,#20c997);
+    color:#fff;
+    padding:12px 28px;
+    border-radius:40px;
+    font-weight:600;
+    transition:.3s;
+}
+
+.sms-send-btn:hover{
+    color:#fff;
+    transform:translateY(-2px);
+}
+
+@media (max-width:991px){
+
+    .sms-side-card{
+        margin-bottom:20px;
+    }
+
+    .sms-send-btn{
+        width:100%;
+    }
+
+}
+  /* ==========================================
+   PREMIUM SMS CAMPAIGN
+========================================== */
+
+.sms-fieldset{
+    background:#fff;
+    border:1px solid #e9ecef;
+    border-radius:22px;
+    padding:28px;
+    box-shadow:0 15px 35px rgba(0,0,0,.06);
+    margin-bottom:25px;
+}
+
+.sms-fieldset legend{
+    width:auto;
+    padding:10px 20px;
+    margin-bottom:20px;
+    border-radius:50px;
+    background:linear-gradient(135deg,#198754,#20c997);
+    color:#fff;
+    font-size:18px;
+    font-weight:700;
+    box-shadow:0 10px 25px rgba(25,135,84,.25);
+}
+
+.sms-fieldset legend i{
+    margin-right:8px;
+}
+
+.form-label{
+    font-weight:700;
+    color:#344054;
+    margin-bottom:10px;
+}
+
+/* Inputs */
+
+.premium-input{
+    height:55px;
+    border-radius:15px;
+    border:2px solid #e9ecef;
+    font-size:15px;
+    transition:.3s;
+}
+
+.premium-input:focus{
+    border-color:#198754;
+    box-shadow:0 0 0 .20rem rgba(25,135,84,.15);
+}
+
+/* Textarea */
+
+.premium-textarea{
+    min-height:240px;
+    border-radius:18px;
+    border:2px solid #e9ecef;
+    padding:18px;
+    font-size:15px;
+    line-height:1.7;
+    resize:vertical;
+    transition:.3s;
+}
+
+.premium-textarea:focus{
+    border-color:#198754;
+    box-shadow:0 0 0 .20rem rgba(25,135,84,.15);
+}
+
+/* Placeholder box */
+
+.sms-placeholders{
+    background:#f8f9fa;
+    border-radius:18px;
+    padding:18px;
+    margin-top:20px;
+    border-left:5px solid #20c997;
+}
+
+.sms-placeholders h6{
+    font-weight:700;
+    margin-bottom:15px;
+    color:#198754;
+}
+
+.sms-placeholders .badge{
+    padding:10px 15px;
+    font-size:13px;
+    border-radius:30px;
+    margin:4px;
+}
+
+/* Button */
+
+.sms-send-btn{
+    background:linear-gradient(135deg,#198754,#20c997);
+    border:none;
+    color:#fff;
+    font-weight:700;
+    border-radius:50px;
+    padding:14px 40px;
+    font-size:17px;
+    transition:.35s;
+    box-shadow:0 12px 30px rgba(25,135,84,.25);
+}
+
+.sms-send-btn:hover{
+    transform:translateY(-3px);
+    color:#fff;
+    box-shadow:0 18px 35px rgba(25,135,84,.35);
+}
+
+/* Counter */
+
+.sms-counter{
+    background:#eefaf5;
+    border-radius:12px;
+    padding:8px 15px;
+    display:inline-block;
+    color:#198754;
+    font-weight:600;
+    margin-top:12px;
+}
+
+/* Responsive */
+
+@media(max-width:768px){
+
+    .sms-fieldset{
+        padding:18px;
+    }
+
+    .premium-textarea{
+        min-height:180px;
+    }
+
+    .sms-send-btn{
+        width:100%;
+        margin-top:15px;
+    }
+
+}
+</style>

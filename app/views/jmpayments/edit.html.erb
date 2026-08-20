@@ -1,0 +1,59 @@
+<%= render "layouts/header" %>
+
+<div class="container my-4">
+
+  <!-- CUSTOMER INFO -->
+  <% if @jmpayment.jmcustomer.present? %>
+    <div class="card mb-4 shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title mb-2">
+          <i class="bi bi-person-circle me-2"></i>
+          <%= @jmpayment.jmcustomer.name %>
+        </h5>
+        <p class="card-text mb-1">
+          <i class="bi bi-phone me-1"></i>
+          Phone: <%= @jmpayment.jmcustomer.phone %>
+        </p>
+        <p class="card-text mb-0">
+          Customer ID: <%= @jmpayment.jmcustomer.id %>
+        </p>
+      </div>
+    </div>
+  <% end %>
+
+  <!-- PAYMENT FORM -->
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <h4 class="card-title mb-3">
+        <%= @jmpayment.new_record? ? "Add Payment" : "Edit Payment" %>
+      </h4>
+
+      <%= form_with(model: @jmpayment, local: true, class: "needs-validation") do |f| %>
+        <div class="row g-3 mb-3">
+
+          <div class="col-md-4">
+            <%= f.label :agent_id, "Agent", class: "form-label" %>
+            <%= f.collection_select :agent_id, Dsa.all.order(:full_name), :id, :full_name, { prompt: "Select Agent" }, { class: "form-select" } %>
+          </div>
+
+          <div class="col-md-4">
+            <%= f.label :bales_count, "Number of Bales", class: "form-label" %>
+            <%= f.number_field :bales_count, class: "form-control", min: 1 %>
+          </div>
+
+          <div class="col-md-4">
+            <%= f.label :comments, class: "form-label" %>
+            <%= f.text_area :comments, class: "form-control", rows: 1, placeholder: "Optional notes" %>
+          </div>
+
+        </div>
+
+        <div class="d-flex justify-content-end">
+          <%= f.submit @jmpayment.new_record? ? "Create Payment" : "Update Payment", class: "btn btn-primary" %>
+        </div>
+      <% end %>
+
+    </div>
+  </div>
+
+</div>

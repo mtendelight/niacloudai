@@ -1,0 +1,1652 @@
+<!-- app/views/dashboard/index.html.erb -->
+
+<div class="flow-dashboard">
+
+  <!-- =========================================================
+       HEADER
+  ========================================================== -->
+
+  <section class="flow-dashboard-header">
+
+    <div class="flow-brand-area">
+
+      <div class="flow-logo-box">
+        <%= image_tag "flogoo.png",
+                      alt: "Flow",
+                      class: "flow-dashboard-logo" %>
+      </div>
+
+      <div>
+        <div class="flow-eyebrow">
+          <i class="bi bi-grid-1x2-fill"></i>
+          COMMAND CENTRE
+        </div>
+
+        <h1>
+          Flow
+          <span>ERP</span>
+        </h1>
+
+        <p>
+          Business operations at a glance.
+        </p>
+      </div>
+
+    </div>
+
+
+    <!-- USER -->
+
+    <div class="flow-user-card">
+
+      <div class="flow-user-avatar">
+        <i class="bi bi-person-fill"></i>
+      </div>
+
+      <div class="flow-user-info">
+
+        <span>LOGGED IN AS</span>
+
+        <strong>
+          <%= current_user.username %>
+        </strong>
+
+      </div>
+
+      <%= button_to destroy_user_session_path,
+          method: :delete,
+          class: "flow-logout",
+          title: "Logout" do %>
+
+        <i class="bi bi-box-arrow-right"></i>
+
+      <% end %>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================================================
+       SEARCH
+  ========================================================== -->
+
+  <section class="flow-search-section">
+
+    <div class="flow-search">
+
+      <i class="bi bi-search"></i>
+
+      <input
+        type="text"
+        id="menuSearch"
+        placeholder="Search modules..."
+        autocomplete="off"
+      >
+
+      <span class="flow-search-shortcut">
+        /
+      </span>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================================================
+       BUSINESS
+  ========================================================== -->
+
+  <div class="flow-section-heading">
+
+    <div>
+      <span>01</span>
+      <strong>Business</strong>
+    </div>
+
+    <small>
+      Core operations
+    </small>
+
+  </div>
+
+
+  <div class="flow-menu-grid">
+
+
+    <!-- CUSTOMERS -->
+
+    <%= link_to "/jmcustomers",
+        class: "flow-menu-card",
+        data: { module_name: "customers crm our customers" } do %>
+
+      <div class="flow-menu-icon flow-blue">
+        <i class="bi bi-briefcase-fill"></i>
+      </div>
+
+      <div class="flow-menu-content">
+        <strong>Our Customers</strong>
+        <span>Customer relationship management</span>
+      </div>
+
+      <i class="bi bi-arrow-up-right flow-arrow"></i>
+
+    <% end %>
+
+
+    <!-- CALL CENTRE -->
+
+    <%= link_to "/janomaxleads/dashboard",
+        class: "flow-menu-card",
+        data: { module_name: "call center call centre customer care" } do %>
+
+      <div class="flow-menu-icon flow-green">
+        <i class="bi bi-headset"></i>
+      </div>
+
+      <div class="flow-menu-content">
+        <strong>Call Centre</strong>
+        <span>Customer calls and follow-ups</span>
+      </div>
+
+      <i class="bi bi-arrow-up-right flow-arrow"></i>
+
+    <% end %>
+
+
+    <!-- AI LEADS -->
+
+    <%= link_to "/jmleads?filter=uncontacted",
+        class: "flow-menu-card",
+        data: { module_name: "ai leads whatsapp leads uncontacted" } do %>
+
+      <div class="flow-menu-icon flow-purple">
+        <i class="bi bi-robot"></i>
+      </div>
+
+      <div class="flow-menu-content">
+        <strong>AI Leads</strong>
+        <span>Intelligent lead management</span>
+      </div>
+
+      <i class="bi bi-arrow-up-right flow-arrow"></i>
+
+    <% end %>
+
+
+    <!-- WHATSAPP -->
+
+    <%= link_to "/ailogs",
+        class: "flow-menu-card",
+        data: { module_name: "whatsapp messages conversations chat" } do %>
+
+      <div class="flow-menu-icon flow-whatsapp">
+        <i class="bi bi-whatsapp"></i>
+      </div>
+
+      <div class="flow-menu-content">
+        <strong>WhatsApp</strong>
+        <span>Conversations and AI activity</span>
+      </div>
+
+      <i class="bi bi-arrow-up-right flow-arrow"></i>
+
+    <% end %>
+
+
+  </div>
+
+
+  <!-- =========================================================
+       INTELLIGENCE
+  ========================================================== -->
+
+  <div class="flow-section-heading">
+
+    <div>
+      <span>02</span>
+      <strong>Intelligence</strong>
+    </div>
+
+    <small>
+      Data & automation
+    </small>
+
+  </div>
+
+
+  <div class="flow-menu-grid">
+
+
+    <!-- BI -->
+
+    <%= link_to "/jbi/index",
+        class: "flow-menu-card flow-feature-card",
+        rel: "noopener",
+        data: {
+          turbo: false,
+          module_name: "bi dashboard business intelligence reports analytics"
+        } do %>
+
+      <div class="flow-menu-icon flow-blue">
+        <i class="bi bi-bar-chart-line-fill"></i>
+      </div>
+
+      <div class="flow-menu-content">
+
+        <strong>BI Dashboard</strong>
+
+        <span>
+          Business intelligence & analytics
+        </span>
+
+      </div>
+
+      <span class="flow-live-badge">
+        LIVE
+      </span>
+
+      <i class="bi bi-arrow-up-right flow-arrow"></i>
+
+    <% end %>
+
+
+    <!-- AI PRODUCTS -->
+
+    <%= link_to aiproducts_path,
+        class: "flow-menu-card",
+        data: { module_name: "ai products artificial intelligence products" } do %>
+
+      <div class="flow-menu-icon flow-purple">
+        <i class="bi bi-robot"></i>
+      </div>
+
+      <div class="flow-menu-content">
+        <strong>AI Products</strong>
+        <span>AI-powered product intelligence</span>
+      </div>
+
+      <i class="bi bi-arrow-up-right flow-arrow"></i>
+
+    <% end %>
+
+
+    <!-- FAQ -->
+
+    <%= link_to jfaqs_path,
+        class: "flow-menu-card",
+        data: { module_name: "faq faqs questions answers knowledge" } do %>
+
+      <div class="flow-menu-icon flow-gold">
+        <i class="bi bi-question-circle-fill"></i>
+      </div>
+
+      <div class="flow-menu-content">
+        <strong>FAQs</strong>
+        <span>Knowledge base and answers</span>
+      </div>
+
+      <i class="bi bi-arrow-up-right flow-arrow"></i>
+
+    <% end %>
+
+
+  </div>
+
+
+  <!-- =========================================================
+       MARKETING & CONTENT
+  ========================================================== -->
+
+  <div class="flow-section-heading">
+
+    <div>
+      <span>03</span>
+      <strong>Marketing & Content</strong>
+    </div>
+
+    <small>
+      Customer engagement
+    </small>
+
+  </div>
+
+
+  <div class="flow-menu-grid">
+
+
+    <!-- SAMPLES -->
+
+    <%= link_to "/jsamples",
+        class: "flow-menu-card",
+        data: { module_name: "samples videos sample videos content" } do %>
+
+      <div class="flow-menu-icon flow-orange">
+        <i class="bi bi-play-btn-fill"></i>
+      </div>
+
+      <div class="flow-menu-content">
+        <strong>Samples Videos</strong>
+        <span>Product samples and media</span>
+      </div>
+
+      <i class="bi bi-arrow-up-right flow-arrow"></i>
+
+    <% end %>
+
+
+    <!-- SMS -->
+
+    <%= link_to "/jmai/index",
+        class: "flow-menu-card",
+        data: { module_name: "sms marketing messages campaigns sms marketing" } do %>
+
+      <div class="flow-menu-icon flow-blue">
+        <i class="bi bi-chat-left-text-fill"></i>
+      </div>
+
+      <div class="flow-menu-content">
+        <strong>SMS Marketing</strong>
+        <span>Campaigns and customer messaging</span>
+      </div>
+
+      <i class="bi bi-arrow-up-right flow-arrow"></i>
+
+    <% end %>
+
+
+<!-- NIA CLOUD WEBSITE -->
+
+<%= link_to "https://niacloud.co.ke",
+    target: "_blank",
+    rel: "noopener noreferrer",
+    class: "flow-menu-card",
+    data: { module_name: "nia cloud website niacloud official website" } do %>
+
+  <div class="flow-menu-icon flow-green">
+    <i class="bi bi-globe2"></i>
+  </div>
+
+  <div class="flow-menu-content">
+    <strong>NiaCloud Website</strong>
+    <span>Visit NiaCloud online</span>
+  </div>
+
+  <i class="bi bi-box-arrow-up-right flow-arrow"></i>
+
+<% end %>
+
+
+  </div>
+
+
+  <!-- =========================================================
+       FOOTER
+  ========================================================== -->
+
+  <footer class="flow-dashboard-footer">
+
+    <div>
+      <span class="flow-footer-dot"></span>
+      Flow Operations
+    </div>
+
+    <span>
+      ERP COMMAND CENTRE
+    </span>
+
+  </footer>
+
+</div>
+
+
+<!-- ============================================================
+     STYLES
+============================================================ -->
+
+<style>
+
+:root {
+
+  --flow-ink: #061116;
+  --flow-ink2: #081a20;
+
+  --flow-panel: #0b2027;
+  --flow-panel2: #102c34;
+
+  --flow-text: #dce8e8;
+  --flow-muted: #81999e;
+
+  --flow-green: #19c39c;
+  --flow-blue: #4da3ff;
+  --flow-gold: #f4b94f;
+  --flow-purple: #9b7cff;
+
+  --flow-line: rgba(255,255,255,.09);
+
+}
+
+
+/* ============================================================
+   PAGE
+============================================================ */
+
+.flow-dashboard {
+
+  min-height: 100vh;
+
+  padding:
+    35px
+    clamp(18px, 4vw, 55px)
+    50px;
+
+  background:
+
+    radial-gradient(
+      circle at 10% 0%,
+      rgba(25,195,156,.08),
+      transparent 28%
+    ),
+
+    radial-gradient(
+      circle at 90% 5%,
+      rgba(77,163,255,.07),
+      transparent 25%
+    ),
+
+    var(--flow-ink);
+
+  color: var(--flow-text);
+
+}
+
+
+/* ============================================================
+   HEADER
+============================================================ */
+
+.flow-dashboard-header {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 25px;
+
+  max-width: 1450px;
+
+  margin: 0 auto 28px;
+
+}
+
+
+.flow-brand-area {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 17px;
+
+}
+
+
+.flow-logo-box {
+
+  width: 64px;
+
+  height: 64px;
+
+  border-radius: 18px;
+
+  display: grid;
+
+  place-items: center;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(77,163,255,.16),
+      rgba(25,195,156,.08)
+    );
+
+  border:
+    1px solid rgba(77,163,255,.18);
+
+  box-shadow:
+    0 12px 35px rgba(0,0,0,.25);
+
+}
+
+
+.flow-dashboard-logo {
+
+  width: 43px;
+
+  height: 43px;
+
+  object-fit: contain;
+
+}
+
+
+.flow-eyebrow {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+  color: var(--flow-green);
+
+  font-family: "Space Mono", monospace;
+
+  font-size: 8px;
+
+  letter-spacing: .18em;
+
+  margin-bottom: 5px;
+
+}
+
+
+.flow-brand-area h1 {
+
+  margin: 0;
+
+  font-family: "Manrope", sans-serif;
+
+  font-size: clamp(25px, 3vw, 35px);
+
+  line-height: 1;
+
+  font-weight: 800;
+
+  letter-spacing: -.045em;
+
+  color: #fff;
+
+}
+
+
+.flow-brand-area h1 span {
+
+  color: var(--flow-blue);
+
+}
+
+
+.flow-brand-area p {
+
+  margin: 8px 0 0;
+
+  color: var(--flow-muted);
+
+  font-size: 11px;
+
+}
+
+
+/* ============================================================
+   USER
+============================================================ */
+
+.flow-user-card {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  padding: 8px 9px 8px 10px;
+
+  border:
+    1px solid var(--flow-line);
+
+  border-radius: 15px;
+
+  background:
+    rgba(255,255,255,.025);
+
+  backdrop-filter:
+    blur(15px);
+
+}
+
+
+.flow-user-avatar {
+
+  width: 38px;
+
+  height: 38px;
+
+  min-width: 38px;
+
+  display: grid;
+
+  place-items: center;
+
+  border-radius: 11px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #185c91,
+      #123e46
+    );
+
+  color: #fff;
+
+}
+
+
+.flow-user-info {
+
+  min-width: 100px;
+
+}
+
+
+.flow-user-info span {
+
+  display: block;
+
+  color: #60777c;
+
+  font-family: "Space Mono", monospace;
+
+  font-size: 7px;
+
+  letter-spacing: .08em;
+
+}
+
+
+.flow-user-info strong {
+
+  display: block;
+
+  margin-top: 3px;
+
+  color: #fff;
+
+  font-size: 11px;
+
+}
+
+
+.flow-logout {
+
+  width: 36px;
+
+  height: 36px;
+
+  border:
+    1px solid rgba(255,255,255,.07);
+
+  border-radius: 10px;
+
+  background:
+    rgba(255,255,255,.025);
+
+  color: #80979c;
+
+  display: grid;
+
+  place-items: center;
+
+  transition: .2s ease;
+
+}
+
+
+.flow-logout:hover {
+
+  color: #ff6b6b;
+
+  border-color:
+    rgba(255,107,107,.25);
+
+  background:
+    rgba(255,107,107,.07);
+
+}
+
+
+/* ============================================================
+   SEARCH
+============================================================ */
+
+.flow-search-section {
+
+  max-width: 1450px;
+
+  margin: 0 auto 35px;
+
+}
+
+
+.flow-search {
+
+  height: 50px;
+
+  max-width: 650px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 0 15px;
+
+  border:
+    1px solid var(--flow-line);
+
+  border-radius: 14px;
+
+  background:
+    rgba(255,255,255,.035);
+
+  transition: .2s ease;
+
+}
+
+
+.flow-search:focus-within {
+
+  border-color:
+    rgba(25,195,156,.35);
+
+  box-shadow:
+    0 0 0 4px rgba(25,195,156,.06);
+
+}
+
+
+.flow-search > i {
+
+  color: var(--flow-green);
+
+  font-size: 15px;
+
+}
+
+
+.flow-search input {
+
+  flex: 1;
+
+  min-width: 0;
+
+  border: 0;
+
+  outline: 0;
+
+  background: transparent;
+
+  color: #fff;
+
+  font-size: 12px;
+
+}
+
+
+.flow-search input::placeholder {
+
+  color: #60777c;
+
+}
+
+
+.flow-search-shortcut {
+
+  width: 24px;
+
+  height: 24px;
+
+  display: grid;
+
+  place-items: center;
+
+  border-radius: 6px;
+
+  background: #102a31;
+
+  border:
+    1px solid var(--flow-line);
+
+  color: #60777c;
+
+  font-family: "Space Mono", monospace;
+
+  font-size: 9px;
+
+}
+
+
+/* ============================================================
+   SECTION HEADINGS
+============================================================ */
+
+.flow-section-heading {
+
+  max-width: 1450px;
+
+  margin: 0 auto 13px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  border-bottom:
+    1px solid rgba(255,255,255,.055);
+
+  padding-bottom: 9px;
+
+}
+
+
+.flow-section-heading > div {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 9px;
+
+}
+
+
+.flow-section-heading span {
+
+  color: var(--flow-green);
+
+  font-family: "Space Mono", monospace;
+
+  font-size: 8px;
+
+}
+
+
+.flow-section-heading strong {
+
+  color: #fff;
+
+  font-family: "Manrope", sans-serif;
+
+  font-size: 13px;
+
+  font-weight: 700;
+
+}
+
+
+.flow-section-heading small {
+
+  color: #536c72;
+
+  font-size: 9px;
+
+}
+
+
+/* ============================================================
+   GRID
+============================================================ */
+
+.flow-menu-grid {
+
+  max-width: 1450px;
+
+  margin: 0 auto 35px;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+
+  gap: 12px;
+
+}
+
+
+/* ============================================================
+   MENU CARD
+============================================================ */
+
+.flow-menu-card {
+
+  min-height: 104px;
+
+  position: relative;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 15px;
+
+  border:
+    1px solid var(--flow-line);
+
+  border-radius: 16px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(16,44,52,.75),
+      rgba(11,32,39,.80)
+    );
+
+  color: var(--flow-text);
+
+  text-decoration: none;
+
+  overflow: hidden;
+
+  transition:
+    transform .22s ease,
+    border-color .22s ease,
+    box-shadow .22s ease,
+    background .22s ease;
+
+}
+
+
+.flow-menu-card::after {
+
+  content: "";
+
+  position: absolute;
+
+  width: 120px;
+
+  height: 120px;
+
+  right: -60px;
+
+  top: -60px;
+
+  border-radius: 50%;
+
+  background:
+    rgba(25,195,156,.055);
+
+  transition: .25s ease;
+
+}
+
+
+.flow-menu-card:hover {
+
+  color: #fff;
+
+  text-decoration: none;
+
+  transform:
+    translateY(-3px);
+
+  border-color:
+    rgba(25,195,156,.22);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(18,51,59,.95),
+      rgba(11,32,39,.95)
+    );
+
+  box-shadow:
+    0 16px 35px rgba(0,0,0,.25);
+
+}
+
+
+.flow-menu-card:hover::after {
+
+  transform: scale(1.5);
+
+}
+
+
+/* ============================================================
+   ICON
+============================================================ */
+
+.flow-menu-icon {
+
+  width: 46px;
+
+  height: 46px;
+
+  min-width: 46px;
+
+  display: grid;
+
+  place-items: center;
+
+  border-radius: 13px;
+
+  font-size: 19px;
+
+  position: relative;
+
+  z-index: 2;
+
+}
+
+
+.flow-blue {
+
+  color: var(--flow-blue);
+
+  background:
+    rgba(77,163,255,.10);
+
+}
+
+
+.flow-green {
+
+  color: var(--flow-green);
+
+  background:
+    rgba(25,195,156,.10);
+
+}
+
+
+.flow-purple {
+
+  color: var(--flow-purple);
+
+  background:
+    rgba(155,124,255,.10);
+
+}
+
+
+.flow-whatsapp {
+
+  color: #20d98b;
+
+  background:
+    rgba(32,217,139,.10);
+
+}
+
+
+.flow-gold {
+
+  color: var(--flow-gold);
+
+  background:
+    rgba(244,185,79,.10);
+
+}
+
+
+.flow-orange {
+
+  color: #ff9f43;
+
+  background:
+    rgba(255,159,67,.10);
+
+}
+
+
+/* ============================================================
+   CONTENT
+============================================================ */
+
+.flow-menu-content {
+
+  min-width: 0;
+
+  position: relative;
+
+  z-index: 2;
+
+}
+
+
+.flow-menu-content strong {
+
+  display: block;
+
+  color: #e8f0f0;
+
+  font-size: 12px;
+
+  font-weight: 700;
+
+}
+
+
+.flow-menu-content span {
+
+  display: block;
+
+  margin-top: 4px;
+
+  color: #60777c;
+
+  font-size: 9px;
+
+  line-height: 1.35;
+
+}
+
+
+/* ============================================================
+   ARROW
+============================================================ */
+
+.flow-arrow {
+
+  margin-left: auto;
+
+  position: relative;
+
+  z-index: 2;
+
+  color: #496269;
+
+  font-size: 11px;
+
+  transition: .2s ease;
+
+}
+
+
+.flow-menu-card:hover .flow-arrow {
+
+  color: var(--flow-green);
+
+  transform:
+    translate(2px,-2px);
+
+}
+
+
+/* ============================================================
+   LIVE
+============================================================ */
+
+.flow-live-badge {
+
+  position: absolute;
+
+  right: 31px;
+
+  top: 10px;
+
+  padding: 3px 5px;
+
+  border-radius: 5px;
+
+  color: var(--flow-green);
+
+  background:
+    rgba(25,195,156,.08);
+
+  font-family: "Space Mono", monospace;
+
+  font-size: 6px;
+
+  letter-spacing: .06em;
+
+  z-index: 3;
+
+}
+
+
+/* ============================================================
+   FOOTER
+============================================================ */
+
+.flow-dashboard-footer {
+
+  max-width: 1450px;
+
+  margin: 45px auto 0;
+
+  padding-top: 18px;
+
+  border-top:
+    1px solid var(--flow-line);
+
+  display: flex;
+
+  justify-content: space-between;
+
+  color: #425b61;
+
+  font-family: "Space Mono", monospace;
+
+  font-size: 7px;
+
+  letter-spacing: .1em;
+
+}
+
+
+.flow-footer-dot {
+
+  display: inline-block;
+
+  width: 6px;
+
+  height: 6px;
+
+  margin-right: 6px;
+
+  border-radius: 50%;
+
+  background: var(--flow-green);
+
+  box-shadow:
+    0 0 10px rgba(25,195,156,.45);
+
+}
+
+
+/* ============================================================
+   TABLET
+============================================================ */
+
+@media (max-width: 1100px) {
+
+  .flow-menu-grid {
+
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+
+  }
+
+}
+
+
+/* ============================================================
+   MOBILE
+============================================================ */
+
+@media (max-width: 700px) {
+
+  .flow-dashboard {
+
+    padding:
+      22px 12px 35px;
+
+  }
+
+
+  .flow-dashboard-header {
+
+    align-items:
+      flex-start;
+
+    flex-direction:
+      column;
+
+    margin-bottom:
+      20px;
+
+  }
+
+
+  .flow-brand-area {
+
+    gap: 12px;
+
+  }
+
+
+  .flow-logo-box {
+
+    width: 54px;
+
+    height: 54px;
+
+    min-width: 54px;
+
+    border-radius: 15px;
+
+  }
+
+
+  .flow-dashboard-logo {
+
+    width: 36px;
+
+    height: 36px;
+
+  }
+
+
+  .flow-brand-area h1 {
+
+    font-size:
+      25px;
+
+  }
+
+
+  .flow-user-card {
+
+    width:
+      100%;
+
+  }
+
+
+  .flow-user-info {
+
+    flex:
+      1;
+
+  }
+
+
+  .flow-search-section {
+
+    margin-bottom:
+      25px;
+
+  }
+
+
+  .flow-search {
+
+    max-width:
+      100%;
+
+    height:
+      48px;
+
+  }
+
+
+  .flow-search-shortcut {
+
+    display:
+      none;
+
+  }
+
+
+  .flow-section-heading {
+
+    margin-bottom:
+      10px;
+
+  }
+
+
+  .flow-section-heading small {
+
+    display:
+      none;
+
+  }
+
+
+  .flow-menu-grid {
+
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+
+    gap:
+      9px;
+
+    margin-bottom:
+      28px;
+
+  }
+
+
+  .flow-menu-card {
+
+    min-height:
+      130px;
+
+    padding:
+      14px 10px;
+
+    flex-direction:
+      column;
+
+    align-items:
+      center;
+
+    justify-content:
+      center;
+
+    text-align:
+      center;
+
+    gap:
+      8px;
+
+  }
+
+
+  .flow-menu-icon {
+
+    width:
+      43px;
+
+    height:
+      43px;
+
+    min-width:
+      43px;
+
+    font-size:
+      18px;
+
+    border-radius:
+      12px;
+
+  }
+
+
+  .flow-menu-content strong {
+
+    font-size:
+      11px;
+
+  }
+
+
+  .flow-menu-content span {
+
+    font-size:
+      8px;
+
+    max-width:
+      125px;
+
+  }
+
+
+  .flow-arrow {
+
+    display:
+      none;
+
+  }
+
+
+  .flow-live-badge {
+
+    right:
+      7px;
+
+    top:
+      7px;
+
+  }
+
+
+  .flow-dashboard-footer {
+
+    margin-top:
+      25px;
+
+  }
+
+}
+
+
+/* ============================================================
+   VERY SMALL PHONES
+============================================================ */
+
+@media (max-width: 380px) {
+
+  .flow-dashboard {
+
+    padding-left:
+      9px;
+
+    padding-right:
+      9px;
+
+  }
+
+
+  .flow-menu-grid {
+
+    gap:
+      7px;
+
+  }
+
+
+  .flow-menu-card {
+
+    min-height:
+      120px;
+
+    padding:
+      11px 7px;
+
+  }
+
+
+  .flow-menu-content span {
+
+    display:
+      none;
+
+  }
+
+
+  .flow-menu-content strong {
+
+    font-size:
+      10px;
+
+  }
+
+
+  .flow-menu-icon {
+
+    width:
+      40px;
+
+    height:
+      40px;
+
+    min-width:
+      40px;
+
+  }
+
+}
+
+</style>
+
+
+<!-- ============================================================
+     SEARCH SCRIPT
+============================================================ -->
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+  const searchInput =
+    document.getElementById("menuSearch");
+
+  const items =
+    document.querySelectorAll(".flow-menu-card");
+
+  if (!searchInput) return;
+
+
+  searchInput.addEventListener("input", function () {
+
+    const query =
+      this.value
+        .toLowerCase()
+        .trim();
+
+
+    items.forEach(function (item) {
+
+      const text =
+        (
+          item.dataset.moduleName ||
+          item.innerText ||
+          ""
+        ).toLowerCase();
+
+
+      if (text.includes(query)) {
+
+        item.style.display = "";
+
+      } else {
+
+        item.style.display = "none";
+
+      }
+
+    });
+
+  });
+
+
+  /* Keyboard shortcut "/" */
+
+  document.addEventListener("keydown", function (event) {
+
+    if (
+      event.key === "/" &&
+      document.activeElement.tagName !== "INPUT" &&
+      document.activeElement.tagName !== "TEXTAREA"
+    ) {
+
+      event.preventDefault();
+
+      searchInput.focus();
+
+    }
+
+  });
+
+});
+
+</script>

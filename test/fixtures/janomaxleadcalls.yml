@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  janomaxlead: one
+  called_at: 2026-06-17 23:28:23
+  status: MyString
+  agent: MyString
+  direction: MyString
+
+two:
+  janomaxlead: two
+  called_at: 2026-06-17 23:28:23
+  status: MyString
+  agent: MyString
+  direction: MyString

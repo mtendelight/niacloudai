@@ -1,0 +1,128 @@
+<%= render "layouts/header" %>
+
+<div class="container mt-5" style="max-width: 600px;">
+
+  <!-- HEADER -->
+  <div class="text-center mb-4">
+    <h3 class="fw-bold">
+      <i class="bi bi-file-earmark-arrow-up text-primary me-2"></i>
+      Import M-Pesa Statement
+    </h3>
+    <p class="text-muted small mb-0">
+      Upload your PDF statement to automatically extract payments
+    </p>
+  </div>
+
+  <!-- CARD -->
+  <div class="card border-0 shadow-lg rounded-4 p-4">
+<div class="login">
+    <%= form_with url: "/jmpayments/import_pdf", multipart: true, html: { id: "importForm" } do %>
+
+      <!-- FILE INPUT -->
+      <div class="mb-4">
+        <label class="form-label fw-semibold">Upload PDF or Excel</label>
+
+        <div class="upload-box text-center p-4 rounded-3 border border-2 border-dashed">
+          <i class="bi bi-cloud-upload fs-1 text-primary mb-2"></i>
+          <p class="mb-2 text-muted small">Click to select or drag & drop</p>
+
+         <%= file_field_tag :file,
+      class: "form-control d-none",
+      id: "fileInput",
+      accept: ".pdf,.xls,.xlsx",
+      required: true %>
+
+          <button type="button" class="btn btn-outline-primary btn-sm" onclick="document.getElementById('fileInput').click()">
+            Choose File
+          </button>
+
+          <div id="fileName" class="mt-2 small text-success fw-semibold"></div>
+        </div>
+      </div>
+
+      <!-- PROGRESS -->
+      <div id="progressWrapper" class="d-none mb-3">
+        <div class="d-flex justify-content-between small mb-1">
+          <span id="statusText">Uploading...</span>
+          <span id="percentText">0%</span>
+        </div>
+
+        <div class="progress rounded-pill" style="height: 10px;">
+          <div id="progressBar"
+               class="progress-bar progress-bar-striped progress-bar-animated bg-success"
+               style="width: 0%">
+          </div>
+        </div>
+      </div>
+
+      <!-- BUTTON -->
+      <button class="btn btn-primary w-100 rounded-pill fw-semibold" id="submitBtn">
+        <i class="bi bi-rocket-takeoff me-1"></i>
+        Start Import
+      </button>
+
+    <% end %>
+
+  </div>
+</div>
+
+<style>
+.upload-box {
+  background: #f8f9fa;
+  transition: 0.3s;
+  cursor: pointer;
+}
+.upload-box:hover {
+  background: #eef6ff;
+  border-color: #0d6efd;
+}
+</style>
+
+<script>
+const form = document.getElementById("importForm");
+const fileInput = document.getElementById("fileInput");
+const fileName = document.getElementById("fileName");
+
+const progressWrapper = document.getElementById("progressWrapper");
+const progressBar = document.getElementById("progressBar");
+const percentText = document.getElementById("percentText");
+const statusText = document.getElementById("statusText");
+
+const btn = document.getElementById("submitBtn");
+
+// Show selected file name
+fileInput.addEventListener("change", function() {
+  if (this.files.length > 0) {
+    fileName.innerText = "📎 " + this.files[0].name;
+  }
+});
+
+// Submit behavior
+form.addEventListener("submit", function() {
+
+  progressWrapper.classList.remove("d-none");
+
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Processing...';
+
+  let progress = 0;
+
+  const interval = setInterval(() => {
+    progress += Math.random() * 15;
+
+    if (progress >= 95) {
+      progress = 95;
+      statusText.innerText = "Finalizing import...";
+    } else if (progress > 60) {
+      statusText.innerText = "Processing transactions...";
+    } else {
+      statusText.innerText = "Uploading file...";
+    }
+
+    progressBar.style.width = progress + "%";
+    percentText.innerText = Math.floor(progress) + "%";
+
+  }, 400);
+
+});
+</script>

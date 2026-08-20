@@ -1,0 +1,16 @@
+development:
+  adapter: redis
+  url: <%= ENV["REDIS_URL"] %>
+  channel_prefix: flow_development
+  ssl_params:
+    verify_mode: <%= OpenSSL::SSL::VERIFY_NONE %>
+
+production:
+  adapter: redis
+  url: <%= ENV["REDIS_URL"] %>
+  channel_prefix: flow_production
+  ssl_params:
+    verify_mode: <%= OpenSSL::SSL::VERIFY_NONE %>
+
+test:
+  adapter: test

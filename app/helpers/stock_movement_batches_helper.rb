@@ -1,0 +1,2 @@
+module StockMovementBatchesHelper
+end

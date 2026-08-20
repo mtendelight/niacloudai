@@ -1,0 +1,261 @@
+wb = xlsx_package.workbook
+
+# =========================================================
+# DATA SOURCES
+# =========================================================
+
+all_leads = Jmlead.includes(:jstaff).order(created_at: :desc)
+
+open_leads = Jmlead
+  .includes(:jstaff)
+  .where(status: "open")
+  .order(created_at: :desc)
+
+uncontacted_leads = Jmlead
+  .includes(:jstaff)
+  .uncontacted
+  .order(last_customer_message_at: :desc)
+
+
+# =========================================================
+# STYLES
+# =========================================================
+
+styles = wb.styles
+
+header_style = styles.add_style(
+  b: true,
+  fg_color: "FFFFFF",
+  bg_color: "000000",
+  border: {
+    style: :thin,
+    color: "000000"
+  },
+  alignment: {
+    horizontal: :center,
+    vertical: :center
+  },
+  sz: 12
+)
+
+row_style = styles.add_style(
+  fg_color: "000000",
+  border: {
+    style: :thin,
+    color: "000000"
+  },
+  alignment: {
+    horizontal: :left,
+    vertical: :center
+  },
+  sz: 11
+)
+
+
+# =========================================================
+# HEADERS
+# =========================================================
+
+headers = [
+  "First Name",
+  "Last Name",
+  "Phone",
+  "Items Required",
+  "Status",
+  "SGL ID",
+  "Assigned Staff",
+  "General Comments",
+  "Comments",
+  "Last Update"
+]
+
+
+# =========================================================
+# CREATE SHEET METHOD
+# =========================================================
+
+add_leads_sheet = lambda do |sheet_name, leads|
+
+  wb.add_worksheet(name: sheet_name) do |sheet|
+
+    # -----------------------------------------------------
+    # HEADER
+    # -----------------------------------------------------
+
+    sheet.add_row(
+      headers,
+      style: header_style,
+      height: 22
+    )
+
+
+    # -----------------------------------------------------
+    # DATA
+    # -----------------------------------------------------
+
+    leads.each do |lead|
+
+      # Name
+      name_parts =
+        lead.name.to_s.strip.split(/\s+/, 2)
+
+      first_name =
+        name_parts[0].to_s
+
+      last_name =
+        name_parts[1].to_s
+
+
+      # Phone
+      phone =
+        lead.phone.to_s.strip.sub(/^0+/, "")
+
+
+      # Assigned Staff
+      staff_name =
+        lead.jstaff&.name.to_s
+
+
+      # Last Update
+      last_update =
+        lead.updated_at&.strftime("%Y-%m-%d %H:%M:%S").to_s
+
+
+      # ---------------------------------------------------
+      # ROW
+      # ---------------------------------------------------
+
+      sheet.add_row(
+        [
+          first_name,
+          last_name,
+          phone,
+          lead.items_required.to_s,
+          lead.status.to_s,
+          lead.sglid.to_s,
+          staff_name,
+          lead.general_comments.to_s,
+          lead.comments.to_s,
+          last_update
+        ],
+        style: row_style
+      )
+
+    end
+
+
+    # =====================================================
+    # FILTER
+    # =====================================================
+
+    sheet.auto_filter = "A1:J1"
+
+
+    # =====================================================
+    # FREEZE HEADER
+    # =====================================================
+
+    sheet.sheet_view.pane do |pane|
+
+      pane.top_left_cell = "A2"
+      pane.state = :frozen
+      pane.y_split = 1
+
+    end
+
+
+    # =====================================================
+    # COLUMN WIDTHS
+    # =====================================================
+
+    column_values = {
+
+      "First Name" => ->(lead) {
+        lead.name.to_s.strip.split(/\s+/, 2)[0].to_s
+      },
+
+      "Last Name" => ->(lead) {
+        lead.name.to_s.strip.split(/\s+/, 2)[1].to_s
+      },
+
+      "Phone" => ->(lead) {
+        lead.phone.to_s.strip.sub(/^0+/, "")
+      },
+
+      "Items Required" => ->(lead) {
+        lead.items_required.to_s
+      },
+
+      "Status" => ->(lead) {
+        lead.status.to_s
+      },
+
+      "SGL ID" => ->(lead) {
+        lead.sglid.to_s
+      },
+
+      "Assigned Staff" => ->(lead) {
+        lead.jstaff&.name.to_s
+      },
+
+      "General Comments" => ->(lead) {
+        lead.general_comments.to_s
+      },
+
+      "Comments" => ->(lead) {
+        lead.comments.to_s
+      },
+
+      "Last Update" => ->(lead) {
+        lead.updated_at&.strftime("%Y-%m-%d %H:%M:%S").to_s
+      }
+
+    }
+
+
+    headers.each_with_index do |header, index|
+
+      extractor =
+        column_values[header]
+
+      values =
+        leads.map do |lead|
+          extractor.call(lead)
+        end
+
+      max_length =
+        (
+          [header.to_s.length] +
+          values.map { |value| value.to_s.length }
+        ).max || header.length
+
+      width =
+        [[max_length + 2, 12].max, 35].min
+
+      sheet.column_info[index].width = width
+
+    end
+
+  end
+
+end
+
+
+# =========================================================
+# CREATE 3 EXCEL SHEETS
+# =========================================================
+
+add_leads_sheet.call(
+  "Uncontacted Leads",
+  uncontacted_leads
+)
+
+add_leads_sheet.call(
+  "Open Leads",
+  open_leads
+)
+
+add_leads_sheet.call(
+  "All Leads",
+  all_leads
+)

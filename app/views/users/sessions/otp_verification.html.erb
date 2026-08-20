@@ -1,0 +1,27 @@
+
+
+	<%= render "layouts/header" %>
+	<div class="container">
+<div id="janomax">
+<div style="font-size: 14px">
+	
+
+
+	<div class="card-header">
+               <h4 class="card-title">
+<h1>Verify OTP</h1>
+</h4></div>
+
+<div class="login">
+
+<%= form_with url: verify_otp_path, local: true do |f| %>
+  <div class="form-group">
+    <%= f.label :otp_code, "Enter the OTP code from your app" %>
+    <%= f.text_field :otp_code, class: "form-control new22" %>
+  </div>
+  <center>
+  <div class="form-group">
+    <%= f.submit "Verify", class: "btn btn-primary" %>
+  </div></center>
+<% end %>
+</div></div></div></div>

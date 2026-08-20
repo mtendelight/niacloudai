@@ -1,0 +1,2 @@
+module CampaignManifestosHelper
+end

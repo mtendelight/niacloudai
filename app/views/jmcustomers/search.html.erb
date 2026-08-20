@@ -1,0 +1,644 @@
+
+<%= render "layouts/header" %>
+
+<div class="container my-4">
+  <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center mb-3">
+    <h3 class="text-primary mb-2 mb-sm-0">
+      <i class="bi bi-people-fill me-2"></i> Search Results Customers ...
+    </h3>
+    <%= link_to "⬅ Back", jmcustomers_path, class: "btn btn-secondary px-4" %>
+  <%= link_to "➕ New Customer", new_jmcustomer_path, class: "btn btn-primary px-4" %>
+  </div>
+
+<div class="container mt-4">
+
+
+
+
+
+
+<%= render "layouts/header" %>
+
+<div class="container my-4">
+  <% if current_user&.superadmin? || current_user&.manager? %>
+    <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center mb-3 flex-wrap gap-3 text-center text-sm-start">
+
+      <!-- Left Section: Title + Buttons -->
+      <div class="d-flex flex-column flex-md-row align-items-center justify-content-center justify-content-md-start flex-wrap gap-2 w-100">
+        <h3 class="text-primary mb-0 d-flex align-items-center justify-content-center gap-2">
+          <i class="bi bi-people-fill"></i>
+          <span>Customers</span>
+        </h3>
+
+        <!-- Export Excel -->
+        <%= link_to jmcustomers_path(format: "xlsx"),
+            class: "btn btn-warning btn-md shadow-sm text-uppercase d-flex align-items-center justify-content-center gap-1",
+            data: { turbo: false } do %>
+          <i class="bi bi-file-earmark-excel-fill"></i> cust.xlsx
+        <% end %>
+
+     
+  </div>
+
+
+
+<div class="container">
+<%= render 'jmcustomers/submenu' %>
+
+    </div>
+ 
+
+
+<div class="container mt-4">
+<div class="d-flex flex-wrap gap-2 mb-3">
+
+  <!-- New Customer Button -->
+  <%= link_to new_jmcustomer_path,
+        class: "admin-btn d-flex align-items-center gap-1 px-3 py-2 #{'active' if current_page?(new_jmcustomer_path)}",
+        data: { turbo: false } do %>
+    <i class="bi bi-person-plus-fill"></i>
+    <span style="color: black !important;">New Customer</span>
+  <% end %>
+
+  <!-- Reward Points Checker Button -->
+  <%= link_to jrewards_index_path,
+        class: "admin-btn d-flex align-items-center gap-1 px-3 py-2 #{'active' if current_page?(jrewards_index_path)}",
+        data: { turbo: false } do %>
+    <i class="bi bi-award-fill"></i>
+    <span style="color: black !important;">Reward Points Checker</span>
+  <% end %>
+
+
+
+  <!-- PAYMENTS DASHBOARD (NEW) -->
+  <%= link_to jmcustomerpayments_path,
+        class: "admin-btn d-flex align-items-center gap-1 px-3 py-2 #{'active' if current_page?(jmcustomerpayments_path)}",
+        data: { turbo: false } do %>
+    <i class="bi bi-cash-stack"></i>
+    <span style="color: black !important;">Payments Dashboard</span>
+  <% end %>
+
+
+    <!-- IMPORT BUTTON -->
+  <%= link_to jmpayments_import_path,
+        class: "admin-btn d-flex align-items-center gap-1 px-3 py-2 #{'active' if current_page?(jmpayments_import_path)}",
+        data: { turbo: false } do %>
+    <i class="bi bi-file-earmark-arrow-up-fill"></i>
+    <span style="color: black !important;">Import PDF</span>
+  <% end %>
+
+</div>
+    <%= search_form_for @y, url: search_jmcustomers_path, html: { class: "myform" } do |f| %>
+
+<center>
+
+  <div class="form-row">
+
+          
+             <div class="field">
+
+              <%= f.search_field :name_or_phone_or_location_cont,
+    class: "form-control me-2",
+    placeholder: "Search by any" %>
+
+           
+</div>
+
+      <div class="action">
+            <%= button_tag(class: "btn btn-light") do %>
+                Search
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                </svg>
+            <% end %>
+        </div>
+    <% end %>
+</div></center></div>
+
+ <div class="table-responsive shadow-sm rounded">
+  <table class="table table-hover align-middle mb-0">
+    <thead class="bg-primary text-white">
+      <tr>
+        <th><i class="bi bi-person-fill me-1"></i> Name</th>
+        <th><i class="bi bi-telephone-fill me-1"></i> Phone</th>
+        <th><i class="bi bi-geo-alt-fill me-1"></i> Location</th>
+        <th><i class="bi bi-bag-check-fill me-1"></i> Items</th>
+      
+            <th class="text-center"><i class="bi bi-gear-fill me-1"></i> Actions</th>
+  <th><i class="bi bi-bag-check-fill me-1"></i> Updated_at</th>
+             
+        <th><i class="bi bi-arrow-repeat me-1"></i> Returning</th>
+     
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @jmcustomers.each do |customer| %>
+        <tr>
+          <!-- NAME -->
+        <td>
+  <div class="fw-bold">
+    <%= customer.name %>
+  </div>
+
+  <small class="<%= customer.tier_color %> d-flex align-items-center gap-1">
+    <span><%= customer.tier_icon %></span>
+    <span><%= customer.tier_label %></span>
+  </small>
+</td>
+
+          <!-- PHONE -->
+          <td>
+           <!-- <i class="bi bi-telephone-forward-fill text-success me-2"></i>-->
+            <%= customer.phone %>
+          </td>
+
+          <!-- LOCATION -->
+          <td>
+            <span class="badge bg-light text-dark px-3 py-2">
+              <i class="bi bi-geo-alt text-danger me-1"></i>
+              <%= customer.location %>
+            </span>
+          </td>
+
+        <!-- ITEMS -->
+<td>
+  <% all_items = customer.janomaxes.to_a %> <%# includes unsaved/new records in memory %>
+
+  <% if all_items.any? %>
+    <div class="bg-light rounded p-2" style="max-width: 280px;">
+      <ul class="list-unstyled mb-0 ps-1">
+        <% # Tally item_name for all items, including new ones %>
+        <% item_counts = all_items.map(&:item_name).compact.tally %>
+        <% item_counts.each_with_index do |(item_name, count), index| %>
+          <li class="border-bottom py-1 d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center" style="max-width: 200px; overflow: hidden;">
+              <span class="text-primary fw-bold me-1"><%= "#{index + 1}." %></span>
+              <i class="bi bi-tag-fill text-primary me-1"></i>
+              <strong class="text-dark text-truncate" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                <%= item_name %>
+              </strong>
+            </div>
+
+            <% if count > 1 %>
+              <span class="badge bg-secondary rounded-pill"><%= count %></span>
+            <% end %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  <% else %>
+    <span class="text-muted fst-italic d-flex align-items-center">
+      <i class="bi bi-dash-circle me-1"></i> No items
+    </span>
+  <% end %>
+</td>
+
+
+
+
+
+ <!-- ACTIONS -->
+
+
+          <td class="text-center">
+  <div class="d-flex justify-content-center gap-2">
+    <!-- Edit Button -->
+    <%= link_to edit_jmcustomer_path(customer),
+        class: "btn btn-sm btn-outline-warning d-flex align-items-center gap-1",
+        data: { turbo: false } do %>
+      <i class="bi bi-pencil-square"></i> Edit
+    <% end %>
+
+    <!-- Show Button -->
+    <%= link_to jmcustomer_path(customer),
+        class: "btn btn-sm btn-outline-primary d-flex align-items-center gap-1",
+        data: { turbo: false } do %>
+      <i class="bi bi-eye"></i> Show
+    <% end %>
+  </div>
+</td>
+
+
+           <td>
+
+              <span class="badge bg-light text-dark px-3 py-2">
+    <i class="bi bi-clock-history text-primary me-1"></i>
+ <%= customer.updated_at.strftime("%d %b %Y").html_safe %><br/>
+<%= customer.updated_at.strftime("%I:%M %p") %>
+
+  </span>
+</td>
+
+
+          <!-- RETURNING -->
+          <td>
+            <% if customer.returning? %>
+              <span class="badge bg-success">
+                <i class="bi bi-check-circle me-1"></i> Yes
+              </span>
+            <% else %>
+              <span class="badge bg-danger">
+                <i class="bi bi-x-circle me-1"></i> No
+              </span>
+            <% end %>
+          </td>
+
+         
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<!-- Pagination -->
+<div class="digg_pagination">
+
+  <div class="d-flex justify-content-center mb-3">
+    <%= paginate @jmcustomers %>
+  </div>
+
+  <div class="d-flex justify-content-center align-items-center gap-2 mb-3">
+
+    <%= form_with url: request.path,
+          method: :get,
+          local: true,
+          id: "rows-per-page-form",
+          class: "d-flex align-items-center gap-2" do |f| %>
+
+      <%= f.label :per_page, "Rows per page", class: "mb-0 fw-semibold" %>
+
+      <%= f.select :per_page,
+          options_for_select([10, 25, 50, 100, 250, 500, 1000], params[:per_page] || 10),
+          {},
+          class: "form-select form-select-sm",
+          style: "width:100px;",
+          id: "rows-per-page" %>
+
+    <% end %>
+
+  </div>
+
+  <div class="text-center text-muted small">
+    <%= page_entries_info @jmcustomers %>
+  </div>
+
+</div>
+
+<% else %>
+  <div class="admin-message">
+    Login as Admin to view.
+  </div>
+<% end %>
+
+
+<script>
+
+  document.addEventListener("DOMContentLoaded", () => {
+  const select = document.getElementById("rows-per-page");
+  if (select) {
+    select.addEventListener("change", () => {
+      document.getElementById("rows-per-page-form").submit();
+    });
+  }
+});
+
+
+</script>
+
+
+
+
+
+
+<script type="text/javascript">
+  
+document.addEventListener('turbo:load', function() {
+  const selectElement = document.querySelector('#rows-per-page-form select');
+
+  if (selectElement) {
+    selectElement.addEventListener('change', function() {
+      document.querySelector('#rows-per-page-form').submit();
+    });
+  }
+});
+
+</script>
+
+
+
+
+
+
+</div>
+
+
+
+
+
+<style type="text/css">
+
+
+  .customer-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;          /* Space between button and search form */
+  margin: 1rem 0;
+  justify-content: flex-start; /* Align left */
+}
+
+.admin-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 1rem;
+  font-size: 0.95rem;
+  background-color: #007bff;
+  color: #fff;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: all 0.25s ease;
+  font-weight: 500;
+}
+
+.admin-btn:hover {
+  background-color: #0056b3;
+}
+
+.admin-btn.active {
+  background-color: #0056b3;
+  font-weight: 600;
+}
+
+.myform {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.search-input {
+  padding: 0.45rem 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 0.95rem;
+}
+
+.search-btn {
+  padding: 0.45rem 0.85rem;
+  border: none;
+  border-radius: 6px;
+  background-color: #28a745;
+  color: #fff;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: all 0.25s ease;
+}
+
+.search-btn:hover {
+  background-color: #1e7e34;
+}
+
+  .admin-message {
+  text-align: center;       /* Center the text */
+  color: #dc3545;           /* Bootstrap danger/red color */
+  font-weight: 600;         /* Bold text */
+  font-size: 16px;          /* Slightly larger text */
+  margin: 20px 0;           /* Space around the message */
+  background-color: #f8d7da; /* Light red background */
+  padding: 12px 20px;       /* Padding inside the box */
+  border-radius: 8px;       /* Rounded corners */
+  border: 1px solid #f5c2c7; /* Subtle border */
+}
+
+
+  fieldset {
+    border: 0px solid #4CAF50; /* Green border */
+    border-radius: 40px; /* Rounded corners */
+    padding: 2rem; /* Padding inside the fieldset */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    background-color: #f9f9f9; /* Light background color */
+    margin-bottom: 20px; /* Space between fieldsets */
+    transition: all 0.3s ease-in-out; /* Smooth transitions */
+    width: auto; /* Use full width for smaller devices */
+    justify-content: center;
+
+}
+
+
+@media (max-width: 600px) {
+       fieldset {
+    border: 0px solid #4CAF50; /* Green border */
+    border-radius: 40px; /* Rounded corners */
+    
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    background-color: #f9f9f9; /* Light background color */
+    margin-bottom: 20px; /* Space between fieldsets */
+    transition: all 0.3s ease-in-out; /* Smooth transitions */
+    width: 100%; /* Use full width for smaller devices */
+    justify-content: center;
+
+}
+      
+      .form-row {
+          flex-direction: column; /* Stack fields vertically on small screens */
+      }
+
+      .field, .action {
+          width: 100%; /* Make fields full-width on small screens */
+          margin-bottom: 10px; /* Add some spacing between stacked fields */
+      }
+  }
+
+
+
+
+    .custom-fieldset {
+      padding: 2rem; /* Reduced padding for the span */
+      margin: 0.5rem; /* Reduced margin for the span */
+      display: block; /* Ensure it behaves like a block element */
+      border: 1px solid #dee2e6; /* Optional: style the border */
+      border-radius: 0.5rem; /* Optional: round the corners */
+      justify-content: center;
+      margin-left: 25px;
+      width: 90%;
+  }
+
+.card-text {
+    display: block; /* Make each span behave like a block for easier spacing */
+    margin: -3px 0; /* Add margin for vertical spacing */
+    font-size: 16px; /* Set font size for readability */
+    color: #333; /* Dark gray text color for contrast */
+}
+
+.card-text strong {
+    color: #007bff; /* Blue color for strong text to differentiate labels */
+}
+
+.card-title {
+    font-weight: bold; /* Make card title bold */
+    font-size: 1.5rem; /* Increase font size for better visibility */
+}
+
+.animal-image img {
+    border-radius: 10px; /* Add rounded corners to images */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+.card {
+    border: 1px solid #dee2e6; /* Light border for cards */
+    border-radius: 0.5rem; /* Rounded corners for cards */
+    transition: transform 0.2s; /* Smooth transition effect on hover */
+}
+
+.card:hover {
+    transform: scale(1.05); /* Scale up the card slightly on hover */
+}
+
+.btn {
+    min-width: 80px; /* Set a minimum width for buttons */
+    margin: 0 5px; /* Add margin between buttons */
+}
+
+
+.img-responsive {
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 5px;
+}
+
+button {
+  background-color: #25D366;
+  border: none;
+  color: white;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+  .form-select {
+  display: inline-block;
+  width: auto;
+  margin-left: 10px;
+}
+
+.btn-primary {
+  margin-left: 10px;
+}
+
+
+.clickable-image {
+  cursor: pointer;
+}
+
+.digg_pagination {
+  text-align: center;
+  width: 100%;
+  margin-top: 10px; /* Reduced margin to compact layout */
+}
+
+.pagination {
+  display: inline-flex;
+  justify-content: center;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.pagination li {
+  margin: 0;
+}
+
+.pagination a,
+.pagination .current {
+  display: block;
+  padding: 3px 8px; /* Reduced padding for compactness */
+  margin: 2px; /* Reduced margin */
+  background-color: #007bff;
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+}
+
+.pagination a:hover {
+  background-color: #0056b3;
+}
+
+.pagination .current {
+  background-color: #0056b3;
+}
+
+.pagination .disabled {
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+.pagination .dots {
+  padding: 3px 8px;
+  margin: 2px;
+}
+
+.pagination .previous_page,
+.pagination .next_page {
+  font-weight: bold;
+}
+
+.table-success {
+  background-color: #d4edda;
+}
+
+.text-center {
+  text-align: center;
+}
+
+
+
+
+</style>
+
+
+
+
+
+</div>
+
+<style>
+/* Table Container */
+.table-responsive {
+  overflow-x: auto;
+  background-color: #fff;
+}
+
+/* Table Styling */
+.table th, .table td {
+  vertical-align: middle;
+}
+
+.table th {
+  font-weight: 600;
+  text-align: center;
+}
+
+.table td {
+  word-wrap: break-word;
+}
+
+/* Buttons */
+.btn-sm {
+  min-width: 65px;
+}
+
+/* Responsive Improvements */
+@media (max-width: 768px) {
+  .table th, .table td {
+    font-size: 13px;
+    padding: 0.5rem 0.6rem;
+  }
+
+  .btn-sm {
+    font-size: 12px;
+    padding: 0.25rem 0.5rem;
+  }
+}
+</style>
+

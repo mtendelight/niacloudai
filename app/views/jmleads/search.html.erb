@@ -1,0 +1,822 @@
+<%= render "layouts/header" %>
+
+<div class="container my-4">
+  <div class="shadow-sm border-0">
+    <div class="card-body">
+
+<% if current_user&.superadmin? || current_user&.manager? %>
+  <div class="admin-menu d-flex flex-wrap justify-content-center gap-2 mb-3">
+
+    <%# JM Customers %>
+    <%= link_to jmcustomers_path,
+      class: "admin-btn #{'active' if current_page?(jmcustomers_path)}",
+      data: { turbo: false } do %>
+      <i class="bi bi-people-fill"></i>
+      <span>Customers</span>
+    <% end %>
+
+    <%# JMAI Dashboard %>
+    <%= link_to jmai_index_path,
+      class: "admin-btn #{'active' if current_page?(jmai_index_path)}",
+      data: { turbo: false } do %>
+      <i class="bi bi-bell-fill"></i>
+      <span>JMAI</span>
+    <% end %>
+
+    <%# Fulfillments Dashboard %>
+    <%= link_to jfulfillments_path,
+      class: "admin-btn #{'active' if current_page?(jfulfillments_path)}",
+      data: { turbo: false } do %>
+      <i class="bi bi-bag-check-fill"></i>
+      <span>Fulfillments</span>
+    <% end %>
+
+    <%# JM Leads Dashboard %>
+    <%= link_to jmleads_path,
+      class: "admin-btn #{'active' if current_page?(jmleads_path)}",
+      data: { turbo: false } do %>
+      <i class="bi bi-people-fill"></i>
+      <span>JM CRM</span>
+    <% end %>
+
+    <%# JReferrals Dashboard %>
+    <%= link_to jreferrals_path,
+      class: "admin-btn #{'active' if current_page?(jreferrals_path)}",
+      data: { turbo: false } do %>
+      <i class="bi bi-share-fill"></i>
+      <span>JReferrals</span>
+    <% end %>
+
+    <%# Add/Update Customer %>
+    <%= link_to new_jmcustomer_path,
+      class: "admin-btn #{'active' if current_page?(new_jmcustomer_path)}",
+      data: { turbo: false } do %>
+      <i class="bi bi-person-plus-fill"></i>
+      <span>Add/Update Customer</span>
+    <% end %>
+
+  </div>
+<% end %>
+
+
+<style>
+
+  /* Center container */
+.admin-menu {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; /* center horizontally */
+  gap: 0.5rem;
+  margin: 1rem 0;
+}
+
+/* Buttons */
+.admin-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.6rem 1.2rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  border-radius: 0.5rem;
+  color: #fff;
+  background-color: #6c757d; /* default gray */
+  text-decoration: none;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.admin-btn i {
+  font-size: 1.1rem;
+}
+
+/* Hover effect */
+.admin-btn:hover {
+  background-color: #495057; /* slightly darker gray */
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+}
+
+/* Active / current page - bright blue highlight */
+.admin-btn.active {
+  background-color: #0d6efd !important; /* bright Bootstrap blue */
+  color: #fff;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+  transform: translateY(-1px);
+  border: 2px solid #fff; /* optional: adds contrast */
+}
+
+/* Responsive: wrap nicely on small screens */
+@media (max-width: 576px) {
+  .admin-btn {
+    flex: 1 1 45%; /* two buttons per row */
+    justify-content: center;
+  }
+}
+
+  /* New Customer Section */
+.new-customer-section .card {
+  max-width: 650px;
+  border-left: 5px solid #0d6efd; /* visible accent line */
+  background-color: #ffffff;
+  border-radius: 0.6rem;
+  transition: transform 0.2s ease;
+}
+
+.new-customer-section .card:hover {
+  transform: translateY(-3px); /* subtle hover effect for attention */
+}
+
+.new-customer-section h4 {
+  color: #0d6efd;
+  font-weight: 600;
+}
+
+.new-customer-section p {
+  font-size: 0.95rem;
+  color: #6c757d;
+}
+
+@media (max-width: 768px) {
+  .new-customer-section .card {
+    padding: 1.5rem;
+    max-width: 95%;
+  }
+}
+
+</style>
+
+  <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center mb-3">
+    <h3 class="text-primary mb-2 mb-sm-0">
+      <i class="bi bi-people-fill me-2"></i> Crm Search Results ...
+    </h3>
+    <%= link_to "➕ New Call", new_jmlead_path, class: "btn btn-warning active px-4 fw-semibold" %>
+  </div>
+
+
+
+
+<div class="container mt-4">
+
+
+
+    <%= search_form_for @c, url: search_jmleads_path, html: { class: "myform" } do |f| %>
+
+<center>
+
+  <div class="form-row">
+
+          
+             <div class="field">
+
+              <%= f.search_field :name_or_phone_or_sglid_cont,
+    class: "form-control me-2",
+    placeholder: "Search by any" %>
+
+           
+</div>
+
+      <div class="action">
+            <%= button_tag(class: "btn btn-light") do %>
+                Search
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                </svg>
+            <% end %>
+        </div>
+    <% end %>
+</div></center></div>
+
+
+  <!-- Submenu -->
+  <div class="menu-container">
+    <div class="submenu">
+
+      <!-- All Leads -->
+      <div class="submenu-item">
+        <%= link_to jmleads_path,
+          class: "submenu-link #{'active' if current_page?(jmleads_path)}",
+          id: "menu_all",
+          data: { loading_text: "Loading All Leads..." } do %>
+          <i class="bi bi-clipboard-data-fill me-2"></i>
+          <span class="menu-text">All (<%= Jmlead.count %>)</span>
+          <%= image_tag('/icons/poss.svg', size: "20x20", alt: "Loading", class: "ms-2 d-none menu-loading") %>
+        <% end %>
+      </div>
+
+      <!-- Open Leads -->
+      <div class="submenu-item">
+        <%= link_to openleads_index_path,
+          class: "submenu-link #{'active' if current_page?(openleads_index_path)}",
+          id: "menu_open",
+          data: { loading_text: "Loading Open Leads..." } do %>
+          <i class="bi bi-folder2-open me-2"></i>
+          <span class="menu-text">Open (<%= Jmlead.where(status: 'open').count %>)</span>
+          <%= image_tag('/icons/poss.svg', size: "20x20", alt: "Loading", class: "ms-2 d-none menu-loading") %>
+        <% end %>
+      </div>
+
+      <!-- Mose Leads -->
+<div class="submenu-item">
+  <%= link_to mose_index_path,
+    class: "submenu-link #{'active' if current_page?(mose_index_path)}",
+    id: "menu_mose" do %>
+    <i class="bi bi-person-fill me-2"></i>
+  <span class="menu-text">
+  Mose (<%= @open_count %>)
+</span>
+  <% end %>
+</div>
+
+<!-- Janet Makena Leads -->
+<div class="submenu-item">
+  <%= link_to jano_index_path,
+    class: "submenu-link #{'active' if current_page?(jano_index_path)}",
+    id: "menu_jano" do %>
+    <i class="bi bi-person-badge-fill me-2"></i>
+    <span class="menu-text">
+      Janet (<%= @openj_count %>)
+    </span>
+  <% end %>
+</div>
+
+
+      <!-- Converted Leads -->
+      <div class="submenu-item">
+        <%= link_to convertedleads_index_path,
+          class: "submenu-link #{'active' if current_page?(convertedleads_index_path)}",
+          id: "menu_converted",
+          data: { loading_text: "Loading Converted Leads..." } do %>
+          <i class="bi bi-patch-check-fill me-2"></i>
+          <span class="menu-text">Converted/Closed (<%= Jmlead.where(status: 'converted').count %>)</span>
+          <%= image_tag('/icons/poss.svg', size: "20x20", alt: "Loading", class: "ms-2 d-none menu-loading") %>
+        <% end %>
+      </div>
+
+    </div>
+  </div>
+
+ <% if current_user&.superadmin? || current_user&.manager? %>
+    <% if @jmleads.any? %>
+      <!-- Leads Table -->
+      <div class="table-responsive shadow-sm rounded mt-3">
+        <table class="table table-hover align-middle mb-0">
+       <thead class="bg-primary text-white text-uppercase text-center">
+  <tr>
+    <th><i class="bi bi-hash me-1"></i> Unique ID</th>
+    <th><i class="bi bi-person-badge-fill me-1"></i> Name</th>
+    <th><i class="bi bi-telephone-outbound-fill me-1"></i> Phone</th>
+    <th><i class="bi bi-bag-fill me-1"></i> Items Required</th>
+    <th><i class="bi bi-person-check-fill me-1"></i> Assigned To</th>
+    <th><i class="bi bi-bell-fill me-1"></i> Status</th>
+    <th class="text-center"><i class="bi bi-tools me-1"></i> Actions</th>
+  </tr>
+</thead>
+
+
+         <tbody>
+  <% @jmleads.each do |lead| %>
+    <tr>
+      <!-- Unique ID -->
+      <td class="fw-semibold text-muted text-center">
+        <%= lead.sglid || "—" %>
+      </td>
+
+      <!-- Name -->
+      <td class="fw-semibold text-dark">
+        <i class="bi bi-person-badge-fill text-primary me-2"></i>
+        <%= lead.name %>
+      </td>
+
+      <!-- Phone -->
+      <td>
+        <i class="bi bi-telephone-outbound-fill text-success me-2"></i>
+        <%= lead.phone %>
+      </td>
+
+      <!-- Items Required -->
+      <td>
+        <div class="d-flex align-items-center text-secondary">
+          <i class="bi bi-bag-fill text-warning me-2"></i>
+          <%= truncate(lead.items_required, length: 25) %>
+        </div>
+      </td>
+
+      <!-- Assigned To -->
+      <td class="text-center">
+        <% if lead.jstaff.present? %>
+          <span class="badge bg-info text-dark px-3 py-2">
+            <i class="bi bi-person-check-fill me-1"></i>
+            <%= lead.jstaff.name %>
+          </span>
+        <% else %>
+          <span class="badge bg-secondary px-3 py-2">
+            Unassigned
+          </span>
+        <% end %>
+      </td>
+
+      <!-- Status -->
+      <td class="text-center">
+        <% if lead.status == "converted" %>
+          <span class="badge bg-success px-3 py-2">
+            <i class="bi bi-check-circle-fill"></i> Converted
+          </span>
+        <% else %>
+          <span class="badge bg-warning text-dark px-3 py-2">
+            <i class="bi bi-clock-history"></i> Pending
+          </span>
+        <% end %>
+      </td>
+
+      <!-- Actions -->
+      <td class="text-center">
+        <div class="d-flex justify-content-center gap-2">
+          <%= link_to jmlead_path(lead),
+            class: "btn btn-sm btn-outline-primary btn-action",
+            title: "View Lead",
+            data: { turbo: false } do %>
+            <i class="bi bi-eye"></i> View
+          <% end %>
+
+          <%= link_to edit_jmlead_path(lead),
+            class: "btn btn-sm btn-outline-success btn-action",
+            title: "Edit Lead",
+            data: { turbo: false } do %>
+            <i class="bi bi-pencil-fill"></i> Edit
+          <% end %>
+        </div>
+      </td>
+    </tr>
+  <% end %>
+</tbody>
+
+        </table>
+      </div>
+    <% else %>
+      <!-- No Leads -->
+      <div class="alert alert-info text-center mt-4 shadow-sm">
+        <i class="bi bi-info-circle-fill me-2"></i>
+        No leads found.
+        <%= link_to new_jmlead_path, class: "alert-link fw-semibold" do %>
+          <i class="bi bi-plus-circle me-1"></i> Add one now
+        <% end %>
+      </div>
+    <% end %>
+  <% end %>
+
+  <div class="digg_pagination">
+  <div class="pagination justify-content-center">
+    <%= paginate  @jmleads %>
+  </div>
+
+  <div class="login text-center mt-3">
+    <%= form_with url: request.path, method: :get, local: true, id: 'rows-per-page-form' do |f| %>
+      <%= f.label :per_page, "Rows per page" %>
+    <%= f.select :per_page,
+  options_for_select([20, 25, 50, 100, 250, 500, 1000], params[:per_page] || 20),
+  {},
+  class: "form-select form-select-sm d-inline-block w-auto",
+  id: "rows-per-page" %>
+    <% end %>
+  </div>
+
+  <br/>
+  <center><%= page_entries_info  @jmleads %></center>
+</div>
+
+
+</div>
+
+
+
+
+
+<script>
+
+  document.addEventListener("DOMContentLoaded", () => {
+  const select = document.getElementById("rows-per-page");
+  if (select) {
+    select.addEventListener("change", () => {
+      document.getElementById("rows-per-page-form").submit();
+    });
+  }
+});
+
+
+</script>
+
+<!-- JS -->
+<script>
+function attachMenuLoadingHandlers() {
+  document.querySelectorAll(".submenu-link").forEach(link => {
+    if (link.dataset.bound === "true") return;
+    link.dataset.bound = "true";
+
+    link.addEventListener("click", () => {
+      if (link.classList.contains("disabled")) return;
+
+      const textEl = link.querySelector(".menu-text");
+      const loadingIcon = link.querySelector(".menu-loading");
+      const loadingText = link.dataset.loadingText || "Loading...";
+
+      if (textEl) textEl.textContent = loadingText;
+      if (loadingIcon) loadingIcon.classList.remove("d-none");
+      link.classList.add("disabled");
+    });
+  });
+}
+
+document.addEventListener("turbo:load", attachMenuLoadingHandlers);
+document.addEventListener("DOMContentLoaded", attachMenuLoadingHandlers);
+</script>
+
+<!-- CSS -->
+<style>
+
+  .digg_pagination {
+  text-align: center;
+  width: 100%;
+  margin-top: 10px; /* Reduced margin to compact layout */
+}
+
+.pagination {
+  display: inline-flex;
+  justify-content: center;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.pagination li {
+  margin: 0;
+}
+
+.pagination a,
+.pagination .current {
+  display: block;
+  padding: 3px 8px; /* Reduced padding for compactness */
+  margin: 2px; /* Reduced margin */
+  background-color: #007bff;
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+}
+
+.pagination a:hover {
+  background-color: #0056b3;
+}
+
+.pagination .current {
+  background-color: #0056b3;
+}
+
+.pagination .disabled {
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+.pagination .dots {
+  padding: 3px 8px;
+  margin: 2px;
+}
+
+.pagination .previous_page,
+.pagination .next_page {
+  font-weight: bold;
+}
+
+.table-success {
+  background-color: #d4edda;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.menu-container { margin-top: 15px; text-align: center; }
+.submenu { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+.submenu-item { max-width: 200px; width: 100%; }
+
+/* Styled submenu buttons */
+.submenu-link {
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  font-weight: 600;
+  padding: 12px 15px;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.submenu-link.active {
+  background-color: #0d6efd;
+  color: white;
+  border-color: #0d6efd;
+}
+
+.submenu-link:hover { transform: translateY(-2px); background: #e9ecef; }
+.submenu-link.active:hover { background-color: #0b5ed7; }
+
+/* Action Buttons */
+.btn-action {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.25s ease;
+}
+.btn-action:hover { transform: translateY(-2px); }
+
+.menu-container {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.submenu {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+}
+
+.submenu-item {
+  display: inline-block;
+  width: 100%;
+  max-width: 220px;
+}
+
+.submenu-link {
+  display: block;
+  background: linear-gradient(145deg, #f8f9fa, #ffffff);
+  border: 1px solid #dee2e6;
+  font-weight: 600;
+  padding: 12px 18px;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  color: #333;
+  font-size: 15px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+}
+
+.submenu-link i {
+  margin-right: 8px;
+  font-size: 16px;
+}
+
+.submenu-link:hover {
+  transform: translateY(-4px) scale(1.02);
+  background: #eef3ff;
+  border-color: #b6caff;
+  color: #0d6efd;
+  box-shadow: 0 4px 12px rgba(13,110,253,0.25);
+}
+
+.submenu-link.active {
+  background-color: #0d6efd;
+  color: white;
+  border-color: #0d6efd;
+  box-shadow: 0 4px 12px rgba(13,110,253,0.35);
+}
+
+.submenu-link.active:hover {
+  background-color: #0b5ed7;
+}
+
+
+/* Admin Menu Buttons */
+.admin-menu {
+  gap: 0.3rem;
+  margin: 0.5rem 0 1rem;
+}
+
+.admin-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.35rem 0.8rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  border-radius: 0.4rem;
+  color: #fff;
+  background-color: #6c757d;
+  text-decoration: none;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.admin-btn i { font-size: 1rem; }
+
+.admin-btn:hover {
+  background-color: #495057;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+.admin-btn.active {
+  background-color: #0d6efd !important;
+  font-weight: 600;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.25);
+  border: 1px solid #fff;
+}
+
+/* Responsive Admin Menu */
+@media (max-width: 576px) {
+  .admin-btn { flex: 1 1 48%; justify-content: center; font-size: 0.8rem; padding: 0.3rem 0.6rem; }
+}
+
+/* Submenu */
+.menu-container { margin-top: 10px; text-align: center; }
+.submenu { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+.submenu-item { width: 100%; max-width: 180px; }
+
+.submenu-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #333;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.submenu-link i { font-size: 14px; }
+
+.submenu-link:hover {
+  transform: translateY(-2px) scale(1.01);
+  background: #eef3ff;
+  border-color: #b6caff;
+  color: #0d6efd;
+  box-shadow: 0 2px 6px rgba(13,110,253,0.2);
+}
+
+.submenu-link.active {
+  background-color: #0d6efd;
+  color: white;
+  border-color: #0d6efd;
+  box-shadow: 0 3px 8px rgba(13,110,253,0.3);
+}
+
+.submenu-link.active:hover { background-color: #0b5ed7; }
+
+/* Table */
+.table-responsive { font-size: 0.85rem; }
+.table th, .table td { padding: 0.35rem 0.5rem; vertical-align: middle; }
+.table th { font-size: 0.82rem; }
+.table td i { font-size: 0.9rem; }
+.btn-action { font-size: 0.78rem; padding: 2px 6px; gap: 4px; }
+
+
+
+/* ===== CRM BASE ===== */
+.crm-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #0d6efd;
+}
+
+.crm-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 14px rgba(0,0,0,.06);
+}
+
+
+.admin-menu {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: .4rem;
+  margin-bottom: 1rem;
+}
+
+.admin-btn {
+  display: flex;
+  align-items: center;
+  gap: .35rem;
+  padding: .35rem .75rem;
+  font-size: .8rem;
+  border-radius: 6px;
+  background: #6c757d;
+  color: #fff;
+  text-decoration: none;
+  transition: all .2s ease;
+}
+
+.admin-btn:hover {
+  background: #495057;
+  transform: translateY(-1px);
+}
+
+.admin-btn.active {
+  background: #0d6efd;
+  box-shadow: 0 2px 6px rgba(13,110,253,.4);
+}
+
+
+.submenu {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin: 1rem 0;
+}
+
+.submenu-item {
+  max-width: 190px;
+  width: 100%;
+}
+
+.submenu-link {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 12px;
+  border-radius: 8px;
+  font-size: .82rem;
+  font-weight: 600;
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  text-decoration: none;
+  color: #333;
+  transition: all .25s ease;
+}
+
+.submenu-link:hover {
+  background: #eef3ff;
+  border-color: #b6caff;
+  color: #0d6efd;
+  transform: translateY(-2px);
+}
+
+.submenu-link.active {
+  background: #0d6efd;
+  color: #fff;
+  border-color: #0d6efd;
+  box-shadow: 0 3px 8px rgba(13,110,253,.3);
+}
+
+
+.table-responsive {
+  font-size: .82rem;
+}
+
+.table thead {
+  background: #0d6efd;
+  color: #fff;
+}
+
+.table th,
+.table td {
+  padding: .4rem .5rem;
+  vertical-align: middle;
+}
+
+.table tbody tr:hover {
+  background: #f5f9ff;
+}
+
+.badge {
+  font-size: .7rem;
+  padding: .3rem .55rem;
+}
+
+
+.btn-action {
+  font-size: .75rem;
+  padding: 2px 6px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: all .2s ease;
+}
+
+.btn-action:hover {
+  transform: translateY(-1px);
+}
+
+
+.digg_pagination {
+  margin-top: .5rem;
+}
+
+.pagination a,
+.pagination .current {
+  padding: 3px 7px;
+  font-size: .75rem;
+  border-radius: 4px;
+}
+
+
+</style>

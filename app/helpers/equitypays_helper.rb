@@ -1,0 +1,2 @@
+module EquitypaysHelper
+end

@@ -1,0 +1,10 @@
+log/*
+tmp/*
+*.md
+.gitignore
+spec/*
+test/*
+doc/*
+node_modules/
+vendor/bundle
+coverage/

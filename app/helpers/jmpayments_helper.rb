@@ -1,0 +1,2 @@
+module JmpaymentsHelper
+end

@@ -1,0 +1,53 @@
+<%= paginator.render do -%>
+  <nav class="pagination" role="navigation" aria-label="pager">
+    <%= first_page_tag unless current_page.first? %>
+    <%= prev_page_tag unless current_page.first? %>
+    
+    <% each_page do |page| -%>
+      <% if page.display_tag? %>
+        <%= page_tag page %>
+      <% elsif !page.was_truncated? %>
+        <%= gap_tag %>
+      <% end %>
+    <% end -%>
+
+    <% if !current_page.out_of_range? %>
+      <%= next_page_tag unless current_page.last? %>
+      <%= last_page_tag unless current_page.last? %>
+    <% end %>
+  </nav>
+<% end -%>
+
+
+<style type="text/css">
+  
+  .pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.pagination li {
+  margin: 0 4px; /* Space between pagination items */
+}
+
+.pagination a {
+  padding: 6px 12px;
+  border-radius: 4px;
+  text-decoration: none;
+}
+
+.pagination .active {
+  background-color: #007bff;
+  color: white;
+}
+
+.pagination .disabled {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+</style>

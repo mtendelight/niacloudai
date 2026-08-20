@@ -1,0 +1,374 @@
+
+
+
+<%= render "layouts/header" %>
+
+<div class="container">
+<%= render 'jmcustomers/submenu' %>
+
+    </div>
+
+<div class="container my-4">
+ <% if current_user&.superadmin? || current_user&.manager? %>
+
+    <!-- Page Header -->
+    <div class="text-center mb-4">
+      <h2 class="fw-bold display-6">📦 samples Videos Dashboard</h2>
+      <p class="text-muted fs-6">View and manage all bale samples</p>
+    </div>
+
+    <!-- Actions / Export -->
+ <!-- Actions / Export -->
+<div class="mb-4 text-center d-flex flex-wrap justify-content-center gap-3">
+  <%= link_to new_jsample_path, 
+      class: "btn btn-warning btn-lg shadow-sm text-uppercase d-flex align-items-center gap-2",
+      data: { turbo: false } do %>
+    <i class="bi bi-plus-circle-fill fs-5"></i> New Sample
+  <% end %>
+</div>
+
+
+<!-- Search / Filter -->
+<div class="mb-4 d-flex justify-content-center">
+  <%= search_form_for @js, url: search_jsamples_path, method: :get, html: { class: "w-100 d-flex justify-content-center" } do |f| %>
+    <div class="input-group" style="width: 50%;">
+      <%= f.search_field :bale_name_cont,
+          class: "form-control form-control-lg",
+          placeholder: "Search by Item Name" %>
+      <button class="btn btn-primary btn-lg d-flex align-items-center gap-1" type="submit">
+        <i class="bi bi-search"></i> Search
+      </button>
+    </div>
+  <% end %>
+</div>
+
+
+    <!-- Jsamples Table -->
+    <div class="table-responsive shadow-sm rounded">
+      <table class="table table-hover align-middle mb-0 table-bordered">
+        <thead class="bg-primary text-white text-center">
+          <tr>
+            <th>#</th>
+            <th>Bale Name</th>
+            <th>Pieces Range</th>
+            <th>Video Sample</th>
+            <th>Price Range</th>
+          </tr>
+        </thead>
+
+        <tbody class="text-center">
+          <% @jsamples.each_with_index do |sample, index| %>
+            <tr class="align-middle">
+              <td><%= index + 1 %></td>
+              <td class="fw-semibold"><i class="bi bi-box-seam me-1 text-primary"></i> <%= sample.bale_name %></td>
+              <td><span class="badge bg-info text-dark"><%= sample.pieces_range %></span></td>
+         <td>
+  <% if sample.video_public_id.present? %>
+    <% video_url = "https://res.cloudinary.com/fireside/video/upload/#{sample.video_public_id}.mp4" %>
+    <a href="<%= video_url %>" target="_blank" class="btn btn-sm btn-outline-primary d-flex align-items-center gap-1">
+      <i class="bi bi-play-circle-fill"></i> Watch
+    </a>
+  <% else %>
+    <span class="text-muted fst-italic"><i class="bi bi-x-circle-fill"></i> No video</span>
+  <% end %>
+</td>
+
+            <td>
+  <span class="badge bg-light text-dark border">
+    <i class="bi bi-cash-stack me-1"></i> Ksh <%= sample.price_range %>
+  </span>
+</td>
+
+            
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+
+<!-- Pagination -->
+<div class="d-flex flex-wrap justify-content-between align-items-center mt-3 mb-2 gap-2">
+
+  <div>
+    <%= page_entries_info @jsamples %>
+  </div>
+
+  <div>
+    <%= paginate @jsamples %>
+  </div>
+
+  <div>
+    <%= form_with url: request.path, method: :get, local: true, id: "rows-per-page-form", class: "d-flex align-items-center gap-2" do |f| %>
+      <%= f.label :per_page, "Rows:", class: "mb-0 fw-semibold" %>
+      <%= f.select :per_page,
+          options_for_select([10,25,50,100,250,500,1000], params[:per_page] || 10),
+          {},
+          class: "form-select form-select-sm",
+          style: "width:90px;",
+          id: "rows-per-page" %>
+    <% end %>
+  </div>
+
+</div>
+
+
+
+<style type="text/css">
+
+  .sidebar {
+  overflow-y: hidden;
+}
+
+  .digg_pagination {
+  margin: 0;
+  padding: 0;
+}
+
+.digg_pagination .pagination {
+  margin-bottom: 0;
+}
+
+.pagination {
+  flex-wrap: wrap;
+}
+
+#rows-per-page-form {
+  margin-bottom: 0;
+}
+
+
+
+  fieldset {
+    border: 0px solid #4CAF50; /* Green border */
+    border-radius: 40px; /* Rounded corners */
+    padding: 2rem; /* Padding inside the fieldset */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    background-color: #f9f9f9; /* Light background color */
+    margin-bottom: 20px; /* Space between fieldsets */
+    transition: all 0.3s ease-in-out; /* Smooth transitions */
+    width: auto; /* Use full width for smaller devices */
+    justify-content: center;
+
+}
+
+
+@media (max-width: 600px) {
+       fieldset {
+    border: 0px solid #4CAF50; /* Green border */
+    border-radius: 40px; /* Rounded corners */
+    
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    background-color: #f9f9f9; /* Light background color */
+    margin-bottom: 20px; /* Space between fieldsets */
+    transition: all 0.3s ease-in-out; /* Smooth transitions */
+    width: 100%; /* Use full width for smaller devices */
+    justify-content: center;
+
+}
+      
+      .form-row {
+          flex-direction: column; /* Stack fields vertically on small screens */
+      }
+
+      .field, .action {
+          width: 100%; /* Make fields full-width on small screens */
+          margin-bottom: 10px; /* Add some spacing between stacked fields */
+      }
+  }
+
+
+
+
+    .custom-fieldset {
+      padding: 2rem; /* Reduced padding for the span */
+      margin: 0.5rem; /* Reduced margin for the span */
+      display: block; /* Ensure it behaves like a block element */
+      border: 1px solid #dee2e6; /* Optional: style the border */
+      border-radius: 0.5rem; /* Optional: round the corners */
+      justify-content: center;
+      margin-left: 25px;
+      width: 90%;
+  }
+
+.card-text {
+    display: block; /* Make each span behave like a block for easier spacing */
+    margin: -3px 0; /* Add margin for vertical spacing */
+    font-size: 16px; /* Set font size for readability */
+    color: #333; /* Dark gray text color for contrast */
+}
+
+.card-text strong {
+    color: #007bff; /* Blue color for strong text to differentiate labels */
+}
+
+.card-title {
+    font-weight: bold; /* Make card title bold */
+    font-size: 1.5rem; /* Increase font size for better visibility */
+}
+
+.animal-image img {
+    border-radius: 10px; /* Add rounded corners to images */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+.card {
+    border: 1px solid #dee2e6; /* Light border for cards */
+    border-radius: 0.5rem; /* Rounded corners for cards */
+    transition: transform 0.2s; /* Smooth transition effect on hover */
+}
+
+.card:hover {
+    transform: scale(1.05); /* Scale up the card slightly on hover */
+}
+
+.btn {
+    min-width: 80px; /* Set a minimum width for buttons */
+    margin: 0 5px; /* Add margin between buttons */
+}
+
+
+.img-responsive {
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 5px;
+}
+
+button {
+  background-color: #25D366;
+  border: none;
+  color: white;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+  .form-select {
+  display: inline-block;
+  width: auto;
+  margin-left: 10px;
+}
+
+.btn-primary {
+  margin-left: 10px;
+}
+
+
+.clickable-image {
+  cursor: pointer;
+}
+
+.digg_pagination {
+  text-align: center;
+  width: 100%;
+  margin-top: 10px; /* Reduced margin to compact layout */
+}
+
+.pagination {
+  display: inline-flex;
+  justify-content: center;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.pagination li {
+  margin: 0;
+}
+
+.pagination a,
+.pagination .current {
+  display: block;
+  padding: 3px 8px; /* Reduced padding for compactness */
+  margin: 2px; /* Reduced margin */
+  background-color: #007bff;
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+}
+
+.pagination a:hover {
+  background-color: #0056b3;
+}
+
+.pagination .current {
+  background-color: #0056b3;
+}
+
+.pagination .disabled {
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+.pagination .dots {
+  padding: 3px 8px;
+  margin: 2px;
+}
+
+.pagination .previous_page,
+.pagination .next_page {
+  font-weight: bold;
+}
+
+.table-success {
+  background-color: #d4edda;
+}
+
+.text-center {
+  text-align: center;
+}
+
+
+
+
+</style>
+
+
+
+    <!-- JS for Rows per Page -->
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const select = document.getElementById("rows-per-page");
+        if (select) {
+          select.addEventListener("change", () => {
+            document.getElementById("rows-per-page-form").submit();
+          });
+        }
+      });
+    </script>
+
+  <% else %>
+    <div class="admin-message">
+      Login as Admin to view.
+    </div>
+  <% end %>
+</div>
+
+<style>
+  /* Table & Badges */
+  .table th, .table td { vertical-align: middle; word-wrap: break-word; }
+  .table th { font-weight: 700; text-align: center; }
+  .table-hover tbody tr:hover { background-color: #f1f1f1; }
+  .badge { font-size: 0.9rem; }
+
+  /* Buttons */
+  .btn-sm { min-width: 65px; transition: transform 0.15s ease-in-out; }
+  .btn-sm:hover { transform: scale(1.05); }
+  .btn-outline-success { border-width: 2px; }
+  .btn-outline-warning { border-width: 2px; }
+  .btn-outline-danger { border-width: 2px; }
+
+  /* Header */
+  h2.display-6 { color: #0d6efd; }
+  p.text-muted { font-size: 1rem; }
+
+  /* Pagination */
+  .digg_pagination { text-align: center; width: 100%; }
+  .pagination a, .pagination .current { padding: 5px 10px; margin: 0 2px; border-radius: 5px; }
+  .pagination .current { background-color: #0d6efd; color: #fff; font-weight: bold; }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .table-responsive { overflow-x: auto; }
+    .d-flex.flex-wrap { flex-direction: column; }
+  }
+</style>

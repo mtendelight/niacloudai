@@ -1,0 +1,35 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  course_name: MyString
+  description: MyText
+  duration: MyString
+  mode: one
+  branch: one
+  fees: 9.99
+  fee_allocation: one
+  start_date: 2024-07-03
+  end_date: 2024-07-03
+  schedule: one
+  material_required: MyText
+  assessment_method: MyString
+  enrollment_deadline: 2024-07-03
+  course_level: one
+  contact_information: MyString
+
+two:
+  course_name: MyString
+  description: MyText
+  duration: MyString
+  mode: two
+  branch: two
+  fees: 9.99
+  fee_allocation: two
+  start_date: 2024-07-03
+  end_date: 2024-07-03
+  schedule: two
+  material_required: MyText
+  assessment_method: MyString
+  enrollment_deadline: 2024-07-03
+  course_level: two
+  contact_information: MyString

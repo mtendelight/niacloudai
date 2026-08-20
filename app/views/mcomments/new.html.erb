@@ -1,0 +1,11 @@
+<% content_for :title, "New mcomment" %>
+
+<h1>New mcomment</h1>
+
+<%= render "form", mcomment: @mcomment %>
+
+<br>
+
+<div>
+  <%= link_to "Back to mcomments", mcomments_path %>
+</div>

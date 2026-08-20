@@ -1,0 +1,21 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title: MyString
+  feedback_type: MyString
+  question: MyText
+  recommendation: MyText
+  priority: MyString
+  source: MyString
+  status: MyString
+  occurrences: 1
+
+two:
+  title: MyString
+  feedback_type: MyString
+  question: MyText
+  recommendation: MyText
+  priority: MyString
+  source: MyString
+  status: MyString
+  occurrences: 1

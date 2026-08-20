@@ -1,0 +1,2613 @@
+<%= render "layouts/header" %>
+
+<div class="container py-4">
+
+<!-- ===================================== -->
+<!-- PREMIUM PAGE HEADER -->
+<!-- ===================================== -->
+
+<div class="crm-page-header mb-4">
+
+  <div class="d-flex align-items-center gap-3">
+
+  <%= link_to(request.referer || dashboard_janomaxleads_path,
+    class: "crm-back-btn",
+    title: "Back") do %>
+
+  <i class="bi bi-arrow-left"></i>
+
+<% end %>
+
+    <div class="crm-header-icon">
+
+      <i class="bi bi-telephone-inbound-fill"></i>
+
+    </div>
+
+    <div>
+
+      <div class="crm-title">
+        Janomax Leads
+      </div>
+
+      <div class="crm-subtitle">
+        <i class="bi bi-graph-up-arrow me-1"></i>
+        Inbound Calls • Lead Tracking • Conversion Monitoring
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="crm-header-actions">
+
+    <%= link_to dashboard_janomaxleads_path,
+        class: "crm-btn crm-btn-light" do %>
+
+      <i class="bi bi-speedometer2"></i>
+      <span>Dashboard</span>
+
+    <% end %>
+
+    <%= link_to new_jmlead_path,
+        class: "crm-btn crm-btn-primary" do %>
+
+      <i class="bi bi-plus-circle-fill"></i>
+      <span><strong style="color: black;">New Lead</strong></span>
+
+    <% end %>
+
+  </div>
+
+</div>
+
+<style>
+  /* Back Button */
+
+.crm-back-btn{
+
+    width:46px;
+    height:46px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:14px;
+
+    background:#fff;
+
+    border:1px solid #dee2e6;
+
+    color:#475569;
+
+    text-decoration:none;
+
+    transition:.25s ease;
+
+    box-shadow:0 4px 12px rgba(15,23,42,.05);
+
+}
+
+.crm-back-btn:hover{
+
+    background:#0d6efd;
+
+    border-color:#0d6efd;
+
+    color:#fff;
+
+    transform:translateX(-3px);
+
+    box-shadow:0 10px 20px rgba(13,110,253,.18);
+
+}
+
+.crm-back-btn i{
+
+    font-size:20px;
+
+}
+
+/*=====================================
+ PREMIUM HEADER
+======================================*/
+
+.crm-page-header{
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    gap:20px;
+
+    padding:18px 22px;
+
+    background:#fff;
+
+    border:1px solid #e9ecef;
+
+    border-radius:20px;
+
+    box-shadow:0 8px 30px rgba(15,23,42,.05);
+
+}
+
+.crm-header-left{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:16px;
+
+}
+
+.crm-header-icon{
+
+    width:58px;
+
+    height:58px;
+
+    border-radius:18px;
+
+    background:linear-gradient(135deg,#2563eb,#3b82f6);
+
+    color:#fff;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:24px;
+
+    box-shadow:0 10px 25px rgba(37,99,235,.20);
+
+}
+
+.crm-title{
+
+    font-size:1.45rem;
+
+    font-weight:800;
+
+    color:#0f172a;
+
+    line-height:1.1;
+
+}
+
+.crm-subtitle{
+
+    margin-top:4px;
+
+    font-size:.88rem;
+
+    color:#64748b;
+
+    font-weight:500;
+
+}
+
+.crm-header-actions{
+
+    display:flex;
+
+    gap:12px;
+
+    flex-wrap:wrap;
+
+}
+
+.crm-btn{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    padding:10px 16px;
+
+    border-radius:12px;
+
+    text-decoration:none;
+
+    font-weight:600;
+
+    transition:.25s;
+
+}
+
+.crm-btn-light{
+
+    background:#fff;
+
+    border:1px solid #dee2e6;
+
+    color:#334155;
+
+}
+
+.crm-btn-light:hover{
+
+    background:#f8fafc;
+
+    color:#0d6efd;
+
+    border-color:#0d6efd;
+
+}
+
+.crm-btn-primary{
+
+    background:linear-gradient(135deg,#2563eb,#3b82f6);
+
+    color:#fff;
+
+    border:1px solid transparent;
+
+    box-shadow:0 8px 20px rgba(37,99,235,.18);
+
+}
+
+.crm-btn-primary:hover{
+
+    transform:translateY(-2px);
+
+    color:#fff;
+
+    box-shadow:0 12px 28px rgba(37,99,235,.28);
+
+}
+
+/* Mobile */
+
+@media(max-width:768px){
+
+    .crm-page-header{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+    }
+
+    .crm-header-actions{
+
+        width:100%;
+
+    }
+
+    .crm-btn{
+
+        flex:1;
+
+        justify-content:center;
+
+    }
+
+}
+</style>
+ 
+
+
+
+
+
+<div class="row g-3 mb-4">
+
+  <!-- ALL LEADS -->
+  <div class="col-12 col-md-6 col-lg-2-4">
+    <%= link_to janomaxleads_path, class: "kpi-link" do %>
+      <div class="card kpi-card kpi-all">
+
+        <div class="card-body">
+
+          <div class="kpi-top">
+            <div class="kpi-icon bg-primary">
+              <i class="bi bi-people"></i>
+            </div>
+            <span class="kpi-badge">All</span>
+          </div>
+
+          <div class="kpi-number"><%= @unique_leads %></div>
+          <div class="kpi-label">Total Leads</div>
+
+               <div class="mt-auto">
+            <%= link_to janomaxleads_path(format: :csv),
+                class: "btn btn-sm btn-outline-primary w-100 export-btn d-flex align-items-center justify-content-center gap-2",
+                data: { turbo: false } do %>
+
+              <i class="bi bi-download"></i>
+              <span class="spinner-border spinner-border-sm d-none"></span>
+
+            <% end %>
+          </div>
+
+ 
+
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- OPEN -->
+  <div class="col-12 col-md-6 col-lg-2-4">
+    <%= link_to janomaxleads_path(status: "open"), class: "kpi-link" do %>
+      <div class="card kpi-card kpi-open">
+
+        <div class="card-body">
+
+          <div class="kpi-top">
+            <div class="kpi-icon bg-warning">
+              <i class="bi bi-exclamation-circle"></i>
+            </div>
+            <span class="kpi-badge">Open</span>
+          </div>
+
+          <div class="kpi-number"><%= @open_leads %></div>
+          <div class="kpi-label">Open Leads</div>
+
+ 
+<div class="mt-auto">
+            <%= link_to janomaxleads_path(status: "open", format: :csv),
+                class: "btn btn-sm btn-outline-warning w-100 export-btn d-flex align-items-center justify-content-center gap-2",
+                data: { turbo: false } do %>
+
+              <i class="bi bi-download"></i>
+              <span class="spinner-border spinner-border-sm d-none"></span>
+
+            <% end %>
+          </div>
+
+
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- CALLS -->
+  <div class="col-12 col-md-6 col-lg-2-4">
+    <%= link_to janomaxleads_path(sort: "calls_desc"), class: "kpi-link" do %>
+      <div class="card kpi-card kpi-calls">
+
+        <div class="card-body">
+
+          <div class="kpi-top">
+            <div class="kpi-icon bg-dark">
+              <i class="bi bi-telephone"></i>
+            </div>
+            <span class="kpi-badge">Calls</span>
+          </div>
+
+          <div class="kpi-number">TOP</div>
+          <div class="kpi-label">Most Calls</div>
+
+
+             <div class="mt-auto">
+            <%= link_to janomaxleads_path(sort: "calls_desc", format: :csv),
+                class: "btn btn-sm btn-outline-dark w-100 export-btn d-flex align-items-center justify-content-center gap-2",
+                data: { turbo: false } do %>
+
+              <i class="bi bi-download"></i>
+              <span class="spinner-border spinner-border-sm d-none"></span>
+
+            <% end %>
+          </div>
+         
+
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- CONVERTED -->
+  <div class="col-12 col-md-6 col-lg-2-4">
+    <%= link_to janomaxleads_path(status: "converted"), class: "kpi-link" do %>
+      <div class="card kpi-card kpi-converted">
+
+        <div class="card-body">
+
+          <div class="kpi-top">
+            <div class="kpi-icon bg-success">
+              <i class="bi bi-check-circle"></i>
+            </div>
+            <span class="kpi-badge">Done</span>
+          </div>
+
+          <div class="kpi-number"><%= @converted %></div>
+          <div class="kpi-label">Converted</div>
+
+                <div class="mt-auto">
+            <%= link_to janomaxleads_path(status: "converted", format: :csv),
+                class: "btn btn-sm btn-outline-success w-100 export-btn d-flex align-items-center justify-content-center gap-2",
+                data: { turbo: false } do %>
+
+              <i class="bi bi-download"></i>
+              <span class="spinner-border spinner-border-sm d-none"></span>
+
+            <% end %>
+          </div>
+    
+
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+
+
+  <!-- EXISTING -->
+  <div class="col-12 col-md-6 col-lg-2-4">
+    <%= link_to janomaxleads_path(existing: true), class: "kpi-link" do %>
+      <div class="card kpi-card kpi-existing">
+
+        <div class="card-body">
+
+          <div class="kpi-top">
+            <div class="kpi-icon bg-info">
+              <i class="bi bi-person-check"></i>
+            </div>
+            <span class="kpi-badge">Existing</span>
+          </div>
+
+          <div class="kpi-number"><%= @existing_customers %></div>
+          <div class="kpi-label">Customers</div>
+
+               <div class="mt-auto">
+            <%= link_to janomaxleads_path(existing: true, format: :csv),
+                class: "btn btn-sm btn-outline-info w-100 export-btn d-flex align-items-center justify-content-center gap-2",
+                data: { turbo: false } do %>
+
+              <i class="bi bi-download"></i>
+
+              <span class="spinner-border spinner-border-sm d-none"></span>
+
+            <% end %>
+          </div>
+         
+
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+</div>
+
+
+
+
+<style>
+
+.kpi-eye-btn {
+  width: 38px;
+  height: 38px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 12px;
+
+  background: rgba(255, 193, 7, 0.2); /* soft warning */
+  border: 1px solid rgba(255, 193, 7, 0.5);
+
+  color: #ffb000;
+
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  font-size: 18px;
+}
+
+/* hover effect */
+.kpi-eye-btn:hover {
+  transform: translateY(-2px) scale(1.05);
+  background: rgba(255, 193, 7, 0.35);
+}
+
+/* icon size */
+.kpi-eye-btn i {
+  font-size: 20px;
+}
+  /* column width fix */
+@media (min-width: 992px) {
+  .col-lg-2-4 {
+    flex: 0 0 auto;
+    width: 20%;
+  }
+}
+
+/* link reset */
+.kpi-link {
+  text-decoration: none;
+}
+
+/* card base */
+.kpi-card {
+  border-radius: 16px;
+  border: 1px solid #eee;
+  transition: 0.2s ease;
+  background: #fff;
+}
+
+.kpi-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+}
+
+/* layout inside card */
+.kpi-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+/* icon */
+.kpi-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 18px;
+}
+
+/* badge */
+.kpi-badge {
+  font-size: 12px;
+  background: #f1f1f1;
+  padding: 4px 10px;
+  border-radius: 999px;
+  color: #333;
+}
+
+/* number (VERY IMPORTANT FOR VISIBILITY) */
+.kpi-number {
+  font-size: 28px;
+  font-weight: 700;
+  color: #111;
+}
+
+/* label */
+.kpi-label {
+  font-size: 13px;
+  color: #666;
+  margin-top: 4px;
+}
+
+/* COLORS (SAFE LIGHT BACKGROUNDS) */
+.kpi-all {
+  background: #eef2ff;
+}
+
+.kpi-open {
+  background: #fff7ed;
+}
+
+.kpi-calls {
+  background: #f3f4f6;
+}
+
+.kpi-converted {
+  background: #ecfdf5;
+}
+
+.kpi-existing {
+  background: #ecfeff;
+}
+
+.kpi-all {
+  background: #6366f1; /* indigo */
+  color: white;
+}
+
+.kpi-open {
+  background: #f59e0b; /* amber */
+  color: white;
+}
+
+.kpi-calls {
+  background: #111827; /* dark slate */
+  color: white;
+}
+
+.kpi-converted {
+  background: #10b981; /* green */
+  color: white;
+}
+
+.kpi-existing {
+  background: #06b6d4; /* cyan */
+  color: white;
+}
+
+
+</style>
+
+<div class="menu-wrap mb-3">
+
+  <div class="menu-grid lead-grid">
+
+    <% lead_items = [
+      { name: "All Leads", path: janomaxleads_path, emoji: "👥", hint: "All records" },
+      { name: "Open", path: janomaxleads_path(status: "open"), emoji: "🟡", hint: "Pending follow-ups" },
+      { name: "Converted", path: janomaxleads_path(status: "converted"), emoji: "🟢", hint: "Successful deals" },
+      { name: "Existing", path: janomaxleads_path(existing: true), emoji: "👤", hint: "Returning customers" },
+      { name: "Calls", path: janomaxleads_path(sort: "calls_desc"), emoji: "📞", hint: "Call ranking" }
+    ] %>
+
+    <% lead_items.each do |item| %>
+
+      <%= link_to item[:path],
+        class: "menu-card lead-card #{'active' if current_page?(item[:path])}" do %>
+
+        <div class="menu-card-body">
+
+          <div class="menu-icon-box">
+            <span class="menu-emoji"><%= item[:emoji] %></span>
+          </div>
+
+          <div class="menu-info">
+            <div class="menu-name"><%= item[:name] %></div>
+            <div class="menu-count"><%= item[:hint] %></div>
+          </div>
+
+          <div class="menu-arrow">
+            <i class="bi bi-chevron-right"></i>
+          </div>
+
+        </div>
+
+      <% end %>
+
+    <% end %>
+
+  </div>
+</div>
+
+<style>
+
+  @media (min-width: 992px) {
+  .col-lg-2-4 {
+    flex: 0 0 auto;
+    width: 20%;
+  }
+}
+
+.kpi-card {
+  border-radius: 18px;
+  overflow: hidden;
+  transition: all .3s ease;
+  color: #fff;
+  position: relative;
+}
+
+.kpi-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 35px rgba(0,0,0,.18);
+}
+
+.kpi-card .text-muted,
+.kpi-card .small {
+  color: rgba(255,255,255,.85) !important;
+}
+
+.kpi-card .badge {
+  background: rgba(255,255,255,.2) !important;
+  color: #fff !important;
+  backdrop-filter: blur(4px);
+}
+
+.kpi-card .export-btn {
+  background: rgba(255,255,255,.15);
+  border: 1px solid rgba(255,255,255,.3);
+  color: #fff;
+}
+
+.kpi-card .export-btn:hover {
+  background: rgba(255,255,255,.25);
+  color: #fff;
+}
+
+.kpi-icon {
+  width: 45px;
+  height: 45px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  background: rgba(255,255,255,.2);
+  color: #fff;
+}
+
+/* Individual Card Colors */
+
+.kpi-primary {
+  background: linear-gradient(135deg, #2563eb, #3b82f6);
+}
+
+.kpi-warning {
+  background: linear-gradient(135deg, #f59e0b, #fbbf24);
+}
+
+.kpi-dark {
+  background: linear-gradient(135deg, #111827, #374151);
+}
+
+.kpi-success {
+  background: linear-gradient(135deg, #059669, #10b981);
+}
+
+.kpi-info {
+  background: linear-gradient(135deg, #0891b2, #06b6d4);
+}
+
+/* Optional shine effect */
+
+.kpi-card::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  right: -30%;
+  width: 150px;
+  height: 150px;
+  background: rgba(255,255,255,.08);
+  border-radius: 50%;
+}
+
+.kpi-card::after {
+  content: "";
+  position: absolute;
+  bottom: -60px;
+  left: -40px;
+  width: 120px;
+  height: 120px;
+  background: rgba(255,255,255,.05);
+  border-radius: 50%;
+}
+  
+  /* TITLE */
+.menu-title {
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: #1f2937;
+}
+
+/* GRID */
+.lead-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 10px;
+}
+
+/* CARD BASE */
+.lead-card {
+  display: block;
+  padding: 12px;
+  border-radius: 14px;
+
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+
+  text-decoration: none;
+  color: #111;
+
+  transition: all 0.2s ease;
+}
+
+/* HOVER */
+.lead-card:hover {
+  transform: translateY(-2px);
+  border-color: #cbd5e1;
+  background: #f9fafb;
+}
+
+/* ACTIVE */
+.lead-card.active {
+  background: #0d6efd;
+  border-color: #0d6efd;
+  color: #fff;
+  box-shadow: 0 8px 20px rgba(13,110,253,0.25);
+}
+
+/* INNER LAYOUT */
+.menu-card-body {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+/* ICON BOX */
+.menu-icon-box {
+  width: 36px;
+  height: 36px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
+
+  background: #f3f4f6;
+}
+
+.lead-card.active .menu-icon-box {
+  background: rgba(255,255,255,0.2);
+}
+
+/* EMOJI */
+.menu-emoji {
+  font-size: 16px;
+}
+
+/* TEXT */
+.menu-info {
+  flex: 1;
+  margin-left: 8px;
+}
+
+.menu-name {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.menu-count {
+  font-size: 11px;
+  color: #6b7280;
+}
+
+.lead-card.active .menu-count {
+  color: rgba(255,255,255,0.8);
+}
+
+/* ARROW */
+.menu-arrow {
+  font-size: 14px;
+  color: #9ca3af;
+}
+
+.lead-card.active .menu-arrow {
+  color: #fff;
+}
+
+/* MOBILE */
+@media (max-width: 480px) {
+  .lead-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* MOBILE FIX */
+@media (max-width: 480px) {
+  .lead-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.menu-card {
+  display: block;
+  padding: 10px;
+  border-radius: 12px;
+
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+
+  text-decoration: none;
+  color: #111;
+
+  transition: all 0.2s ease;
+}
+
+.menu-card:hover {
+  transform: translateY(-2px);
+  border-color: #cbd5e1;
+  background: #f9fafb;
+}
+
+.menu-card.active {
+  background: #0d6efd;
+  color: #fff;
+  border-color: #0d6efd;
+  box-shadow: 0 6px 14px rgba(13, 110, 253, 0.25);
+}
+
+.menu-card.active .menu-name,
+.menu-card.active .menu-count,
+.menu-card.active .menu-icon {
+  color: #fff !important;
+}
+
+.menu-icon {
+  font-size: 18px;
+  width: 34px;
+  height: 34px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #6b7280;
+}
+
+.menu-card.active .menu-icon {
+  color: #fff;
+}
+</style>
+
+<div class="followup-section mb-4">
+
+  <!-- =====================================================
+       HEADER
+  ====================================================== -->
+
+  <div class="d-flex justify-content-between align-items-center mb-3">
+
+    <div>
+
+      <h5 class="fw-bold mb-1">
+        <i class="bi bi-telephone-x-fill text-danger me-2"></i>
+        Follow-up Queue
+      </h5>
+
+      <small class="text-muted">
+        Outstanding calls • Last 30 Days
+      </small>
+
+    </div>
+
+    <span class="badge bg-danger-subtle text-danger rounded-pill px-3 py-2">
+
+      <i class="bi bi-clock-history me-1"></i>
+
+      <%= @followup_days.sum { |d| d[:count].to_i } %> Remaining
+
+    </span>
+
+  </div>
+
+
+  <!-- =====================================================
+       FOLLOW-UP DAYS
+
+       Only days with actual follow-ups are displayed.
+       One day = compact card.
+       No days = empty state.
+  ====================================================== -->
+
+  <% if @followup_days.present? %>
+
+    <div class="followup-grid <%= 'single-day' if @followup_days.length == 1 %>">
+
+      <% @followup_days.each do |day| %>
+
+        <% active = params[:followup_date].to_s == day[:date].to_s %>
+
+        <%= link_to janomaxleads_path(
+              followup_date: day[:date]
+            ),
+            class: [
+              "followup-card",
+              ("active" if active)
+            ].compact.join(" ") do %>
+
+
+          <div class="followup-top">
+
+            <div class="followup-icon">
+              <i class="bi bi-telephone-x-fill"></i>
+            </div>
+
+            <div class="followup-arrow">
+              <i class="bi bi-arrow-up-right"></i>
+            </div>
+
+          </div>
+
+
+          <div class="followup-number">
+            <%= day[:count].to_i %>
+          </div>
+
+
+          <div class="followup-date">
+
+            <i class="bi bi-calendar3"></i>
+
+            <%= day[:date].day.ordinalize %>
+
+          </div>
+
+
+          <div class="followup-status">
+
+            <i class="bi bi-clock-fill"></i>
+            Remaining
+
+          </div>
+
+
+        <% end %>
+
+      <% end %>
+
+    </div>
+
+
+  <% else %>
+
+
+    <!-- =====================================================
+         EMPTY STATE
+    ====================================================== -->
+
+    <div class="followup-empty">
+
+      <div class="followup-empty-icon">
+
+        <i class="bi bi-check-circle-fill"></i>
+
+      </div>
+
+
+      <div class="followup-empty-content">
+
+        <strong>
+          No Follow-ups Pending
+        </strong>
+
+        <small>
+          All customer calls are up to date for the last 30 days.
+        </small>
+
+      </div>
+
+
+      <span class="followup-empty-badge">
+
+        <i class="bi bi-check-lg"></i>
+
+        Clear
+
+      </span>
+
+    </div>
+
+
+  <% end %>
+
+</div>
+
+
+<style>
+
+  /* =====================================================
+   FOLLOW-UP GRID
+===================================================== */
+
+.followup-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 10px;
+}
+
+
+/* =====================================================
+   SINGLE DAY
+   Keep one card compact instead of stretching it
+===================================================== */
+
+.followup-grid.single-day {
+  grid-template-columns: minmax(120px, 155px);
+}
+
+
+/* =====================================================
+   CARD
+===================================================== */
+
+.followup-card {
+  display: block;
+
+  min-height: 125px;
+
+  padding: 13px;
+
+  background: #fff;
+
+  border: 1px solid #e9ecef;
+  border-radius: 14px;
+
+  color: #212529;
+  text-decoration: none;
+
+  box-shadow: 0 3px 10px rgba(15, 23, 42, .04);
+
+  transition:
+    transform .2s ease,
+    box-shadow .2s ease,
+    border-color .2s ease;
+}
+
+
+/* =====================================================
+   HOVER
+===================================================== */
+
+.followup-card:hover {
+  transform: translateY(-3px);
+
+  border-color: #dc3545;
+
+  color: #212529;
+  text-decoration: none;
+
+  box-shadow:
+    0 10px 24px rgba(220, 53, 69, .10);
+}
+
+
+/* =====================================================
+   ACTIVE
+===================================================== */
+
+.followup-card.active {
+  background: linear-gradient(
+    135deg,
+    #dc3545,
+    #ef4444
+  );
+
+  border-color: transparent;
+
+  color: #fff;
+
+  box-shadow:
+    0 10px 25px rgba(220, 53, 69, .22);
+}
+
+.followup-card.active:hover {
+  color: #fff;
+}
+
+
+/* =====================================================
+   TOP
+===================================================== */
+
+.followup-top {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 10px;
+}
+
+
+/* =====================================================
+   ICON
+===================================================== */
+
+.followup-icon {
+  width: 34px;
+  height: 34px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
+
+  background: #fff0f1;
+
+  color: #dc3545;
+
+  font-size: 14px;
+}
+
+.followup-card.active .followup-icon {
+  background: rgba(255,255,255,.18);
+  color: #fff;
+}
+
+
+/* =====================================================
+   ARROW
+===================================================== */
+
+.followup-arrow {
+  color: #adb5bd;
+
+  font-size: 14px;
+
+  transition: .2s ease;
+}
+
+.followup-card:hover .followup-arrow {
+  color: #dc3545;
+
+  transform: translate(2px, -2px);
+}
+
+.followup-card.active .followup-arrow {
+  color: #fff;
+}
+
+
+/* =====================================================
+   NUMBER
+===================================================== */
+
+.followup-number {
+  font-size: 1.7rem;
+
+  font-weight: 900;
+
+  line-height: 1;
+
+  letter-spacing: -.5px;
+}
+
+
+/* =====================================================
+   DATE
+===================================================== */
+
+.followup-date {
+  display: flex;
+
+  align-items: center;
+
+  gap: 5px;
+
+  margin-top: 7px;
+
+  color: #6b7280;
+
+  font-size: .75rem;
+
+  font-weight: 700;
+
+  text-transform: uppercase;
+}
+
+.followup-date i {
+  font-size: 11px;
+}
+
+.followup-card.active .followup-date {
+  color: rgba(255,255,255,.85);
+}
+
+
+/* =====================================================
+   STATUS
+===================================================== */
+
+.followup-status {
+  display: flex;
+
+  align-items: center;
+
+  gap: 5px;
+
+  margin-top: 5px;
+
+  color: #dc3545;
+
+  font-size: .65rem;
+
+  font-weight: 800;
+
+  text-transform: uppercase;
+
+  letter-spacing: .3px;
+}
+
+.followup-status i {
+  font-size: 9px;
+}
+
+.followup-card.active .followup-status {
+  color: rgba(255,255,255,.9);
+}
+
+
+/* =====================================================
+   EMPTY STATE
+===================================================== */
+
+.followup-empty {
+  display: flex;
+
+  align-items: center;
+
+  gap: 14px;
+
+  padding: 14px 16px;
+
+  background: linear-gradient(
+    135deg,
+    #f0fff4,
+    #f8fffa
+  );
+
+  border: 1px solid #bbf7d0;
+
+  border-radius: 14px;
+
+  box-shadow:
+    0 3px 12px rgba(15,23,42,.04);
+}
+
+
+/* =====================================================
+   EMPTY ICON
+===================================================== */
+
+.followup-empty-icon {
+  width: 42px;
+  height: 42px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 12px;
+
+  background: #dcfce7;
+
+  color: #16a34a;
+
+  font-size: 19px;
+}
+
+
+/* =====================================================
+   EMPTY CONTENT
+===================================================== */
+
+.followup-empty-content {
+  display: flex;
+
+  flex-direction: column;
+
+  min-width: 0;
+}
+
+.followup-empty-content strong {
+  color: #166534;
+
+  font-size: .9rem;
+
+  font-weight: 800;
+}
+
+.followup-empty-content small {
+  margin-top: 2px;
+
+  color: #64748b;
+
+  font-size: .74rem;
+}
+
+
+/* =====================================================
+   EMPTY BADGE
+===================================================== */
+
+.followup-empty-badge {
+  margin-left: auto;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 4px;
+
+  padding: 5px 10px;
+
+  border-radius: 999px;
+
+  background: #dcfce7;
+
+  color: #15803d;
+
+  font-size: .65rem;
+
+  font-weight: 800;
+
+  text-transform: uppercase;
+
+  letter-spacing: .3px;
+}
+
+
+/* =====================================================
+   TABLET
+===================================================== */
+
+@media (max-width: 768px) {
+
+  .followup-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .followup-grid.single-day {
+    grid-template-columns: minmax(120px, 150px);
+  }
+
+  .followup-card {
+    min-height: 115px;
+    padding: 11px;
+  }
+
+  .followup-number {
+    font-size: 1.5rem;
+  }
+
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 576px) {
+
+  .followup-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .followup-grid.single-day {
+    grid-template-columns: minmax(120px, 145px);
+  }
+
+  .followup-card {
+    min-height: 110px;
+
+    padding: 10px;
+
+    border-radius: 12px;
+  }
+
+  .followup-icon {
+    width: 31px;
+    height: 31px;
+
+    border-radius: 9px;
+
+    font-size: 13px;
+  }
+
+  .followup-number {
+    font-size: 1.4rem;
+  }
+
+  .followup-date {
+    font-size: .68rem;
+  }
+
+  .followup-status {
+    font-size: .58rem;
+  }
+
+  .followup-empty {
+    padding: 12px;
+
+    gap: 10px;
+  }
+
+  .followup-empty-icon {
+    width: 36px;
+    height: 36px;
+
+    border-radius: 10px;
+
+    font-size: 16px;
+  }
+
+  .followup-empty-content strong {
+    font-size: .82rem;
+  }
+
+  .followup-empty-content small {
+    font-size: .68rem;
+  }
+
+  .followup-empty-badge {
+    display: none;
+  }
+
+}
+
+/* =====================================================
+   FOLLOW-UP GRID
+===================================================== */
+
+.followup-grid {
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(auto-fit, minmax(120px, 1fr));
+
+  gap: 10px;
+
+  align-items: stretch;
+}
+
+
+/* =====================================================
+   SINGLE DAY
+   Keep one card the same compact width
+   instead of stretching across the page
+===================================================== */
+
+.followup-grid.single-day {
+
+  grid-template-columns: 120px;
+
+}
+
+
+/* =====================================================
+   CARD
+===================================================== */
+
+.followup-card {
+
+  display: block;
+
+  width: 100%;
+
+  min-height: 125px;
+
+  padding: 13px;
+
+  box-sizing: border-box;
+
+  background: #fff;
+
+  border: 1px solid #e9ecef;
+
+  border-radius: 13px;
+
+  color: #212529;
+
+  text-decoration: none;
+
+  line-height: 1.2;
+
+  box-shadow:
+    0 3px 10px rgba(15, 23, 42, .04);
+
+  transition:
+    transform .2s ease,
+    box-shadow .2s ease,
+    border-color .2s ease,
+    background .2s ease;
+}
+
+
+/* =====================================================
+   TOP
+===================================================== */
+
+.followup-top {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  margin-bottom: 10px;
+
+}
+
+
+/* =====================================================
+   ICON
+===================================================== */
+
+.followup-icon {
+
+  width: 34px;
+  height: 34px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
+
+  background: #fff0f1;
+
+  color: #dc3545;
+
+  font-size: 14px;
+
+  flex-shrink: 0;
+
+}
+
+
+/* =====================================================
+   ARROW
+===================================================== */
+
+.followup-arrow {
+
+  color: #adb5bd;
+
+  font-size: 13px;
+
+  transition: .2s ease;
+
+}
+
+.followup-card:hover .followup-arrow {
+
+  color: #dc3545;
+
+  transform:
+    translate(2px, -2px);
+
+}
+
+
+/* =====================================================
+   NUMBER
+===================================================== */
+
+.followup-number {
+
+  display: block;
+
+  font-size: 1.75rem;
+
+  font-weight: 900;
+
+  line-height: 1;
+
+  margin-bottom: 8px;
+
+  letter-spacing: -.5px;
+
+}
+
+
+/* =====================================================
+   DATE
+===================================================== */
+
+.followup-date {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 5px;
+
+  font-size: .75rem;
+
+  font-weight: 700;
+
+  color: #6b7280;
+
+  margin-bottom: 6px;
+
+  text-transform: uppercase;
+
+}
+
+.followup-date i {
+
+  font-size: 11px;
+
+}
+
+
+/* =====================================================
+   STATUS
+===================================================== */
+
+.followup-status {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 5px;
+
+  font-size: .65rem;
+
+  font-weight: 700;
+
+  color: #94a3b8;
+
+}
+
+.followup-status i {
+
+  font-size: 9px;
+
+}
+
+
+/* =====================================================
+   HOVER
+===================================================== */
+
+.followup-card:hover,
+.followup-card.active {
+
+  text-decoration: none;
+
+  transform:
+    translateY(-3px);
+
+  box-shadow:
+    0 8px 20px rgba(15, 23, 42, .09),
+    0 15px 35px rgba(15, 23, 42, .05);
+
+}
+
+
+/* =====================================================
+   ACTIVE
+===================================================== */
+
+.followup-card.active {
+
+  background:
+    linear-gradient(
+      135deg,
+      #dc3545,
+      #ef4444
+    );
+
+  border-color: #dc3545;
+
+  color: #fff;
+
+}
+
+.followup-card.active .followup-icon {
+
+  background:
+    rgba(255,255,255,.18);
+
+  color: #fff;
+
+}
+
+.followup-card.active .followup-arrow {
+
+  color: #fff;
+
+}
+
+.followup-card.active .followup-date,
+.followup-card.active .followup-status {
+
+  color:
+    rgba(255,255,255,.9);
+
+}
+
+.followup-card.active .followup-status i {
+
+  color: #fff;
+
+}
+
+
+/* =====================================================
+   TABLET
+===================================================== */
+
+@media (max-width: 768px) {
+
+  .followup-grid {
+
+    grid-template-columns:
+      repeat(4, minmax(0, 1fr));
+
+    gap: 8px;
+
+  }
+
+  .followup-card {
+
+    min-height: 115px;
+
+    padding: 11px;
+
+  }
+
+  .followup-icon {
+
+    width: 30px;
+    height: 30px;
+
+    border-radius: 9px;
+
+    font-size: 13px;
+
+  }
+
+  .followup-number {
+
+    font-size: 1.55rem;
+
+  }
+
+  .followup-date {
+
+    font-size: .68rem;
+
+  }
+
+  .followup-status {
+
+    font-size: .58rem;
+
+  }
+
+  .followup-grid.single-day {
+
+    grid-template-columns: 115px;
+
+  }
+
+}
+
+
+/* =====================================================
+   SMALL MOBILE
+===================================================== */
+
+@media (max-width: 480px) {
+
+  .followup-grid {
+
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+
+    gap: 8px;
+
+  }
+
+  .followup-card {
+
+    min-height: 110px;
+
+    padding: 10px;
+
+    border-radius: 11px;
+
+  }
+
+  .followup-top {
+
+    margin-bottom: 8px;
+
+  }
+
+  .followup-icon {
+
+    width: 28px;
+    height: 28px;
+
+    border-radius: 8px;
+
+    font-size: 12px;
+
+  }
+
+  .followup-arrow {
+
+    font-size: 11px;
+
+  }
+
+  .followup-number {
+
+    font-size: 1.45rem;
+
+    margin-bottom: 7px;
+
+  }
+
+  .followup-date {
+
+    font-size: .64rem;
+
+    gap: 4px;
+
+  }
+
+  .followup-status {
+
+    font-size: .56rem;
+
+    gap: 4px;
+
+  }
+
+  .followup-grid.single-day {
+
+    grid-template-columns: 110px;
+
+  }
+
+}
+
+</style>
+
+
+  <div class="card shadow-sm border-0 mb-3">
+  <div class="card-body">
+    <div class="login">
+
+    <%= form_with url: janomaxleads_path, method: :get, local: true do |f| %>
+
+      <div class="input-group">
+
+        <%= text_field_tag :q,
+              params[:q],
+              class: "form-control",
+              placeholder: "Search phone, customer name, status..." %>
+
+        <button class="btn btn-primary">
+          🔍 Search
+        </button>
+
+        <% if params[:q].present? %>
+          <%= link_to "Clear", janomaxleads_path,
+              class: "btn btn-outline-secondary" %>
+        <% end %>
+
+      </div>
+</div>
+    <% end %>
+
+  </div>
+</div>
+
+  <!-- ===================== -->
+  <!-- TABLE -->
+  <!-- ===================== -->
+  <div class="card border-0 shadow-sm rounded-4">
+
+    <div class="table-responsive">
+
+      <table class="table modern-table align-middle mb-0">
+
+        <thead>
+          <tr>
+            <th>Lead</th>
+            <th>Status</th>
+            <th>Customer</th>
+            <th>Calls</th>
+            <th>Last Comment</th>
+            <th>Last Activity</th>
+            <th class="text-end">Action</th>
+          </tr>
+        </thead>
+
+        <tbody>
+
+          <% @janomaxleads.each do |lead| %>
+
+            <% status_class =
+              case lead.lead_status
+              when "open" then "open"
+              when "converted" then "converted"
+              when "lost" then "lost"
+              else "muted"
+              end %>
+
+            <% last_call = lead.janomaxleadcalls.order(called_at: :desc).first %>
+
+            <tr class="table-row">
+
+              <!-- LEAD -->
+              <td>
+                <div class="lead-box">
+                  <div class="lead-icon">📞</div>
+                  <div>
+                    <div class="fw-semibold"><%= lead.phone %></div>
+                    <small class="text-muted">Lead #<%= lead.id %></small>
+                  </div>
+                </div>
+              </td>
+
+              <!-- STATUS -->
+              <td>
+                <span class="pill <%= status_class %>">
+                  <%= lead.lead_status.capitalize %>
+                </span>
+              </td>
+
+              <!-- CUSTOMER -->
+              <td>
+                <%= lead.jmcustomer.present? ? "✔ Yes" : "— New" %>
+              </td>
+
+              <!-- CALLS -->
+              <td>
+                <span class="badge bg-dark rounded-pill">
+                  <%= lead.calls_count.to_i %>
+                </span>
+              </td>
+<td>
+  <!-- LAST COMMENT -->
+
+  <% last_comment = lead.comments.to_s.split("\n\n").last %>
+
+  <% if last_comment.present? %>
+
+    <% clean_comment = last_comment
+        .gsub(/💬 \[.*?\]\s*/, '')
+        .strip %>
+
+    <div class="mt-1">
+      💬 <small class="text-dark">
+        <%= truncate(clean_comment, length: 40) %>
+      </small>
+    </div>
+
+  <% else %>
+    <span class="text-muted">No comments</span>
+  <% end %>
+</td>
+
+              <!-- LAST ACTIVITY -->
+              <td>
+                <% if last_call %>
+                  <div class="text-sm">
+                    🕒 <%= last_call.called_at.strftime("%d %b %H:%M") %>
+                  </div>
+                  <small class="text-muted"><%= last_call.status %></small>
+                <% else %>
+                  <span class="text-muted">No activity</span>
+                <% end %>
+              </td>
+
+              <!-- ACTION -->
+              <td class="text-end">
+                <%= link_to "View →", lead, class: "btn btn-sm btn-outline-primary rounded-pill" %>
+              </td>
+
+            </tr>
+
+          <% end %>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+
+
+
+<div class="digg_pagination">
+
+  <div class="d-flex justify-content-center mb-3">
+    <%= paginate @janomaxleads %>
+  </div>
+
+  <div class="text-center mb-3">
+    <%= form_with url: request.path, method: :get, local: true, id: "rows-per-page-form", class: "d-inline-flex align-items-center gap-2" do |f| %>
+
+      <%= f.label :per_page, "Rows per page", class: "mb-0 fw-semibold" %>
+
+      <%= f.select :per_page,
+          options_for_select([20,25,50,100,250,500,1000], params[:per_page] || 20),
+          {},
+          class: "form-select form-select-sm",
+          style: "width:100px;",
+          id: "rows-per-page" %>
+
+    <% end %>
+  </div>
+
+  <div class="text-center text-muted small">
+    <%= page_entries_info @janomaxleads %>
+  </div>
+
+</div>
+
+<style>
+  .digg_pagination nav{
+    display:flex;
+    justify-content:center;
+}
+
+.digg_pagination .pagination{
+    margin-bottom:0;
+}
+
+.digg_pagination{
+    overflow:hidden;
+}
+</style>
+
+
+
+<script>
+
+  document.addEventListener("DOMContentLoaded", () => {
+  const select = document.getElementById("rows-per-page");
+  if (select) {
+    select.addEventListener("change", () => {
+      document.getElementById("rows-per-page-form").submit();
+    });
+  }
+});
+
+
+</script>
+
+
+
+
+
+
+<script type="text/javascript">
+  
+document.addEventListener('turbo:load', function() {
+  const selectElement = document.querySelector('#rows-per-page-form select');
+
+  if (selectElement) {
+    selectElement.addEventListener('change', function() {
+      document.querySelector('#rows-per-page-form').submit();
+    });
+  }
+});
+
+</script>
+
+
+
+
+
+
+</div>
+
+
+
+<style>
+
+    .customer-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;          /* Space between button and search form */
+  margin: 1rem 0;
+  justify-content: flex-start; /* Align left */
+}
+
+.admin-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 1rem;
+  font-size: 0.95rem;
+  background-color: #007bff;
+  color: #fff;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: all 0.25s ease;
+  font-weight: 500;
+}
+
+.admin-btn:hover {
+  background-color: #0056b3;
+}
+
+.admin-btn.active {
+  background-color: #0056b3;
+  font-weight: 600;
+}
+
+.myform {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.search-input {
+  padding: 0.45rem 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 0.95rem;
+}
+
+.search-btn {
+  padding: 0.45rem 0.85rem;
+  border: none;
+  border-radius: 6px;
+  background-color: #28a745;
+  color: #fff;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: all 0.25s ease;
+}
+
+.search-btn:hover {
+  background-color: #1e7e34;
+}
+
+  .admin-message {
+  text-align: center;       /* Center the text */
+  color: #dc3545;           /* Bootstrap danger/red color */
+  font-weight: 600;         /* Bold text */
+  font-size: 16px;          /* Slightly larger text */
+  margin: 20px 0;           /* Space around the message */
+  background-color: #f8d7da; /* Light red background */
+  padding: 12px 20px;       /* Padding inside the box */
+  border-radius: 8px;       /* Rounded corners */
+  border: 1px solid #f5c2c7; /* Subtle border */
+}
+
+
+  fieldset {
+    border: 0px solid #4CAF50; /* Green border */
+    border-radius: 40px; /* Rounded corners */
+    padding: 2rem; /* Padding inside the fieldset */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    background-color: #f9f9f9; /* Light background color */
+    margin-bottom: 20px; /* Space between fieldsets */
+    transition: all 0.3s ease-in-out; /* Smooth transitions */
+    width: auto; /* Use full width for smaller devices */
+    justify-content: center;
+
+}
+
+
+@media (max-width: 600px) {
+       fieldset {
+    border: 0px solid #4CAF50; /* Green border */
+    border-radius: 40px; /* Rounded corners */
+    
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    background-color: #f9f9f9; /* Light background color */
+    margin-bottom: 20px; /* Space between fieldsets */
+    transition: all 0.3s ease-in-out; /* Smooth transitions */
+    width: 100%; /* Use full width for smaller devices */
+    justify-content: center;
+
+}
+      
+      .form-row {
+          flex-direction: column; /* Stack fields vertically on small screens */
+      }
+
+      .field, .action {
+          width: 100%; /* Make fields full-width on small screens */
+          margin-bottom: 10px; /* Add some spacing between stacked fields */
+      }
+  }
+
+
+
+
+    .custom-fieldset {
+      padding: 2rem; /* Reduced padding for the span */
+      margin: 0.5rem; /* Reduced margin for the span */
+      display: block; /* Ensure it behaves like a block element */
+      border: 1px solid #dee2e6; /* Optional: style the border */
+      border-radius: 0.5rem; /* Optional: round the corners */
+      justify-content: center;
+      margin-left: 25px;
+      width: 90%;
+  }
+
+.card-text {
+    display: block; /* Make each span behave like a block for easier spacing */
+    margin: -3px 0; /* Add margin for vertical spacing */
+    font-size: 16px; /* Set font size for readability */
+    color: #333; /* Dark gray text color for contrast */
+}
+
+.card-text strong {
+    color: #007bff; /* Blue color for strong text to differentiate labels */
+}
+
+.card-title {
+    font-weight: bold; /* Make card title bold */
+    font-size: 1.5rem; /* Increase font size for better visibility */
+}
+
+.animal-image img {
+    border-radius: 10px; /* Add rounded corners to images */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+.card {
+    border: 1px solid #dee2e6; /* Light border for cards */
+    border-radius: 0.5rem; /* Rounded corners for cards */
+    transition: transform 0.2s; /* Smooth transition effect on hover */
+}
+
+
+
+.btn {
+    min-width: 80px; /* Set a minimum width for buttons */
+    margin: 0 5px; /* Add margin between buttons */
+}
+
+
+.img-responsive {
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 5px;
+}
+
+button {
+  background-color: #25D366;
+  border: none;
+  color: white;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+  .form-select {
+  display: inline-block;
+  width: auto;
+  margin-left: 10px;
+}
+
+.btn-primary {
+  margin-left: 10px;
+}
+
+
+.clickable-image {
+  cursor: pointer;
+}
+
+/* Table Container */
+.table-responsive {
+  overflow-x: auto;
+  background-color: #fff;
+}
+
+/* Table Styling */
+.table th, .table td {
+  vertical-align: middle;
+}
+
+.table th {
+  font-weight: 600;
+  text-align: center;
+}
+
+.table td {
+  word-wrap: break-word;
+}
+
+/* Buttons */
+.btn-sm {
+  min-width: 65px;
+}
+
+/* Responsive Improvements */
+@media (max-width: 768px) {
+  .table th, .table td {
+    font-size: 13px;
+    padding: 0.5rem 0.6rem;
+  }
+
+  .btn-sm {
+    font-size: 12px;
+    padding: 0.25rem 0.5rem;
+  }
+}
+</style>
+
+
+<style type="text/css">
+
+
+
+.digg_pagination {
+  text-align: center;
+  width: 100%;
+  margin-top: 10px; /* Reduced margin to compact layout */
+}
+
+.pagination {
+  display: inline-flex;
+  justify-content: center;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.pagination li {
+  margin: 0;
+}
+
+.pagination a,
+.pagination .current {
+  display: block;
+  padding: 3px 8px; /* Reduced padding for compactness */
+  margin: 2px; /* Reduced margin */
+  background-color: #007bff;
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+}
+
+.pagination a:hover {
+  background-color: #0056b3;
+}
+
+.pagination .current {
+  background-color: #0056b3;
+}
+
+.pagination .disabled {
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+.pagination .dots {
+  padding: 3px 8px;
+  margin: 2px;
+}
+
+.pagination .previous_page,
+.pagination .next_page {
+  font-weight: bold;
+}
+
+.table-success {
+  background-color: #d4edda;
+}
+
+.text-center {
+  text-align: center;
+}
+
+
+
+
+</style>
+
+
+<style>
+  
+  /* =========================
+   PAGE BACKGROUND
+========================= */
+
+body {
+  background: #f6f7fb;
+}
+
+/* =========================
+   KPI CARDS (MODERN TILES)
+========================= */
+
+.kpi-card {
+  background: #fff;
+  border-radius: 14px;
+  padding: 18px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+  transition: 0.2s ease;
+}
+
+.kpi-card:hover {
+  transform: translateY(-3px);
+}
+
+.kpi-title {
+  font-size: 12px;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.kpi-value {
+  font-size: 26px;
+  font-weight: 700;
+  margin-top: 6px;
+}
+
+/* KPI COLORS */
+.kpi-card.warning { border-left: 4px solid #f59e0b; }
+.kpi-card.success { border-left: 4px solid #22c55e; }
+.kpi-card.dark { border-left: 4px solid #111827; }
+
+/* =========================
+   TABLE
+========================= */
+
+.modern-table th {
+  font-size: 12px;
+  text-transform: uppercase;
+  color: #9ca3af;
+  border-bottom: 1px solid #eee;
+  padding: 14px;
+}
+
+.table-row td {
+  padding: 16px 12px;
+  border-top: 1px solid #f1f1f1;
+}
+
+.table-row:hover {
+  background: #f9fafb;
+}
+
+/* =========================
+   LEAD BOX
+========================= */
+
+.lead-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.lead-icon {
+  width: 38px;
+  height: 38px;
+  background: #eef2ff;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* =========================
+   STATUS PILLS
+========================= */
+
+.pill {
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.pill.open {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.pill.converted {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.pill.lost {
+  background: #fee2e2;
+  color: #991b1b;
+}
+</style>

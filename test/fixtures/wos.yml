@@ -1,0 +1,27 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  number: MyString
+  subject: MyString
+  nature: MyString
+  status: MyString
+  work_objective: MyString
+  work_details: MyString
+  services_to_be_affected: MyString
+  rollback_plan: MyString
+  Details_of_executor: MyString
+  start_time: 2024-06-12 12:16:43
+  end_time: 2024-06-12 12:16:43
+
+two:
+  number: MyString
+  subject: MyString
+  nature: MyString
+  status: MyString
+  work_objective: MyString
+  work_details: MyString
+  services_to_be_affected: MyString
+  rollback_plan: MyString
+  Details_of_executor: MyString
+  start_time: 2024-06-12 12:16:43
+  end_time: 2024-06-12 12:16:43

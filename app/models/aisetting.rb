@@ -1,0 +1,2 @@
+class Aisetting < ApplicationRecord
+end

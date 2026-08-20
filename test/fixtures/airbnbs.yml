@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  town: MyString
+  location_address: MyString
+  caretaker: MyString
+  cleaner: MyString
+  price: 9.99
+  description: MyText
+
+two:
+  name: MyString
+  town: MyString
+  location_address: MyString
+  caretaker: MyString
+  cleaner: MyString
+  price: 9.99
+  description: MyText

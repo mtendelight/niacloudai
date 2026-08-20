@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title: MyString
+  start: 2026-03-20 14:28:25
+  end: 2026-03-20 14:28:25
+  description: MyText
+  jcalendar: one
+
+two:
+  title: MyString
+  start: 2026-03-20 14:28:25
+  end: 2026-03-20 14:28:25
+  description: MyText
+  jcalendar: two

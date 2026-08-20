@@ -1,0 +1,3482 @@
+<%= render "layouts/header" %>
+
+
+
+<div class="container py-4">
+
+<div class="container-fluid mt-4">
+
+<div class="dashboard-header mb-4">
+
+  <div class="dashboard-header-content">
+
+    <div>
+
+      <div class="dashboard-tag">
+        <i class="bi bi-telephone-fill"></i>
+        Janomax Call Centre
+      </div>
+
+      <h1 class="dashboard-title">
+        Leads Dashboard
+      </h1>
+
+      <p class="dashboard-subtitle">
+        Monitor calls, conversions, lead quality, customer engagement and performance trends in real time.
+      </p>
+
+    </div>
+
+    <div class="dashboard-actions">
+
+      <% if params[:status].present? || params[:existing].present? %>
+        <div class="active-filter">
+
+          <i class="bi bi-funnel-fill"></i>
+
+          Filter Applied
+
+          <%= link_to janomaxleads_path,
+              class: "clear-filter" do %>
+            Clear
+          <% end %>
+
+        </div>
+      <% end %>
+
+      <%= link_to janomaxleads_path,
+          class: "dashboard-btn",
+          data: { turbo: false } do %>
+
+        <i class="bi bi-list-ul"></i>
+        View Leads
+
+      <% end %>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+
+
+<style>
+
+  /* ====================================
+   DASHBOARD HEADER
+==================================== */
+
+.dashboard-header{
+  background:#fff;
+  border:1px solid #edf2f7;
+  border-radius:24px;
+  padding:24px 28px;
+  box-shadow:0 8px 30px rgba(15,23,42,.05);
+  position:relative;
+  overflow:hidden;
+}
+
+.dashboard-header::before{
+  content:"";
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:4px;
+  background:linear-gradient(
+    90deg,
+    #2563eb,
+    #06b6d4,
+    #10b981
+  );
+}
+
+.dashboard-header-content{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:20px;
+}
+
+.dashboard-tag{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  background:#eff6ff;
+  color:#2563eb;
+  font-weight:600;
+  font-size:.82rem;
+  padding:8px 14px;
+  border-radius:30px;
+  margin-bottom:12px;
+}
+
+.dashboard-title{
+  font-size:2.2rem;
+  font-weight:800;
+  color:#0f172a;
+  margin-bottom:6px;
+  line-height:1.1;
+}
+
+.dashboard-subtitle{
+  color:#64748b;
+  font-size:.95rem;
+  max-width:700px;
+  margin:0;
+}
+
+.dashboard-actions{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  flex-wrap:wrap;
+}
+
+.dashboard-btn{
+  background:linear-gradient(
+    135deg,
+    #2563eb,
+    #3b82f6
+  );
+  color:#fff;
+  text-decoration:none;
+  padding:12px 22px;
+  border-radius:14px;
+  font-weight:700;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  transition:.25s ease;
+  box-shadow:0 8px 20px rgba(37,99,235,.20);
+}
+
+.dashboard-btn:hover{
+  color:#fff;
+  transform:translateY(-2px);
+}
+
+.active-filter{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:10px 14px;
+  background:#fff7ed;
+  border:1px solid #fed7aa;
+  border-radius:14px;
+  color:#c2410c;
+  font-weight:600;
+}
+
+.clear-filter{
+  text-decoration:none;
+  color:#dc2626;
+  font-weight:700;
+  border-left:1px solid #fdba74;
+  padding-left:10px;
+}
+
+.clear-filter:hover{
+  color:#b91c1c;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:992px){
+
+  .dashboard-header-content{
+    flex-direction:column;
+    align-items:flex-start;
+  }
+
+  .dashboard-actions{
+    width:100%;
+  }
+}
+
+@media(max-width:768px){
+
+  .dashboard-header{
+    padding:20px;
+  }
+
+  .dashboard-title{
+    font-size:1.7rem;
+  }
+
+  .dashboard-btn{
+    width:100%;
+    justify-content:center;
+  }
+
+  .active-filter{
+    width:100%;
+    justify-content:center;
+  }
+}
+  .dashboard-hero{
+  background:linear-gradient(
+    135deg,
+    #0f172a,
+    #1e3a8a
+  );
+  border-radius:24px;
+  padding:28px;
+  color:#fff;
+  position:relative;
+  overflow:hidden;
+  box-shadow:0 15px 40px rgba(0,0,0,.12);
+}
+
+.dashboard-hero::before{
+  content:"";
+  position:absolute;
+  right:-80px;
+  top:-80px;
+  width:220px;
+  height:220px;
+  background:rgba(255,255,255,.06);
+  border-radius:50%;
+}
+
+.dashboard-hero::after{
+  content:"";
+  position:absolute;
+  left:-50px;
+  bottom:-50px;
+  width:150px;
+  height:150px;
+  background:rgba(255,255,255,.04);
+  border-radius:50%;
+}
+
+.hero-content{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:20px;
+  position:relative;
+  z-index:2;
+}
+
+.hero-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  background:rgba(255,255,255,.12);
+  padding:8px 14px;
+  border-radius:30px;
+  font-size:.85rem;
+  margin-bottom:12px;
+}
+
+.hero-title{
+  font-size:2rem;
+  font-weight:800;
+  margin-bottom:8px;
+}
+
+.hero-subtitle{
+  color:rgba(255,255,255,.85);
+  max-width:650px;
+  margin-bottom:0;
+  font-size:.95rem;
+}
+
+.hero-actions{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  flex-wrap:wrap;
+}
+
+.hero-btn{
+  background:#fff;
+  color:#1e3a8a;
+  padding:12px 20px;
+  border-radius:14px;
+  text-decoration:none;
+  font-weight:700;
+  transition:.25s;
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.hero-btn:hover{
+  transform:translateY(-2px);
+  color:#1e3a8a;
+  box-shadow:0 8px 20px rgba(255,255,255,.15);
+}
+
+.filter-badge{
+  background:rgba(255,255,255,.12);
+  border:1px solid rgba(255,255,255,.15);
+  padding:10px 14px;
+  border-radius:14px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.filter-clear{
+  color:#fff;
+  font-weight:700;
+  text-decoration:none;
+  border-left:1px solid rgba(255,255,255,.25);
+  padding-left:10px;
+}
+
+.filter-clear:hover{
+  color:#fff;
+}
+
+@media(max-width:768px){
+
+  .hero-content{
+    flex-direction:column;
+    align-items:flex-start;
+  }
+
+  .hero-title{
+    font-size:1.6rem;
+  }
+
+  .hero-actions{
+    width:100%;
+  }
+
+  .hero-btn{
+    width:100%;
+    justify-content:center;
+  }
+}
+
+/* ===== QUICK ACTIONS FONT SIZE FIX ===== */
+
+.quick-card {
+  padding: 14px; /* optional: makes card more compact */
+}
+
+.quick-value {
+  font-size: 1.2rem !important;   /* smaller number */
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.quick-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #6b7280;
+}
+
+.quick-icon {
+  font-size: 1rem;
+}
+
+/* TOP "small rate text" also reduce */
+.quick-card small {
+  font-size: 0.7rem;
+}
+
+/* =========================================
+   ULTRA COMPACT PREMIUM MENU
+========================================= */
+
+.compact-admin-menu{
+
+  gap:8px;
+
+  padding:12px;
+
+  border-radius:24px;
+
+}
+
+/* =========================================
+   MENU ITEM
+========================================= */
+
+.menu-item{
+
+  width:64px;
+  min-height:68px;
+
+  padding:7px 5px;
+
+  gap:5px;
+
+  border-radius:18px;
+
+  box-shadow:
+    0 4px 14px rgba(15,23,42,.05);
+
+}
+
+/* ICON */
+
+.menu-icon{
+
+  width:28px;
+  height:28px;
+
+  border-radius:9px;
+
+}
+
+.menu-icon i{
+
+  font-size:11px;
+
+}
+
+/* TEXT */
+
+.menu-item span{
+
+  font-size:7.5px;
+
+  line-height:1.1;
+
+  font-weight:800;
+
+  letter-spacing:.1px;
+
+}
+
+/* BADGE */
+
+.menu-badge{
+
+  min-width:16px;
+  height:16px;
+
+  font-size:8px;
+
+  top:4px;
+  right:4px;
+
+  border-width:1px;
+
+}
+
+/* =========================================
+   SUPER ADMIN
+========================================= */
+
+.superadmin-wrapper{
+
+  margin-top:8px;
+
+  padding-top:12px;
+
+}
+
+.superadmin-grid{
+
+  gap:8px;
+
+}
+
+.superadmin-card{
+
+  width:64px;
+  min-height:68px;
+
+  padding:7px 5px;
+
+  gap:5px;
+
+  border-radius:18px;
+
+}
+
+/* SUPER ICON */
+
+.super-icon{
+
+  width:28px;
+  height:28px;
+
+  border-radius:9px;
+
+}
+
+.super-icon i{
+
+  font-size:11px;
+
+}
+
+/* SUPER TEXT */
+
+.super-content h6{
+
+  font-size:7.5px;
+
+  line-height:1.1;
+
+  letter-spacing:.1px;
+
+}
+
+/* =========================================
+   HOVER
+========================================= */
+
+.menu-item:hover,
+.superadmin-card:hover{
+
+  transform:
+    translateY(-2px);
+
+}
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media(max-width:768px){
+
+  .compact-admin-menu{
+
+    gap:6px;
+
+    padding:10px;
+
+  }
+
+  .menu-item,
+  .superadmin-card{
+
+    width:58px;
+    min-height:62px;
+
+    padding:6px 4px;
+
+  }
+
+  .menu-icon,
+  .super-icon{
+
+    width:24px;
+    height:24px;
+
+    border-radius:8px;
+
+  }
+
+  .menu-icon i,
+  .super-icon i{
+
+    font-size:10px;
+
+  }
+
+  .menu-item span,
+  .super-content h6{
+
+    font-size:7px;
+
+  }
+
+}
+</style>
+
+  <div class="container">
+<%= render 'jmcustomers/submenu' %>
+
+    </div>
+
+
+<!-- QUICK ACTIONS -->
+<div class="card border-0 shadow-sm rounded-4 mb-4 overflow-hidden">
+
+  <div class="card-header border-0 py-4 px-4 bg-white">
+
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+
+      <div class="d-flex align-items-center">
+
+        <div class="header-icon me-3">
+          <i class="bi bi-grid-1x2-fill"></i>
+        </div>
+
+        <div>
+          <h4 class="fw-bold mb-1 text-dark">
+            Lead Management
+          </h4>
+
+          <p class="text-muted mb-0">
+            Monitor leads, track conversions and manage customer engagement.
+          </p>
+        </div>
+
+      </div>
+
+      <div class="header-badge">
+        <i class="bi bi-activity me-2"></i>
+        CRM Dashboard
+      </div>
+
+    </div>
+
+  </div>
+
+  <style>
+    .header-icon{
+    width:68px;
+    height:68px;
+    border-radius:20px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:linear-gradient(135deg,#0d6efd,#6ea8fe);
+    color:#fff;
+    font-size:30px;
+    box-shadow:0 15px 35px rgba(13,110,253,.25);
+}
+
+.header-badge{
+    display:inline-flex;
+    align-items:center;
+    padding:10px 18px;
+    border-radius:999px;
+    background:#eef5ff;
+    color:#0d6efd;
+    font-weight:700;
+    font-size:.9rem;
+    border:1px solid rgba(13,110,253,.12);
+}
+
+.card-header{
+    background:
+        radial-gradient(circle at top right, rgba(13,110,253,.08), transparent 35%),
+        linear-gradient(180deg,#ffffff,#fbfcfe) !important;
+}
+
+.card-header h4{
+    letter-spacing:-.4px;
+}
+
+.card-header p{
+    font-size:.95rem;
+}
+
+@media(max-width:768px){
+
+.header-icon{
+    width:58px;
+    height:58px;
+    font-size:24px;
+}
+
+.header-badge{
+    width:100%;
+    justify-content:center;
+}
+
+}
+  </style>
+
+<div class="d-flex justify-content-between align-items-center mb-2">
+
+  <div>
+    <h6 class="fw-bold mb-0">
+      <i class="bi bi-telephone-x-fill text-danger me-1"></i>
+      Follow-up Queue
+    </h6>
+
+    <small class="text-muted">
+      Outstanding calls · Last 30 Days
+    </small>
+  </div>
+
+  <span class="badge rounded-pill bg-danger-subtle text-danger">
+    <i class="bi bi-clock-history me-1"></i>
+    <%= @followup_days.sum { |d| d[:count].to_i } %>
+  </span>
+
+</div>
+
+
+<%# =====================================================
+    FOLLOW-UP DAYS
+
+    Only days with actual follow-ups are displayed.
+    A single day remains a compact card.
+===================================================== %>
+
+<% if @followup_days.present? %>
+
+  <div class="followup-grid <%= 'single-day' if @followup_days.length == 1 %>">
+
+    <% @followup_days.each do |day| %>
+
+      <% active = params[:followup_date].to_s == day[:date].to_s %>
+
+      <%= link_to janomaxleads_path(
+            followup_date: day[:date]
+          ),
+          class: [
+            "followup-card",
+            ("active" if active)
+          ].compact.join(" ") do %>
+
+        <div class="followup-top">
+
+          <span class="followup-icon">
+            <i class="bi bi-telephone-x-fill"></i>
+          </span>
+
+          <i class="bi bi-arrow-up-right followup-arrow"></i>
+
+        </div>
+
+
+        <strong class="followup-number">
+          <%= day[:count].to_i %>
+        </strong>
+
+
+        <span class="followup-date">
+          <i class="bi bi-calendar3"></i>
+          <%= day[:date].day.ordinalize %>
+        </span>
+
+
+        <span class="followup-status">
+
+          <i class="bi bi-clock-fill text-danger"></i>
+          Remaining
+
+        </span>
+
+      <% end %>
+
+    <% end %>
+
+  </div>
+
+<% else %>
+
+  <!-- =====================================================
+       EMPTY FOLLOW-UP STATE
+  ====================================================== -->
+
+  <div class="followup-empty">
+
+    <div class="followup-empty-icon">
+      <i class="bi bi-check-circle-fill"></i>
+    </div>
+
+    <div class="followup-empty-content">
+
+      <strong>No Follow-ups Pending</strong>
+
+      <small>
+        All customer calls are up to date for the last 30 days.
+      </small>
+
+    </div>
+
+    <span class="followup-empty-badge">
+      <i class="bi bi-check-lg"></i>
+      Clear
+    </span>
+
+  </div>
+
+<% end %>
+
+
+<hr/>
+
+
+<style>
+
+
+  /* =====================================================
+   EMPTY STATE
+===================================================== */
+
+.followup-empty {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  padding: 14px 16px;
+
+  background: linear-gradient(
+    135deg,
+    #f0fff4,
+    #f8fffa
+  );
+
+  border: 1px solid #bbf7d0;
+
+  border-radius: 14px;
+
+  box-shadow: 0 3px 12px rgba(15, 23, 42, .04);
+}
+
+
+/* ICON */
+
+.followup-empty-icon {
+  width: 42px;
+  height: 42px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 12px;
+
+  background: #dcfce7;
+  color: #16a34a;
+
+  font-size: 19px;
+}
+
+
+/* CONTENT */
+
+.followup-empty-content {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.followup-empty-content strong {
+  color: #166534;
+
+  font-size: .9rem;
+  font-weight: 800;
+}
+
+.followup-empty-content small {
+  margin-top: 2px;
+
+  color: #64748b;
+
+  font-size: .74rem;
+}
+
+
+/* BADGE */
+
+.followup-empty-badge {
+  margin-left: auto;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+
+  padding: 5px 10px;
+
+  border-radius: 999px;
+
+  background: #dcfce7;
+  color: #15803d;
+
+  font-size: .65rem;
+  font-weight: 800;
+
+  text-transform: uppercase;
+  letter-spacing: .3px;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 480px) {
+
+  .followup-empty {
+    padding: 12px;
+    gap: 10px;
+  }
+
+  .followup-empty-icon {
+    width: 36px;
+    height: 36px;
+
+    border-radius: 10px;
+
+    font-size: 16px;
+  }
+
+  .followup-empty-content strong {
+    font-size: .82rem;
+  }
+
+  .followup-empty-content small {
+    font-size: .68rem;
+  }
+
+  .followup-empty-badge {
+    display: none;
+  }
+
+}
+
+/* =====================================================
+   FOLLOW-UP HEADER
+===================================================== */
+
+.followup-header h6 {
+  font-size: 1rem;
+}
+
+.followup-header small {
+  font-size: .8rem;
+}
+
+.followup-header .badge {
+  font-size: .85rem;
+  padding: 8px 13px;
+}
+
+
+/* =====================================================
+   GRID
+===================================================== */
+
+.followup-grid {
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(auto-fit, minmax(120px, 1fr));
+
+  gap: 10px;
+
+  align-items: stretch;
+}
+
+
+/* =====================================================
+   SINGLE DAY
+   Keep one card compact instead of full width
+===================================================== */
+
+.followup-grid.single-day {
+  grid-template-columns: 120px;
+}
+
+
+/* =====================================================
+   CARD
+===================================================== */
+
+.followup-card {
+
+  display: block;
+
+  width: 100%;
+
+  min-height: 125px;
+
+  padding: 13px;
+
+  box-sizing: border-box;
+
+  border: 1px solid #e9ecef;
+
+  border-radius: 13px;
+
+  background: #fff;
+
+  color: #212529;
+
+  text-decoration: none;
+
+  line-height: 1.2;
+
+  box-shadow:
+    0 3px 10px rgba(15, 23, 42, .04);
+
+  transition:
+    transform .2s ease,
+    box-shadow .2s ease,
+    border-color .2s ease,
+    background .2s ease;
+}
+
+
+/* =====================================================
+   TOP
+===================================================== */
+
+.followup-top {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  margin-bottom: 10px;
+}
+
+
+/* =====================================================
+   ICON
+===================================================== */
+
+.followup-icon {
+
+  width: 34px;
+  height: 34px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
+
+  background: #fff0f1;
+
+  color: #dc3545;
+
+  font-size: 14px;
+
+  flex-shrink: 0;
+}
+
+
+/* =====================================================
+   ARROW
+===================================================== */
+
+.followup-arrow {
+
+  font-size: 13px;
+
+  color: #adb5bd;
+
+  transition: .2s ease;
+}
+
+.followup-card:hover .followup-arrow {
+
+  color: #dc3545;
+
+  transform:
+    translate(2px, -2px);
+}
+
+
+/* =====================================================
+   NUMBER
+===================================================== */
+
+.followup-number {
+
+  display: block;
+
+  font-size: 1.75rem;
+
+  font-weight: 900;
+
+  line-height: 1;
+
+  margin-bottom: 8px;
+
+  letter-spacing: -.5px;
+}
+
+
+/* =====================================================
+   DATE
+===================================================== */
+
+.followup-date {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 5px;
+
+  font-size: .75rem;
+
+  font-weight: 700;
+
+  color: #6b7280;
+
+  margin-bottom: 6px;
+
+  text-transform: uppercase;
+}
+
+.followup-date i {
+
+  font-size: 11px;
+}
+
+
+/* =====================================================
+   STATUS
+===================================================== */
+
+.followup-status {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 5px;
+
+  font-size: .65rem;
+
+  font-weight: 700;
+
+  color: #94a3b8;
+}
+
+.followup-status i {
+
+  font-size: 9px;
+}
+
+
+/* =====================================================
+   HOVER
+===================================================== */
+
+.followup-card:hover,
+.followup-card.active {
+
+  text-decoration: none;
+
+  transform:
+    translateY(-3px);
+
+  box-shadow:
+    0 8px 20px rgba(15, 23, 42, .09),
+    0 15px 35px rgba(15, 23, 42, .05);
+}
+
+
+/* =====================================================
+   ACTIVE
+===================================================== */
+
+.followup-card.active {
+
+  background:
+    linear-gradient(
+      135deg,
+      #dc3545,
+      #ef4444
+    );
+
+  border-color: #dc3545;
+
+  color: #fff;
+}
+
+.followup-card.active .followup-icon {
+
+  background:
+    rgba(255,255,255,.18);
+
+  color: #fff;
+}
+
+.followup-card.active .followup-arrow {
+
+  color: #fff;
+}
+
+.followup-card.active .followup-date,
+.followup-card.active .followup-status {
+
+  color:
+    rgba(255,255,255,.9);
+}
+
+.followup-card.active .followup-status i {
+
+  color: #fff !important;
+}
+
+
+/* =====================================================
+   TABLET
+===================================================== */
+
+@media (max-width: 768px) {
+
+  .followup-grid {
+
+    grid-template-columns:
+      repeat(4, minmax(0, 1fr));
+
+    gap: 8px;
+  }
+
+  .followup-card {
+
+    min-height: 115px;
+
+    padding: 11px;
+  }
+
+  .followup-icon {
+
+    width: 30px;
+    height: 30px;
+
+    border-radius: 9px;
+
+    font-size: 13px;
+  }
+
+  .followup-number {
+
+    font-size: 1.55rem;
+  }
+
+  .followup-date {
+
+    font-size: .68rem;
+  }
+
+  .followup-status {
+
+    font-size: .58rem;
+  }
+
+  .followup-grid.single-day {
+
+    grid-template-columns: 115px;
+  }
+}
+
+
+/* =====================================================
+   SMALL MOBILE
+===================================================== */
+
+@media (max-width: 480px) {
+
+  .followup-grid {
+
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+
+    gap: 8px;
+  }
+
+  .followup-card {
+
+    min-height: 110px;
+
+    padding: 10px;
+
+    border-radius: 11px;
+  }
+
+  .followup-top {
+
+    margin-bottom: 8px;
+  }
+
+  .followup-icon {
+
+    width: 28px;
+    height: 28px;
+
+    border-radius: 8px;
+
+    font-size: 12px;
+  }
+
+  .followup-arrow {
+
+    font-size: 11px;
+  }
+
+  .followup-number {
+
+    font-size: 1.45rem;
+
+    margin-bottom: 7px;
+  }
+
+  .followup-date {
+
+    font-size: .64rem;
+
+    gap: 4px;
+  }
+
+  .followup-status {
+
+    font-size: .56rem;
+
+    gap: 4px;
+  }
+
+  .followup-grid.single-day {
+
+    grid-template-columns: 110px;
+  }
+}
+
+</style>
+
+  <div class="card-body">
+
+    <div class="row g-4">
+
+      <!-- ALL LEADS -->
+      <div class="col-xl col-lg-4 col-md-6">
+        <%= link_to janomaxleads_path, class: "text-decoration-none" do %>
+
+          <div class="quick-card primary h-100">
+
+            <div class="quick-icon">
+              <i class="bi bi-people-fill"></i>
+            </div>
+
+            <div class="quick-value">
+              <%= number_with_delimiter(@unique_leads) %>
+            </div>
+
+            <div class="quick-label">
+              All Leads
+            </div>
+
+            <div class="quick-action">
+              View Details
+              <i class="bi bi-arrow-right-circle-fill ms-2"></i>
+            </div>
+
+          </div>
+
+        <% end %>
+      </div>
+
+      <!-- OPEN -->
+      <div class="col-xl col-lg-4 col-md-6">
+        <%= link_to janomaxleads_path(status: "open"), class: "text-decoration-none" do %>
+
+          <div class="quick-card warning h-100">
+
+            <div class="quick-icon">
+              <i class="bi bi-hourglass-split"></i>
+            </div>
+
+            <div class="quick-value">
+              <%= number_with_delimiter(@open_leads) %>
+            </div>
+
+            <div class="quick-label">
+              Open Leads
+            </div>
+
+            <div class="quick-action">
+              View Details
+              <i class="bi bi-arrow-right-circle-fill ms-2"></i>
+            </div>
+
+          </div>
+
+        <% end %>
+      </div>
+
+      <!-- MOST CALLED -->
+      <div class="col-xl col-lg-4 col-md-6">
+        <%= link_to janomaxleads_path(sort: "calls_desc"), class: "text-decoration-none" do %>
+
+          <div class="quick-card dark h-100">
+
+            <div class="quick-icon">
+              <i class="bi bi-telephone-fill"></i>
+            </div>
+
+            <div class="quick-value">
+              TOP
+            </div>
+
+            <div class="quick-label">
+              Most Called
+            </div>
+
+            <div class="quick-action">
+              View Details
+              <i class="bi bi-arrow-right-circle-fill ms-2"></i>
+            </div>
+
+          </div>
+
+        <% end %>
+      </div>
+
+      <!-- CONVERTED -->
+      <div class="col-xl col-lg-4 col-md-6">
+        <%= link_to janomaxleads_path(status: "converted"), class: "text-decoration-none" do %>
+
+          <div class="quick-card success h-100">
+
+            <div class="quick-icon">
+              <i class="bi bi-check-circle-fill"></i>
+            </div>
+
+            <div class="quick-value">
+              <%= number_with_delimiter(@converted) %>
+            </div>
+
+            <div class="quick-label">
+              Converted
+            </div>
+
+            <small class="text-success fw-semibold d-block mb-3">
+              <%= @conversion_rate %>% Conversion Rate
+            </small>
+
+            <div class="quick-action">
+              View Details
+              <i class="bi bi-arrow-right-circle-fill ms-2"></i>
+            </div>
+
+          </div>
+
+        <% end %>
+      </div>
+
+      <!-- EXISTING -->
+      <div class="col-xl col-lg-4 col-md-6">
+        <%= link_to janomaxleads_path(existing: true), class: "text-decoration-none" do %>
+
+          <div class="quick-card info h-100">
+
+            <div class="quick-icon">
+              <i class="bi bi-person-badge-fill"></i>
+            </div>
+
+            <div class="quick-value">
+              <%= number_with_delimiter(@existing_customers) %>
+            </div>
+
+            <div class="quick-label">
+              Existing Customers
+            </div>
+
+            <div class="quick-action">
+              View Details
+              <i class="bi bi-arrow-right-circle-fill ms-2"></i>
+            </div>
+
+          </div>
+
+        <% end %>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<style>
+
+  /* ===============================
+   PREMIUM QUICK CARDS
+==================================*/
+
+.quick-card{
+    position:relative;
+    overflow:hidden;
+    border-radius:28px;
+    padding:28px 24px;
+    text-align:center;
+    background:rgba(255,255,255,.94);
+    backdrop-filter:blur(16px);
+    border:1px solid rgba(255,255,255,.9);
+    box-shadow:
+        0 10px 30px rgba(15,23,42,.06),
+        inset 0 1px 0 rgba(255,255,255,.85);
+    transition:all .45s cubic-bezier(.22,1,.36,1);
+}
+
+.quick-card:hover{
+    transform:translateY(-10px) scale(1.02);
+    box-shadow:
+        0 25px 55px rgba(15,23,42,.14),
+        0 0 0 1px rgba(13,110,253,.08);
+}
+
+.quick-card::before{
+    content:"";
+    position:absolute;
+    width:220px;
+    height:220px;
+    border-radius:50%;
+    top:-95px;
+    right:-95px;
+    opacity:.10;
+    transition:.45s;
+}
+
+.quick-card:hover::before{
+    transform:scale(1.3);
+}
+
+.quick-card::after{
+    content:"";
+    position:absolute;
+    top:18px;
+    right:18px;
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    background:#fff;
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+    opacity:0;
+    transition:.35s;
+}
+
+.quick-card:hover::after{
+    opacity:1;
+}
+
+.primary::before{
+    background:#0d6efd;
+}
+
+.warning::before{
+    background:#ffc107;
+}
+
+.success::before{
+    background:#198754;
+}
+
+.info::before{
+    background:#0dcaf0;
+}
+
+.dark::before{
+    background:#212529;
+}
+
+/* ===============================
+   ICON
+==================================*/
+
+.quick-icon{
+    width:78px;
+    height:78px;
+    margin:auto;
+    margin-bottom:22px;
+    border-radius:24px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:34px;
+    color:#fff;
+    transition:.35s;
+}
+
+.primary .quick-icon{
+    background:linear-gradient(135deg,#0d6efd,#6ea8fe);
+    box-shadow:0 18px 35px rgba(13,110,253,.25);
+}
+
+.warning .quick-icon{
+    background:linear-gradient(135deg,#ffb000,#ffd54f);
+    box-shadow:0 18px 35px rgba(255,193,7,.25);
+}
+
+.success .quick-icon{
+    background:linear-gradient(135deg,#198754,#3dd598);
+    box-shadow:0 18px 35px rgba(25,135,84,.25);
+}
+
+.info .quick-icon{
+    background:linear-gradient(135deg,#0dcaf0,#6fe7ff);
+    box-shadow:0 18px 35px rgba(13,202,240,.25);
+}
+
+.dark .quick-icon{
+    background:linear-gradient(135deg,#212529,#6c757d);
+    box-shadow:0 18px 35px rgba(33,37,41,.25);
+}
+
+.quick-card:hover .quick-icon{
+    transform:rotate(-6deg) scale(1.08);
+}
+
+/* ===============================
+   VALUE
+==================================*/
+
+.quick-value{
+    font-size:2.35rem;
+    font-weight:800;
+    color:#1f2937;
+    line-height:1;
+    margin-bottom:10px;
+}
+
+.quick-label{
+    font-size:1rem;
+    font-weight:600;
+    color:#6b7280;
+    margin-bottom:24px;
+}
+
+/* ===============================
+   BUTTON
+==================================*/
+
+.quick-action{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:8px;
+    padding:14px 18px;
+    border-radius:18px;
+    background:#f8fafc;
+    border:1px solid #edf2f7;
+    font-weight:700;
+    color:#0d6efd;
+    transition:.35s;
+}
+
+.quick-action i{
+    transition:.35s;
+}
+
+.quick-card:hover .quick-action{
+    background:#0d6efd;
+    color:#fff;
+}
+
+.quick-card:hover .quick-action i{
+    transform:translateX(5px);
+}
+
+/* ===============================
+   HEADER
+==================================*/
+
+.card{
+    border-radius:24px!important;
+}
+
+.card-header{
+    background:linear-gradient(180deg,#fff,#fafbfd)!important;
+}
+
+.card-header h5{
+    font-weight:800;
+    letter-spacing:.2px;
+}
+
+/* ===============================
+   CONVERSION TEXT
+==================================*/
+
+.quick-card small{
+    display:inline-block;
+    padding:6px 14px;
+    border-radius:999px;
+    background:#ecfdf3;
+    margin-bottom:18px!important;
+    font-weight:700!important;
+}
+
+/* ===============================
+   MOBILE
+==================================*/
+
+@media (max-width:768px){
+
+.quick-card{
+    padding:22px;
+}
+
+.quick-icon{
+    width:66px;
+    height:66px;
+    font-size:28px;
+}
+
+.quick-value{
+    font-size:2rem;
+}
+
+}
+
+/* Equal height cards */
+.row.g-4 > [class*="col"]{
+    display:flex;
+}
+
+.quick-card{
+    display:flex;
+    flex-direction:column;
+    width:100%;
+    min-height:340px;   /* Adjust to 320px, 340px or 360px as desired */
+}
+
+/* Keep the button at the bottom */
+.quick-action{
+    margin-top:auto;
+}
+
+/* Conversion badge takes consistent space */
+.quick-card small{
+    display:block;
+    min-height:36px;
+    margin-bottom:18px !important;
+}
+
+/* Cards without the badge reserve the same space */
+.quick-label{
+    margin-bottom:36px;
+}
+
+.success .quick-label{
+    margin-bottom:10px;
+}
+.quick-card{
+    position:relative;
+    background:#fff;
+    border-radius:22px;
+    padding:28px 22px;
+    text-align:center;
+    border:1px solid #eef2f7;
+    box-shadow:0 10px 30px rgba(16,24,40,.06);
+    transition:.35s ease;
+    overflow:hidden;
+}
+
+.quick-card:hover{
+    transform:translateY(-8px);
+    box-shadow:0 20px 45px rgba(0,0,0,.12);
+}
+
+.quick-card:before{
+    content:"";
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:5px;
+}
+
+.quick-card.primary:before{background:#0d6efd;}
+.quick-card.warning:before{background:#ffc107;}
+.quick-card.success:before{background:#198754;}
+.quick-card.info:before{background:#0dcaf0;}
+.quick-card.dark:before{background:#212529;}
+
+.quick-icon{
+    width:72px;
+    height:72px;
+    margin:auto;
+    border-radius:20px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:30px;
+    color:#fff;
+    margin-bottom:20px;
+}
+
+.primary .quick-icon{
+    background:linear-gradient(135deg,#0d6efd,#4f8cff);
+}
+
+.warning .quick-icon{
+    background:linear-gradient(135deg,#ffb300,#ffd54f);
+}
+
+.success .quick-icon{
+    background:linear-gradient(135deg,#198754,#41c98c);
+}
+
+.info .quick-icon{
+    background:linear-gradient(135deg,#0dcaf0,#61dafb);
+}
+
+.dark .quick-icon{
+    background:linear-gradient(135deg,#343a40,#6c757d);
+}
+
+.quick-value{
+    font-size:2rem;
+    font-weight:800;
+    color:#1f2937;
+    margin-bottom:6px;
+}
+
+.quick-label{
+    color:#6b7280;
+    font-size:.95rem;
+    font-weight:600;
+    margin-bottom:24px;
+}
+
+.quick-action{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:6px;
+    padding:10px 18px;
+    border-radius:50px;
+    background:#f8fafc;
+    border:1px solid #e9ecef;
+    font-weight:700;
+    color:#0d6efd;
+    transition:.3s;
+}
+
+.quick-card:hover .quick-action{
+    background:#0d6efd;
+    color:#fff;
+}
+
+.quick-action i{
+    transition:.3s;
+}
+
+.quick-card:hover .quick-action i{
+    transform:translateX(4px);
+}
+</style>
+
+
+ 
+<div class="row g-3 mb-4">
+
+  <!-- TOTAL CALLS -->
+  <div class="col-xl-2 col-lg-4 col-md-6">
+    <div class="stats-card primary">
+      <div class="stats-top">
+        <div class="stats-icon">
+          <i class="bi bi-telephone-fill"></i>
+        </div>
+      </div>
+
+      <div class="stats-value">
+        <%= number_with_delimiter(@total_calls) %>
+      </div>
+
+      <div class="stats-label">
+        Total Calls
+      </div>
+    </div>
+  </div>
+
+  <!-- UNIQUE LEADS -->
+  <div class="col-xl-2 col-lg-4 col-md-6">
+    <div class="stats-card dark">
+      <div class="stats-top">
+        <div class="stats-icon">
+          <i class="bi bi-people-fill"></i>
+        </div>
+      </div>
+
+      <div class="stats-value">
+        <%= number_with_delimiter(@unique_leads) %>
+      </div>
+
+      <div class="stats-label">
+        Unique Leads
+      </div>
+    </div>
+  </div>
+
+  <!-- OPEN LEADS -->
+  <div class="col-xl-2 col-lg-4 col-md-6">
+    <div class="stats-card warning">
+      <div class="stats-top">
+        <div class="stats-icon">
+          <i class="bi bi-hourglass-split"></i>
+        </div>
+      </div>
+
+      <div class="stats-value">
+        <%= number_with_delimiter(@open_leads) %>
+      </div>
+
+      <div class="stats-label">
+        Open Leads
+      </div>
+    </div>
+  </div>
+
+  <!-- CONVERTED -->
+  <div class="col-xl-2 col-lg-4 col-md-6">
+    <div class="stats-card success">
+
+      <div class="stats-top">
+        <div class="stats-icon">
+          <i class="bi bi-check-circle-fill"></i>
+        </div>
+
+        <span class="stats-badge">
+          <%= @conversion_rate %>%
+        </span>
+      </div>
+
+      <div class="stats-value">
+        <%= number_with_delimiter(@converted) %>
+      </div>
+
+      <div class="stats-label">
+        Converted
+      </div>
+
+      <div class="stats-footer text-success">
+        +<%= @new_converted_today %> today
+      </div>
+
+    </div>
+  </div>
+
+  <!-- EXISTING -->
+  <div class="col-xl-2 col-lg-4 col-md-6">
+    <div class="stats-card info">
+      <div class="stats-top">
+        <div class="stats-icon">
+          <i class="bi bi-person-badge-fill"></i>
+        </div>
+      </div>
+
+      <div class="stats-value">
+        <%= number_with_delimiter(@existing_customers) %>
+      </div>
+
+      <div class="stats-label">
+        Existing
+      </div>
+    </div>
+  </div>
+
+  <!-- NEW LEADS -->
+  <div class="col-xl-2 col-lg-4 col-md-6">
+    <div class="stats-card danger">
+      <div class="stats-top">
+        <div class="stats-icon">
+          <i class="bi bi-person-plus-fill"></i>
+        </div>
+      </div>
+
+      <div class="stats-value">
+        <%= number_with_delimiter(@new_leads) %>
+      </div>
+
+      <div class="stats-label">
+        New Leads
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+
+
+<style>
+  .stats-card{
+  background:#fff;
+  border-radius:22px;
+  padding:22px;
+  border:1px solid #eef2f7;
+  box-shadow:0 8px 25px rgba(0,0,0,.05);
+  transition:all .25s ease;
+  height:100%;
+  position:relative;
+  overflow:hidden;
+}
+
+.stats-card:hover{
+  transform:translateY(-6px);
+  box-shadow:0 18px 40px rgba(0,0,0,.10);
+}
+
+.stats-card:before{
+  content:"";
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:4px;
+}
+
+.stats-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:15px;
+}
+
+.stats-icon{
+  width:52px;
+  height:52px;
+  border-radius:16px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:22px;
+  color:#fff;
+}
+
+.stats-value{
+  font-size:2rem;
+  font-weight:800;
+  color:#111827;
+  line-height:1;
+}
+
+.stats-label{
+  margin-top:8px;
+  color:#6b7280;
+  font-size:.9rem;
+  font-weight:600;
+}
+
+.stats-footer{
+  margin-top:8px;
+  font-size:.8rem;
+  font-weight:700;
+}
+
+.stats-badge{
+  background:#dcfce7;
+  color:#15803d;
+  padding:4px 10px;
+  border-radius:30px;
+  font-size:.75rem;
+  font-weight:700;
+}
+
+/* PRIMARY */
+.stats-card.primary:before{
+  background:#2563eb;
+}
+.stats-card.primary .stats-icon{
+  background:linear-gradient(135deg,#2563eb,#60a5fa);
+}
+
+/* DARK */
+.stats-card.dark:before{
+  background:#374151;
+}
+.stats-card.dark .stats-icon{
+  background:linear-gradient(135deg,#374151,#111827);
+}
+
+/* WARNING */
+.stats-card.warning:before{
+  background:#f59e0b;
+}
+.stats-card.warning .stats-icon{
+  background:linear-gradient(135deg,#f59e0b,#fbbf24);
+}
+
+/* SUCCESS */
+.stats-card.success:before{
+  background:#10b981;
+}
+.stats-card.success .stats-icon{
+  background:linear-gradient(135deg,#10b981,#34d399);
+}
+
+/* INFO */
+.stats-card.info:before{
+  background:#06b6d4;
+}
+.stats-card.info .stats-icon{
+  background:linear-gradient(135deg,#06b6d4,#67e8f9);
+}
+
+/* DANGER */
+.stats-card.danger:before{
+  background:#ef4444;
+}
+.stats-card.danger .stats-icon{
+  background:linear-gradient(135deg,#ef4444,#f87171);
+}
+
+/* ===== QUICK CARDS (Lead Management) ===== */
+.quick-value {
+  font-size: 1.1rem;   /* reduced from large default */
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.quick-label {
+  font-size: 0.75rem;
+  color: #6b7280;
+  font-weight: 600;
+}
+
+/* optional: shrink icon slightly */
+.quick-icon i {
+  font-size: 1rem;
+}
+
+
+/* ===== STATS CARDS ===== */
+.stats-value {
+  font-size: 1.4rem;   /* reduced from 2rem */
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.stats-label {
+  font-size: 0.75rem;  /* smaller label */
+  font-weight: 600;
+}
+
+.stats-footer {
+  font-size: 0.7rem;
+}
+
+.stats-badge {
+  font-size: 0.65rem;
+  padding: 3px 8px;
+}
+
+/* optional: reduce icon size slightly */
+.stats-icon {
+  width: 42px;
+  height: 42px;
+  font-size: 18px;
+}
+
+.dashboard-compact .stats-value {
+  font-size: 1.2rem;
+}
+
+.dashboard-compact .quick-value {
+  font-size: 1rem;
+}
+</style>
+
+ <div class="row g-4 mb-4">
+
+  <!-- CALL OUTCOMES -->
+  <div class="col-lg-4">
+
+    <div class="modern-card h-100">
+
+      <div class="modern-header success-gradient">
+        <i class="bi bi-telephone-inbound-fill me-2"></i>
+        Call Outcomes
+      </div>
+
+      <div class="modern-body">
+
+        <div class="status-item answered">
+          <div class="status-left">
+            <div class="status-icon">
+              <i class="bi bi-check-circle-fill"></i>
+            </div>
+            <span>Answered</span>
+          </div>
+
+          <div class="status-value">
+            <%= number_with_delimiter(@answered_calls) %>
+          </div>
+        </div>
+
+        <div class="status-item abandoned">
+          <div class="status-left">
+            <div class="status-icon">
+              <i class="bi bi-x-circle-fill"></i>
+            </div>
+            <span>Abandoned</span>
+          </div>
+
+          <div class="status-value">
+            <%= number_with_delimiter(@abandoned_calls) %>
+          </div>
+        </div>
+
+        <div class="status-item busy">
+          <div class="status-left">
+            <div class="status-icon">
+              <i class="bi bi-telephone-x-fill"></i>
+            </div>
+            <span>Busy</span>
+          </div>
+
+          <div class="status-value">
+            <%= number_with_delimiter(@busy_calls) %>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- IMPORT -->
+  <div class="col-lg-8">
+
+    <div class="modern-card h-100">
+
+      <div class="modern-header primary-gradient">
+        <i class="bi bi-cloud-arrow-up-fill me-2"></i>
+        Import Call Detail Records (CDR)
+      </div>
+
+      <div class="modern-body">
+
+        <div class="upload-info mb-3">
+          Upload call logs from your PBX, CRM or telecom provider.
+        </div>
+<div class="login">
+        <%= form_with url: import_janomaxleads_path,
+                      multipart: true,
+                      local: true do |f| %>
+
+          <div class="row g-3 align-items-center">
+
+            <div class="col-md-8">
+
+              <div class="upload-box">
+                <%= f.file_field :file,
+                    class: "form-control modern-file",
+                    accept: ".csv,.xls,.xlsx" %>
+              </div>
+
+            </div>
+
+            <div class="col-md-4">
+
+              <%= f.submit "Upload CDR",
+                    class: "btn btn-primary modern-btn w-100" %>
+
+            </div>
+
+          </div>
+
+        <% end %>
+</div>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<style>
+  .modern-card{
+  background:#fff;
+  border-radius:22px;
+  overflow:hidden;
+  border:1px solid #edf2f7;
+  box-shadow:0 10px 30px rgba(0,0,0,.05);
+  transition:.25s ease;
+}
+
+.modern-card:hover{
+  transform:translateY(-4px);
+  box-shadow:0 18px 40px rgba(0,0,0,.08);
+}
+
+.modern-header{
+  padding:16px 22px;
+  color:#fff;
+  font-weight:700;
+  font-size:1rem;
+}
+
+.primary-gradient{
+  background:linear-gradient(135deg,#2563eb,#3b82f6);
+}
+
+.success-gradient{
+  background:linear-gradient(135deg,#10b981,#34d399);
+}
+
+.modern-body{
+  padding:22px;
+}
+
+/* CALL STATUS */
+
+.status-item{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:14px 0;
+  border-bottom:1px solid #f1f5f9;
+}
+
+.status-item:last-child{
+  border-bottom:none;
+}
+
+.status-left{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.status-icon{
+  width:42px;
+  height:42px;
+  border-radius:12px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#fff;
+  font-size:16px;
+}
+
+.answered .status-icon{
+  background:linear-gradient(135deg,#10b981,#34d399);
+}
+
+.abandoned .status-icon{
+  background:linear-gradient(135deg,#ef4444,#f87171);
+}
+
+.busy .status-icon{
+  background:linear-gradient(135deg,#f59e0b,#fbbf24);
+}
+
+.status-value{
+  font-size:1.3rem;
+  font-weight:800;
+  color:#111827;
+}
+
+/* UPLOAD */
+
+.upload-info{
+  color:#6b7280;
+  font-size:.95rem;
+}
+
+.upload-box{
+  background:#f8fafc;
+  border:2px dashed #cbd5e1;
+  border-radius:16px;
+  padding:10px;
+}
+
+.modern-file{
+  border:none !important;
+  background:transparent !important;
+  box-shadow:none !important;
+}
+
+.modern-btn{
+  height:54px;
+  border-radius:14px;
+  font-weight:700;
+  font-size:.95rem;
+  background:linear-gradient(135deg,#2563eb,#3b82f6);
+  border:none;
+}
+
+.modern-btn:hover{
+  transform:translateY(-2px);
+}
+
+@media(max-width:768px){
+
+  .status-value{
+    font-size:1.1rem;
+  }
+
+  .modern-body{
+    padding:18px;
+  }
+}
+</style>
+
+
+<style>
+  .quick-card{
+  background:#fff;
+  border-radius:20px;
+  padding:24px 18px;
+  text-align:center;
+  border:1px solid #edf2f7;
+  height:100%;
+  transition:all .25s ease;
+  position:relative;
+  overflow:hidden;
+}
+
+.quick-card:hover{
+  transform:translateY(-6px);
+  box-shadow:0 15px 35px rgba(0,0,0,.10);
+}
+
+.quick-icon{
+  width:58px;
+  height:58px;
+  margin:auto;
+  border-radius:16px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:24px;
+  color:#fff;
+  margin-bottom:12px;
+}
+
+.quick-value{
+  font-size:2rem;
+  font-weight:800;
+  line-height:1;
+  color:#111827;
+}
+
+.quick-label{
+  margin-top:8px;
+  color:#6b7280;
+  font-size:.92rem;
+  font-weight:600;
+}
+
+.quick-card.primary .quick-icon{
+  background:linear-gradient(135deg,#0d6efd,#4f8cff);
+}
+
+.quick-card.warning .quick-icon{
+  background:linear-gradient(135deg,#f59e0b,#fbbf24);
+}
+
+.quick-card.success .quick-icon{
+  background:linear-gradient(135deg,#10b981,#34d399);
+}
+
+.quick-card.info .quick-icon{
+  background:linear-gradient(135deg,#06b6d4,#22d3ee);
+}
+
+.quick-card.dark .quick-icon{
+  background:linear-gradient(135deg,#374151,#111827);
+}
+
+.quick-card.primary{
+  border-top:4px solid #0d6efd;
+}
+
+.quick-card.warning{
+  border-top:4px solid #f59e0b;
+}
+
+.quick-card.success{
+  border-top:4px solid #10b981;
+}
+
+.quick-card.info{
+  border-top:4px solid #06b6d4;
+}
+
+.quick-card.dark{
+  border-top:4px solid #374151;
+}
+</style>
+
+<div class="row g-3 mb-4">
+
+  <!-- TODAY -->
+  <div class="col-lg-4">
+    <div class="daily-card today-card">
+
+      <div class="daily-header">
+        <div class="daily-icon">
+          <i class="bi bi-calendar-check"></i>
+        </div>
+
+        <div>
+          <div class="daily-title">Today</div>
+          <div class="daily-date">
+            <%= Date.current.strftime("%d %b %Y") %>
+          </div>
+        </div>
+      </div>
+
+      <div class="daily-stats">
+
+        <div class="stat-row">
+          <span>📞 Calls</span>
+          <strong><%= number_with_delimiter(@today_calls) %></strong>
+        </div>
+
+        <div class="stat-row">
+          <span>👥 New Leads</span>
+          <strong><%= number_with_delimiter(@today_unique) %></strong>
+        </div>
+
+        <div class="stat-row">
+          <span>✅ Conversions</span>
+          <strong class="text-success">
+            <%= number_with_delimiter(@today_converted) %>
+          </strong>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- YESTERDAY -->
+  <div class="col-lg-4">
+    <div class="daily-card yesterday-card">
+
+      <div class="daily-header">
+        <div class="daily-icon">
+          <i class="bi bi-clock-history"></i>
+        </div>
+
+        <div>
+          <div class="daily-title">Yesterday</div>
+          <div class="daily-date">
+            <%= (Date.current - 1).strftime("%d %b %Y") %>
+          </div>
+        </div>
+      </div>
+
+      <div class="daily-stats">
+
+        <div class="stat-row">
+          <span>📞 Calls</span>
+          <strong><%= number_with_delimiter(@yesterday_calls) %></strong>
+        </div>
+
+        <div class="stat-row">
+          <span>👥 New Leads</span>
+          <strong><%= number_with_delimiter(@yesterday_unique) %></strong>
+        </div>
+
+        <div class="stat-row">
+          <span>✅ Conversions</span>
+          <strong class="text-success">
+            <%= number_with_delimiter(@yesterday_converted) %>
+          </strong>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- DAY BEFORE -->
+  <div class="col-lg-4">
+    <div class="daily-card previous-card">
+
+      <div class="daily-header">
+        <div class="daily-icon">
+          <i class="bi bi-calendar3"></i>
+        </div>
+
+        <div>
+          <div class="daily-title">
+            <%= (Date.current - 2).strftime("%A") %>
+          </div>
+
+          <div class="daily-date">
+            <%= (Date.current - 2).strftime("%d %b %Y") %>
+          </div>
+        </div>
+      </div>
+
+      <div class="daily-stats">
+
+        <div class="stat-row">
+          <span>📞 Calls</span>
+          <strong><%= number_with_delimiter(@day_before_calls) %></strong>
+        </div>
+
+        <div class="stat-row">
+          <span>👥 New Leads</span>
+          <strong><%= number_with_delimiter(@day_before_unique) %></strong>
+        </div>
+
+        <div class="stat-row">
+          <span>✅ Conversions</span>
+          <strong class="text-success">
+            <%= number_with_delimiter(@day_before_converted) %>
+          </strong>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<style>
+  .daily-card{
+  background:#fff;
+  border-radius:20px;
+  padding:22px;
+  height:100%;
+  border:1px solid #edf2f7;
+  box-shadow:0 8px 24px rgba(0,0,0,.05);
+  transition:all .25s ease;
+}
+
+.daily-card:hover{
+  transform:translateY(-5px);
+  box-shadow:0 16px 35px rgba(0,0,0,.10);
+}
+
+.today-card{
+  border-top:5px solid #0d6efd;
+}
+
+.yesterday-card{
+  border-top:5px solid #fd7e14;
+}
+
+.previous-card{
+  border-top:5px solid #198754;
+}
+
+.daily-header{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  margin-bottom:18px;
+}
+
+.daily-icon{
+  width:52px;
+  height:52px;
+  border-radius:14px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:22px;
+  color:#fff;
+}
+
+.today-card .daily-icon{
+  background:linear-gradient(135deg,#0d6efd,#4f8cff);
+}
+
+.yesterday-card .daily-icon{
+  background:linear-gradient(135deg,#fd7e14,#ffab5b);
+}
+
+.previous-card .daily-icon{
+  background:linear-gradient(135deg,#198754,#3bc97b);
+}
+
+.daily-title{
+  font-size:1.1rem;
+  font-weight:700;
+  color:#1f2937;
+}
+
+.daily-date{
+  font-size:.82rem;
+  color:#6b7280;
+}
+
+.daily-stats{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+.stat-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:10px 0;
+  border-bottom:1px dashed #e5e7eb;
+}
+
+.stat-row:last-child{
+  border-bottom:none;
+}
+
+.stat-row span{
+  color:#6b7280;
+  font-size:.95rem;
+}
+
+.stat-row strong{
+  font-size:1.1rem;
+  font-weight:700;
+  color:#111827;
+}
+
+.text-success{
+  color:#16a34a !important;
+}
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+
+
+<% growth_1 = @growth_1 || 0 %>
+<% growth_2 = @growth_2 || 0 %>
+
+<% curr_total  = @current_daily.sum %>
+<% prev1_total = @prev1_daily.sum %>
+<% prev2_total = @prev2_daily.sum %>
+
+<div class="card border-0 shadow-lg rounded-4 mb-4 trend-card">
+
+  <div class="card-header bg-transparent border-0 py-3 px-4">
+    <div class="d-flex justify-content-between align-items-center">
+
+      <div>
+        <h5 class="mb-0 fw-bold">
+          <i class="bi bi-graph-up-arrow text-primary me-2"></i>
+          Call Performance Analytics
+        </h5>
+        <small class="text-muted">
+          Compare call volumes across the last 3 months
+        </small>
+      </div>
+
+      <span class="badge bg-primary-subtle text-primary px-3 py-2">
+        Last 90 Days
+      </span>
+
+    </div>
+  </div>
+
+  <div class="card-body">
+
+    <div class="row g-3 mb-4">
+
+      <!-- THIS MONTH -->
+      <div class="col-lg-4">
+        <div class="metric-card primary">
+
+          <div class="metric-label">
+            This Month
+          </div>
+
+          <div class="metric-value">
+            <%= number_with_delimiter(curr_total) %>
+          </div>
+
+          <div class="metric-subtitle">
+            Total Calls
+          </div>
+
+          <div class="mt-2">
+            <span class="badge <%= growth_1 >= 0 ? 'bg-success' : 'bg-danger' %>">
+              <i class="bi <%= growth_1 >= 0 ? 'bi-arrow-up' : 'bi-arrow-down' %>"></i>
+              <%= growth_1 %>%
+            </span>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- LAST MONTH -->
+      <div class="col-lg-4">
+        <div class="metric-card danger">
+
+          <div class="metric-label">
+            Last Month
+          </div>
+
+          <div class="metric-value">
+            <%= number_with_delimiter(prev1_total) %>
+          </div>
+
+          <div class="metric-subtitle">
+            Total Calls
+          </div>
+
+          <div class="mt-2">
+            <span class="badge <%= growth_2 >= 0 ? 'bg-success' : 'bg-danger' %>">
+              <i class="bi <%= growth_2 >= 0 ? 'bi-arrow-up' : 'bi-arrow-down' %>"></i>
+              <%= growth_2 %>%
+            </span>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- 2 MONTHS AGO -->
+      <div class="col-lg-4">
+        <div class="metric-card success">
+
+          <div class="metric-label">
+            2 Months Ago
+          </div>
+
+          <div class="metric-value">
+            <%= number_with_delimiter(prev2_total) %>
+          </div>
+
+          <div class="metric-subtitle">
+            Baseline Month
+          </div>
+
+          <div class="mt-2">
+            <span class="badge bg-secondary">
+              Baseline
+            </span>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+
+  </div>
+</div>
+
+
+
+<style> 
+
+.trend-card{
+  overflow:hidden;
+}
+
+.metric-card{
+  border-radius:18px;
+  padding:20px;
+  background:#fff;
+  text-align:center;
+  transition:.25s ease;
+  border:1px solid #eef2f7;
+  height:100%;
+}
+
+.metric-card:hover{
+  transform:translateY(-4px);
+  box-shadow:0 12px 24px rgba(0,0,0,.08);
+}
+
+.metric-label{
+  color:#6c757d;
+  font-size:.85rem;
+  text-transform:uppercase;
+  letter-spacing:.5px;
+}
+
+.metric-value{
+  font-size:2rem;
+  font-weight:800;
+  margin-top:8px;
+  line-height:1;
+}
+
+.metric-subtitle{
+  color:#6c757d;
+  font-size:.9rem;
+  margin-top:4px;
+}
+
+.metric-card.primary{
+  border-left:5px solid #0d6efd;
+}
+
+.metric-card.danger{
+  border-left:5px solid #dc3545;
+}
+
+.metric-card.success{
+  border-left:5px solid #198754;
+}
+
+.chart-wrapper{
+  height:380px;
+  position:relative;
+}
+</style>
+
+
+
+
+<style>
+
+  .kpi-card {
+  border-radius: 16px;
+  padding: 18px;
+  color: #fff;
+  text-align: center;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  transition: all 0.25s ease;
+  height: 120px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.kpi-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+}
+
+.kpi-icon {
+  font-size: 22px;
+  margin-bottom: 5px;
+}
+
+.kpi-value {
+  font-size: 26px;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.kpi-label {
+  font-size: 12px;
+  opacity: 0.9;
+  letter-spacing: 0.5px;
+}
+
+/* COLORS */
+.kpi-primary {
+  background: linear-gradient(135deg, #4e73df, #224abe);
+}
+
+.kpi-warning {
+  background: linear-gradient(135deg, #f6c23e, #dda20a);
+  color: #1f1f1f;
+}
+
+.kpi-success {
+  background: linear-gradient(135deg, #1cc88a, #13855c);
+}
+
+.kpi-info {
+  background: linear-gradient(135deg, #36b9cc, #1a8a9e);
+}
+
+.kpi-dark {
+  background: linear-gradient(135deg, #5a5c69, #2e2f37);
+}
+  
+  /* ===== Dashboard ===== */
+
+body {
+  background: #f4f6f9;
+}
+
+.dashboard-header h2 {
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.dashboard-header p {
+  color: #6b7280;
+}
+
+/* KPI Cards */
+
+.card {
+  border-radius: 14px;
+  transition: all 0.25s ease;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+}
+
+.kpi-card {
+  border: none;
+  overflow: hidden;
+}
+
+.kpi-card .card-body {
+  padding: 1.5rem;
+}
+
+.kpi-card h6 {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  color: #6c757d;
+  margin-bottom: 10px;
+}
+
+.kpi-card h2 {
+  font-weight: 700;
+  margin-bottom: 0;
+}
+
+/* Card colors */
+
+.kpi-primary {
+  border-left: 5px solid #0d6efd;
+}
+
+.kpi-success {
+  border-left: 5px solid #198754;
+}
+
+.kpi-warning {
+  border-left: 5px solid #ffc107;
+}
+
+.kpi-danger {
+  border-left: 5px solid #dc3545;
+}
+
+.kpi-info {
+  border-left: 5px solid #0dcaf0;
+}
+
+.kpi-dark {
+  border-left: 5px solid #212529;
+}
+
+/* Upload Section */
+
+.upload-card .card-header {
+  font-weight: 600;
+}
+
+.upload-card {
+  border-radius: 14px;
+}
+
+.upload-card .form-control {
+  border-radius: 10px;
+  min-height: 48px;
+}
+
+.upload-card .btn {
+  border-radius: 10px;
+  min-height: 48px;
+}
+
+/* Call Outcome */
+
+.outcome-card .card-header {
+  font-weight: 600;
+}
+
+.outcome-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.outcome-item:last-child {
+  border-bottom: none;
+}
+
+.outcome-item strong {
+  font-size: 1.1rem;
+}
+
+/* Quick Links */
+
+.quick-links .btn {
+  border-radius: 30px;
+  padding: 8px 18px;
+  font-weight: 500;
+}
+
+/* Table Styling */
+
+.table {
+  background: white;
+}
+
+.table th {
+  background: #f8f9fa;
+  font-weight: 600;
+}
+
+.table-hover tbody tr:hover {
+  background: #f1f5ff;
+}
+
+/* Lead Status Badges */
+
+.badge-open {
+  background: #ffc107;
+  color: #000;
+}
+
+.badge-converted {
+  background: #198754;
+}
+
+.badge-lost {
+  background: #dc3545;
+}
+
+/* Mobile */
+
+@media (max-width: 768px) {
+  .kpi-card {
+    margin-bottom: 12px;
+  }
+
+  .quick-links .btn {
+    width: 100%;
+  }
+
+  .dashboard-header {
+    text-align: center;
+  }
+}
+</style>
+
+
+<!-- ===================================================== -->
+<!-- PREMIUM COMMENT PERFORMANCE SUMMARY -->
+<!-- ===================================================== -->
+
+<style>
+
+.comment-summary-card{
+  border:none;
+  border-radius:26px;
+  overflow:hidden;
+
+  background:
+    linear-gradient(
+      145deg,
+      #ffffff 0%,
+      #f8fafc 100%
+    );
+
+  box-shadow:
+    0 15px 40px rgba(15,23,42,.08);
+}
+
+/* HEADER */
+.comment-summary-header{
+  position:relative;
+
+  padding:1.2rem 1.4rem;
+
+  background:
+    linear-gradient(
+      135deg,
+      #0f172a 0%,
+      #1e293b 100%
+    );
+
+  overflow:hidden;
+}
+
+.comment-summary-header::before{
+  content:"";
+
+  position:absolute;
+  inset:0;
+
+  background:
+    linear-gradient(
+      120deg,
+      transparent 20%,
+      rgba(255,255,255,.08) 50%,
+      transparent 80%
+    );
+
+  animation:shine 7s linear infinite;
+}
+
+@keyframes shine{
+  0%{
+    transform:translateX(-100%);
+  }
+
+  100%{
+    transform:translateX(100%);
+  }
+}
+
+.comment-summary-title{
+  position:relative;
+  z-index:2;
+
+  color:#fff;
+  font-weight:800;
+  font-size:1.1rem;
+
+  display:flex;
+  align-items:center;
+  gap:.7rem;
+}
+
+.comment-summary-title i{
+  font-size:1.25rem;
+  color:#38bdf8;
+}
+
+/* TABLE */
+.comment-summary-table{
+  margin:0;
+}
+
+.comment-summary-table thead th{
+  background:#f8fafc !important;
+
+  border:none;
+
+  font-size:.78rem;
+  font-weight:800;
+
+  text-transform:uppercase;
+  letter-spacing:.5px;
+
+  color:#64748b;
+
+  padding:1rem;
+}
+
+.comment-summary-table tbody tr{
+  transition:all .22s ease;
+}
+
+.comment-summary-table tbody tr:hover{
+  background:#f8fafc;
+  transform:scale(1.003);
+}
+
+.comment-summary-table td{
+  border-top:1px solid #f1f5f9;
+
+  vertical-align:middle;
+
+  padding:1rem;
+}
+
+/* USER */
+.user-box{
+  display:flex;
+  align-items:center;
+  gap:.8rem;
+}
+
+.user-avatar{
+  width:46px;
+  height:46px;
+
+  border-radius:16px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  background:
+    linear-gradient(
+      135deg,
+      #3b82f6,
+      #2563eb
+    );
+
+  color:#fff;
+
+  font-size:1.1rem;
+
+  box-shadow:
+    0 8px 20px rgba(37,99,235,.20);
+}
+
+.user-name{
+  font-weight:700;
+  color:#0f172a;
+  font-size:.92rem;
+}
+
+.user-role{
+  font-size:.72rem;
+  color:#64748b;
+  margin-top:2px;
+}
+
+/* COMMENT BADGE */
+.comment-badge{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+
+  min-width:64px;
+
+  padding:.55rem .9rem;
+
+  border-radius:999px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #2563eb,
+      #3b82f6
+    );
+
+  color:#fff;
+
+  font-size:.84rem;
+  font-weight:800;
+
+  box-shadow:
+    0 8px 20px rgba(37,99,235,.20);
+}
+
+/* EMPTY */
+.empty-state{
+  padding:3rem 1rem;
+  text-align:center;
+}
+
+.empty-state i{
+  font-size:2rem;
+  color:#cbd5e1;
+  margin-bottom:.8rem;
+}
+
+.empty-state p{
+  color:#64748b;
+  margin:0;
+  font-weight:500;
+}
+
+</style>
+
+<div class="container mt-4">
+
+  <div class="comment-summary-card">
+
+    <!-- HEADER -->
+    <div class="comment-summary-header">
+
+      <div class="comment-summary-title">
+
+        <i class="bi bi-chat-dots-fill"></i>
+
+        <div>
+          Lead Comment Summary
+          <div style="font-size:.78rem; opacity:.78; font-weight:500;">
+            <%= Date.current.strftime("%B %Y") %>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- BODY -->
+    <div class="table-responsive">
+
+      <table class="table comment-summary-table align-middle">
+
+        <thead>
+
+          <tr>
+
+            <th>
+              <i class="bi bi-person-circle me-1"></i>
+              Team Member
+            </th>
+
+            <th class="text-center">
+              <i class="bi bi-chat-left-text me-1"></i>
+              Comments Done
+            </th>
+
+          </tr>
+
+        </thead>
+
+        <tbody>
+
+          <% if @comment_summary.present? %>
+
+            <% @comment_summary.values
+                  .sort_by { |u| -u[:comments_done] }
+                  .each do |row| %>
+
+              <tr>
+
+                <!-- USER -->
+                <td>
+
+                  <div class="user-box">
+
+                    <div class="user-avatar">
+                      <i class="bi bi-person-fill"></i>
+                    </div>
+
+                    <div>
+
+                      <div class="user-name">
+                        <%= row[:user].username.presence ||
+                            row[:user].email %>
+                      </div>
+
+                      <div class="user-role">
+                        Lead Management Team
+                      </div>
+
+                    </div>
+
+                  </div>
+
+                </td>
+
+                <!-- COMMENTS -->
+                <td class="text-center">
+
+                  <span class="comment-badge">
+
+                    <i class="bi bi-chat-dots me-1"></i>
+
+                    <%= row[:comments_done] %>
+
+                  </span>
+
+                </td>
+
+              </tr>
+
+            <% end %>
+
+          <% else %>
+
+            <tr>
+
+              <td colspan="2">
+
+                <div class="empty-state">
+
+                  <i class="bi bi-chat-square-text"></i>
+
+                  <p>
+                    No comment activity found this month.
+                  </p>
+
+                </div>
+
+              </td>
+
+            </tr>
+
+          <% end %>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+</div>

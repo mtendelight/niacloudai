@@ -1,0 +1,28 @@
+
+
+
+
+<%= render "layouts/header" %>
+
+<div class="container">
+  <h2 style="word-break: break-word; white-space: pre-wrap;">Resend confirmation instructions</h2>
+  <hr/>
+
+  <div class="login">
+<%= form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { id: 'resend-confirmation-form', data: { remote: true } }) do |f| %>
+  <%= render "devise/shared/error_messages", resource: resource %>
+
+  <center>
+    <div class="form-group">
+      <%= f.label :email %><br />
+      <%= f.email_field :email, autofocus: true, autocomplete: "email", value: (resource.pending_reconfirmation? ? resource.unconfirmed_email : resource.email), class: "form-control new22" %>
+    </div>
+  </center>
+
+  <div class="form-group actions">
+    <%= f.submit "Resend confirmation instructions", 
+                class: "btn btn-primary", 
+                data: { disable_with: 'Please wait...' } %>
+  </div>
+<% end %>
+</div></div>

@@ -1,0 +1,15 @@
+:concurrency: 5
+
+:queues:
+  - default
+
+:schedule:
+  clear_cache:
+    cron: "*/5 * * * *"
+    class: "ClearCacheJob"
+    queue: default
+
+  sms_balance_monitor:
+    cron: "0 * * * *"
+    class: "SmsBalanceMonitorJob"
+    queue: default

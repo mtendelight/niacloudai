@@ -1,0 +1,21 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  phone: MyString
+  last_status: MyString
+  calls_count: 1
+  lead_status: MyString
+  comments: MyText
+  customer_exists: false
+  last_called_at: 2026-06-17 23:28:21
+  jmcustomer: one
+
+two:
+  phone: MyString
+  last_status: MyString
+  calls_count: 1
+  lead_status: MyString
+  comments: MyText
+  customer_exists: false
+  last_called_at: 2026-06-17 23:28:21
+  jmcustomer: two

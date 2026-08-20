@@ -1,0 +1,1417 @@
+<%= render "layouts/header" %>
+
+<div class="janomax-catalogue">
+
+  <!-- =========================================
+       AMBIENT BACKGROUND
+  ========================================== -->
+  <div class="ambient ambient-1"></div>
+  <div class="ambient ambient-2"></div>
+
+  <div class="container px-lg-4 px-2 py-3 position-relative z-2">
+
+    <%= render "jmcustomers/submenu" %>
+
+
+<!-- =========================================
+     HERO
+========================================== -->
+<section class="hero-panel mb-4">
+
+  <div class="hero-grid">
+
+    <!-- LEFT -->
+    <div>
+
+      <div class="hero-badge mb-3">
+        <span class="live-dot"></span>
+        JANOMAX INVENTORY
+      </div>
+
+      <h1 class="hero-title">
+        Premium Bale
+        <span>Catalogue</span>
+      </h1>
+
+      <p class="hero-text">
+        Modern bale inventory system with live analytics,
+        stock visibility and premium multi-branch tracking.
+      </p>
+
+      <div class="hero-tags">
+
+        <div class="hero-chip">
+          <i class="fas fa-box-open"></i>
+          <span>
+            <%= number_with_delimiter(@total_products) %>
+            Unique Bales
+          </span>
+        </div>
+
+        <div class="hero-chip">
+          <i class="fas fa-cubes"></i>
+          <span>
+            <%= number_with_delimiter(@total_stock) %>
+            Total Qty
+          </span>
+        </div>
+
+        <div class="hero-chip">
+          <i class="fas fa-sack-dollar"></i>
+          <span>
+            KES
+            <%= number_with_delimiter(@total_inventory_value) %>
+          </span>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- RIGHT -->
+    <div class="hero-stats">
+
+      <div class="stats-grid">
+
+        <!-- TOTAL BALES -->
+        <div class="modern-stat-card">
+
+          <div class="stat-icon blue">
+            <i class="fas fa-boxes-stacked"></i>
+          </div>
+
+          <div class="stat-content">
+
+            <small>Total Bales</small>
+
+            <h2>
+              <%= number_with_delimiter(@total_products) %>
+            </h2>
+
+            <span>Unique Products</span>
+
+          </div>
+
+        </div>
+
+        <!-- STOCK -->
+        <div class="modern-stat-card">
+
+          <div class="stat-icon green">
+            <i class="fas fa-cubes"></i>
+          </div>
+
+          <div class="stat-content">
+
+            <small>Total Qty</small>
+
+            <h2>
+              <%= number_with_delimiter(@total_stock) %>
+            </h2>
+
+            <span>Available Stock</span>
+
+          </div>
+
+        </div>
+
+        <!-- VALUE -->
+        <div class="modern-stat-card wide">
+
+          <div class="stat-icon purple">
+            <i class="fas fa-chart-line"></i>
+          </div>
+
+          <div class="stat-content">
+
+            <small>Inventory Value</small>
+
+            <h2>
+              KES
+              <%= number_with_delimiter(@total_inventory_value) %>
+            </h2>
+
+            <span>Total Worth</span>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+    <!-- =========================================
+         SEARCH
+    ========================================== -->
+
+    <div class="login">
+
+      <%= form_with url: jmproducts_path,
+                    method: :get,
+                    local: true do %>
+
+        <div class="search-panel mb-4">
+
+          <div class="search-left">
+
+            <div class="search-icon">
+              <i class="fas fa-search"></i>
+            </div>
+
+            <%= text_field_tag :search,
+                               params[:search],
+                               class: "form-control search-input",
+                               placeholder: "Search bale products..." %>
+
+          </div>
+
+          <div class="search-actions">
+
+            <% if params[:search].present? %>
+
+              <%= link_to jmproducts_path,
+                  class: "clear-btn" do %>
+
+                <i class="fas fa-xmark"></i>
+
+              <% end %>
+
+            <% end %>
+
+            <%= submit_tag "Search",
+                class: "btn search-btn" %>
+
+          </div>
+
+        </div>
+
+      <% end %>
+
+    </div>
+
+    <!-- =========================================
+         PRODUCTS
+    ========================================== -->
+
+    <div class="row g-3">
+
+      <% @products.each do |product| %>
+
+        <div class="col-6 col-md-4 col-xl-3">
+
+          <div class="product-card h-100">
+
+            <!-- TOP -->
+            <div class="card-top">
+
+              <div class="top-row">
+
+                <div class="product-badge">
+                  <i class="fas fa-box"></i>
+                  Bale
+                </div>
+
+                <% if product.total_qty.to_i > 10 %>
+
+                  <div class="stock-pill success">
+                    In Stock
+                  </div>
+
+                <% elsif product.total_qty.to_i > 0 %>
+
+                  <div class="stock-pill warning">
+                    Low Stock
+                  </div>
+
+                <% else %>
+
+                  <div class="stock-pill danger">
+                    Out
+                  </div>
+
+                <% end %>
+
+              </div>
+
+              <div class="logo-wrap">
+
+                <div class="logo-glow"></div>
+
+                <div class="product-logo">
+                  <i class="fas fa-box-open"></i>
+                </div>
+
+              </div>
+
+            </div>
+
+            <!-- BODY -->
+            <div class="card-body-area">
+
+              <h5 class="product-title">
+                <%= truncate(product.bale_name.to_s, length: 42) %>
+              </h5>
+
+              <div class="mini-desc">
+
+                <%= truncate(
+                      product.description.present? ?
+                      product.description :
+                      "Premium bale product available in stock.",
+                      length: 70
+                    ) %>
+
+              </div>
+
+              <!-- MINI STATS -->
+              <div class="mini-grid">
+
+                <div class="mini-box">
+
+                  <small>Price</small>
+
+                  <h6>
+                    KES
+                    <%= number_with_delimiter(
+                          product.selling_price.to_i
+                        ) %>
+                  </h6>
+
+                </div>
+
+                <div class="mini-box">
+
+                  <small>Qty</small>
+
+                  <h6>
+                    <%= number_with_delimiter(
+                          product.total_qty.to_i
+                        ) %>
+                  </h6>
+
+                </div>
+
+              </div>
+
+              <!-- RANGE -->
+              <div class="range-pill">
+
+                <i class="fas fa-layer-group"></i>
+
+                <span>
+
+                  <%= product.pieces_range.present? ?
+                      product.pieces_range :
+                      "Pieces N/A" %>
+
+                </span>
+
+              </div>
+
+            </div>
+
+      
+
+<!-- FOOTER -->
+<div class="card-footer-area">
+
+  <% stock = Jstock
+               .where(bale_name: product.bale_name)
+               .order(qty: :desc, id: :asc)
+               .first %>
+
+  <% if stock.present? %>
+
+    <%= link_to jstock_path(stock.id),
+        class: "btn view-btn w-100" do %>
+
+      <span>
+        View Product
+      </span>
+
+      <i class="fas fa-arrow-right"></i>
+
+    <% end %>
+
+  <% end %>
+
+</div>
+
+
+
+
+
+
+          </div>
+
+        </div>
+
+      <% end %>
+
+    </div>
+
+  </div>
+
+</div>
+
+<style>
+
+
+<style>
+
+/* =========================================================
+   ROOT
+========================================================= */
+
+:root{
+
+  --primary:#2563eb;
+  --primary-light:#60a5fa;
+  --secondary:#7c3aed;
+
+  --success:#16a34a;
+  --warning:#f59e0b;
+  --danger:#ef4444;
+
+  --dark:#020617;
+  --dark-2:#0f172a;
+  --dark-3:#1e293b;
+
+  --text:#334155;
+  --muted:#94a3b8;
+
+  --glass:
+    rgba(255,255,255,.78);
+
+  --glass-strong:
+    rgba(255,255,255,.88);
+
+  --border:
+    rgba(255,255,255,.70);
+
+  --shadow-sm:
+    0 8px 24px rgba(15,23,42,.05);
+
+  --shadow-md:
+    0 18px 40px rgba(15,23,42,.08);
+
+  --shadow-lg:
+    0 28px 70px rgba(37,99,235,.14);
+
+  --shadow-xl:
+    0 40px 100px rgba(2,6,23,.24);
+
+  --radius-xl:36px;
+  --radius-lg:28px;
+  --radius-md:22px;
+
+  --transition:
+    all .32s cubic-bezier(.4,0,.2,1);
+
+}
+
+/* =========================================================
+   BODY
+========================================================= */
+
+body{
+
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(37,99,235,.10),
+      transparent 26%
+    ),
+
+    radial-gradient(
+      circle at bottom right,
+      rgba(124,58,237,.10),
+      transparent 26%
+    ),
+
+    #f8fafc;
+
+  font-family:
+    Inter,
+    system-ui,
+    sans-serif;
+
+  overflow-x:hidden;
+
+  color:var(--text);
+
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+
+}
+
+a{
+  text-decoration:none !important;
+}
+
+/* =========================================================
+   PAGE
+========================================================= */
+
+.janomax-catalogue{
+  position:relative;
+  min-height:100vh;
+  overflow:hidden;
+}
+
+/* =========================================================
+   AMBIENT
+========================================================= */
+
+.ambient{
+  position:fixed;
+  border-radius:50%;
+  filter:blur(120px);
+  opacity:.18;
+  pointer-events:none;
+  z-index:0;
+}
+
+.ambient-1{
+  width:420px;
+  height:420px;
+  background:#2563eb;
+  top:-140px;
+  left:-140px;
+}
+
+.ambient-2{
+  width:360px;
+  height:360px;
+  background:#7c3aed;
+  right:-120px;
+  bottom:-120px;
+}
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.hero-panel{
+
+  position:relative;
+  overflow:hidden;
+
+  padding:42px;
+
+  border-radius:var(--radius-xl);
+
+  background:
+    linear-gradient(
+      145deg,
+      #020617 0%,
+      #0f172a 40%,
+      #1d4ed8 100%
+    );
+
+  box-shadow:var(--shadow-xl);
+
+  border:
+    1px solid rgba(255,255,255,.06);
+
+}
+
+.hero-panel::before{
+
+  content:"";
+
+  position:absolute;
+
+  width:520px;
+  height:520px;
+
+  border-radius:50%;
+
+  background:
+    rgba(255,255,255,.05);
+
+  top:-240px;
+  right:-180px;
+
+}
+
+.hero-grid{
+
+  position:relative;
+  z-index:2;
+
+  display:grid;
+
+  grid-template-columns:
+    1.4fr .95fr;
+
+  gap:34px;
+
+  align-items:center;
+
+}
+
+/* =========================================================
+   HERO CONTENT
+========================================================= */
+
+.hero-badge{
+
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+
+  padding:11px 18px;
+
+  border-radius:999px;
+
+  background:
+    rgba(255,255,255,.08);
+
+  border:
+    1px solid rgba(255,255,255,.08);
+
+  color:white;
+
+  font-size:11px;
+  font-weight:800;
+
+  letter-spacing:.12em;
+
+  margin-bottom:22px;
+
+  backdrop-filter:blur(16px);
+
+}
+
+.live-dot{
+
+  width:10px;
+  height:10px;
+
+  border-radius:50%;
+
+  background:#22c55e;
+
+  box-shadow:
+    0 0 12px rgba(34,197,94,.8);
+
+}
+
+.hero-title{
+
+  color:white;
+
+  font-size:
+    clamp(2.4rem,5vw,4rem);
+
+  font-weight:900;
+
+  line-height:1.02;
+
+  letter-spacing:-2px;
+
+  margin-bottom:18px;
+
+}
+
+.hero-title span{
+
+  background:
+    linear-gradient(
+      135deg,
+      #93c5fd,
+      #c4b5fd
+    );
+
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+
+}
+
+.hero-text{
+
+  color:
+    rgba(255,255,255,.74);
+
+  line-height:1.9;
+
+  font-size:15px;
+
+  max-width:680px;
+
+  margin-bottom:28px;
+
+}
+
+/* =========================================================
+   HERO TAGS
+========================================================= */
+
+.hero-tags{
+
+  display:flex;
+  flex-wrap:wrap;
+
+  gap:14px;
+
+}
+
+.hero-chip{
+
+  display:flex;
+  align-items:center;
+  gap:10px;
+
+  padding:14px 18px;
+
+  border-radius:20px;
+
+  background:
+    rgba(255,255,255,.08);
+
+  border:
+    1px solid rgba(255,255,255,.06);
+
+  backdrop-filter:blur(12px);
+
+  color:white;
+
+  font-size:13px;
+  font-weight:700;
+
+  transition:var(--transition);
+
+}
+
+.hero-chip:hover{
+  transform:translateY(-3px);
+}
+
+.hero-chip i{
+  color:#93c5fd;
+}
+
+/* =========================================================
+   STATS
+========================================================= */
+
+.hero-stats{
+  display:flex;
+  justify-content:center;
+}
+
+.stats-grid{
+
+  width:100%;
+
+  display:grid;
+
+  grid-template-columns:
+    1fr 1fr;
+
+  gap:16px;
+
+}
+
+.modern-stat-card{
+
+  display:flex;
+  align-items:center;
+  gap:16px;
+
+  padding:22px;
+
+  border-radius:28px;
+
+  background:
+    rgba(255,255,255,.08);
+
+  border:
+    1px solid rgba(255,255,255,.08);
+
+  backdrop-filter:blur(18px);
+
+  transition:var(--transition);
+
+}
+
+.modern-stat-card:hover{
+
+  transform:
+    translateY(-5px);
+
+  background:
+    rgba(255,255,255,.12);
+
+}
+
+.modern-stat-card.wide{
+  grid-column:1 / -1;
+}
+
+.stat-icon{
+
+  width:70px;
+  height:70px;
+
+  min-width:70px;
+
+  border-radius:24px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  color:white;
+
+  font-size:25px;
+
+  box-shadow:
+    0 15px 35px rgba(0,0,0,.15);
+
+}
+
+.stat-icon.blue{
+  background:
+    linear-gradient(
+      135deg,
+      #3b82f6,
+      #2563eb
+    );
+}
+
+.stat-icon.green{
+  background:
+    linear-gradient(
+      135deg,
+      #22c55e,
+      #16a34a
+    );
+}
+
+.stat-icon.purple{
+  background:
+    linear-gradient(
+      135deg,
+      #8b5cf6,
+      #7c3aed
+    );
+}
+
+.stat-content small{
+
+  display:block;
+
+  color:#cbd5e1;
+
+  font-size:11px;
+  font-weight:700;
+
+  letter-spacing:.08em;
+
+  text-transform:uppercase;
+
+  margin-bottom:5px;
+
+}
+
+.stat-content h2{
+
+  margin:0;
+
+  color:white;
+
+  font-size:1.6rem;
+  font-weight:900;
+
+  line-height:1.2;
+
+}
+
+.stat-content span{
+
+  color:#94a3b8;
+
+  font-size:12px;
+
+}
+
+/* =========================================================
+   SEARCH PANEL
+========================================================= */
+
+.search-panel{
+
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  gap:14px;
+
+  padding:14px;
+
+  border-radius:28px;
+
+  background:var(--glass);
+
+  border:1px solid var(--border);
+
+  backdrop-filter:blur(22px);
+
+  box-shadow:var(--shadow-md);
+
+}
+
+.search-left{
+
+  flex:1;
+
+  display:flex;
+  align-items:center;
+
+  gap:14px;
+
+}
+
+.search-icon{
+
+  width:58px;
+  height:58px;
+
+  border-radius:20px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #eff6ff,
+      #dbeafe
+    );
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  color:var(--primary);
+
+  font-size:20px;
+
+}
+
+.search-input{
+
+  border:none !important;
+  background:transparent !important;
+  box-shadow:none !important;
+
+  font-size:15px !important;
+  font-weight:600 !important;
+
+  padding-left:0 !important;
+
+}
+
+.search-input::placeholder{
+  color:#94a3b8;
+}
+
+.search-actions{
+
+  display:flex;
+  align-items:center;
+
+  gap:12px;
+
+}
+
+.clear-btn{
+
+  width:50px;
+  height:50px;
+
+  border-radius:18px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  background:#f8fafc;
+
+  border:1px solid #e2e8f0;
+
+  color:#94a3b8;
+
+  transition:var(--transition);
+
+}
+
+.clear-btn:hover{
+
+  background:#eff6ff;
+  color:var(--primary);
+
+}
+
+.search-btn{
+
+  border:none !important;
+
+  padding:15px 24px !important;
+
+  border-radius:18px !important;
+
+  background:
+    linear-gradient(
+      135deg,
+      #2563eb,
+      #7c3aed
+    ) !important;
+
+  color:white !important;
+
+  font-weight:800 !important;
+
+  box-shadow:
+    0 14px 30px rgba(37,99,235,.18);
+
+  transition:var(--transition);
+
+}
+
+.search-btn:hover{
+
+  transform:
+    translateY(-2px);
+
+}
+
+/* =========================================================
+   PRODUCT CARD
+========================================================= */
+
+.product-card{
+
+  position:relative;
+
+  overflow:hidden;
+
+  border-radius:30px;
+
+  background:var(--glass);
+
+  border:
+    1px solid rgba(255,255,255,.90);
+
+  backdrop-filter:blur(18px);
+
+  box-shadow:var(--shadow-md);
+
+  transition:var(--transition);
+
+}
+
+.product-card:hover{
+
+  transform:
+    translateY(-8px);
+
+  box-shadow:var(--shadow-lg);
+
+}
+
+.card-top{
+
+  position:relative;
+
+  min-height:190px;
+
+  padding:18px;
+
+  background:
+
+    radial-gradient(
+      circle at top right,
+      rgba(59,130,246,.18),
+      transparent 35%
+    ),
+
+    radial-gradient(
+      circle at bottom left,
+      rgba(124,58,237,.16),
+      transparent 40%
+    );
+
+}
+
+.top-row{
+
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+
+}
+
+.product-badge{
+
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+
+  padding:9px 14px;
+
+  border-radius:999px;
+
+  background:white;
+
+  color:var(--primary);
+
+  font-size:11px;
+  font-weight:800;
+
+  box-shadow:
+    0 8px 18px rgba(15,23,42,.06);
+
+}
+
+.stock-pill{
+
+  padding:8px 13px;
+
+  border-radius:999px;
+
+  background:white;
+
+  font-size:11px;
+  font-weight:800;
+
+}
+
+.stock-pill.success{
+  color:var(--success);
+}
+
+.stock-pill.warning{
+  color:var(--warning);
+}
+
+.stock-pill.danger{
+  color:var(--danger);
+}
+
+/* =========================================================
+   LOGO
+========================================================= */
+
+.logo-wrap{
+
+  position:absolute;
+
+  left:50%;
+  bottom:-54px;
+
+  transform:translateX(-50%);
+
+}
+
+.logo-glow{
+
+  position:absolute;
+
+  width:160px;
+  height:160px;
+
+  border-radius:50%;
+
+  background:
+    rgba(37,99,235,.14);
+
+  top:50%;
+  left:50%;
+
+  transform:
+    translate(-50%,-50%);
+
+}
+
+.product-logo{
+
+  position:relative;
+
+  width:115px;
+  height:115px;
+
+  border-radius:34px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #2563eb,
+      #7c3aed
+    );
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  color:white;
+
+  font-size:40px;
+
+  box-shadow:
+    0 20px 40px rgba(37,99,235,.22);
+
+}
+
+/* =========================================================
+   CARD BODY
+========================================================= */
+
+.card-body-area{
+
+  padding:72px 18px 18px;
+
+  text-align:center;
+
+}
+
+.product-title{
+
+  font-size:1rem;
+  font-weight:900;
+
+  line-height:1.5;
+
+  min-height:52px;
+
+  margin-bottom:14px;
+
+  color:var(--dark);
+
+}
+
+.mini-desc{
+
+  color:#64748b;
+
+  font-size:.86rem;
+
+  line-height:1.7;
+
+  min-height:48px;
+
+  margin-bottom:16px;
+
+}
+
+.mini-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    1fr 1fr;
+
+  gap:10px;
+
+  margin-bottom:14px;
+
+}
+
+.mini-box{
+
+  padding:15px;
+
+  border-radius:20px;
+
+  background:#f8fafc;
+
+  border:
+    1px solid #eef2f7;
+
+}
+
+.mini-box small{
+
+  display:block;
+
+  color:#94a3b8;
+
+  font-size:10px;
+  font-weight:700;
+
+  text-transform:uppercase;
+
+  margin-bottom:6px;
+
+}
+
+.mini-box h6{
+
+  margin:0;
+
+  font-size:.95rem;
+  font-weight:900;
+
+  color:var(--dark);
+
+}
+
+.range-pill{
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+
+  padding:13px;
+
+  border-radius:18px;
+
+  background:#f8fafc;
+
+  border:
+    1px solid #eef2f7;
+
+  color:#475569;
+
+  font-size:12px;
+  font-weight:700;
+
+}
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.card-footer-area{
+  padding:0 18px 18px;
+}
+
+.view-btn{
+
+  border:none !important;
+
+  border-radius:20px !important;
+
+  padding:15px 18px !important;
+
+  background:
+    linear-gradient(
+      135deg,
+      #2563eb,
+      #7c3aed
+    ) !important;
+
+  color:white !important;
+
+  font-size:14px;
+  font-weight:800 !important;
+
+  display:flex !important;
+  align-items:center;
+  justify-content:space-between;
+
+  box-shadow:
+    0 14px 30px rgba(37,99,235,.18);
+
+  transition:var(--transition);
+
+}
+
+.view-btn:hover{
+
+  transform:
+    translateY(-2px);
+
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(max-width:991px){
+
+  .hero-grid{
+    grid-template-columns:1fr;
+  }
+
+  .hero-title{
+    font-size:2.5rem;
+  }
+
+}
+
+@media(max-width:768px){
+
+  .hero-panel{
+
+    padding:28px 22px;
+
+    border-radius:28px;
+
+  }
+
+  .search-panel{
+
+    flex-direction:column;
+    align-items:stretch;
+
+  }
+
+  .search-actions{
+    width:100%;
+  }
+
+  .search-btn{
+    width:100%;
+  }
+
+  .hero-title{
+    font-size:2rem;
+  }
+
+}
+
+@media(max-width:576px){
+
+  .container{
+    padding-left:14px !important;
+    padding-right:14px !important;
+  }
+
+  .hero-title{
+    font-size:1.75rem;
+  }
+
+  .stats-grid{
+    grid-template-columns:1fr;
+  }
+
+  .product-logo{
+
+    width:100px;
+    height:100px;
+
+    font-size:34px;
+
+  }
+
+  .mini-grid{
+    grid-template-columns:1fr;
+  }
+
+  .product-card{
+    border-radius:24px;
+  }
+
+}
+
+</style>
+
+</style>
+
